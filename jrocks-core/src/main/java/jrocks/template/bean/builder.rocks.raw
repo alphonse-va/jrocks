@@ -1,0 +1,41 @@
+@import jrocks.model.BeanMetaData
+@import jrocks.model.FieldMetaData
+@import jrocks.template.annotations.BuilderProperty
+
+@option discardLogicWhitespace=true
+
+@args(BeanMetaData bean)
+
+package @bean.packageName();
+
+@for (String name : bean.requiredFieldCanonicalNames()) {
+import @name;
+}
+import java.util.Objects;
+
+/**
+ * Builder for the @bean.simpleName() bean.
+ */
+public class @bean.simpleName()Builder {
+
+  private @bean.simpleName() @bean.propertyName() = new @bean.simpleName()();
+
+  public @bean.simpleName() build() {
+@for (FieldMetaData p : bean.getFields()) {
+  @if(p.isRequired()) {
+    Objects.requireNonNull(@String.format("%s.%s()", bean.propertyName(), p.getter()), "@String.format("%s is required!", p.fieldNameCapitalized())");
+  }
+}
+    return @bean.propertyName();
+  }
+
+@for (FieldMetaData field : bean.getFields()) {
+  @if(field.isRequired()) {
+  public @bean.simpleName()Builder @field.setter()(@field.simpleName() @field.fieldName()) {
+    @String.format("%s.set%s(%s)", bean.propertyName(), field.fieldNameCapitalized(), field.fieldName());
+    return this;
+  }
+
+  }
+}
+}

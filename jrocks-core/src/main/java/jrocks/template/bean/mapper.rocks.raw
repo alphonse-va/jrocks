@@ -1,0 +1,27 @@
+@import jrocks.model.BeanMetaData
+@import jrocks.model.FieldMetaData
+@import jrocks.model.MapperData
+
+@option discardLogicWhitespace=true
+
+@args(BeanMetaData bean, MapperData mapper)
+
+package @bean.packageName();
+
+@for (String name : bean.fieldCanonicalNames()) {
+import @name;
+}
+import @String.format("%s.%s%s", bean.packageName(), bean.simpleName(), mapper.suffix());
+
+/**
+ * Mapper for the @bean.simpleName()@mapper.suffix().
+ */
+public class @bean.simpleName()@mapper.suffix()Mapper {
+
+  public @bean.simpleName()@mapper.suffix() from(@bean.simpleName() from) {
+    return new @bean.simpleName()@mapper.suffix()()
+@for ((ForIterator i, FieldMetaData field) : bean.getFields()) {
+        @String.format(".%s(from.%s())", field.setter(), field.getter())@if(i.last()) {;}
+}
+  }
+}

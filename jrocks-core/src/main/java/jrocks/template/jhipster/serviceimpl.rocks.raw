@@ -1,0 +1,82 @@
+@import jrocks.model.EntityMetaData
+
+@args(EntityMetaData md)
+
+package @String.format("%s.%s", md.packageName(), "repository");
+
+import @md.canonicalName();
+import @String.format("%s.%s.%s%s", md.packageName(), "repository", md.simpleName(), "Repository");
+import @String.format("%s.%s.%s%s", md.packageName(), "service", md.simpleName(), "Service");
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
+
+/**
+ * Service Implementation for managing @md.simpleName().
+ */
+@@Service
+@@Transactional
+public class @md.simpleName()ServiceImpl implements @md.simpleName()Service {
+
+  private final Logger log = LoggerFactory.getLogger(@md.simpleName()ServiceImpl.class);
+
+  private final @md.simpleName()Repository @md.propertyName()Repository;
+
+  public @md.simpleName()ServiceImpl(@md.simpleName()Repository @md.propertyName()Repository) {
+    this.@md.propertyName()Repository = @md.propertyName()Repository;
+  }
+
+  /**
+   * Save a @md.propertyName().
+   *
+   * @@param @md.propertyName() the entity to save
+   * @@return the persisted entity
+   */
+  @@Override
+  public @md.simpleName() save(@md.simpleName() @md.propertyName()) {
+    log.debug("Request to save @md.simpleName() : {}", @md.propertyName());
+    return @md.propertyName()Repository.save(@md.propertyName());
+  }
+
+  /**
+   * Get all the @md.propertyName()s.
+   *
+   * @@param pageable the pagination information
+   * @@return the list of entities
+   */
+  @@Override
+  @@Transactional(readOnly = true)
+  public Page<@md.simpleName()> findAll(Pageable pageable) {
+    log.debug("Request to get all @md.simpleName()s");
+    return @md.propertyName()Repository.findAll(pageable);
+  }
+
+  /**
+   * Get one @md.propertyName() by id.
+   *
+   * @@param id the id of the entity
+   * @@return the entity
+   */
+  @@Override
+  @@Transactional(readOnly = true)
+  public Optional<@md.simpleName()> findOne(Long id) {
+    log.debug("Request to get @md.simpleName() : {}", id);
+    return @md.propertyName()Repository.findById(id);
+  }
+
+  /**
+   * Delete the @md.propertyName() by id.
+   *
+   * @@param id the id of the entity
+   */
+  @@Override
+  public void delete(Long id) {
+    log.debug("Request to delete @md.simpleName() : {}", id);
+    @md.propertyName()Repository.deleteById(id);
+  }
+}

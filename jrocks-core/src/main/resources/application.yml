@@ -1,0 +1,17 @@
+jrocks:
+  name: ${project.name}
+  version: ${project.version}
+
+java:
+  version: @java.version@
+
+project:
+  base-package: jrocks
+
+maven:
+  scriptSourceDirectory: @project.build.scriptSourceDirectory@
+  testSourceDirectory: @project.build.testSourceDirectory@
+  outputDirectory: @project.build.outputDirectory@
+  testOutputDirectory: @project.build.testOutputDirectory@
+  directory: @project.build.directory@
+

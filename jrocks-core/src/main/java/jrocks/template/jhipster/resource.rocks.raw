@@ -1,0 +1,135 @@
+@import jrocks.model.EntityMetaData
+
+@args(EntityMetaData md)
+
+package @String.format("%s.%s", md.packageName(), "repository");
+
+import @md.canonicalName();
+
+@String.format("%s.%s%s%s", md.packageName(), "service", md.simpleName(), "Service");
+@String.format("%s.%s", md.packageName(), "web.rest.errors.BadRequestAlertException");
+@String.format("%s.%s", md.packageName(), ".web.rest.util.HeaderUtil");
+@String.format("%s.%s", md.packageName(), ".web.rest.util.PaginationUtil");
+import io.github.jhipster.web.util.ResponseUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.net.URI;
+import java.net.URISyntaxException;
+
+import java.util.List;
+import java.util.Optional;
+
+/**
+ * REST controller for managing @md.simpleName().
+ */
+@@RestController
+@@RequestMapping("/api")
+public class @md.simpleName()Resource {
+
+  private final Logger log = LoggerFactory.getLogger(@md.simpleName()Resource.class);
+
+  private static final String ENTITY_NAME = "@md.propertyName()";
+
+  private final @md.simpleName()Service @md.propertyName()Service;
+
+  private final @md.simpleName()QueryService @md.propertyName()QueryService;
+
+  public @md.simpleName()Resource(@md.simpleName()Service @md.propertyName()Service, @md.simpleName()QueryService @md.propertyName()QueryService) {
+    this.@md.propertyName()Service = @md.propertyName()Service;
+    this.@md.propertyName()QueryService = @md.propertyName()QueryService;
+  }
+
+  /**
+   * POST  /@md.restPath() : Create a new @md.propertyName().
+   *
+   * @@param @md.propertyName() the @md.propertyName() to create
+   * @@return the ResponseEntity with status 201 (Created) and with body the new @md.propertyName(), or with status 400 (Bad Request) if the @md.propertyName() has already an ID
+   * @@throws URISyntaxException if the Location URI syntax is incorrect
+   */
+  @@PostMapping("/@md.restPath()")
+  @@Timed
+  public ResponseEntity<@md.simpleName()> create@md.simpleName()(@@Valid @@RequestBody @md.simpleName() @md.propertyName()) throws URISyntaxException {
+    log.debug("REST request to save @md.simpleName() : {}", @md.propertyName());
+    if (@String.format("%s.%s", md.propertyName(), "getId()") != null) {
+      throw new BadRequestAlertException("A new @md.propertyName() cannot already have an ID", ENTITY_NAME, "idexists");
+    }
+    @md.simpleName() result = @md.propertyName()Service.save(@md.propertyName());
+    return ResponseEntity.created(new URI("/api/@md.restPath()/" + result.getId()))
+      .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+      .body(result);
+  }
+
+  /**
+   * PUT  /@md.restPath() : Updates an existing @md.propertyName().
+   *
+   * @@param @md.propertyName() the @md.propertyName() to update
+   * @@return the ResponseEntity with status 200 (OK) and with body the updated @md.propertyName(),
+   * or with status 400 (Bad Request) if the @md.propertyName() is not valid,
+   * or with status 500 (Internal Server Error) if the @md.propertyName() couldn't be updated
+   * @@throws URISyntaxException if the Location URI syntax is incorrect
+   */
+  @@PutMapping("/@md.restPath()")
+  @@Timed
+  public ResponseEntity<@md.simpleName()> update@md.simpleName()(@@Valid @@RequestBody @md.simpleName() @md.propertyName()) throws URISyntaxException {
+    log.debug("REST request to update @md.simpleName() : {}", @md.propertyName());
+    if (@@String.format("%s.%s", md.propertyName(), "getId()") == null) {
+      throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+    }
+    @md.simpleName() result = @md.propertyName()Service.save(@md.propertyName());
+    return ResponseEntity.ok()
+      .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, @String.format("%s.%s", md.propertyName(), "getId().toString()")))
+      .body(result);
+  }
+
+  /**
+   * GET  /@md.restPath() : get all
+   *
+   * @@param pageable the pagination information
+   * @@param criteria the criterias which the requested entities should match
+   * @@return the ResponseEntity with status 200 (OK) and the list of @md.pluralPropertyName() in body
+   */
+  @@GetMapping("/@md.restPath()")
+  @@Timed
+  public ResponseEntity<List<@md.simpleName()>> getAll@md.pluralSimpleName()(@md.simpleName()Criteria criteria, Pageable pageable) {
+    log.debug("REST request to get @md.simpleName()s by criteria: {}", criteria);
+    Page<@md.simpleName()> page = @md.propertyName()QueryService.findByCriteria(criteria, pageable);
+    HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/@md.restPath()");
+    return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+  }
+
+  /**
+   * GET  /@md.restPath()/:id : get the "id" @md.propertyName().
+   *
+   * @@param id the id of the @md.propertyName() to retrieve
+   * @@return the ResponseEntity with status 200 (OK) and with body the @md.propertyName(), or with status 404 (Not Found)
+   */
+  @@GetMapping("/@md.restPath()/{id}")
+  @@Timed
+  public ResponseEntity<@md.simpleName()> get@md.simpleName()(@@PathVariable Long id) {
+    log.debug("REST request to get @md.simpleName() : {}", id);
+    Optional<@md.simpleName()> @md.propertyName() = @md.propertyName()Service.findOne(id);
+    return ResponseUtil.wrapOrNotFound(@md.propertyName());
+  }
+
+  /**
+   * DELETE  /@md.restPath()/:id : delete the "id" @md.propertyName().
+   *
+   * @@param id the id of the @md.propertyName() to delete
+   * @@return the ResponseEntity with status 200 (OK)
+   */
+  @@DeleteMapping("/@md.restPath()/{id}")
+  @@Timed
+  public ResponseEntity<Void> delete@md.simpleName()(@@PathVariable Long id) {
+    log.debug("REST request to delete @md.simpleName() : {}", id);
+    @md.propertyName()Service.delete(id);
+    return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+  }
+}

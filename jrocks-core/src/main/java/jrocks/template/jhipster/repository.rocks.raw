@@ -1,0 +1,17 @@
+@import jrocks.model.EntityMetaData
+
+@args(EntityMetaData md)
+
+package @String.format("%s.%s", md.packageName(), "repository");
+
+import @md.canonicalName();
+import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.*;
+
+/**
+* Spring Data repository for the @md.simpleName() entity.
+*/
+@@SuppressWarnings("unused")
+@@Repository
+public interface @md.simpleName()Repository extends JpaRepository<@md.simpleName(), @md.idSimpleName()>, JpaSpecificationExecutor<@md.simpleName()> {
+}

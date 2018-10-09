@@ -1,0 +1,50 @@
+@import jrocks.model.EntityMetaData
+
+@args(EntityMetaData md)
+
+package @String.format("%s.%s", md.packageName(), "service");
+
+import @md.canonicalName();
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.util.Optional;
+
+/**
+ * Service Interface for managing @md.simpleName().
+ */
+public interface @md.simpleName()Service {
+
+  /**
+   * Save a @md.simpleName().
+   *
+   * @@param @md.propertyName() the entity to save
+   * @@return the persisted entity
+   */
+  @md.simpleName() save(@md.simpleName() @md.propertyName());
+
+  /**
+   * Get all.
+   *
+   * @@param pageable the pagination information
+   * @@return the list of entities
+   */
+  Page<@md.simpleName()> findAll(Pageable pageable);
+
+
+  /**
+   * Get @md.propertyName() by id.
+   *
+   * @@param id the id of the entity
+   * @@return the entity
+   */
+  Optional<@md.simpleName() > findOne(Long id);
+
+  /**
+   * Delete the "id" @md.propertyName().
+   *
+   * @@param id the id of the entity
+   */
+  void delete(Long id);
+}
