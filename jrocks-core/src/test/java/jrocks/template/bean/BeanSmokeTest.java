@@ -1,12 +1,12 @@
 package jrocks.template.bean;
 
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import jrocks.Matrix;
 import jrocks.MatrixTo;
-import jrocks.model.MapperData;
-import jrocks.model.BeanMetaData;
+import jrocks.api.ClassInfoApi;
 import jrocks.model.BeanMetaDataBuilder;
+import jrocks.model.MapperData;
 import jrocks.template.AbstractSmokeTest;
-import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class BeanSmokeTest extends AbstractSmokeTest {
 
-  private BeanMetaData<Matrix> metaData;
+  private ClassInfoApi metaData;
 
   @BeforeEach
   void beforeEach() {
@@ -56,7 +56,7 @@ class BeanSmokeTest extends AbstractSmokeTest {
   @Test
   @Ignore
   void dtoWithReplaceSuffix() {
-    final BeanMetaData<MatrixTo> toMetaData = new BeanMetaDataBuilder<>(MatrixTo.class).build();
+    final ClassInfoApi toMetaData = new BeanMetaDataBuilder<>(MatrixTo.class).build();
     final MapperData dtoData = new MapperData()
         .setSuffix("Dto")
         .setSuffixToRemove("To")

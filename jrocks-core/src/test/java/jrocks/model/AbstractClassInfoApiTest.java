@@ -2,7 +2,7 @@ package jrocks.model;
 
 import org.junit.jupiter.api.Test;
 
-class AbstractMetaDataTest {
+class AbstractClassInfoApiTest {
 
   @Test
   void removeSuffix() {

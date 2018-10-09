@@ -68,7 +68,7 @@
 //
 //  static class ProjectClassArrayList extends ArrayList<String> {
 //    public ProjectClassArrayList() throws IOException {
-//      super(ClassPath.from(ProjectClassArrayList.class.getClassLoader()).getTopLevelClassesRecursive(JRocksConfigHolder.getConfig(JRocksConfigHolder.JRocksConfig.PROJECT_BASE_PACKAGE).orElse("")).stream().map(ClassPath.ClassInfo::getName).collect(Collectors.toList()));
+//      super(ClassPath.from(ProjectClassArrayList.class.getClassLoader()).getTopLevelClassesRecursive(JRocksConfigHolder.getConfig(JRocksConfigHolder.JRocksConfig.PROJECT_BASE_PACKAGE).orElse("")).stream().map(ClassPath.ClassInfoApi::getName).collect(Collectors.toList()));
 //    }
 //  }
 //}

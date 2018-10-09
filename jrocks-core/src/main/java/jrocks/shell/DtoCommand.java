@@ -1,8 +1,8 @@
 //package jrocks.shell;
 //
-//import jrocks.model.BeanMetaData;
+//import jrocks.model.BeanClassInfo;
 //import jrocks.model.BeanMetaDataBuilder;
-//import jrocks.model.FieldMetaData;
+//import jrocks.model.FieldClassInfoApi;
 //import jrocks.model.MapperData;
 //import jrocks.template.bean.dto;
 //import jrocks.template.bean.mapper;
@@ -51,10 +51,10 @@
 //
 //  @Override
 //  protected void execute() {
-//    final BeanMetaData<?> beanMetaData = new BeanMetaDataBuilder<>(getClazz()).build();
+//    final BeanClassInfo<?> beanMetaData = new BeanMetaDataBuilder<>(getClazz()).build();
 //
 //    final List<String> beanFields = beanMetaData.getFields().stream()
-//        .map(FieldMetaData::fieldName)
+//        .map(FieldClassInfoApi::fieldName)
 //        .collect(Collectors.toList());
 //
 //    // log missing fields
@@ -86,7 +86,7 @@
 //    }
 //  }
 //
-//  private String applySuffix(BeanMetaData<?> beanMetaData) {
+//  private String applySuffix(BeanClassInfo<?> beanMetaData) {
 //    final String input = beanMetaData.canonicalName().replaceAll("\\.", "/");
 //    return isNotBlank(suffixToRemove) ? input.replaceAll(suffixToRemove + "$", suffix) : input + suffix;
 //  }
@@ -103,8 +103,8 @@
 //    return hasMissingFields[0];
 //  }
 //
-//  private static void filterProperties(BeanMetaData<?> beanMetaData, Function<FieldMetaData<?>, Boolean> filter) {
-//    final List<FieldMetaData<?>> filtered = beanMetaData.getFields().stream()
+//  private static void filterProperties(BeanClassInfo<?> beanMetaData, Function<FieldClassInfoApi<?>, Boolean> filter) {
+//    final List<FieldClassInfoApi<?>> filtered = beanMetaData.getFields().stream()
 //        .filter(filter::apply)
 //        .collect(Collectors.toList());
 //    beanMetaData.setProperties(filtered);

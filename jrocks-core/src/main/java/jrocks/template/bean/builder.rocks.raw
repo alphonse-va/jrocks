@@ -1,10 +1,10 @@
-@import jrocks.model.BeanMetaData
-@import jrocks.model.FieldMetaData
+@import jrocks.api.ClassInfoApi
+@import jrocks.api.FieldClassInfoApi
 @import jrocks.template.annotations.BuilderProperty
 
 @option discardLogicWhitespace=true
 
-@args(BeanMetaData bean)
+@args(ClassInfoApi bean)
 
 package @bean.packageName();
 
@@ -21,7 +21,7 @@ public class @bean.simpleName()Builder {
   private @bean.simpleName() @bean.propertyName() = new @bean.simpleName()();
 
   public @bean.simpleName() build() {
-@for (FieldMetaData p : bean.getFields()) {
+@for (FieldClassInfoApi p : bean.getFields()) {
   @if(p.isRequired()) {
     Objects.requireNonNull(@String.format("%s.%s()", bean.propertyName(), p.getter()), "@String.format("%s is required!", p.fieldNameCapitalized())");
   }
@@ -29,7 +29,7 @@ public class @bean.simpleName()Builder {
     return @bean.propertyName();
   }
 
-@for (FieldMetaData field : bean.getFields()) {
+@for (FieldClassInfoApi field : bean.getFields()) {
   @if(field.isRequired()) {
   public @bean.simpleName()Builder @field.setter()(@field.simpleName() @field.fieldName()) {
     @String.format("%s.set%s(%s)", bean.propertyName(), field.fieldNameCapitalized(), field.fieldName());

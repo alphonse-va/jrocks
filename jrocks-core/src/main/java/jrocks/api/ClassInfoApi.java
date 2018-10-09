@@ -1,8 +1,8 @@
-package jrocks.model;
+package jrocks.api;
 
 import java.util.List;
 
-public interface MetaData<T> {
+public interface ClassInfoApi {
 
   String packageName();
 
@@ -20,7 +20,7 @@ public interface MetaData<T> {
 
   List<String> fieldCanonicalNames();
 
-  Class<T> getBeanClass();
+  List<FieldClassInfoApi> getFields();
 
-  List<FieldMetaData<?>> getFields();
+  void addProperty(FieldClassInfoApi metaData);
 }

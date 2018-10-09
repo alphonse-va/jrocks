@@ -1,5 +1,6 @@
 package jrocks.model;
 
+import jrocks.api.ClassInfoApi;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.util.Objects;
@@ -7,16 +8,19 @@ import java.util.stream.Stream;
 
 public class BeanMetaDataBuilder<T> {
 
-  private BeanMetaData<T> beanMetaData;
+  private ClassInfoApi beanMetaData;
+
+  private Class<T> beanClass;
 
   public BeanMetaDataBuilder(Class<T> beanClass) {
-    this.beanMetaData = new BeanMetaData<>(beanClass);
+    this.beanClass = beanClass;
+    this.beanMetaData = new BeanClassInfo<>(beanClass);
   }
 
-  public BeanMetaData<T> build() {
+  public ClassInfoApi build() {
     Objects.requireNonNull(beanMetaData);
-    Stream.of(FieldUtils.getAllFields(beanMetaData.getBeanClass()))
-        .forEach(e -> beanMetaData.addProperty(new FieldMetaData<>(e)));
+    Stream.of(FieldUtils.getAllFields(beanClass))
+        .forEach(e -> beanMetaData.addProperty(new FieldClassInfo<>(e)));
     return beanMetaData;
   }
 }

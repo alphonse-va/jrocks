@@ -1,6 +1,7 @@
 package jrocks.model;
 
 import jrocks.Matrix;
+import jrocks.api.FieldClassInfoApi;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,23 +10,23 @@ import javax.validation.constraints.Size;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class FieldMetaDataTest {
+class FieldClassInfoApiTest {
 
-  private FieldMetaData<String> usernameMD;
-  private FieldMetaData<String> passwordMD;
-  private FieldMetaData<Object> digitMD;
-  private FieldMetaData<Object> dateMD;
-  private FieldMetaData<Object> emailMD;
-  private FieldMetaData<Object> decimalMD;
+  private FieldClassInfoApi usernameMD;
+  private FieldClassInfoApi passwordMD;
+  private FieldClassInfoApi digitMD;
+  private FieldClassInfoApi dateMD;
+  private FieldClassInfoApi emailMD;
+  private FieldClassInfoApi decimalMD;
 
   @BeforeEach
   void before() {
-    usernameMD = new FieldMetaData<>(FieldUtils.getField(Matrix.class, "username", true));
-    passwordMD = new FieldMetaData<>(FieldUtils.getField(Matrix.class, "password", true));
-    digitMD = new FieldMetaData<>(FieldUtils.getField(Matrix.class, "digit", true));
-    dateMD = new FieldMetaData<>(FieldUtils.getField(Matrix.class, "date", true));
-    emailMD = new FieldMetaData<>(FieldUtils.getField(Matrix.class, "email", true));
-    decimalMD = new FieldMetaData<>(FieldUtils.getField(Matrix.class, "decimal", true));
+    usernameMD = new FieldClassInfo<>(FieldUtils.getField(Matrix.class, "username", true));
+    passwordMD = new FieldClassInfo<>(FieldUtils.getField(Matrix.class, "password", true));
+    digitMD = new FieldClassInfo<>(FieldUtils.getField(Matrix.class, "digit", true));
+    dateMD = new FieldClassInfo<>(FieldUtils.getField(Matrix.class, "date", true));
+    emailMD = new FieldClassInfo<>(FieldUtils.getField(Matrix.class, "email", true));
+    decimalMD = new FieldClassInfo<>(FieldUtils.getField(Matrix.class, "decimal", true));
   }
 
   @Test
@@ -57,12 +58,6 @@ class FieldMetaDataTest {
   @Test
   void pluralPropertyName() {
     assertThat(usernameMD.pluralPropertyName()).isEqualTo("strings");
-  }
-
-
-  @Test
-  void getEntityClass() {
-    assertThat(usernameMD.getBeanClass()).isEqualTo(String.class);
   }
 
   @Test

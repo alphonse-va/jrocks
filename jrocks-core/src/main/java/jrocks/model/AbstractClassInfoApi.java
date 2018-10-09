@@ -1,6 +1,8 @@
 package jrocks.model;
 
-import jrocks.util.Inflector;
+import jrocks.api.ClassInfoApi;
+import jrocks.api.FieldClassInfoApi;
+import jrocks.template.util.Inflector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,15 +11,15 @@ import java.util.stream.Collectors;
 
 import static org.apache.commons.lang3.StringUtils.startsWith;
 
-public abstract class AbstractMetaData<T> implements MetaData<T> {
+public abstract class AbstractClassInfoApi implements ClassInfoApi {
 
   static final Inflector INFLECTOR = new Inflector();
 
-  private Class<T> beanClass;
+  private Class<?> beanClass;
 
-  private List<FieldMetaData<?>> properties = new ArrayList<>();
+  private List<FieldClassInfoApi> properties = new ArrayList<>();
 
-  AbstractMetaData(Class<T> beanClass) {
+  AbstractClassInfoApi(Class<?> beanClass) {
     this.beanClass = beanClass;
   }
 
@@ -54,41 +56,37 @@ public abstract class AbstractMetaData<T> implements MetaData<T> {
   @Override
   public List<String> requiredFieldCanonicalNames() {
     return properties.stream()
-        .filter(FieldMetaData::isRequired)
+        .filter(FieldClassInfoApi::isRequired)
         .filter(javaLangFilter())
-        .map(AbstractMetaData::canonicalName).distinct().collect(Collectors.toList());
+        .map(ClassInfoApi::canonicalName).distinct().collect(Collectors.toList());
   }
 
   @Override
   public List<String> fieldCanonicalNames() {
     return properties.stream()
         .filter(javaLangFilter())
-        .map(AbstractMetaData::canonicalName).distinct().collect(Collectors.toList());
+        .map(ClassInfoApi::canonicalName).distinct().collect(Collectors.toList());
   }
 
   // getters
 
   @Override
-  public Class<T> getBeanClass() {
-    return beanClass;
-  }
-
-  @Override
-  public List<FieldMetaData<?>> getFields() {
+  public List<FieldClassInfoApi> getFields() {
     return properties;
   }
 
-  public void setProperties(List<FieldMetaData<?>> properties) {
+  public void setProperties(List<FieldClassInfoApi> properties) {
     this.properties = properties;
   }
 
   // internals
 
-  void addProperty(FieldMetaData<?> metaData) {
+  @Override
+  public void addProperty(FieldClassInfoApi metaData) {
     properties.add(metaData);
   }
 
-  private Predicate<FieldMetaData<?>> javaLangFilter() {
+  private Predicate<FieldClassInfoApi> javaLangFilter() {
     return f -> !startsWith(f.canonicalName(), "java.lang");
   }
 }

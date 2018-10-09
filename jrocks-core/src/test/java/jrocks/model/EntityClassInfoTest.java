@@ -1,18 +1,19 @@
 package jrocks.model;
 
 import jrocks.Matrix;
+import jrocks.api.EntityClassInfoApi;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class EntityMetaDataTest {
+class EntityClassInfoTest {
 
-  private EntityMetaData<Matrix, Long> md;
+  private EntityClassInfoApi md;
 
   @BeforeEach
   void before() {
-    md = new EntityMetaData<>(Matrix.class, Long.class);
+    md = new EntityClassInfo(Matrix.class, Long.class);
   }
 
   @Test
@@ -59,10 +60,5 @@ class EntityMetaDataTest {
   @Test
   void restPath() {
     assertThat(md.restPath()).isEqualTo("matrix");
-  }
-
-  @Test
-  void getEntityClass() {
-    assertThat(md.getBeanClass()).isEqualTo(Matrix.class);
   }
 }

@@ -1,6 +1,6 @@
-@import jrocks.model.EntityMetaData
+@import jrocks.api.EntityClassInfoApi
 
-@args(EntityMetaData md)
+@args(EntityClassInfoApi md)
 
 package @String.format("%s.%s", md.packageName(), "service");
 

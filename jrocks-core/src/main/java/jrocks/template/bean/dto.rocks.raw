@@ -1,10 +1,10 @@
-@import jrocks.model.BeanMetaData
-@import jrocks.model.FieldMetaData
+@import jrocks.api.ClassInfoApi
+@import jrocks.api.FieldClassInfoApi
 @import jrocks.model.MapperData
 
 @option discardLogicWhitespace=true
 
-@args(BeanMetaData bean, MapperData mapper)
+@args(ClassInfoApi bean, MapperData mapper)
 
 package @bean.packageName();
 
@@ -17,19 +17,19 @@ import @name;
  */
 public class @mapper.applySuffix(bean.simpleName()) {
 
-@for (FieldMetaData field : bean.getFields()) {
+@for (FieldClassInfoApi field : bean.getFields()) {
   private @field.simpleName() @field.fieldName();
 }
 
 @if(mapper.withFactoryMethod()) {
   public static @mapper.applySuffix(bean.simpleName()) from(@bean.simpleName() from) {
     return new @mapper.applySuffix(bean.simpleName())()
-@for ((ForIterator i, FieldMetaData field) : bean.getFields()) {
+@for ((ForIterator i, FieldClassInfoApi field) : bean.getFields()) {
         @String.format(".%s(from.%s())", field.setter(), field.getter())@if(i.last()) {;}
 }
   }
 }
-@for (FieldMetaData field : bean.getFields()) {
+@for (FieldClassInfoApi field : bean.getFields()) {
 
   public @mapper.applySuffix(bean.simpleName()) @field.setter()(@field.simpleName() @field.fieldName()) {
     @String.format("this.%s = %s;", field.fieldName(), field.fieldName());

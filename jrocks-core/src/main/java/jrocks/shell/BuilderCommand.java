@@ -1,10 +1,8 @@
 package jrocks.shell;
 
-import com.google.common.reflect.ClassPath;
-import jrocks.model.BeanMetaData;
+import jrocks.api.ClassInfoApi;
 import jrocks.model.BeanMetaDataBuilder;
 import jrocks.template.bean.builder;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,39 +16,45 @@ import org.springframework.shell.standard.ShellOption;
 import org.springframework.shell.standard.ValueProviderSupport;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import static com.google.common.reflect.ClassPath.ClassInfo;
+import static com.google.common.reflect.ClassPath.from;
 import static java.lang.String.format;
 
+@Component
 @ShellComponent
 public class BuilderCommand {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(BuilderCommand.class);
 
   @Autowired
-  ClassValuesProvider classValuesProvider;
+  private ClassValuesProvider classValuesProvider;
+
 
   @ShellMethod(value = "Generate a builder class", key = "builder")
   public String builder(
-      @ShellOption( help = "sourceClass", valueProvider = ClassValuesProvider.class) String sourceClass,
-      @ShellOption(help = "force") Boolean force) throws IllegalStateException {
+      @ShellOption(help = "class", valueProvider = ClassValuesProvider.class) String sourceClass,
+      @ShellOption(help = "force") boolean force,
+      @ShellOption(help = "all", defaultValue = "true") boolean all,
+      @ShellOption(help = "excluded-fields") List<String> excludedFields) {
 
     final Class<?> aClass;
     try {
       aClass = Class.forName(sourceClass);
     } catch (ClassNotFoundException e) {
-      throw new IllegalStateException(format("Class '%s' not found on the class path", sourceClass, e));
+      throw new IllegalStateException(format("Class '%s' not found on the class path", sourceClass), e);
     }
 
-    final BeanMetaData<?> beanMetaData = new BeanMetaDataBuilder<>(aClass).build();
-    String generatedSource = builder.template(beanMetaData).render().toString();
-    writeGeneratedFile(beanMetaData.canonicalName().replaceAll("\\.", "/"), generatedSource, "Builder", force, aClass);
+    final ClassInfoApi bean = new BeanMetaDataBuilder<>(aClass).build();
+    String generatedSource = builder.template(bean).render().toString();
+    writeGeneratedFile(bean.canonicalName().replaceAll("\\.", "/"), generatedSource, "Builder", force, aClass);
 
     return "Builder generated with success";
   }
@@ -83,29 +87,29 @@ public class BuilderCommand {
   }
 
   @Component
-  class ClassValuesProvider extends ValueProviderSupport {
+  public class ClassValuesProvider extends ValueProviderSupport {
 
     @Value("${project.base-package}")
     private String completionPackage;
 
-    private List<String> values;
-
-    @PostConstruct
-    void postContruct() {
-      try {
-        values = ClassPath.from(BuilderCommand.class.getClassLoader())
-            .getTopLevelClassesRecursive(completionPackage)
-            .stream()
-            .map(ClassPath.ClassInfo::getName).collect(Collectors.toList());
-      } catch (IOException e) {
-        throw new IllegalStateException("Error while loading completion for %s", e);
-      }
-
-    }
+    List<CompletionProposal> values;
 
     @Override
     public List<CompletionProposal> complete(MethodParameter parameter, CompletionContext completionContext, String[] hints) {
-      return values.stream().map(CompletionProposal::new).collect(Collectors.toList());
+      try {
+        return from(BuilderCommand.class.getClassLoader())
+            .getTopLevelClassesRecursive(completionPackage)
+            .stream()
+            .filter(this::hasPublicEmptyConstructor)
+            .map(ClassInfo::getName)
+            .map(CompletionProposal::new).collect(Collectors.toList());
+      } catch (IOException e) {
+        throw new IllegalStateException("Error while loading completion for %s", e);
+      }
+    }
+
+    private boolean hasPublicEmptyConstructor(ClassInfo classInfo) {
+      return Stream.of(classInfo.load().getConstructors()).anyMatch(constr -> constr.getParameterCount() == 0);
     }
 
     public void setCompletionPackage(String completionPackage) {

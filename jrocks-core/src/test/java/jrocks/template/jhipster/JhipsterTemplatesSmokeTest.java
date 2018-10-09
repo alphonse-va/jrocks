@@ -1,6 +1,6 @@
 package jrocks.template.jhipster;
 
-import jrocks.model.EntityMetaData;
+import jrocks.model.EntityClassInfo;
 import jrocks.Matrix;
 import jrocks.template.AbstractSmokeTest;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,11 +12,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class JhipsterTemplatesSmokeTest extends AbstractSmokeTest {
 
-  private EntityMetaData<Matrix, Long> metaData;
+  private EntityClassInfo metaData;
 
   @BeforeEach
   void before() {
-    metaData = new EntityMetaData<>(Matrix.class, Long.class);
+    metaData = new EntityClassInfo(Matrix.class, Long.class);
   }
 
   @Test
