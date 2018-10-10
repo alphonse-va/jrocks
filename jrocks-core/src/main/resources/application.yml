@@ -1,6 +1,8 @@
 jrocks:
   name: ${project.name}
   version: ${project.version}
+  classpath:
+    auto-rebuild: true
 
 java:
   version: @java.version@

@@ -1,10 +1,8 @@
 #!/bin/bash
 
-mvn compile assembly:single
+#mvn package spring-boot:repackage
 
-java -cp ./target/jrocks-core-0.0.1-jar-with-dependencies.jar picocli.AutoComplete jrocks.shell.JRocksCommand -f
+command="echo java  -jar ./target/jrocks*.jar"
 
-. jrocks_completion
-
-alias jrocks='java -jar target/jrocks-core-0.0.1-jar-with-dependencies.jar'
+alias jrocks="java  -jar ./target/jrocks*.jar"
 

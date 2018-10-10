@@ -80,6 +80,11 @@
             <artifactId>guava</artifactId>
             <version>26.0-jre</version>
         </dependency>
+        <dependency>
+            <groupId>io.github.classgraph</groupId>
+            <artifactId>classgraph</artifactId>
+            <version>LATEST</version>
+        </dependency>
     </dependencies>
 
 
@@ -171,6 +176,4 @@
             </snapshots>
         </repository>
     </repositories>
-
-
 </project>

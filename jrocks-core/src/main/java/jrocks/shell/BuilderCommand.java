@@ -1,12 +1,13 @@
 package jrocks.shell;
 
+import jrocks.ClassPathScanner;
 import jrocks.api.ClassInfoApi;
 import jrocks.model.BeanMetaDataBuilder;
+import jrocks.shell.valueproviders.ClassFieldsValueProvider;
 import jrocks.template.bean.builder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.MethodParameter;
 import org.springframework.shell.CompletionContext;
 import org.springframework.shell.CompletionProposal;
@@ -25,36 +26,37 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.google.common.reflect.ClassPath.ClassInfo;
-import static com.google.common.reflect.ClassPath.from;
 import static java.lang.String.format;
 
-@Component
 @ShellComponent
 public class BuilderCommand {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(BuilderCommand.class);
 
   @Autowired
+  private ClassPathScanner classPathScanner;
+
+  @Autowired
   private ClassValuesProvider classValuesProvider;
 
 
-  @ShellMethod(value = "Generate a builder class", key = "builder")
+  @ShellMethod(value = "Generate a builder class", key = "builder", group = "builder")
   public String builder(
-      @ShellOption(help = "class", valueProvider = ClassValuesProvider.class) String sourceClass,
-      @ShellOption(help = "force") boolean force,
-      @ShellOption(help = "all", defaultValue = "true") boolean all,
-      @ShellOption(help = "excluded-fields") List<String> excludedFields) {
+      @ShellOption(value = "--class", help = "Source class from which you want to generate a builder", valueProvider = ClassValuesProvider.class) String classCanonicalName,
+      @ShellOption(value = "--force") boolean force,
+      @ShellOption(value = "--all", defaultValue = "true") boolean all,
+      @ShellOption(value = "--excluded-fields", valueProvider = ClassFieldsValueProvider.class) List<String> excludedFields) {
 
-    final Class<?> aClass;
+    Class<?> sourceClass;
     try {
-      aClass = Class.forName(sourceClass);
+      sourceClass = Class.forName(classCanonicalName);
     } catch (ClassNotFoundException e) {
-      throw new IllegalStateException(format("Class '%s' not found on the class path", sourceClass), e);
+      throw new IllegalStateException(format("Class '%s' not found on the class path", classCanonicalName), e);
     }
 
-    final ClassInfoApi bean = new BeanMetaDataBuilder(aClass).build();
+    final ClassInfoApi bean = new BeanMetaDataBuilder(sourceClass).build();
     String generatedSource = builder.template(bean).render().toString();
-    writeGeneratedFile(bean.canonicalName().replaceAll("\\.", "/"), generatedSource, "Builder", force, aClass);
+    writeGeneratedFile(bean.canonicalName().replaceAll("\\.", "/"), generatedSource, "Builder", force, sourceClass);
 
     return "Builder generated with success";
   }
@@ -89,31 +91,17 @@ public class BuilderCommand {
   @Component
   public class ClassValuesProvider extends ValueProviderSupport {
 
-    @Value("${project.base-package}")
-    private String completionPackage;
 
-    List<CompletionProposal> values;
+    @Autowired
+    private ClassPathScanner scanner;
 
     @Override
     public List<CompletionProposal> complete(MethodParameter parameter, CompletionContext completionContext, String[] hints) {
-      try {
-        return from(BuilderCommand.class.getClassLoader())
-            .getTopLevelClassesRecursive(completionPackage)
-            .stream()
-            .filter(this::hasPublicEmptyConstructor)
-            .map(ClassInfo::getName)
-            .map(CompletionProposal::new).collect(Collectors.toList());
-      } catch (IOException e) {
-        throw new IllegalStateException("Error while loading completion for %s", e);
-      }
+        return scanner.getAllCanonicalNames().stream().map(CompletionProposal::new).collect(Collectors.toList());
     }
 
     private boolean hasPublicEmptyConstructor(ClassInfo classInfo) {
       return Stream.of(classInfo.load().getConstructors()).anyMatch(constr -> constr.getParameterCount() == 0);
-    }
-
-    public void setCompletionPackage(String completionPackage) {
-      this.completionPackage = completionPackage;
     }
   }
 }
