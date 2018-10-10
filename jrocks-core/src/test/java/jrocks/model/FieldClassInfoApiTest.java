@@ -21,12 +21,12 @@ class FieldClassInfoApiTest {
 
   @BeforeEach
   void before() {
-    usernameMD = new FieldClassInfo<>(FieldUtils.getField(Matrix.class, "username", true));
-    passwordMD = new FieldClassInfo<>(FieldUtils.getField(Matrix.class, "password", true));
-    digitMD = new FieldClassInfo<>(FieldUtils.getField(Matrix.class, "digit", true));
-    dateMD = new FieldClassInfo<>(FieldUtils.getField(Matrix.class, "date", true));
-    emailMD = new FieldClassInfo<>(FieldUtils.getField(Matrix.class, "email", true));
-    decimalMD = new FieldClassInfo<>(FieldUtils.getField(Matrix.class, "decimal", true));
+    usernameMD = new FieldClassInfo(FieldUtils.getField(Matrix.class, "username", true));
+    passwordMD = new FieldClassInfo(FieldUtils.getField(Matrix.class, "password", true));
+    digitMD = new FieldClassInfo(FieldUtils.getField(Matrix.class, "digit", true));
+    dateMD = new FieldClassInfo(FieldUtils.getField(Matrix.class, "date", true));
+    emailMD = new FieldClassInfo(FieldUtils.getField(Matrix.class, "email", true));
+    decimalMD = new FieldClassInfo(FieldUtils.getField(Matrix.class, "decimal", true));
   }
 
   @Test

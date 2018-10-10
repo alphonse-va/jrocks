@@ -52,14 +52,14 @@ public class BuilderCommand {
       throw new IllegalStateException(format("Class '%s' not found on the class path", sourceClass), e);
     }
 
-    final ClassInfoApi bean = new BeanMetaDataBuilder<>(aClass).build();
+    final ClassInfoApi bean = new BeanMetaDataBuilder(aClass).build();
     String generatedSource = builder.template(bean).render().toString();
     writeGeneratedFile(bean.canonicalName().replaceAll("\\.", "/"), generatedSource, "Builder", force, aClass);
 
     return "Builder generated with success";
   }
 
-  boolean writeGeneratedFile(String relativePath, String generatedSource, String className, boolean force, Class<?> clazz) {
+  private boolean writeGeneratedFile(String relativePath, String generatedSource, String className, boolean force, Class<?> clazz) {
     final String sourceDirectory = JRocksConfigHolder.getConfig(JRocksConfigHolder.JRocksConfig.TARGET_SOURCE_DIRECTORY)
         .orElseThrow(() -> new IllegalStateException(JRocksConfigHolder.JRocksConfig.TARGET_SOURCE_DIRECTORY.getKey() + " not found!"));
 
@@ -76,7 +76,7 @@ public class BuilderCommand {
         LOGGER.error("'{}' file exists, please use --overwrite if you want to", path.toString());
         return true;
       }
-      path.toFile().createNewFile();
+      final boolean newFile = path.toFile().createNewFile();
       final Path savedFile = Files.write(path, generatedSource.getBytes());
       LOGGER.info("[builder] - '{}' class generated with success.\n\nSource: {}\nGenerated: {}\n", savedFile.getFileName(), clazz + ".java", savedFile);
     } catch (IOException e) {

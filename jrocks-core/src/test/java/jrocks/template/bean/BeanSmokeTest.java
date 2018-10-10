@@ -20,7 +20,7 @@ class BeanSmokeTest extends AbstractSmokeTest {
 
   @BeforeEach
   void beforeEach() {
-    metaData = new BeanMetaDataBuilder<>(Matrix.class).build();
+    metaData = new BeanMetaDataBuilder(Matrix.class).build();
   }
 
   @Test
@@ -56,7 +56,7 @@ class BeanSmokeTest extends AbstractSmokeTest {
   @Test
   @Ignore
   void dtoWithReplaceSuffix() {
-    final ClassInfoApi toMetaData = new BeanMetaDataBuilder<>(MatrixTo.class).build();
+    final ClassInfoApi toMetaData = new BeanMetaDataBuilder(MatrixTo.class).build();
     final MapperData dtoData = new MapperData()
         .setSuffix("Dto")
         .setSuffixToRemove("To")

@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 import static org.apache.commons.lang3.StringUtils.startsWith;
 
-public abstract class AbstractClassInfoApi implements ClassInfoApi {
+public abstract class BaseClassInfoApi implements ClassInfoApi {
 
   static final Inflector INFLECTOR = new Inflector();
 
@@ -19,7 +19,7 @@ public abstract class AbstractClassInfoApi implements ClassInfoApi {
 
   private List<FieldClassInfoApi> properties = new ArrayList<>();
 
-  AbstractClassInfoApi(Class<?> beanClass) {
+  BaseClassInfoApi(Class<?> beanClass) {
     this.beanClass = beanClass;
   }
 

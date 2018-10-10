@@ -5,7 +5,7 @@ import jrocks.api.EntityClassInfoApi;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class EntityClassInfo extends AbstractClassInfoApi implements EntityClassInfoApi {
+public class EntityClassInfo extends BaseClassInfoApi implements EntityClassInfoApi {
 
   private static final String REST_SEPARATOR = "-";
   private static final Pattern CAMELCASE_TO_REST_PATTERN = Pattern.compile("(?=[A-Z][a-z])");
