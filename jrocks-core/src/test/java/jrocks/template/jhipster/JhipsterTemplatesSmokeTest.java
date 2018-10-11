@@ -1,7 +1,7 @@
 package jrocks.template.jhipster;
 
 import jrocks.model.EntityClassInfo;
-import jrocks.Matrix;
+import jrocks.samples.model.Matrix;
 import jrocks.template.AbstractSmokeTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,6 @@ class JhipsterTemplatesSmokeTest extends AbstractSmokeTest {
   void repository() {
     final String actual = repository.template(metaData).render().toString();
     assertThat(actual).contains("MatrixRepository");
-    System.out.println(actual);
     assertThatClassCompile(new SimpleEntry<>(metaData.canonicalName() + "Repository", actual));
   }
 
@@ -32,8 +31,6 @@ class JhipsterTemplatesSmokeTest extends AbstractSmokeTest {
     final String actual = service.template(metaData).render().toString();
     assertThat(actual).contains("MatrixService");
     assertThatClassCompile(new SimpleEntry<>(metaData.canonicalName() + "Service", actual));
-    System.out.println(actual);
-
   }
 
   @Test
@@ -44,15 +41,12 @@ class JhipsterTemplatesSmokeTest extends AbstractSmokeTest {
     final String actual = serviceimpl.template(metaData).render().toString();
     assertThat(actual).contains("MatrixServiceImpl");
    // assertThatClassCompile(repositoryEntry, new SimpleEntry<>(metaData.canonicalName() + "ServiceImpl", actual));
-    System.out.println(actual);
-
   }
 
   @Test
   void resource() {
     final String actual = resource.template(metaData).render().toString();
     assertThat(actual).contains("MatrixResource");
-    System.out.println(actual);
     //assertThatClassCompile(new SimpleEntry<>(metaData.canonicalName() + "Resource", actual));
   }
 }

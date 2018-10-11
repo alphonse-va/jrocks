@@ -1,38 +1,54 @@
 package jrocks.shell.valueproviders;
 
 import org.junit.jupiter.api.Test;
+import org.junit.platform.commons.util.StringUtils;
 import org.springframework.shell.CompletionContext;
 import org.springframework.shell.CompletionProposal;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ClassFieldsValueProviderTest {
 
   private ClassFieldsValueProvider valueProvider = new ClassFieldsValueProvider();
-  private static final List<String> VALID_COMMAND_LINE_PARAMETER = Arrays.asList("--class", "jrocks.shell.valueproviders.ClassFieldsValueProviderTest", "--exclude-properties");
+
+  private static final List<String> VALID_COMMAND_LINE_PARAMETER = new ArrayList<>(Arrays.asList("--class", "jrocks.shell.valueproviders.ClassFieldsValueProviderTest", "--exclude-properties"));
+  private static final CompletionContext VALID_COMPLETION_CONTEXT = new CompletionContext(VALID_COMMAND_LINE_PARAMETER, 1, 1);
 
   protected String testField;
 
   @Test
   void complete() {
-    final List<CompletionProposal> actual = valueProvider.complete(null, new CompletionContext(VALID_COMMAND_LINE_PARAMETER, 1, 1), null);
+    final List<CompletionProposal> actual = valueProvider.complete(null, VALID_COMPLETION_CONTEXT, null);
     assertThat(actual).extracting(CompletionProposal::value).contains("valueProvider");
   }
 
   // TODO only accessible fields, public or with mutator
   @Test
   void getCompletionProposals() {
-    final List<CompletionProposal> actual = valueProvider.getCompletionProposals(ClassFieldsValueProviderTest.class);
+    final List<CompletionProposal> actual = valueProvider.getCompletionProposals(ClassFieldsValueProviderTest.class, VALID_COMPLETION_CONTEXT);
     assertThat(actual).extracting(CompletionProposal::value).contains("valueProvider");
   }
 
   @Test
+  void getCompletionProposalsShouldAppendPreviewFields() {
+    final List<String> commandLineParams = VALID_COMMAND_LINE_PARAMETER;
+    final String firstExcludedField = " valueProvider,";
+    commandLineParams.add(firstExcludedField);
+
+    final CompletionContext completionContext = new CompletionContext(commandLineParams, 3, firstExcludedField.length());
+    final List<CompletionProposal> actual = valueProvider.getCompletionProposals(ClassFieldsValueProviderTest.class, completionContext);
+    assertThat(actual).extracting(CompletionProposal::value).contains("valueProvider,testField");
+  }
+
+  @Test
   void getSourceClass() {
-    final CompletionContext completionContext = new CompletionContext(VALID_COMMAND_LINE_PARAMETER, 1, 1);
+    final CompletionContext completionContext = this.VALID_COMPLETION_CONTEXT;
     final Optional<Class<?>> actual = valueProvider.getSourceClass(completionContext);
     assertThat(actual).isPresent();
   }

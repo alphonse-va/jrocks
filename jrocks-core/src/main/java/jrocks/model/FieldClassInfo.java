@@ -37,8 +37,8 @@ public class FieldClassInfo extends BaseClassInfoApi implements FieldClassInfoAp
   }
 
   @Override
-  public boolean isAnnotatedWith(Class<? extends Annotation>... annotationClass) {
-    return Stream.of(annotationClass).anyMatch(clazz -> field.getAnnotation(clazz) != null);
+  public boolean isAnnotatedWith(Class<? extends Annotation>... annotationClasses) {
+    return Stream.of(annotationClasses).anyMatch(clazz -> field.getAnnotation(clazz) != null);
   }
 
   @Override

@@ -1,8 +1,6 @@
 #!/bin/bash
 
-#mvn package spring-boot:repackage
+mvn package spring-boot:repackage
 
-command="echo java  -jar ./target/jrocks*.jar"
-
-alias jrocks="java  -jar ./target/jrocks*.jar"
+echo 'alias jrocks="java -jar `pwd`/target/jrocks*.jar"'
 

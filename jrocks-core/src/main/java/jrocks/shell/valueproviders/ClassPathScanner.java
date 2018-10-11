@@ -1,10 +1,11 @@
-package jrocks;
+package jrocks.shell.valueproviders;
 
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ClassInfo;
 import io.github.classgraph.ClassInfoList;
 import io.github.classgraph.ScanResult;
-import org.springframework.beans.factory.annotation.Value;
+import jrocks.shell.JRocksConfig;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -14,32 +15,36 @@ import java.util.stream.Collectors;
 @Component
 public class ClassPathScanner {
 
-  @Value("${project.base-package}")
-  public String proejctBasePackage;
-
-  @Value("${jrocks.classpath.auto-rebuild}")
-  private boolean autoRebuild;
+  private final JRocksConfig jRocksConfig;
 
   private ClassInfoList classes;
 
   private ScanResult scanResult;
 
+  @Autowired
+  public ClassPathScanner(JRocksConfig jRocksConfig) {
+    this.jRocksConfig = jRocksConfig;
+  }
+
   @PostConstruct
   public void rebuid() {
     scanResult = new ClassGraph()
         .enableAllInfo()
-        .whitelistPackages(proejctBasePackage)
+        .whitelistPackages(jRocksConfig.getBasePackage())
         .scan();
-    classes = scanResult.getAllClasses();
+    classes = scanResult.getAllStandardClasses();
   }
 
-  public List<String> getAllCanonicalNames() {
+  public List<String> getAllClassesWithZeroArgsContructor() {
     rebuildIfNeeded();
-    return classes.stream().map(ClassInfo::getName).collect(Collectors.toList());
+    return classes.stream()
+        .filter(ci -> ci.getConstructorInfo().stream().anyMatch(c -> c.getParameterInfo().length == 0))
+        .map(ClassInfo::getName)
+        .collect(Collectors.toList());
   }
 
   private void rebuildIfNeeded() {
-    if (autoRebuild) {
+    if (jRocksConfig.isAutoRebuild()) {
       rebuid();
     } else if (scanResult.classpathContentsModifiedSinceScan()) {
       rebuid();

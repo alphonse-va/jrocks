@@ -1,7 +1,7 @@
 package jrocks.model;
 
-import jrocks.Matrix;
 import jrocks.api.EntityClassInfoApi;
+import jrocks.samples.model.Matrix;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

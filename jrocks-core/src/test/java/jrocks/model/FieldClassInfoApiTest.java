@@ -1,7 +1,7 @@
 package jrocks.model;
 
-import jrocks.Matrix;
 import jrocks.api.FieldClassInfoApi;
+import jrocks.samples.model.Matrix;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
