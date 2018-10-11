@@ -22,6 +22,6 @@ public class AllClassValueProvider extends ValueProviderSupport {
 
   @Override
   public List<CompletionProposal> complete(MethodParameter parameter, CompletionContext completionContext, String[] hints) {
-    return scanner.getAllClassesWithZeroArgsContructor().stream().map(CompletionProposal::new).collect(Collectors.toList());
+    return scanner.getAllClassesWithZeroArgsConstructor().stream().map(CompletionProposal::new).collect(Collectors.toList());
   }
 }

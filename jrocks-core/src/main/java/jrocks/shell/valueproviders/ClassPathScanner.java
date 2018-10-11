@@ -35,7 +35,7 @@ public class ClassPathScanner {
     classes = scanResult.getAllStandardClasses();
   }
 
-  public List<String> getAllClassesWithZeroArgsContructor() {
+  public List<String> getAllClassesWithZeroArgsConstructor() {
     rebuildIfNeeded();
     return classes.stream()
         .filter(ci -> ci.getConstructorInfo().stream().anyMatch(c -> c.getParameterInfo().length == 0))

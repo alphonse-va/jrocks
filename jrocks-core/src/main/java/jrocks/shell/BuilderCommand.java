@@ -74,12 +74,11 @@ public class BuilderCommand {
         LOGGER.error("'{}' file exists, please use --force if you want to overwrite", path.toString());
         return;
       }
-      final boolean newFile = path.toFile().createNewFile();
       final Path savedFile = Files.write(path, generatedSource.getBytes());
       if (logLevel == LogLevel.debug)
-        LOGGER.info("[builder] - '{}' class generated with success.\n\nSource: {}\nGenerated: {}\n\n{}", savedFile.getFileName(), clazz + ".java", savedFile, generatedSource);
+        LOGGER.info("'{}' class generated with success.\n\nSource: {}\nGenerated: {}\n\n{}\n", savedFile.getFileName(), clazz + ".java", savedFile, generatedSource);
       else
-        LOGGER.info("[builder] - '{}' class generated with success.\n\nSource: {}\nGenerated: {}\n", savedFile.getFileName(), clazz + ".java", savedFile);
+        LOGGER.info("'{}' class generated with success.\n\nSource: {}\nGenerated: {}", savedFile.getFileName(), clazz + ".java", savedFile);
     } catch (IOException e) {
       throw new IllegalStateException(format("Enable to create '%s' file!", destPath), e);
     }
