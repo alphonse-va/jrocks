@@ -2,20 +2,18 @@ package jrocks.shell.valueproviders;
 
 import com.google.common.annotations.VisibleForTesting;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.shell.CompletionContext;
 import org.springframework.shell.CompletionProposal;
 import org.springframework.shell.standard.ValueProviderSupport;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import static java.lang.String.format;
 
@@ -24,14 +22,16 @@ public class ClassFieldsValueProvider extends ValueProviderSupport {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ClassFieldsValueProvider.class);
 
+  private final ClassPathScanner classPathScanner;
+
+  @Autowired
+  public ClassFieldsValueProvider(final ClassPathScanner classPathScanner) {this.classPathScanner = classPathScanner;}
+
   @Override
   public List<CompletionProposal> complete(MethodParameter parameter, CompletionContext completionContext, String[] hints) {
-    final List<CompletionProposal> completionProposals = getSourceClass(completionContext)
+    return getSourceClass(completionContext)
         .map(cp -> getCompletionProposals(cp, completionContext))
         .orElse(new ArrayList<>());
-
-
-    return completionProposals;
   }
 
   @VisibleForTesting
@@ -43,11 +43,10 @@ public class ClassFieldsValueProvider extends ValueProviderSupport {
 
     final List<String> alreadyExcludedFields = Arrays.asList(StringUtils.split(word, ","));
 
-    final boolean existingPropertyName = Stream.of(FieldUtils.getAllFields(clazz))
-        .anyMatch(f -> f.getName().equals(lastProposal.trim()));
+    final boolean existingPropertyName = classPathScanner.getMutableFields(clazz.getCanonicalName()).stream()
+        .anyMatch(name -> name.equals(lastProposal.trim()));
 
-    return Stream.of(FieldUtils.getAllFields(clazz))
-        .map(Field::getName)
+    return classPathScanner.getMutableFields(clazz.getCanonicalName()).stream()
         .filter(name -> !alreadyExcludedFields.contains(name))
         .map(fieldName -> existingPropertyName
             ? new CompletionProposal(format("%s,%s", word, fieldName).replace(",,", ",").trim())

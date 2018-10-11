@@ -1,5 +1,7 @@
 package jrocks.shell.valueproviders;
 
+import jrocks.shell.JRocksConfig;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.util.StringUtils;
 import org.springframework.shell.CompletionContext;
@@ -15,12 +17,28 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class ClassFieldsValueProviderTest {
 
-  private ClassFieldsValueProvider valueProvider = new ClassFieldsValueProvider();
+  private ClassPathScanner scanner = new ClassPathScanner(new JRocksConfig().setBasePackage("jrocks"));
+  private ClassFieldsValueProvider valueProvider = new ClassFieldsValueProvider(scanner);
 
   private static final List<String> VALID_COMMAND_LINE_PARAMETER = new ArrayList<>(Arrays.asList("--class", "jrocks.shell.valueproviders.ClassFieldsValueProviderTest", "--exclude-properties"));
   private static final CompletionContext VALID_COMPLETION_CONTEXT = new CompletionContext(VALID_COMMAND_LINE_PARAMETER, 1, 1);
 
-  protected String testField;
+  private String testField;
+
+  public ClassFieldsValueProviderTest setTestField(final String testField) {
+    this.testField = testField;
+    return this;
+  }
+
+  public ClassFieldsValueProviderTest setValueProvider(final ClassFieldsValueProvider valueProvider) {
+    this.valueProvider = valueProvider;
+    return this;
+  }
+
+  @BeforeEach
+  void beforeEach() {
+    scanner.rebuid();
+  }
 
   @Test
   void complete() {
@@ -28,7 +46,6 @@ class ClassFieldsValueProviderTest {
     assertThat(actual).extracting(CompletionProposal::value).contains("valueProvider");
   }
 
-  // TODO only accessible fields, public or with mutator
   @Test
   void getCompletionProposals() {
     final List<CompletionProposal> actual = valueProvider.getCompletionProposals(ClassFieldsValueProviderTest.class, VALID_COMPLETION_CONTEXT);
@@ -48,8 +65,7 @@ class ClassFieldsValueProviderTest {
 
   @Test
   void getSourceClass() {
-    final CompletionContext completionContext = this.VALID_COMPLETION_CONTEXT;
-    final Optional<Class<?>> actual = valueProvider.getSourceClass(completionContext);
+    final Optional<Class<?>> actual = valueProvider.getSourceClass(VALID_COMPLETION_CONTEXT);
     assertThat(actual).isPresent();
   }
 }

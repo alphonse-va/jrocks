@@ -1,16 +1,16 @@
 package jrocks.shell.valueproviders;
 
-import io.github.classgraph.ClassGraph;
-import io.github.classgraph.ClassInfo;
-import io.github.classgraph.ClassInfoList;
-import io.github.classgraph.ScanResult;
+import io.github.classgraph.*;
 import jrocks.shell.JRocksConfig;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.apache.commons.lang3.StringUtils.capitalize;
 
 @Component
 public class ClassPathScanner {
@@ -41,6 +41,17 @@ public class ClassPathScanner {
         .filter(ci -> ci.getConstructorInfo().stream().anyMatch(c -> c.getParameterInfo().length == 0))
         .map(ClassInfo::getName)
         .collect(Collectors.toList());
+  }
+
+  /*
+   * returns setters
+   */
+  public List<String> getMutableFields(String className) {
+    return classes.get(className).getDeclaredFieldInfo().getNames().stream()
+        .filter(fieldName -> {
+          final String setter = "set" + capitalize(fieldName);
+          return classes.get(className).getMethodInfo().get(setter).getNames().contains(setter);
+        }).collect(Collectors.toList());
   }
 
   private void rebuildIfNeeded() {
