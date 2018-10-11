@@ -42,7 +42,7 @@ public class BuilderCommand {
       @ShellOption(value = "--log-level", defaultValue = "info") LogLevel logLevel
   ) {
 
-    LOGGER.info("Generate builder for {} with parameters:\n\tClass: {}\n\tExcluded Fields: {}\n\t", classCanonicalName, classCanonicalName, excludedFields);
+    LOGGER.info("Generate builder for {} class with parameters:\n\tClass: {}\n\tExcluded Fields: {}\n\t", classCanonicalName, classCanonicalName, excludedFields);
 
     if (logLevel != null) setLoggingLevel(logLevel.getLevel());
 
@@ -50,7 +50,7 @@ public class BuilderCommand {
     if (sourceClass == null)
       throw new IllegalStateException(format("Class '%s' not found on the class path", classCanonicalName));
 
-    final ClassInfoApi bean = new BeanClassInfoBuilder(sourceClass).build();
+    final ClassInfoApi bean = new BeanClassInfoBuilder<>(sourceClass).build();
     String generatedSource = builder.template(bean).render().toString();
     writeGeneratedFile(bean.canonicalName().replaceAll("\\.", File.separator), generatedSource, force, sourceClass, logLevel);
   }

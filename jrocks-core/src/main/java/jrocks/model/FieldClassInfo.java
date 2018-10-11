@@ -12,7 +12,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.stream.Stream;
 
-public class FieldClassInfo extends BaseClassInfoApi implements FieldClassInfoApi {
+public class FieldClassInfo extends BaseClassInfo implements FieldClassInfoApi {
 
   private Field field;
 

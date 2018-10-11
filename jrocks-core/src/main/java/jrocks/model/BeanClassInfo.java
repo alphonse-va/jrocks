@@ -1,8 +1,8 @@
 package jrocks.model;
 
-public class BeanClassInfo<T> extends BaseClassInfoApi {
+class BeanClassInfo<T> extends BaseClassInfo {
 
-  public BeanClassInfo(Class<T> beanClass) {
+  BeanClassInfo(Class<T> beanClass) {
     super(beanClass);
   }
 }
