@@ -5,6 +5,7 @@ import jrocks.model.BeanClassInfoBuilder;
 import jrocks.model.MapperData;
 import jrocks.samples.model.Matrix;
 import jrocks.samples.model.MatrixTo;
+import jrocks.shell.parameter.BaseClassInfoParameterBuilder;
 import jrocks.template.AbstractSmokeTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,12 +20,12 @@ class BeanSmokeTest extends AbstractSmokeTest {
 
   @BeforeEach
   void beforeEach() {
-    metaData = new BeanClassInfoBuilder(Matrix.class).build();
+    metaData = new BeanClassInfoBuilder<>(Matrix.class).build();
   }
 
   @Test
   void builder() {
-    final String actual = builder.template(metaData).render().toString();
+    final String actual = builder.template(metaData, new BaseClassInfoParameterBuilder().setClassCanonicalName(Matrix.class.getCanonicalName()).setLogLevel(null).setForce(false).setExcludedFields(null).setIncludedFields(null).setMandatoryFields(null).build()).render().toString();
 
     assertThat(actual).contains("MatrixBuilder", "setUsername", "setPassword", "setDecimal");
     assertThatClassCompile(new SimpleEntry<>("jrocks.MatrixBuilder", actual));

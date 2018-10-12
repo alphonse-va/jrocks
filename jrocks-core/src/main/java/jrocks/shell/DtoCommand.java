@@ -79,7 +79,7 @@
 //    String generatedSource = dto.template(beanMetaData, mapperData).render().toString();
 //    writeGeneratedFile(applySuffix(beanMetaData), generatedSource, suffix);
 //
-//    // generate mapper class
+//    // generateSource mapper class
 //    if (!withFactoryMethod) {
 //      String generatedMapperSource = mapper.template(beanMetaData, mapperData).render().toString();
 //      writeGeneratedFile(applySuffix(beanMetaData), generatedMapperSource, suffix + "Mapper");

@@ -1,7 +1,7 @@
 @import jrocks.api.ClassInfoApi
 @import jrocks.api.FieldClassInfoApi
 @import jrocks.template.annotations.BuilderProperty
-@import jrocks.shell.parameter.BeanClassInfoParameter
+@import jrocks.api.ClassInfoParameterApi
 
 @option discardLogicWhitespace=true
 
