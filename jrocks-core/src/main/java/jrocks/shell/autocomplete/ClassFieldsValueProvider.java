@@ -1,4 +1,4 @@
-package jrocks.shell.value;
+package jrocks.shell.autocomplete;
 
 import com.google.common.annotations.VisibleForTesting;
 import org.apache.commons.lang3.StringUtils;
@@ -41,17 +41,21 @@ public class ClassFieldsValueProvider extends ValueProviderSupport {
         ? StringUtils.substringBeforeLast(word, ",")
         : StringUtils.substringAfterLast(word, ",");
 
-    final List<String> alreadyExcludedFields = Arrays.asList(StringUtils.split(word, ","));
 
-    final boolean existingPropertyName = classPathScanner.getMutableFields(clazz.getCanonicalName()).stream()
-        .anyMatch(name -> name.equals(lastProposal.trim()));
+    final boolean existingPropertyName = classPathScanner.getAllFieldsWithGetterAndSetters(clazz.getCanonicalName())
+        .stream().anyMatch(name -> name.equals(lastProposal.trim()));
 
-    return classPathScanner.getMutableFields(clazz.getCanonicalName()).stream()
-        .filter(name -> !alreadyExcludedFields.contains(name))
+    return classPathScanner.getAllFieldsWithGetterAndSetters(clazz.getCanonicalName()).stream()
+        .filter(name -> isFieldAlreadyContained(completionContext, name))
         .map(fieldName -> existingPropertyName
             ? new CompletionProposal(format("%s,%s", word, fieldName).replace(",,", ",").trim())
             : new CompletionProposal(fieldName))
         .collect(Collectors.toList());
+  }
+
+  private boolean isFieldAlreadyContained(final CompletionContext completionContext, final String name) {
+    return completionContext.getWords().stream()
+        .map(w -> w.replaceAll(",", "")).noneMatch(name::equals);
   }
 
   @VisibleForTesting

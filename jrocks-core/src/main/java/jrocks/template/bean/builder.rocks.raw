@@ -5,7 +5,7 @@
 
 @option discardLogicWhitespace=true
 
-@args(ClassInfoApi bean, BeanClassInfoParameter parameter)
+@args(ClassInfoApi bean, ClassInfoParameterApi param)
 
 package @bean.packageName();
 
@@ -23,7 +23,7 @@ public class @bean.simpleName()Builder {
 
   public @bean.simpleName() build() {
 @for (FieldClassInfoApi p : bean.getFields()) {
-  @if(p.isRequired()) {
+  @if(p.isRequired() || param.getMandatoryFields().contains(p.fieldName())) {
     Objects.requireNonNull(@String.format("%s.%s()", bean.propertyName(), p.getter()), "@String.format("%s is required!", p.fieldNameCapitalized())");
   }
 }
@@ -31,7 +31,7 @@ public class @bean.simpleName()Builder {
   }
 
 @for (FieldClassInfoApi field : bean.getFields()) {
-  @if(field.isRequired()) {
+  @if(p.isRequired() || !param.getExcludedFields().contains(field.fieldName()) || param.getIncludedFields().contains(field.fieldName())) {
   public @bean.simpleName()Builder @field.setter()(@field.simpleName() @field.fieldName()) {
     @String.format("%s.set%s(%s)", bean.propertyName(), field.fieldNameCapitalized(), field.fieldName());
     return this;

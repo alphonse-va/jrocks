@@ -7,8 +7,8 @@ import jrocks.model.BeanClassInfoBuilder;
 import jrocks.shell.JRocksConfig;
 import jrocks.shell.LogLevel;
 import jrocks.shell.parameter.BaseClassInfoParameterBuilder;
-import jrocks.shell.value.AllClassValueProvider;
-import jrocks.shell.value.ClassFieldsValueProvider;
+import jrocks.shell.autocomplete.AllClassValueProvider;
+import jrocks.shell.autocomplete.ClassFieldsValueProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.shell.standard.ShellMethod;
@@ -39,17 +39,17 @@ public abstract class BaseClassInfoCommand {
   @ShellMethod(value = "Generate a builder class", key = "builder", group = "builder")
   public void builder(
       @ShellOption(value = "--class", help = "Source class", valueProvider = AllClassValueProvider.class) String classCanonicalName,
-      @ShellOption(value = "--force", help = "Overwrite existing files") boolean force,
+      @ShellOption(value = "--force", help = "Overwrite existing files") boolean isForced,
       @ShellOption(value = "--excluded-fields", help = "Fields to exclude", defaultValue = "[]", valueProvider = ClassFieldsValueProvider.class) String[] excludedFields,
       @ShellOption(value = "--included-fields", help = "Fields to include", defaultValue = "[]", valueProvider = ClassFieldsValueProvider.class) String[] includedFields,
       @ShellOption(value = "--mandatory-fields", help = "Mandatory fields", defaultValue = "[]", valueProvider = ClassFieldsValueProvider.class) String[] mandatoryFields,
-      @ShellOption(value = "--log-level", defaultValue = "info") LogLevel logLevel
+      @ShellOption(value = "--log-level", help = "choice the logs level", defaultValue = "info") LogLevel logLevel
   ) {
 
     final ClassInfoParameterApi parameter = new BaseClassInfoParameterBuilder()
         .setClassCanonicalName(classCanonicalName)
         .setLogLevel(logLevel)
-        .setForce(force)
+        .setForce(isForced)
         .setExcludedFields(asList(excludedFields))
         .setIncludedFields(asList(includedFields))
         .setMandatoryFields(asList(mandatoryFields))

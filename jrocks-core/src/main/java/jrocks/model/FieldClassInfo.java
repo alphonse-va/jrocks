@@ -16,7 +16,7 @@ public class FieldClassInfo extends BaseClassInfo implements FieldClassInfoApi {
 
   private Field field;
 
-  public FieldClassInfo(Field field) {
+  FieldClassInfo(Field field) {
     super(field.getType());
     this.field = field;
   }
@@ -37,7 +37,8 @@ public class FieldClassInfo extends BaseClassInfo implements FieldClassInfoApi {
   }
 
   @Override
-  public boolean isAnnotatedWith(Class<? extends Annotation>... annotationClasses) {
+  @SafeVarargs
+  public final boolean isAnnotatedWith(Class<? extends Annotation>... annotationClasses) {
     return Stream.of(annotationClasses).anyMatch(clazz -> field.getAnnotation(clazz) != null);
   }
 

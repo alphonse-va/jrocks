@@ -8,7 +8,7 @@ import java.util.List;
 
 import static java.lang.String.format;
 
-public class BaseClassInfoParameterApi implements ClassInfoParameterApi {
+public class BaseClassInfoParameter implements ClassInfoParameterApi {
 
   private String classCanonicalName;
 
@@ -22,12 +22,12 @@ public class BaseClassInfoParameterApi implements ClassInfoParameterApi {
 
   private boolean force;
 
-  BaseClassInfoParameterApi(final String classCanonicalName,
-                            final LogLevel logLevel,
-                            final boolean force,
-                            final List<String> excludedFields,
-                            final List<String> includedFields,
-                            final List<String> mandatoryFields) {
+  BaseClassInfoParameter(final String classCanonicalName,
+                         final LogLevel logLevel,
+                         final boolean force,
+                         final List<String> excludedFields,
+                         final List<String> includedFields,
+                         final List<String> mandatoryFields) {
     this.logLevel = logLevel;
     this.classCanonicalName = classCanonicalName;
     this.force = force;

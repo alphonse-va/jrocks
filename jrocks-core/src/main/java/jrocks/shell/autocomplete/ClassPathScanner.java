@@ -1,6 +1,9 @@
-package jrocks.shell.value;
+package jrocks.shell.autocomplete;
 
-import io.github.classgraph.*;
+import io.github.classgraph.ClassGraph;
+import io.github.classgraph.ClassInfo;
+import io.github.classgraph.ClassInfoList;
+import io.github.classgraph.ScanResult;
 import jrocks.shell.JRocksConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -51,6 +54,18 @@ public class ClassPathScanner {
           final String setter = "set" + capitalize(fieldName);
           return classes.get(className).getMethodInfo().get(setter).getNames().contains(setter);
         }).collect(Collectors.toList());
+  }
+
+  public List<String> getAllFieldsWithGetterAndSetters(String className) {
+    return classes.get(className).getDeclaredFieldInfo().getNames().stream()
+        .filter(fieldName -> {
+          final String setter = "set" + capitalize(fieldName);
+          return classes.get(className).getMethodInfo().get(setter).getNames().contains(setter);
+        }).filter(fieldName -> {
+          final String getter = "get" + capitalize(fieldName);
+          return classes.get(className).getMethodInfo().get(getter).getNames().contains(getter);
+        })
+        .collect(Collectors.toList());
   }
 
   private void rebuildIfNeeded() {

@@ -14,8 +14,6 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
-
 public class AbstractSmokeTest {
 
   private static StandardJavaFileManager standardJavaFileManager;
@@ -31,6 +29,7 @@ public class AbstractSmokeTest {
     standardJavaFileManager.close();
   }
 
+  @SafeVarargs
   protected static void assertThatClassCompile(AbstractMap.SimpleEntry<String, String>... entries) {
     String[] options = new String[]{"-d", "/home/fons/dev/git/jrocks/jrocks-core/target"};
     final List<JavaSourceFromString> sources = Stream.of(entries).map(source -> new JavaSourceFromString(source.getKey(), source.getValue())).collect(Collectors.toList());

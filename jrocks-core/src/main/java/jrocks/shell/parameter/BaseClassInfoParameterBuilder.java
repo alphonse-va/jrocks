@@ -43,7 +43,7 @@ public class BaseClassInfoParameterBuilder {
     return this;
   }
 
-  public BaseClassInfoParameterApi build() {
-    return new BaseClassInfoParameterApi(classCanonicalName, logLevel, force, excludedFields, includedFields, mandatoryFields);
+  public BaseClassInfoParameter build() {
+    return new BaseClassInfoParameter(classCanonicalName, logLevel, force, excludedFields, includedFields, mandatoryFields);
   }
 }

@@ -1,4 +1,4 @@
-package jrocks.shell.value;
+package jrocks.shell.autocomplete;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;

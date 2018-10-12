@@ -4,14 +4,17 @@
         <!-- encoders are assigned the type
              ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
         <encoder>
-            <!--<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>-->
-            <pattern>%highlight(%-5level %msg) %n</pattern>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <!--<pattern>%highlight(%-5level %msg) %n</pattern>-->
         </encoder>
     </appender>
 
-    <root level="info">
-        <appender-ref ref="STDOUT" />
+    <root level="error">
+        <appender-ref ref="STDOUT"/>
     </root>
-    <logger name="com.fizzed.rocker.runtime" level="WARN"/>
-    <logger name="ch.qos.logback" level="WARN"/>
+    <logger name="org.springframework" level="ERROR"/>
+    <logger name="com.fizzed.rocker.runtime" level="ERROR"/>
+    <logger name="ch.qos.logback" level="ERROR"/>
+    <logger name="ch.qos.logback" level="ERROR"/>
+    <logger name="org.jline" level="ERROR"/>
 </configuration>
