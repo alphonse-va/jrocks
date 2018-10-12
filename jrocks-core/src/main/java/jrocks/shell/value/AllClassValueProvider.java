@@ -1,4 +1,4 @@
-package jrocks.shell.valueproviders;
+package jrocks.shell.value;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;

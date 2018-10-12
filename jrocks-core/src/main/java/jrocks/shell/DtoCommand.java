@@ -87,8 +87,8 @@
 //  }
 //
 //  private String applySuffix(BeanClassInfo<?> beanMetaData) {
-//    final String input = beanMetaData.canonicalName().replaceAll("\\.", "/");
-//    return isNotBlank(suffixToRemove) ? input.replaceAll(suffixToRemove + "$", suffix) : input + suffix;
+//    final String parameter = beanMetaData.canonicalName().replaceAll("\\.", "/");
+//    return isNotBlank(suffixToRemove) ? parameter.replaceAll(suffixToRemove + "$", suffix) : parameter + suffix;
 //  }
 //
 //

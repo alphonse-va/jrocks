@@ -1,4 +1,4 @@
-package jrocks.shell.valueproviders;
+package jrocks.shell.value;
 
 import com.google.common.annotations.VisibleForTesting;
 import org.apache.commons.lang3.StringUtils;

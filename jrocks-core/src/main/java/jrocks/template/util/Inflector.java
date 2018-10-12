@@ -60,11 +60,11 @@ public class Inflector {
     }
 
     /**
-     * Apply the rule against the input string, returning the modified string or null if the rule didn't apply (and no
+     * Apply the rule against the parameter string, returning the modified string or null if the rule didn't apply (and no
      * modifications were made)
      *
-     * @param input the input string
-     * @return the modified string if this rule applied, or null if the input was not modified by this rule
+     * @param input the parameter string
+     * @return the modified string if this rule applied, or null if the parameter was not modified by this rule
      */
     protected String apply( String input ) {
       Matcher matcher = this.expressionPattern.matcher(input);
@@ -320,7 +320,7 @@ public class Inflector {
    *
    * @param camelCaseWord the camel-cased word that is to be converted;
    * @param delimiterChars optional characters that are used to delimit word boundaries (beyond capitalization)
-   * @return a lower-cased version of the input, with separate words delimited by the underscore character.
+   * @return a lower-cased version of the parameter, with separate words delimited by the underscore character.
    */
   public String underscore( String camelCaseWord,
                             char... delimiterChars ) {
@@ -339,7 +339,7 @@ public class Inflector {
   }
 
   /**
-   * Returns a copy of the input with the first character converted to uppercase and the remainder to lowercase.
+   * Returns a copy of the parameter with the first character converted to uppercase and the remainder to lowercase.
    *
    * @param words the word to be capitalized
    * @return the string with the first character capitalized and the remaining characters lowercased
@@ -365,7 +365,7 @@ public class Inflector {
    *
    *
    *
-   * @param lowerCaseAndUnderscoredWords the input to be humanized
+   * @param lowerCaseAndUnderscoredWords the parameter to be humanized
    * @param removableTokens optional array of tokens that are to be removed
    * @return the humanized string
    * @see #titleCase(String, String[])
@@ -401,7 +401,7 @@ public class Inflector {
    *
    *
    *
-   * @param words the input to be turned into title case
+   * @param words the parameter to be turned into title case
    * @param removableTokens optional array of tokens that are to be removed
    * @return the title-case version of the supplied words
    */
@@ -498,7 +498,7 @@ public class Inflector {
    * @param input
    * @param regex
    * @param groupNumberToUppercase
-   * @return the input string with the appropriate characters converted to upper-case
+   * @return the parameter string with the appropriate characters converted to upper-case
    */
   protected static String replaceAllWithUppercase( String input,
                                                    String regex,

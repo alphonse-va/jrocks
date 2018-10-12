@@ -1,6 +1,6 @@
 package jrocks.shell;
 
-import jrocks.shell.valueproviders.ClassPathScanner;
+import jrocks.shell.value.ClassPathScanner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;

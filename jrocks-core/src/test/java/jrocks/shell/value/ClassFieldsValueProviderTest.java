@@ -1,9 +1,8 @@
-package jrocks.shell.valueproviders;
+package jrocks.shell.value;
 
 import jrocks.shell.JRocksConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.platform.commons.util.StringUtils;
 import org.springframework.shell.CompletionContext;
 import org.springframework.shell.CompletionProposal;
 
@@ -11,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -20,7 +18,7 @@ class ClassFieldsValueProviderTest {
   private ClassPathScanner scanner = new ClassPathScanner(new JRocksConfig().setBasePackage("jrocks"));
   private ClassFieldsValueProvider valueProvider = new ClassFieldsValueProvider(scanner);
 
-  private static final List<String> VALID_COMMAND_LINE_PARAMETER = new ArrayList<>(Arrays.asList("--class", "jrocks.shell.valueproviders.ClassFieldsValueProviderTest", "--exclude-properties"));
+  private static final List<String> VALID_COMMAND_LINE_PARAMETER = new ArrayList<>(Arrays.asList("--class", "jrocks.shell.value.ClassFieldsValueProviderTest", "--exclude-properties"));
   private static final CompletionContext VALID_COMPLETION_CONTEXT = new CompletionContext(VALID_COMMAND_LINE_PARAMETER, 1, 1);
 
   private String testField;

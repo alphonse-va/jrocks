@@ -1,4 +1,4 @@
-package jrocks.shell.valueproviders;
+package jrocks.shell.value;
 
 import jrocks.shell.JRocksConfig;
 import org.junit.jupiter.api.BeforeAll;

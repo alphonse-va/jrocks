@@ -1,10 +1,13 @@
-package jrocks.shell;
+package jrocks.shell.command.buider;
 
 import ch.qos.logback.classic.Level;
 import jrocks.api.ClassInfoApi;
 import jrocks.model.BeanClassInfoBuilder;
-import jrocks.shell.valueproviders.AllClassValueProvider;
-import jrocks.shell.valueproviders.ClassFieldsValueProvider;
+import jrocks.shell.JRocksConfig;
+import jrocks.shell.LogLevel;
+import jrocks.shell.parameter.BeanClassInfoParameter;
+import jrocks.shell.value.AllClassValueProvider;
+import jrocks.shell.value.ClassFieldsValueProvider;
 import jrocks.template.bean.builder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +24,7 @@ import java.nio.file.Paths;
 
 import static io.github.classgraph.utils.ReflectionUtils.classForNameOrNull;
 import static java.lang.String.format;
+import static java.util.Arrays.asList;
 
 @ShellComponent
 public class BuilderCommand {
@@ -39,20 +43,25 @@ public class BuilderCommand {
       @ShellOption(value = "--class", help = "Source class from which you want to generate a builder", valueProvider = AllClassValueProvider.class) String classCanonicalName,
       @ShellOption(value = "--force") boolean force,
       @ShellOption(value = "--excluded-fields", defaultValue = ShellOption.NULL, valueProvider = ClassFieldsValueProvider.class) String[] excludedFields,
+      @ShellOption(value = "--included-fields", defaultValue = ShellOption.NULL, valueProvider = ClassFieldsValueProvider.class) String[] includedFields,
+      @ShellOption(value = "--included-fields", defaultValue = ShellOption.NULL, valueProvider = ClassFieldsValueProvider.class) String[] mandatoryFields,
       @ShellOption(value = "--log-level", defaultValue = "info") LogLevel logLevel
   ) {
 
-    LOGGER.info("Generate builder for {} class with parameters:\n\tClass: {}\n\tExcluded Fields: {}\n\t", classCanonicalName, classCanonicalName, excludedFields);
-
     if (logLevel != null) setLoggingLevel(logLevel.getLevel());
+
+    // TODO need an aspect to log commands inout params
+    LOGGER.info("Generate builder for {} class with parameters:\n\tClass: {}\n\tExcluded Fields: {}\n\t", classCanonicalName, classCanonicalName, excludedFields);
 
     final Class<?> sourceClass = classForNameOrNull(classCanonicalName);
     if (sourceClass == null)
       throw new IllegalStateException(format("Class '%s' not found on the class path", classCanonicalName));
 
-    final ClassInfoApi bean = new BeanClassInfoBuilder<>(sourceClass).build();
-    String generatedSource = builder.template(bean).render().toString();
-    writeGeneratedFile(bean.canonicalName().replaceAll("\\.", File.separator), generatedSource, force, sourceClass, logLevel);
+    final BeanClassInfoParameter parameter = new BuilderParameter(sourceClass, asList(includedFields), asList(excludedFields), asList(mandatoryFields));
+
+    final ClassInfoApi classInfoApi = new BeanClassInfoBuilder<>(parameter.getSourceClass()).build();
+    String generatedSource = builder.template(classInfoApi, parameter).render().toString();
+    writeGeneratedFile(classInfoApi.canonicalName().replaceAll("\\.", File.separator), generatedSource, force, sourceClass, logLevel);
   }
 
   private static void setLoggingLevel(Level level) {
