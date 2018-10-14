@@ -3,12 +3,13 @@ package jrocks.shell.command;
 import ch.qos.logback.classic.Level;
 import jrocks.api.ClassInfoApi;
 import jrocks.api.ClassInfoParameterApi;
-import jrocks.model.BeanClassInfoBuilder;
+import jrocks.model.BaseClassInfoBuilder;
 import jrocks.shell.JRocksConfig;
 import jrocks.shell.LogLevel;
-import jrocks.shell.parameter.BaseClassInfoParameterBuilder;
 import jrocks.shell.autocomplete.AllClassValueProvider;
 import jrocks.shell.autocomplete.ClassFieldsValueProvider;
+import jrocks.shell.parameter.BaseClassInfoParameterBuilder;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.shell.standard.ShellMethod;
@@ -21,6 +22,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import static ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME;
 import static io.github.classgraph.utils.ReflectionUtils.classForNameOrNull;
 import static java.lang.String.format;
 import static java.util.Arrays.asList;
@@ -32,7 +34,7 @@ public abstract class BaseClassInfoCommand {
 
   protected BaseClassInfoCommand(final JRocksConfig jRocksConfig) {this.jRocksConfig = jRocksConfig;}
 
-  protected abstract String generateSource(final ClassInfoParameterApi parameter, final ClassInfoApi classInfoApi);
+  protected abstract String generateSource(final ClassInfoApi classInfoApi, final ClassInfoParameterApi parameter);
 
   protected abstract Logger getLogger();
 
@@ -57,7 +59,6 @@ public abstract class BaseClassInfoCommand {
 
 
     setLoggingLevel(logLevel.getLevel());
-    // TODO need an aspect to log commands inout params
     getLogger().info("Generate builder for {} class with parameters:\n{}", parameter.getClassCanonicalName(), parameter);
 
     final String generateSource = callGenerate(parameter);
@@ -65,37 +66,52 @@ public abstract class BaseClassInfoCommand {
   }
 
   protected String callGenerate(final ClassInfoParameterApi parameter) {
-    final ClassInfoApi classInfoApi = prepareParameters(parameter);
-    return generateSource(parameter, classInfoApi);
+    final ClassInfoApi classInfoApi = getClassInfoApi(parameter);
+    return generateSource(classInfoApi, parameter);
   }
 
-  private ClassInfoApi prepareParameters(final ClassInfoParameterApi parameter) {
+  private ClassInfoApi getClassInfoApi(final ClassInfoParameterApi parameter) {
     final Class<?> sourceClass = classForNameOrNull(parameter.getClassCanonicalName());
     if (sourceClass == null) {
       throw new IllegalStateException(format("Class '%s' not found on the class path", parameter.getClassCanonicalName()));
     }
-    return new BeanClassInfoBuilder<>(sourceClass).build();
+    return new BaseClassInfoBuilder(sourceClass).build();
   }
 
   private static void setLoggingLevel(Level level) {
-    ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
+    ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ROOT_LOGGER_NAME);
     root.setLevel(level);
   }
 
   private void writeSource(String generatedSource, ClassInfoParameterApi parameter) {
-    final String relativePath = parameter.getClassCanonicalName().replaceAll("\\.", File.separator);
-    final String destPath = format("%s%s%s%s%s.java",
+    final String sourceName = StringUtils.substringAfterLast(parameter.getClassCanonicalName(), ".");
+    final String relativePath = StringUtils.removeEnd(parameter.getClassCanonicalName(), sourceName)
+        .replaceAll("\\.", File.separator);
+
+    final String destDir = format("%s%s%s%s",
         File.separator,
         jRocksConfig.getSourceDirectory(),
         File.separator,
-        relativePath,
-        "Builder");
+        relativePath
+    );
 
+    final Path path = Paths.get(destDir + File.separator + sourceName + "Builder.java");
+    final File file = path.toFile();
+    if (file.exists() && !parameter.isForce()) {
+      getLogger().error("'{}' file exists, please add --force if you want to overwrite", path.toString());
+      return;
+    }
     try {
-      final Path path = Paths.get(destPath);
-      if (path.toFile().exists() && !parameter.isForce()) {
-        getLogger().error("'{}' file exists, please add --force if you want to overwrite", path.toString());
-        return;
+      final File dir = new File(destDir);
+      if (!dir.isDirectory()) {
+        boolean success = dir.mkdirs();
+        if (success) {
+          getLogger().info("Created path: " + dir.getPath());
+        } else {
+          getLogger().info("Could not create path: " + dir.getPath());
+        }
+      } else {
+        getLogger().debug("Path exists: " + dir.getPath());
       }
       final Path savedFile = Files.write(path, generatedSource.getBytes());
       if (parameter.getLogLevel() == LogLevel.debug)
@@ -103,7 +119,7 @@ public abstract class BaseClassInfoCommand {
       else
         getLogger().info("'{}' class generated with success.", savedFile.getFileName());
     } catch (IOException e) {
-      throw new IllegalStateException(format("Enable to create '%s' file!", destPath), e);
+      throw new IllegalStateException(format("Enable to create '%s' file!", destDir), e);
     }
   }
 }

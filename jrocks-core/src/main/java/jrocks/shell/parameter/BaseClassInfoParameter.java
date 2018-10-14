@@ -66,6 +66,17 @@ public class BaseClassInfoParameter implements ClassInfoParameterApi {
     return force;
   }
 
+  // TODO indicate somewhere in some way that in the end.. excludes preceded includes
+  @Override
+  public boolean toInclude(String field) {
+    return !excludedFields.isEmpty() && includedFields.contains(field);
+  }
+
+  @Override
+  public boolean toExclude(String field) {
+    return excludedFields.contains(field);
+  }
+
   @Override
   public String toString() {
     return format("\tClass: %s\n\tExcluded Fields: %s\n\tIncluded Fields: %s\n\tMandatory Fields: %s\n\tForce: %s",

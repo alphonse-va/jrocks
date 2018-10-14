@@ -2,6 +2,7 @@ package jrocks.model;
 
 import jrocks.api.FieldClassInfoApi;
 import jrocks.template.annotations.BuilderProperty;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.validation.constraints.*;
 import java.beans.FeatureDescriptor;
@@ -28,7 +29,7 @@ public class FieldClassInfo extends BaseClassInfo implements FieldClassInfoApi {
 
   @Override
   public String fieldNameCapitalized() {
-    return INFLECTOR.capitalize(field.getName());
+    return StringUtils.capitalize(field.getName());
   }
 
   @Override
@@ -37,8 +38,7 @@ public class FieldClassInfo extends BaseClassInfo implements FieldClassInfoApi {
   }
 
   @Override
-  @SafeVarargs
-  public final boolean isAnnotatedWith(Class<? extends Annotation>... annotationClasses) {
+  public boolean isAnnotatedWith(Class<? extends Annotation>... annotationClasses) {
     return Stream.of(annotationClasses).anyMatch(clazz -> field.getAnnotation(clazz) != null);
   }
 
@@ -163,7 +163,12 @@ public class FieldClassInfo extends BaseClassInfo implements FieldClassInfoApi {
   public String getter() {
     try {
       return Stream.of(Introspector.getBeanInfo(field.getDeclaringClass()).getMethodDescriptors())
-          .filter(this::isGetter)
+          .filter(m -> {
+            final String capitalizeName = StringUtils.capitalize(field.getName());
+            return m.getMethod().getName().equals("get" + capitalizeName)
+                || m.getMethod().getName().equals("is" + capitalizeName)
+                || m.getMethod().getName().equals("has" + capitalizeName);
+          })
           .map(FeatureDescriptor::getName)
           .findAny()
           .orElseThrow(() -> new IllegalStateException("field '" + fieldName() + "' need a getter!"));
@@ -176,7 +181,7 @@ public class FieldClassInfo extends BaseClassInfo implements FieldClassInfoApi {
   public String setter() {
     try {
       return Stream.of(Introspector.getBeanInfo(field.getDeclaringClass()).getMethodDescriptors())
-          .filter(this::isSetter)
+          .filter(m -> m.getMethod().getName().equals("set" + StringUtils.capitalize(field.getName())))
           .map(FeatureDescriptor::getName)
           .findAny()
           .orElseThrow(() -> new IllegalStateException("field '" + fieldName() + "' need a setter!"));

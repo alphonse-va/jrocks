@@ -17,4 +17,8 @@ public interface ClassInfoParameterApi {
   LogLevel getLogLevel();
 
   boolean isForce();
+
+  boolean toInclude(String field);
+
+  boolean toExclude(String field);
 }

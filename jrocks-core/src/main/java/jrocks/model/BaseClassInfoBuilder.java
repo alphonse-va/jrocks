@@ -6,15 +6,15 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-public class BeanClassInfoBuilder<T> {
+public class BaseClassInfoBuilder {
 
   private ClassInfoApi beanMetaData;
 
-  private Class<T> beanClass;
+  private Class<?> beanClass;
 
-  public BeanClassInfoBuilder(Class<T> beanClass) {
+  public BaseClassInfoBuilder(Class<?> beanClass) {
     this.beanClass = beanClass;
-    this.beanMetaData = new BeanClassInfo<>(beanClass);
+    this.beanMetaData = new BaseClassInfo(beanClass);
   }
 
   public ClassInfoApi build() {

@@ -6,11 +6,11 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class BeanBeanClassInfoBuilderTest {
+class BaseClassInfoBuilderTest {
 
   @Test
   void build() {
-    final ClassInfoApi classInfo = new BeanClassInfoBuilder<>(Matrix.class).build();
+    final ClassInfoApi classInfo = new BaseClassInfoBuilder(Matrix.class).build();
     assertThat(classInfo.getFields()).size().isEqualTo(6);
   }
 }

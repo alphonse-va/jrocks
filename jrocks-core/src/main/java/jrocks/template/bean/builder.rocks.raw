@@ -31,7 +31,7 @@ public class @bean.simpleName()Builder {
   }
 
 @for (FieldClassInfoApi field : bean.getFields()) {
-  @if(p.isRequired() || !param.getExcludedFields().contains(field.fieldName()) || param.getIncludedFields().contains(field.fieldName())) {
+  @if(field.isRequired() || param.toInclude(field.fieldName())) {
   public @bean.simpleName()Builder @field.setter()(@field.simpleName() @field.fieldName()) {
     @String.format("%s.set%s(%s)", bean.propertyName(), field.fieldNameCapitalized(), field.fieldName());
     return this;

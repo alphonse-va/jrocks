@@ -21,7 +21,7 @@ public class BuilderCommand extends BaseClassInfoCommand {
   }
 
   @Override
-  protected String generateSource(final ClassInfoParameterApi parameter, final ClassInfoApi classInfo) {
+  protected String generateSource(final ClassInfoApi classInfo, final ClassInfoParameterApi parameter) {
     return builder.template(classInfo, parameter).render().toString();
   }
 

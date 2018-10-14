@@ -3,11 +3,12 @@ package jrocks.shell.parameter;
 import jrocks.shell.LogLevel;
 
 import java.util.List;
+import java.util.Objects;
 
 public class BaseClassInfoParameterBuilder {
 
   private String classCanonicalName;
-  private LogLevel logLevel;
+  private LogLevel logLevel = LogLevel.info;
   private boolean force;
   private List<String> excludedFields;
   private List<String> includedFields;
@@ -44,6 +45,7 @@ public class BaseClassInfoParameterBuilder {
   }
 
   public BaseClassInfoParameter build() {
+    Objects.requireNonNull(classCanonicalName, "classCanonicalName is required");
     return new BaseClassInfoParameter(classCanonicalName, logLevel, force, excludedFields, includedFields, mandatoryFields);
   }
 }

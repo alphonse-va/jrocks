@@ -1,7 +1,7 @@
 //package jrocks.shell;
 //
 //import jrocks.model.BeanClassInfo;
-//import jrocks.model.BeanClassInfoBuilder;
+//import jrocks.model.BaseClassInfoBuilder;
 //import jrocks.model.FieldClassInfoApi;
 //import jrocks.model.MapperData;
 //import jrocks.template.bean.dto;
@@ -51,7 +51,7 @@
 //
 //  @Override
 //  protected void execute() {
-//    final BeanClassInfo<?> beanMetaData = new BeanClassInfoBuilder<>(getClazz()).build();
+//    final BeanClassInfo<?> beanMetaData = new BaseClassInfoBuilder<>(getClazz()).build();
 //
 //    final List<String> beanFields = beanMetaData.getFields().stream()
 //        .map(FieldClassInfoApi::fieldName)

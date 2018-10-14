@@ -11,9 +11,9 @@ import java.util.stream.Collectors;
 
 import static org.apache.commons.lang3.StringUtils.startsWith;
 
-public abstract class BaseClassInfo implements ClassInfoApi {
+public class BaseClassInfo implements ClassInfoApi {
 
-  static final Inflector INFLECTOR = new Inflector();
+  private static final Inflector INFLECTOR = new Inflector();
 
   private Class<?> beanClass;
 

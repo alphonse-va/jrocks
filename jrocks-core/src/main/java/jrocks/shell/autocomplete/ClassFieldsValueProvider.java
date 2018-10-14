@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static java.lang.String.format;
+import static org.apache.commons.lang3.StringUtils.*;
 
 @Component
 public class ClassFieldsValueProvider extends ValueProviderSupport {
@@ -37,25 +38,25 @@ public class ClassFieldsValueProvider extends ValueProviderSupport {
   @VisibleForTesting
   List<CompletionProposal> getCompletionProposals(Class<?> clazz, CompletionContext completionContext) {
     final String word = completionContext.currentWordUpToCursor();
-    final String lastProposal = StringUtils.substringAfterLast(word, ",").isEmpty()
-        ? StringUtils.substringBeforeLast(word, ",")
-        : StringUtils.substringAfterLast(word, ",");
+    final String lastProposal = substringAfterLast(word, ",").isEmpty()
+        ? word.split(",")[word.split(",").length - 1]
+        : substringAfterLast(word, ",");
 
 
-    final boolean existingPropertyName = classPathScanner.getAllFieldsWithGetterAndSetters(clazz.getCanonicalName())
-        .stream().anyMatch(name -> name.equals(lastProposal.trim()));
+    final boolean lastProposalIsField = classPathScanner.getAllFieldsWithGetterAndSetters(clazz.getCanonicalName())
+        .stream().anyMatch(name -> !lastProposal.isEmpty() && name.startsWith(lastProposal.trim()));
 
     return classPathScanner.getAllFieldsWithGetterAndSetters(clazz.getCanonicalName()).stream()
         .filter(name -> isFieldAlreadyContained(completionContext, name))
-        .map(fieldName -> existingPropertyName
+        .map(fieldName -> lastProposalIsField
             ? new CompletionProposal(format("%s,%s", word, fieldName).replace(",,", ",").trim())
             : new CompletionProposal(fieldName))
         .collect(Collectors.toList());
   }
 
   private boolean isFieldAlreadyContained(final CompletionContext completionContext, final String name) {
-    return completionContext.getWords().stream()
-        .map(w -> w.replaceAll(",", "")).noneMatch(name::equals);
+    return Arrays.stream(completionContext.currentWord().split(","))
+        .noneMatch(w -> w.contains(name));
   }
 
   @VisibleForTesting

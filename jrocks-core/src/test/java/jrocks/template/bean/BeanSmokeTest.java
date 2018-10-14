@@ -1,7 +1,7 @@
 package jrocks.template.bean;
 
 import jrocks.api.ClassInfoApi;
-import jrocks.model.BeanClassInfoBuilder;
+import jrocks.model.BaseClassInfoBuilder;
 import jrocks.model.MapperData;
 import jrocks.samples.model.Matrix;
 import jrocks.samples.model.MatrixTo;
@@ -17,16 +17,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class BeanSmokeTest extends AbstractSmokeTest {
 
-  private ClassInfoApi metaData;
+  private ClassInfoApi infoApi;
 
   @BeforeEach
   void beforeEach() {
-    metaData = new BeanClassInfoBuilder<>(Matrix.class).build();
+    infoApi = new BaseClassInfoBuilder(Matrix.class).build();
   }
 
   @Test
   void builder() {
-    final String actual = builder.template(metaData, new BaseClassInfoParameterBuilder()
+    final String actual = builder.template(infoApi, new BaseClassInfoParameterBuilder()
         .setClassCanonicalName(Matrix.class.getCanonicalName())
         .setLogLevel(LogLevel.debug)
         .setForce(false)
@@ -43,7 +43,7 @@ class BeanSmokeTest extends AbstractSmokeTest {
   @Test
   void dto() {
     final MapperData mapperData = new MapperData().setSuffix("Dto");
-    final String actual = dto.template(metaData, mapperData).render().toString();
+    final String actual = dto.template(infoApi, mapperData).render().toString();
     assertThat(actual).contains("MatrixDto", "setUsername", "setPassword", "setDecimal");
     assertThatClassCompile(new SimpleEntry<>("jrocks.MatrixDto", actual));
   }
@@ -51,14 +51,14 @@ class BeanSmokeTest extends AbstractSmokeTest {
   @Test
   void dtoWithFactoryMethod() {
     final MapperData mapperData = new MapperData().setSuffix("Dto").setWithFactoryMethod(true);
-    final String actual = dto.template(metaData, mapperData).render().toString();
+    final String actual = dto.template(infoApi, mapperData).render().toString();
     assertThat(actual).contains("MatrixDto", "setUsername", "setPassword", "setDecimal");
     assertThatClassCompile(new SimpleEntry<>("jrocks.MatrixDto", actual));
   }
 
   @Test
   void dtoWithReplaceSuffix() {
-    final ClassInfoApi toMetaData = new BeanClassInfoBuilder(MatrixTo.class).build();
+    final ClassInfoApi toMetaData = new BaseClassInfoBuilder(MatrixTo.class).build();
     final MapperData dtoData = new MapperData()
         .setSuffix("Dto")
         .setSuffixToRemove("To")
@@ -71,7 +71,7 @@ class BeanSmokeTest extends AbstractSmokeTest {
     final MapperData toData = new MapperData()
         .setSuffix("To")
         .setWithFactoryMethod(true);
-    final String actualTo = dto.template(metaData, toData).render().toString();
+    final String actualTo = dto.template(infoApi, toData).render().toString();
     assertThat(actualTo).contains("MatrixTo", "setUsername", "setEmail", "setDecimal");
 
     assertThatClassCompile(new SimpleEntry<>("jrocks.MatrixDto", actualDto),
@@ -81,11 +81,11 @@ class BeanSmokeTest extends AbstractSmokeTest {
   @Test
   void mapper() {
     final MapperData mapperData = new MapperData().setSuffix("Dto");
-    final String actual = mapper.template(metaData, mapperData).render().toString();
+    final String actual = mapper.template(infoApi, mapperData).render().toString();
 
     assertThat(actual).contains("MatrixDtoMapper", "setUsername", "setPassword", "setDecimal");
 
-    final String actualDto = dto.template(metaData, mapperData).render().toString();
+    final String actualDto = dto.template(infoApi, mapperData).render().toString();
 
     assertThatClassCompile(
         new SimpleEntry<>("jrocks.MatrixDtoMapper", actual),
