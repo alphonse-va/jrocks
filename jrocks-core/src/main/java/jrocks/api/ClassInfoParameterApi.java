@@ -18,6 +18,10 @@ public interface ClassInfoParameterApi {
 
   boolean isForce();
 
+  String suffix();
+
+  String suffixToRemove();
+
   boolean toInclude(String field);
 
   boolean toExclude(String field);

@@ -2,6 +2,7 @@ package jrocks.shell.parameter;
 
 import jrocks.shell.LogLevel;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -10,9 +11,11 @@ public class BaseClassInfoParameterBuilder {
   private String classCanonicalName;
   private LogLevel logLevel = LogLevel.info;
   private boolean force;
-  private List<String> excludedFields;
-  private List<String> includedFields;
-  private List<String> mandatoryFields;
+  private List<String> excludedFields = new ArrayList<>();
+  private List<String> includedFields = new ArrayList<>();
+  private List<String> mandatoryFields = new ArrayList<>();
+  private String suffix;
+  private String suffixToRemove;
 
   public BaseClassInfoParameterBuilder setClassCanonicalName(final String classCanonicalName) {
     this.classCanonicalName = classCanonicalName;
@@ -44,8 +47,18 @@ public class BaseClassInfoParameterBuilder {
     return this;
   }
 
+  public BaseClassInfoParameterBuilder setSuffix(final String suffix) {
+    this.suffix = suffix;
+    return this;
+  }
+
+  public BaseClassInfoParameterBuilder setSuffixToRemove(final String suffixToRemove) {
+    this.suffixToRemove = suffixToRemove;
+    return this;
+  }
+
   public BaseClassInfoParameter build() {
     Objects.requireNonNull(classCanonicalName, "classCanonicalName is required");
-    return new BaseClassInfoParameter(classCanonicalName, logLevel, force, excludedFields, includedFields, mandatoryFields);
+    return new BaseClassInfoParameter(classCanonicalName, logLevel, force, excludedFields, includedFields, mandatoryFields, suffix, suffixToRemove);
   }
 }

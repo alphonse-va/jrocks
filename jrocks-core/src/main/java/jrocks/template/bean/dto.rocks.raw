@@ -1,29 +1,35 @@
 @import jrocks.api.ClassInfoApi
 @import jrocks.api.FieldClassInfoApi
-@import jrocks.model.MapperData
+@import jrocks.shell.command.bean.DtoParameter
 
 @option discardLogicWhitespace=true
 
-@args(ClassInfoApi bean, MapperData mapper)
+@args(ClassInfoApi bean, DtoParameter param)
 
 package @bean.packageName();
 
 @for (String name : bean.fieldCanonicalNames()) {
 import @name;
 }
-
-/**
- * @mapper.suffix() for the @mapper.applySuffix(bean.simpleName()) bean.
- */
-public class @mapper.applySuffix(bean.simpleName()) {
-
-@for (FieldClassInfoApi field : bean.getFields()) {
-  private @field.simpleName() @field.fieldName();
+@if (!param.getMandatoryFields().isEmpty()|| bean.hasRequiredFields()) {
+import javax.validation.constraints.NotNull;
 }
 
-@if(mapper.withFactoryMethod()) {
-  public static @mapper.applySuffix(bean.simpleName()) from(@bean.simpleName() from) {
-    return new @mapper.applySuffix(bean.simpleName())()
+/**
+ * @param.suffix() for the bean.simpleName() bean.
+ */
+public class @param.applySuffix(bean.simpleName()) {
+
+@for (FieldClassInfoApi field : bean.getFields()) {
+  @if (param.getMandatoryFields().contains(field.fieldName())) {
+  @@NotNull
+  }
+  private @field.simpleName() @field.fieldName();
+
+}
+@if(param.withFactoryMethod()) {
+  public static @param.applySuffix(bean.simpleName()) from(@bean.simpleName() from) {
+    return new @param.applySuffix(bean.simpleName())()
 @for ((ForIterator i, FieldClassInfoApi field) : bean.getFields()) {
         @String.format(".%s(from.%s())", field.setter(), field.getter())@if(i.last()) {;}
 }
@@ -31,7 +37,7 @@ public class @mapper.applySuffix(bean.simpleName()) {
 }
 @for (FieldClassInfoApi field : bean.getFields()) {
 
-  public @mapper.applySuffix(bean.simpleName()) @field.setter()(@field.simpleName() @field.fieldName()) {
+  public @param.applySuffix(bean.simpleName()) @field.setter()(@field.simpleName() @field.fieldName()) {
     @String.format("this.%s = %s;", field.fieldName(), field.fieldName());
     return this;
   }

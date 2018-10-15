@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.String.format;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class BaseClassInfoParameter implements ClassInfoParameterApi {
 
@@ -20,6 +21,10 @@ public class BaseClassInfoParameter implements ClassInfoParameterApi {
 
   private List<String> mandatoryFields;
 
+  private String suffix;
+
+  private String suffixToRemove;
+
   private boolean force;
 
   BaseClassInfoParameter(final String classCanonicalName,
@@ -27,13 +32,28 @@ public class BaseClassInfoParameter implements ClassInfoParameterApi {
                          final boolean force,
                          final List<String> excludedFields,
                          final List<String> includedFields,
-                         final List<String> mandatoryFields) {
+                         final List<String> mandatoryFields,
+                         final String suffix,
+                         final String suffixToRemove) {
     this.logLevel = logLevel;
     this.classCanonicalName = classCanonicalName;
     this.force = force;
     this.excludedFields = excludedFields != null ? excludedFields : new ArrayList<>();
     this.includedFields = includedFields != null ? includedFields : new ArrayList<>();
     this.mandatoryFields = mandatoryFields != null ? mandatoryFields : new ArrayList<>();
+    this.suffix = suffix;
+    this.suffixToRemove = suffixToRemove;
+  }
+
+  protected BaseClassInfoParameter(ClassInfoParameterApi parameter) {
+    this(parameter.getClassCanonicalName(),
+        parameter.getLogLevel(),
+        parameter.isForce(),
+        parameter.getExcludedFields(),
+        parameter.getIncludedFields(),
+        parameter.getMandatoryFields(),
+        parameter.suffix(),
+        parameter.suffixToRemove());
   }
 
   @Override
@@ -64,6 +84,21 @@ public class BaseClassInfoParameter implements ClassInfoParameterApi {
   @Override
   public boolean isForce() {
     return force;
+  }
+
+  @Override
+  public String suffix() {
+    return suffix;
+  }
+
+  @Override
+  public String suffixToRemove() {
+    return suffixToRemove;
+  }
+
+  // TODO: simple name and property name suffix
+  public String applySuffix(String input) {
+    return isNotBlank(suffixToRemove) ? input.replaceAll(suffixToRemove + "$", suffix) : input + suffix;
   }
 
   // TODO indicate somewhere in some way that in the end.. excludes preceded includes

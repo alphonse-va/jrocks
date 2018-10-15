@@ -1,25 +1,25 @@
 @import jrocks.api.ClassInfoApi
 @import jrocks.api.FieldClassInfoApi
-@import jrocks.model.MapperData
+@import jrocks.shell.command.bean.DtoParameter
 
 @option discardLogicWhitespace=true
 
-@args(ClassInfoApi bean, MapperData mapper)
+@args(ClassInfoApi bean, DtoParameter parameter)
 
 package @bean.packageName();
 
 @for (String name : bean.fieldCanonicalNames()) {
 import @name;
 }
-import @String.format("%s.%s%s", bean.packageName(), bean.simpleName(), mapper.suffix());
+import @String.format("%s.%s%s", bean.packageName(), bean.simpleName(), parameter.suffix());
 
 /**
- * Mapper for the @bean.simpleName()@mapper.suffix().
+ * Mapper for the @bean.simpleName().
  */
-public class @bean.simpleName()@mapper.suffix()Mapper {
+public class @bean.simpleName()@parameter.suffix()Mapper {
 
-  public @bean.simpleName()@mapper.suffix() from(@bean.simpleName() from) {
-    return new @bean.simpleName()@mapper.suffix()()
+  public @bean.simpleName()@parameter.suffix() from(@bean.simpleName() from) {
+    return new @bean.simpleName()@parameter.suffix()()
 @for ((ForIterator i, FieldClassInfoApi field) : bean.getFields()) {
         @String.format(".%s(from.%s())", field.setter(), field.getter())@if(i.last()) {;}
 }

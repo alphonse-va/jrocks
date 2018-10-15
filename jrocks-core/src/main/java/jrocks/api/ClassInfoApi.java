@@ -23,4 +23,6 @@ public interface ClassInfoApi {
   List<FieldClassInfoApi> getFields();
 
   void addProperty(FieldClassInfoApi metaData);
+
+  boolean hasRequiredFields();
 }

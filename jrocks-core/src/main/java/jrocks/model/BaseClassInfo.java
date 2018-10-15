@@ -86,6 +86,11 @@ public class BaseClassInfo implements ClassInfoApi {
     properties.add(metaData);
   }
 
+  @Override
+  public boolean hasRequiredFields() {
+    return properties.stream().anyMatch(FieldClassInfoApi::isRequired);
+  }
+
   private Predicate<FieldClassInfoApi> javaLangFilter() {
     return f -> !startsWith(f.canonicalName(), "java.lang");
   }
