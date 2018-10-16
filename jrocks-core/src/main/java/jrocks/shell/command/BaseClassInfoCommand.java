@@ -5,9 +5,8 @@ import jrocks.api.ClassInfoApi;
 import jrocks.api.ClassInfoParameterApi;
 import jrocks.model.BaseClassInfoBuilder;
 import jrocks.shell.JRocksConfig;
-import jrocks.shell.LogLevel;
+import jrocks.shell.TerminalLogger;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
@@ -24,9 +23,12 @@ public abstract class BaseClassInfoCommand {
 
   private final JRocksConfig jRocksConfig;
 
-  protected BaseClassInfoCommand(final JRocksConfig jRocksConfig) {this.jRocksConfig = jRocksConfig;}
+  private TerminalLogger terminalLogger;
 
-  protected abstract Logger getLogger();
+  protected BaseClassInfoCommand(final JRocksConfig jRocksConfig, TerminalLogger terminalLogger) {
+    this.terminalLogger = terminalLogger;
+    this.jRocksConfig = jRocksConfig;
+  }
 
   protected ClassInfoApi getClassInfoApi(final ClassInfoParameterApi parameter) {
     final Class<?> sourceClass = classForNameOrNull(parameter.getClassCanonicalName());
@@ -56,7 +58,7 @@ public abstract class BaseClassInfoCommand {
     final Path path = Paths.get(destDir + File.separator + sourceName + parameter.suffix() + ".java");
     final File file = path.toFile();
     if (file.exists() && !parameter.isForce()) {
-      getLogger().error("'{}' file exists, please add --force if you want to overwrite", path.toString());
+      terminalLogger.error("%s file exists, please add --force if you want to overwrite", path.toString());
       return;
     }
     try {
@@ -64,20 +66,22 @@ public abstract class BaseClassInfoCommand {
       if (!dir.isDirectory()) {
         boolean success = dir.mkdirs();
         if (success) {
-          getLogger().info("Created path: " + dir.getPath());
+          terminalLogger.info("Created path: " + dir.getPath());
         } else {
-          getLogger().info("Could not create path: " + dir.getPath());
+          terminalLogger.info("Could not create path: " + dir.getPath());
         }
       } else {
-        getLogger().debug("Path exists: " + dir.getPath());
+        terminalLogger.info("Path exists: " + dir.getPath());
       }
       final Path savedFile = Files.write(path, generatedSource.getBytes());
-      if (parameter.getLogLevel() == LogLevel.debug)
-        getLogger().info("'{}' class generated with success.\n\n{}\n", savedFile.getFileName(), generatedSource);
-      else
-        getLogger().info("'{}' class generated with success.", savedFile.getFileName());
+      terminalLogger.info("%s class generated with success.", savedFile.getFileName());
+      terminalLogger.verbose("Generated source: \n\n%s", generatedSource);
     } catch (IOException e) {
       throw new IllegalStateException(format("Enable to create '%s' file!", destDir), e);
     }
+  }
+
+  protected TerminalLogger getLogger() {
+    return terminalLogger;
   }
 }

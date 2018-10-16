@@ -2,7 +2,7 @@ package jrocks.shell.command.bean;
 
 import jrocks.api.ClassInfoApi;
 import jrocks.shell.JRocksConfig;
-import jrocks.shell.LogLevel;
+import jrocks.shell.TerminalLogger;
 import jrocks.shell.autocomplete.AllClassValueProvider;
 import jrocks.shell.autocomplete.ClassFieldsValueProvider;
 import jrocks.shell.command.BaseClassInfoCommand;
@@ -25,9 +25,10 @@ public class DtoCommand extends BaseClassInfoCommand {
   private static final Logger LOGGER = LoggerFactory.getLogger(DtoCommand.class);
 
   @Autowired
-  public DtoCommand(final JRocksConfig jRocksConfig) {
-    super(jRocksConfig);
+  public DtoCommand(final JRocksConfig jRocksConfig, final TerminalLogger terminalLogger) {
+    super(jRocksConfig, terminalLogger);
   }
+
 
   @ShellMethod(value = "DTO Generator", key = "dto", group = "bean")
   public void builder(
@@ -40,13 +41,12 @@ public class DtoCommand extends BaseClassInfoCommand {
       @ShellOption(value = "--included-fields", help = "Fields to include", defaultValue = "[]", valueProvider = ClassFieldsValueProvider.class) String[] includedFields,
       @ShellOption(value = "--mandatory-fields", help = "Mandatory fields", defaultValue = "[]", valueProvider = ClassFieldsValueProvider.class) String[] mandatoryFields,
       @ShellOption(value = "--force", help = "Overwrite existing files") boolean isForced,
-      @ShellOption(value = "--log-level", help = "choice the logs level", defaultValue = "info") LogLevel logLevel
+      @ShellOption(value = "--verbose", help = "Verbose output") boolean isVerbose
   ) {
 
     final DtoParameter dtoParameter = new DtoParameterBuilder()
         .setClassInfoParameter(new BaseClassInfoParameterBuilder()
             .setClassCanonicalName(classCanonicalName)
-            .setLogLevel(logLevel)
             .setForce(isForced)
             .setExcludedFields(asList(excludedFields))
             .setIncludedFields(asList(includedFields))
@@ -57,8 +57,8 @@ public class DtoCommand extends BaseClassInfoCommand {
         .setWithFactoryMethod(isWithFactoryMethod)
         .build();
 
-    setLoggingLevel(logLevel.getLevel());
-    getLogger().info("Generate DTO for {} class with parameters:\n{}", dtoParameter.getClassCanonicalName(), dtoParameter);
+    getLogger().setVerbose(isVerbose);
+    getLogger().info("Generate DTO for %s class with parameters:\n%s", dtoParameter.getClassCanonicalName(), dtoParameter);
 
     final ClassInfoApi classInfo = getClassInfoApi(dtoParameter);
     final String generatedSource = dto.template(classInfo, dtoParameter).render().toString();
@@ -67,7 +67,6 @@ public class DtoCommand extends BaseClassInfoCommand {
     if (!isWithFactoryMethod) {
       final BaseClassInfoParameter mapperParameter = new BaseClassInfoParameterBuilder()
           .setClassCanonicalName(classCanonicalName)
-          .setLogLevel(logLevel)
           .setForce(isForced)
           .setSuffix(suffix + "Mapper")
           .setSuffixToRemove(suffixToRemove)
@@ -77,8 +76,4 @@ public class DtoCommand extends BaseClassInfoCommand {
     }
   }
 
-  @Override
-  protected Logger getLogger() {
-    return LOGGER;
-  }
 }

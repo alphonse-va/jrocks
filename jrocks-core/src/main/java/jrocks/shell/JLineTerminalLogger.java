@@ -6,27 +6,43 @@ import org.jline.utils.AttributedStyle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service
-public class TerminalLogger {
+import static java.lang.String.format;
 
-  private final Terminal terminal;
+@Service
+public class JLineTerminalLogger implements TerminalLogger {
 
   @Autowired
-  public TerminalLogger(final Terminal terminal) {this.terminal = terminal;}
+  private Terminal terminal;
 
-  public void info(String message) {
-    terminal.writer().println(new AttributedString(message,
-        AttributedStyle.DEFAULT.foreground(AttributedStyle.BLUE)).toAnsi());
+  private boolean verbose;
+
+  @Override
+  public void info(String message, Object... values) {
+    printMessage(message, values, AttributedStyle.BLUE);
   }
 
-  public void warning(String message) {
-    terminal.writer().println(new AttributedString(message,
-        AttributedStyle.DEFAULT.foreground(AttributedStyle.YELLOW)).toAnsi());
+  @Override
+  public void warning(String message, Object... values) {
+    printMessage(message, values, AttributedStyle.YELLOW);
   }
 
-  public void error(String message) {
-    terminal.writer().println(new AttributedString(message,
-        AttributedStyle.DEFAULT.foreground(AttributedStyle.RED)).toAnsi());
+  @Override
+  public void error(String message, Object... values) {
+    printMessage(message, values, AttributedStyle.RED);
   }
 
+  @Override
+  public void verbose(final String message, final Object... values) {
+    if (verbose) printMessage(message, values, AttributedStyle.MAGENTA);
+  }
+
+  private void printMessage(final String message, final Object[] values, final int red) {
+    terminal.writer().println(new AttributedString(format(message, values),
+        AttributedStyle.DEFAULT.foreground(red)).toAnsi());
+  }
+
+  @Override
+  public void setVerbose(final boolean verbose) {
+    this.verbose = verbose;
+  }
 }

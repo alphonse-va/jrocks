@@ -1,7 +1,5 @@
 package jrocks.api;
 
-import jrocks.shell.LogLevel;
-
 import java.util.List;
 
 public interface ClassInfoParameterApi {
@@ -13,8 +11,6 @@ public interface ClassInfoParameterApi {
   List<String> getMandatoryFields();
 
   String getClassCanonicalName();
-
-  LogLevel getLogLevel();
 
   boolean isForce();
 

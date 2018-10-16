@@ -1,7 +1,6 @@
 package jrocks.shell.parameter;
 
 import jrocks.api.ClassInfoParameterApi;
-import jrocks.shell.LogLevel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +11,6 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 public class BaseClassInfoParameter implements ClassInfoParameterApi {
 
   private String classCanonicalName;
-
-  private LogLevel logLevel;
 
   private List<String> excludedFields;
 
@@ -28,14 +25,12 @@ public class BaseClassInfoParameter implements ClassInfoParameterApi {
   private boolean force;
 
   BaseClassInfoParameter(final String classCanonicalName,
-                         final LogLevel logLevel,
                          final boolean force,
                          final List<String> excludedFields,
                          final List<String> includedFields,
                          final List<String> mandatoryFields,
                          final String suffix,
                          final String suffixToRemove) {
-    this.logLevel = logLevel;
     this.classCanonicalName = classCanonicalName;
     this.force = force;
     this.excludedFields = excludedFields != null ? excludedFields : new ArrayList<>();
@@ -47,7 +42,6 @@ public class BaseClassInfoParameter implements ClassInfoParameterApi {
 
   protected BaseClassInfoParameter(ClassInfoParameterApi parameter) {
     this(parameter.getClassCanonicalName(),
-        parameter.getLogLevel(),
         parameter.isForce(),
         parameter.getExcludedFields(),
         parameter.getIncludedFields(),
@@ -74,11 +68,6 @@ public class BaseClassInfoParameter implements ClassInfoParameterApi {
   @Override
   public String getClassCanonicalName() {
     return classCanonicalName;
-  }
-
-  @Override
-  public LogLevel getLogLevel() {
-    return logLevel;
   }
 
   @Override

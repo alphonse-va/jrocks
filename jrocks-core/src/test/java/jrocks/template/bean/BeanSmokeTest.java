@@ -3,7 +3,7 @@ package jrocks.template.bean;
 import jrocks.api.ClassInfoApi;
 import jrocks.model.BaseClassInfoBuilder;
 import jrocks.samples.model.Matrix;
-import jrocks.shell.LogLevel;
+import jrocks.shell.JLineTerminalLogger;
 import jrocks.shell.command.bean.DtoParameter;
 import jrocks.shell.command.bean.DtoParameterBuilder;
 import jrocks.shell.parameter.BaseClassInfoParameterBuilder;
@@ -28,7 +28,6 @@ class BeanSmokeTest extends AbstractSmokeTest {
   void builder() {
     final String actual = builder.template(infoApi, new BaseClassInfoParameterBuilder()
         .setClassCanonicalName(Matrix.class.getCanonicalName())
-        .setLogLevel(LogLevel.debug)
         .setForce(false)
         .setExcludedFields(null)
         .setIncludedFields(null)
