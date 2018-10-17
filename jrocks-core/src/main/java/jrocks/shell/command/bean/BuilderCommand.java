@@ -14,8 +14,6 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 
-import static java.util.Arrays.asList;
-
 @ShellComponent
 public class BuilderCommand extends BaseClassInfoCommand {
 
@@ -24,7 +22,7 @@ public class BuilderCommand extends BaseClassInfoCommand {
     super(jRocksConfig, terminalLogger);
   }
 
-  @ShellMethod(value = "Builder Generator", key = "builder", group = "builder")
+  @ShellMethod(value = "Builder Generator", key = "builder", group = "bean")
   public void builder(
       @ShellOption(value = "--class", help = "Source class", valueProvider = AllClassValueProvider.class) String classCanonicalName,
       @ShellOption(value = "--suffix", help = "Suffix to add; default Builder", defaultValue = "Builder") String suffix,
@@ -40,14 +38,15 @@ public class BuilderCommand extends BaseClassInfoCommand {
     final ClassInfoParameterApi parameter = new BaseClassInfoParameterBuilder()
         .setClassCanonicalName(classCanonicalName)
         .setForce(isForced)
-        .setExcludedFields(asList(excludedFields))
-        .setIncludedFields(asList(includedFields))
-        .setMandatoryFields(asList(mandatoryFields))
+        .setExcludedFields(excludedFields)
+        .setIncludedFields(includedFields)
+        .setMandatoryFields(mandatoryFields)
         .setSuffix(suffix)
         .setSuffixToRemove(suffixToRemove)
         .build();
 
     getLogger().setVerbose(isVerbose);
+    getLogger().info("Generate DTO for %s class with parameters:\n%s", parameter.getClassCanonicalName(), parameter);
 
     final ClassInfoApi classInfo = getClassInfoApi(parameter);
     final String generatedSource = builder.template(classInfo, parameter).render().toString();

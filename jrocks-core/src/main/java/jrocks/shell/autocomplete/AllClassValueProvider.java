@@ -1,5 +1,6 @@
 package jrocks.shell.autocomplete;
 
+import jrocks.ClassPathScanner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.shell.CompletionContext;
@@ -22,6 +23,6 @@ public class AllClassValueProvider extends ValueProviderSupport {
 
   @Override
   public List<CompletionProposal> complete(MethodParameter parameter, CompletionContext completionContext, String[] hints) {
-    return scanner.getAllClassesWithZeroArgsConstructor().stream().map(CompletionProposal::new).collect(Collectors.toList());
+    return scanner.getAllClasses().stream().map(CompletionProposal::new).collect(Collectors.toList());
   }
 }

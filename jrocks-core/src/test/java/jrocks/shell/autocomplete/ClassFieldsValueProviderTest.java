@@ -1,5 +1,6 @@
 package jrocks.shell.autocomplete;
 
+import jrocks.ClassPathScanner;
 import jrocks.shell.JRocksConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

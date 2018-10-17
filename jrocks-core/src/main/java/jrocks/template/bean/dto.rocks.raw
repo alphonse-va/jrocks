@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
 }
 
 /**
- * @param.suffix() for the bean.simpleName() bean.
+ * @param.suffix() for the @bean.simpleName() bean.
  */
 public class @param.applySuffix(bean.simpleName()) {
 

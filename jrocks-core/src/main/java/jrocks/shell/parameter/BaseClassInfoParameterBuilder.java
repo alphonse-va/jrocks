@@ -1,10 +1,10 @@
 package jrocks.shell.parameter;
 
-import jrocks.shell.JLineTerminalLogger;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import static java.util.Arrays.asList;
 
 public class BaseClassInfoParameterBuilder {
 
@@ -26,18 +26,18 @@ public class BaseClassInfoParameterBuilder {
     return this;
   }
 
-  public BaseClassInfoParameterBuilder setExcludedFields(final List<String> excludedFields) {
-    this.excludedFields = excludedFields;
+  public BaseClassInfoParameterBuilder setExcludedFields(final String[] excludedFields) {
+    this.excludedFields = asList(excludedFields);
     return this;
   }
 
-  public BaseClassInfoParameterBuilder setIncludedFields(final List<String> includedFields) {
-    this.includedFields = includedFields;
+  public BaseClassInfoParameterBuilder setIncludedFields(final String[] includedFields) {
+    this.includedFields = asList(includedFields);
     return this;
   }
 
-  public BaseClassInfoParameterBuilder setMandatoryFields(final List<String> mandatoryFields) {
-    this.mandatoryFields = mandatoryFields;
+  public BaseClassInfoParameterBuilder setMandatoryFields(final String[] mandatoryFields) {
+    this.mandatoryFields = asList(mandatoryFields);
     return this;
   }
 

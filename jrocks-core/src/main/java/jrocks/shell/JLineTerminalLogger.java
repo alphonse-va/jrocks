@@ -1,5 +1,6 @@
 package jrocks.shell;
 
+import com.google.common.annotations.VisibleForTesting;
 import org.jline.terminal.Terminal;
 import org.jline.utils.AttributedString;
 import org.jline.utils.AttributedStyle;
@@ -44,5 +45,10 @@ public class JLineTerminalLogger implements TerminalLogger {
   @Override
   public void setVerbose(final boolean verbose) {
     this.verbose = verbose;
+  }
+
+  @VisibleForTesting
+  void setTerminal(Terminal terminal) {
+    this.terminal = terminal;
   }
 }
