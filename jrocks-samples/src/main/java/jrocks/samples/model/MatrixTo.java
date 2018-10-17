@@ -23,7 +23,7 @@ public class MatrixTo {
         .setEmail(from.getEmail());
   }
 
-  public MatrixTo setUsername(String username) {
+  private MatrixTo setUsername(String username) {
     this.username = username;;
     return this;
   }
@@ -32,7 +32,7 @@ public class MatrixTo {
     return username;
   }
 
-  public MatrixTo setDigit(BigDecimal digit) {
+  private MatrixTo setDigit(BigDecimal digit) {
     this.digit = digit;;
     return this;
   }
@@ -41,7 +41,7 @@ public class MatrixTo {
     return digit;
   }
 
-  public MatrixTo setDecimal(BigDecimal decimal) {
+  private MatrixTo setDecimal(BigDecimal decimal) {
     this.decimal = decimal;;
     return this;
   }
@@ -50,7 +50,7 @@ public class MatrixTo {
     return decimal;
   }
 
-  public MatrixTo setDate(LocalDate date) {
+  private MatrixTo setDate(LocalDate date) {
     this.date = date;;
     return this;
   }
@@ -59,7 +59,7 @@ public class MatrixTo {
     return date;
   }
 
-  public MatrixTo setEmail(String email) {
+  private MatrixTo setEmail(String email) {
     this.email = email;;
     return this;
   }

@@ -1,6 +1,6 @@
 package jrocks.samples.model;
 
-public class MatrixWithoutDefaultConstructor {
+class MatrixWithoutDefaultConstructor {
 
   private String test;
 

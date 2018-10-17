@@ -9,7 +9,7 @@ import java.time.LocalDate;
 public class Matrix {
 
   @NotEmpty
-  @Pattern(regexp = ".*")
+  @Pattern(regexp = "[a-z]")
   @Size(min = 10, max = 20)
   private String username;
 
