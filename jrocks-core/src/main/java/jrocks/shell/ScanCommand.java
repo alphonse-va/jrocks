@@ -5,6 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 @ShellComponent
 public class ScanCommand {
 
@@ -14,5 +17,6 @@ public class ScanCommand {
   @ShellMethod("Rebuild class path cache autocomplete")
   public void scanClassPath() {
     scanner.rebuid();
+    LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME);
   }
 }

@@ -2,6 +2,8 @@
 @import jrocks.api.FieldClassInfoApi
 @import jrocks.template.annotations.BuilderProperty
 @import jrocks.api.ClassInfoParameterApi
+@import java.time.LocalDateTime
+@import java.time.format.DateTimeFormatter
 
 @option discardLogicWhitespace=true
 
@@ -9,6 +11,7 @@
 
 package @bean.packageName();
 
+import javax.annotation.Generated;
 @for (String name : bean.requiredFieldCanonicalNames()) {
 import @name;
 }
@@ -17,6 +20,7 @@ import java.util.Objects;
 /**
  * Builder for the @bean.simpleName() bean.
  */
+@@Generated(value = "jrocks", date = "@LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME)")
 public class @bean.simpleName()Builder {
 
   private @bean.simpleName() @bean.propertyName() = new @bean.simpleName()();
