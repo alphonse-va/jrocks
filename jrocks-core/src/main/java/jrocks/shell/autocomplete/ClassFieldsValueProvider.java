@@ -26,7 +26,7 @@ public class ClassFieldsValueProvider extends ValueProviderSupport {
   private final ClassPathScanner classPathScanner;
 
   @Autowired
-  public ClassFieldsValueProvider(final ClassPathScanner classPathScanner) {this.classPathScanner = classPathScanner;}
+  public ClassFieldsValueProvider(ClassPathScanner classPathScanner) {this.classPathScanner = classPathScanner;}
 
   @Override
   public List<CompletionProposal> complete(MethodParameter parameter, CompletionContext completionContext, String[] hints) {
@@ -37,13 +37,13 @@ public class ClassFieldsValueProvider extends ValueProviderSupport {
 
   @VisibleForTesting
   List<CompletionProposal> getCompletionProposals(Class<?> clazz, CompletionContext completionContext) {
-    final String word = completionContext.currentWordUpToCursor();
-    final String lastProposal = substringAfterLast(word, ",").isEmpty()
+    String word = completionContext.currentWordUpToCursor();
+    String lastProposal = substringAfterLast(word, ",").isEmpty()
         ? word.split(",")[word.split(",").length - 1]
         : substringAfterLast(word, ",");
 
 
-    final boolean lastProposalIsField = classPathScanner.getAllFieldsWithGetterAndSetters(clazz.getCanonicalName())
+    boolean lastProposalIsField = classPathScanner.getAllFieldsWithGetterAndSetters(clazz.getCanonicalName())
         .stream().anyMatch(name -> !lastProposal.isEmpty() && name.startsWith(lastProposal.trim()));
 
     return classPathScanner.getAllFieldsWithGetterAndSetters(clazz.getCanonicalName()).stream()
@@ -54,15 +54,15 @@ public class ClassFieldsValueProvider extends ValueProviderSupport {
         .collect(Collectors.toList());
   }
 
-  private boolean isFieldAlreadyContained(final CompletionContext completionContext, final String name) {
+  private boolean isFieldAlreadyContained(CompletionContext completionContext, String name) {
     return Arrays.stream(completionContext.currentWord().split(","))
         .noneMatch(w -> w.contains(name));
   }
 
   @VisibleForTesting
   Optional<Class<?>> getSourceClass(CompletionContext completionContext) throws IllegalStateException {
-    final List<String> words = completionContext.getWords();
-    final OptionalInt classIdx = IntStream.range(0, words.size() - 1)
+    List<String> words = completionContext.getWords();
+    OptionalInt classIdx = IntStream.range(0, words.size() - 1)
         .filter(i -> words.get(i).equals("--class"))
         .findAny();
 
@@ -71,7 +71,7 @@ public class ClassFieldsValueProvider extends ValueProviderSupport {
       return Optional.empty();
     }
 
-    final String className = words.get(classIdx.getAsInt() + 1);
+    String className = words.get(classIdx.getAsInt() + 1);
     try {
       return Optional.ofNullable(Class.forName(className));
     } catch (ClassNotFoundException e) {

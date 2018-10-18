@@ -29,7 +29,7 @@ public class EntityClassInfo extends BaseClassInfo implements EntityClassInfoApi
 
   @Override
   public String restPath() {
-    final Matcher matcher = CAMELCASE_TO_REST_PATTERN.matcher(propertyName());
+    Matcher matcher = CAMELCASE_TO_REST_PATTERN.matcher(propertyName());
     return matcher.replaceAll(REST_SEPARATOR).toLowerCase();
   }
 }

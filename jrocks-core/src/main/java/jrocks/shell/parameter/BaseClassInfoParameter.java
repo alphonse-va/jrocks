@@ -24,13 +24,13 @@ public class BaseClassInfoParameter implements ClassInfoParameterApi {
 
   private boolean force;
 
-  BaseClassInfoParameter(final String classCanonicalName,
-                         final boolean force,
-                         final List<String> excludedFields,
-                         final List<String> includedFields,
-                         final List<String> mandatoryFields,
-                         final String suffix,
-                         final String suffixToRemove) {
+  BaseClassInfoParameter(String classCanonicalName,
+                         boolean force,
+                         List<String> excludedFields,
+                         List<String> includedFields,
+                         List<String> mandatoryFields,
+                         String suffix,
+                         String suffixToRemove) {
     this.classCanonicalName = classCanonicalName;
     this.force = force;
     this.excludedFields = excludedFields != null ? excludedFields : new ArrayList<>();

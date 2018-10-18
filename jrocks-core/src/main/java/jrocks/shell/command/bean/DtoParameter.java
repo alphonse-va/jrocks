@@ -7,7 +7,7 @@ public class DtoParameter extends BaseClassInfoParameter {
 
   private boolean withFactoryMethod;
 
-  DtoParameter(final ClassInfoParameterApi parameter, final boolean withFactoryMethod) {
+  DtoParameter(ClassInfoParameterApi parameter, boolean withFactoryMethod) {
     super(parameter);
     this.withFactoryMethod = withFactoryMethod;
   }

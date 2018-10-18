@@ -10,7 +10,7 @@ class BaseClassInfoBuilderTest {
 
   @Test
   void build() {
-    final ClassInfoApi classInfo = new BaseClassInfoBuilder(Matrix.class).build();
+    ClassInfoApi classInfo = new BaseClassInfoBuilder(Matrix.class).build();
     assertThat(classInfo.getFields()).size().isEqualTo(6);
   }
 }

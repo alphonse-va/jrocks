@@ -33,17 +33,17 @@ public class JLineTerminalLogger implements TerminalLogger {
   }
 
   @Override
-  public void verbose(final String message, final Object... values) {
+  public void verbose(String message, Object... values) {
     if (verbose) printMessage(message, values, AttributedStyle.MAGENTA);
   }
 
-  private void printMessage(final String message, final Object[] values, final int red) {
+  private void printMessage(String message, Object[] values, int red) {
     terminal.writer().println(new AttributedString(format(message, values),
         AttributedStyle.DEFAULT.foreground(red)).toAnsi());
   }
 
   @Override
-  public void setVerbose(final boolean verbose) {
+  public void setVerbose(boolean verbose) {
     this.verbose = verbose;
   }
 

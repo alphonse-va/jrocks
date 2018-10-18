@@ -21,31 +21,31 @@ class JhipsterTemplatesSmokeTest extends AbstractSmokeTest {
 
   @Test
   void repository() {
-    final String actual = repository.template(metaData).render().toString();
+    String actual = repository.template(metaData).render().toString();
     assertThat(actual).contains("MatrixRepository");
     assertThatClassCompile(new SimpleEntry<>(metaData.canonicalName() + "Repository", actual));
   }
 
   @Test
   void service() {
-    final String actual = service.template(metaData).render().toString();
+    String actual = service.template(metaData).render().toString();
     assertThat(actual).contains("MatrixService");
     assertThatClassCompile(new SimpleEntry<>(metaData.canonicalName() + "Service", actual));
   }
 
   @Test
   void serviceImpl() {
-    final String repositoryCode = repository.template(metaData).render().toString();
-    final SimpleEntry<String, String> repositoryEntry = new SimpleEntry<>(metaData.canonicalName() + "Repository", repositoryCode);
+    String repositoryCode = repository.template(metaData).render().toString();
+    SimpleEntry<String, String> repositoryEntry = new SimpleEntry<>(metaData.canonicalName() + "Repository", repositoryCode);
 
-    final String actual = serviceimpl.template(metaData).render().toString();
+    String actual = serviceimpl.template(metaData).render().toString();
     assertThat(actual).contains("MatrixServiceImpl");
    // assertThatClassCompile(repositoryEntry, new SimpleEntry<>(metaData.canonicalName() + "ServiceImpl", actual));
   }
 
   @Test
   void resource() {
-    final String actual = resource.template(metaData).render().toString();
+    String actual = resource.template(metaData).render().toString();
     assertThat(actual).contains("MatrixResource");
     //assertThatClassCompile(new SimpleEntry<>(metaData.canonicalName() + "Resource", actual));
   }

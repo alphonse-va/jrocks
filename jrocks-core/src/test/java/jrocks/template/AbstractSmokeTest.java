@@ -32,8 +32,8 @@ public class AbstractSmokeTest {
   @SafeVarargs
   protected static void assertThatClassCompile(AbstractMap.SimpleEntry<String, String>... entries) {
     String[] options = new String[]{"-d", "/home/fons/dev/git/jrocks/jrocks-core/target"};
-    final List<JavaSourceFromString> sources = Stream.of(entries).map(source -> new JavaSourceFromString(source.getKey(), source.getValue())).collect(Collectors.toList());
-    final DiagnosticListener<JavaFileObject> diagnosticListener = e -> {
+    List<JavaSourceFromString> sources = Stream.of(entries).map(source -> new JavaSourceFromString(source.getKey(), source.getValue())).collect(Collectors.toList());
+    DiagnosticListener<JavaFileObject> diagnosticListener = e -> {
       assertThat(String.format("%s:%s %s%n", e.getLineNumber(), e.getColumnNumber(), e.getMessage(Locale.ENGLISH))).isNull();
     };
     javaCompiler.getTask(null, null, diagnosticListener, Arrays.asList(options), null, sources).call();

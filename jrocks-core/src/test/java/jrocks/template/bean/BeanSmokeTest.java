@@ -25,7 +25,7 @@ class BeanSmokeTest extends AbstractSmokeTest {
 
   @Test
   void builder() {
-    final String actual = builder.template(infoApi, new BaseClassInfoParameterBuilder()
+    String actual = builder.template(infoApi, new BaseClassInfoParameterBuilder()
         .setClassCanonicalName(Matrix.class.getCanonicalName())
         .setForce(false)
         .build())
@@ -37,13 +37,13 @@ class BeanSmokeTest extends AbstractSmokeTest {
 
   @Test
   void dto() {
-    final DtoParameter dtoParameter = new DtoParameterBuilder()
+    DtoParameter dtoParameter = new DtoParameterBuilder()
         .setClassInfoParameter(new BaseClassInfoParameterBuilder()
             .setClassCanonicalName(Matrix.class.getCanonicalName())
             .setSuffix("Dto")
             .build())
         .build();
-    final String actual = dto.template(infoApi, dtoParameter).render().toString();
+    String actual = dto.template(infoApi, dtoParameter).render().toString();
     assertThat(actual).contains("MatrixDto", "setUsername", "setPassword", "setDecimal");
     assertThatClassCompile(new SimpleEntry<>("jrocks.MatrixDto", actual));
   }

@@ -16,37 +16,37 @@ public class BaseClassInfoParameterBuilder {
   private String suffix;
   private String suffixToRemove;
 
-  public BaseClassInfoParameterBuilder setClassCanonicalName(final String classCanonicalName) {
+  public BaseClassInfoParameterBuilder setClassCanonicalName(String classCanonicalName) {
     this.classCanonicalName = classCanonicalName;
     return this;
   }
 
-  public BaseClassInfoParameterBuilder setForce(final boolean force) {
+  public BaseClassInfoParameterBuilder setForce(boolean force) {
     this.force = force;
     return this;
   }
 
-  public BaseClassInfoParameterBuilder setExcludedFields(final String[] excludedFields) {
+  public BaseClassInfoParameterBuilder setExcludedFields(String[] excludedFields) {
     this.excludedFields = asList(excludedFields);
     return this;
   }
 
-  public BaseClassInfoParameterBuilder setIncludedFields(final String[] includedFields) {
+  public BaseClassInfoParameterBuilder setIncludedFields(String[] includedFields) {
     this.includedFields = asList(includedFields);
     return this;
   }
 
-  public BaseClassInfoParameterBuilder setMandatoryFields(final String[] mandatoryFields) {
+  public BaseClassInfoParameterBuilder setMandatoryFields(String[] mandatoryFields) {
     this.mandatoryFields = asList(mandatoryFields);
     return this;
   }
 
-  public BaseClassInfoParameterBuilder setSuffix(final String suffix) {
+  public BaseClassInfoParameterBuilder setSuffix(String suffix) {
     this.suffix = suffix;
     return this;
   }
 
-  public BaseClassInfoParameterBuilder setSuffixToRemove(final String suffixToRemove) {
+  public BaseClassInfoParameterBuilder setSuffixToRemove(String suffixToRemove) {
     this.suffixToRemove = suffixToRemove;
     return this;
   }

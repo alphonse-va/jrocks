@@ -4,7 +4,8 @@ import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ClassInfo;
 import io.github.classgraph.ClassInfoList;
 import io.github.classgraph.ScanResult;
-import jrocks.shell.JRocksConfig;
+import jrocks.shell.JRocksProjectConfig;
+import jrocks.shell.TerminalLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,24 +19,39 @@ import static org.apache.commons.lang3.StringUtils.capitalize;
 @Component
 public class ClassPathScanner {
 
-  private final JRocksConfig jRocksConfig;
+  private final JRocksProjectConfig projectConfig;
 
   private ClassInfoList classes;
 
   private ScanResult scanResult;
 
+  /**
+   * REMEMBER: Not constructor parameter due to circular deps mess
+   */
   @Autowired
-  public ClassPathScanner(JRocksConfig jRocksConfig) {
-    this.jRocksConfig = jRocksConfig;
+  private TerminalLogger terminalLogger;
+
+  @Autowired
+  public ClassPathScanner(JRocksProjectConfig projectConfig) {
+    this.projectConfig = projectConfig;
   }
 
   @PostConstruct
-  public void rebuid() {
-    scanResult = new ClassGraph()
-        .enableAllInfo()
-        .whitelistPackages(jRocksConfig.getBasePackage())
-        .scan();
-    classes = scanResult.getAllStandardClasses();
+  public void rebuild() {
+    if (projectConfig.isInitialized()) {
+      scanResult = new ClassGraph()
+          .enableAllInfo()
+          .whitelistPaths(projectConfig.getOutputDirectory())
+          .whitelistPackages(projectConfig.getBasePackage())
+          .scan();
+      classes = scanResult.getAllStandardClasses();
+
+      terminalLogger.verbose("Classes available for completion\n");
+      classes.forEach(cl -> terminalLogger.verbose(cl.getName()));
+      terminalLogger.verbose("\n\n");
+    } else {
+      terminalLogger.verbose("Class path scanning skipped, JRocks is not yet initialized!");
+    }
   }
 
   public List<String> getAllClassesWithZeroArgsConstructor() {
@@ -77,26 +93,31 @@ public class ClassPathScanner {
         .collect(Collectors.toList());
   }
 
-  private Stream<String> getFieldNames(final String className) {
+  private Stream<String> getFieldNames(String className) {
     return classes.get(className).getDeclaredFieldInfo().getNames().stream();
   }
 
-  private boolean isMethodNameExist(final String className, final String set, final String fieldName) {
+  private boolean isMethodNameExist(String className, String set, String fieldName) {
     return !classes.get(className).getMethodInfo().get(getMethodName(set, fieldName)).isEmpty();
   }
 
-  private static String getMethodName(final String prefix, final String fieldName) {
+  private static String getMethodName(String prefix, String fieldName) {
     return prefix + capitalize(fieldName);
+  }
+
+  public ClassPathScanner setTerminalLogger(TerminalLogger terminalLogger) {
+    this.terminalLogger = terminalLogger;
+    return this;
   }
 
   /**
    * TODO: We could use an aspect to call this method
    */
   private void rebuildIfNeeded() {
-    if (jRocksConfig.isAutoRebuild()) {
-      rebuid();
+    if (projectConfig.isAutoRebuild()) {
+      rebuild();
     } else if (scanResult.classpathContentsModifiedSinceScan()) {
-      rebuid();
+      rebuild();
     }
   }
 }

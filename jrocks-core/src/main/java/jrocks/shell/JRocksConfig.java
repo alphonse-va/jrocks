@@ -1,44 +1,55 @@
 package jrocks.shell;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 
-@Component
+import java.util.StringJoiner;
+
+@Configuration
+@EnableConfigurationProperties
+@ConfigurationProperties(prefix="jrocks")
 public class JRocksConfig {
 
-  @Value("${jrocks.sourceDirectory}")
-  private String sourceDirectory;
+  private String name;
 
-  @Value("${project.base-package}")
-  public String basePackage;
+  private String version;
 
-  @Value("${jrocks.classpath.auto-rebuild}")
-  public boolean autoRebuild;
+  private String configFileName;
 
-  public String getSourceDirectory() {
-    return sourceDirectory;
+  public String getName() {
+    return name;
   }
 
-  public JRocksConfig setSourceDirectory(String sourceDirectory) {
-    this.sourceDirectory = sourceDirectory;
+  public JRocksConfig setName(String name) {
+    this.name = name;
     return this;
   }
 
-  public String getBasePackage() {
-    return basePackage;
+  public String getVersion() {
+    return version;
   }
 
-  public JRocksConfig setBasePackage(String basePackage) {
-    this.basePackage = basePackage;
+  public JRocksConfig setVersion(String version) {
+    this.version = version;
     return this;
   }
 
-  public boolean isAutoRebuild() {
-    return autoRebuild;
+  public String getConfigFileName() {
+    return configFileName;
   }
 
-  public JRocksConfig setAutoRebuild(boolean autoRebuild) {
-    this.autoRebuild = autoRebuild;
+  public JRocksConfig setConfigFileName(String configFileName) {
+    this.configFileName = configFileName;
     return this;
+  }
+
+  @Override
+  public String toString() {
+    return new StringJoiner("\n", "JRocks Configuration:\n\n", "")
+        .add("\tname='" + name + "'")
+        .add("\tversion='" + version + "'")
+        .add("\tconfigFileName='" + configFileName + "'")
+        .toString();
   }
 }

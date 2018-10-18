@@ -124,9 +124,9 @@ public class FieldClassInfo extends BaseClassInfo implements FieldClassInfoApi {
 
   @Override
   public String maxSize() {
-    final Size size = field.getAnnotation(Size.class);
-    final DecimalMax decimalMax = field.getAnnotation(DecimalMax.class);
-    final Max max = field.getAnnotation(Max.class);
+    Size size = field.getAnnotation(Size.class);
+    DecimalMax decimalMax = field.getAnnotation(DecimalMax.class);
+    Max max = field.getAnnotation(Max.class);
     return size != null ? String.valueOf(size.max())
         : decimalMax != null ? decimalMax.value()
         : max != null ? String.valueOf(max.value()) : null;
@@ -134,9 +134,9 @@ public class FieldClassInfo extends BaseClassInfo implements FieldClassInfoApi {
 
   @Override
   public String minSize() {
-    final Size size = field.getAnnotation(Size.class);
-    final DecimalMin decimalMin = field.getAnnotation(DecimalMin.class);
-    final Min min = field.getAnnotation(Min.class);
+    Size size = field.getAnnotation(Size.class);
+    DecimalMin decimalMin = field.getAnnotation(DecimalMin.class);
+    Min min = field.getAnnotation(Min.class);
     return size != null ? String.valueOf(size.min())
         : decimalMin != null ? decimalMin.value()
         : min != null ? String.valueOf(min.value()) : null;
@@ -144,13 +144,13 @@ public class FieldClassInfo extends BaseClassInfo implements FieldClassInfoApi {
 
   @Override
   public int digitsInteger() {
-    final Digits digits = field.getAnnotation(Digits.class);
+    Digits digits = field.getAnnotation(Digits.class);
     return digits != null ? digits.integer() : 0;
   }
 
   @Override
   public int digitsFraction() {
-    final Digits digits = field.getAnnotation(Digits.class);
+    Digits digits = field.getAnnotation(Digits.class);
     return digits != null ? digits.fraction() : 0;
   }
 
@@ -164,7 +164,7 @@ public class FieldClassInfo extends BaseClassInfo implements FieldClassInfoApi {
     try {
       return Stream.of(Introspector.getBeanInfo(field.getDeclaringClass()).getMethodDescriptors())
           .filter(m -> {
-            final String capitalizeName = StringUtils.capitalize(field.getName());
+            String capitalizeName = StringUtils.capitalize(field.getName());
             return m.getMethod().getName().equals("get" + capitalizeName)
                 || m.getMethod().getName().equals("is" + capitalizeName)
                 || m.getMethod().getName().equals("has" + capitalizeName);
@@ -191,16 +191,16 @@ public class FieldClassInfo extends BaseClassInfo implements FieldClassInfoApi {
   }
 
   private boolean isSetter(MethodDescriptor m) {
-    final Class<?>[] parameterTypes = m.getMethod().getParameterTypes();
+    Class<?>[] parameterTypes = m.getMethod().getParameterTypes();
     if (parameterTypes.length > 1) {
       return false;
     }
-    final boolean hasSetterParamType = Stream.of(parameterTypes).anyMatch(t -> t.equals(field.getType()));
+    boolean hasSetterParamType = Stream.of(parameterTypes).anyMatch(t -> t.equals(field.getType()));
     return hasSetterParamType && !m.isHidden() && m.getName().equals("set" + fieldNameCapitalized());
   }
 
   private boolean isGetter(MethodDescriptor m) {
-    final boolean hasReturnType = m.getMethod().getReturnType().equals(field.getType());
+    boolean hasReturnType = m.getMethod().getReturnType().equals(field.getType());
     return hasReturnType && !m.isHidden()
         && (m.getName().equals("get" + fieldNameCapitalized())
         || m.getName().equals("is" + fieldNameCapitalized())

@@ -2,6 +2,7 @@ package jrocks.shell.command.bean;
 
 import jrocks.api.ClassInfoApi;
 import jrocks.shell.JRocksConfig;
+import jrocks.shell.JRocksProjectConfig;
 import jrocks.shell.TerminalLogger;
 import jrocks.shell.autocomplete.AllClassValueProvider;
 import jrocks.shell.autocomplete.ClassFieldsValueProvider;
@@ -11,20 +12,21 @@ import jrocks.shell.parameter.BaseClassInfoParameterBuilder;
 import jrocks.template.bean.dto;
 import jrocks.template.bean.mapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.shell.Availability;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
+import org.springframework.shell.standard.ShellMethodAvailability;
 import org.springframework.shell.standard.ShellOption;
 
 @ShellComponent
 public class DtoCommand extends BaseClassInfoCommand {
 
-
   @Autowired
-  public DtoCommand(final JRocksConfig jRocksConfig, final TerminalLogger terminalLogger) {
-    super(jRocksConfig, terminalLogger);
+  public DtoCommand(JRocksConfig jRocksConfig, JRocksProjectConfig projectConfig, TerminalLogger terminalLogger) {
+    super(jRocksConfig, projectConfig, terminalLogger);
   }
 
-  @ShellMethod(value = "DTO Generator", key = "dto", group = "bean")
+  @ShellMethod(value = "DTO Generator", key = "dto", group = "Bean")
   public void dto(
       @ShellOption(value = "--class", help = "Source class", valueProvider = AllClassValueProvider.class) String classCanonicalName,
       @ShellOption(value = "--suffix", help = "Suffix to add; default DTO", defaultValue = "DTO") String suffix,
@@ -39,7 +41,7 @@ public class DtoCommand extends BaseClassInfoCommand {
       @ShellOption(value = "--verbose", help = "Verbose output") boolean isVerbose
   ) {
 
-    final DtoParameter dtoParameter = new DtoParameterBuilder()
+    DtoParameter dtoParameter = new DtoParameterBuilder()
         .setClassInfoParameter(new BaseClassInfoParameterBuilder()
             .setClassCanonicalName(classCanonicalName)
             .setForce(isForced)
@@ -55,12 +57,12 @@ public class DtoCommand extends BaseClassInfoCommand {
     getLogger().setVerbose(isVerbose);
     getLogger().info("Generate DTO for %s class with parameters:\n%s", dtoParameter.getClassCanonicalName(), dtoParameter);
 
-    final ClassInfoApi classInfo = getClassInfoApi(dtoParameter);
-    final String generatedSource = dto.template(classInfo, dtoParameter).render().toString();
+    ClassInfoApi classInfo = getClassInfoApi(dtoParameter);
+    String generatedSource = dto.template(classInfo, dtoParameter).render().toString();
     writeSource(generatedSource, dtoParameter);
 
     if (!isWithFactoryMethod) {
-      final BaseClassInfoParameter mapperParameter = new BaseClassInfoParameterBuilder()
+      BaseClassInfoParameter mapperParameter = new BaseClassInfoParameterBuilder()
           .setClassCanonicalName(classCanonicalName)
           .setForce(isForced)
           .setSuffix(suffix + "Mapper")
@@ -69,5 +71,12 @@ public class DtoCommand extends BaseClassInfoCommand {
       String generatedMapperSource = mapper.template(classInfo, dtoParameter).render().toString();
       writeSource(generatedMapperSource, mapperParameter);
     }
+  }
+
+  @ShellMethodAvailability("dto")
+  public Availability availabilityCheck() {
+    return getProjectConfig().isInitialized()
+        ? Availability.available()
+        : Availability.unavailable("you firstly need to execute 'init' command to initialize your JRocks project!");
   }
 }

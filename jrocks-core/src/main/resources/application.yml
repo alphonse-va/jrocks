@@ -1,20 +1,4 @@
 jrocks:
-  name: ${project.name}
+  name: jrocks
   version: ${project.version}
-  classpath:
-    auto-rebuild: true
-  sourceDirectory: @project.build.sourceDirectory@
-  scriptSourceDirectory: @project.build.scriptSourceDirectory@
-  testSourceDirectory: @project.build.testSourceDirectory@
-  outputDirectory: @project.build.outputDirectory@
-  testOutputDirectory: @project.build.testOutputDirectory@
-  directory: @project.build.directory@
-
-java:
-  version: @java.version@
-
-project:
-  base-package: jrocks
-
-
-
+  configFileName: .jrocks

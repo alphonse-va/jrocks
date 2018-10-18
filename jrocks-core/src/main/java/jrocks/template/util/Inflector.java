@@ -81,7 +81,7 @@ public class Inflector {
     public boolean equals( Object obj ) {
       if (obj == this) return true;
       if (obj != null && obj.getClass() == this.getClass()) {
-        final Rule that = (Rule)obj;
+        Rule that = (Rule)obj;
         if (this.expression.equalsIgnoreCase(that.expression)) return true;
       }
       return false;
@@ -420,7 +420,7 @@ public class Inflector {
    * @return the string with the number and ordinal suffix
    */
   public String ordinalize( int number ) {
-    int remainder = number % 100;
+    int remainder;
     String numberStr = Integer.toString(number);
     if (11 <= number && number <= 13) return numberStr + "th";
     remainder = number % 10;
@@ -458,13 +458,13 @@ public class Inflector {
 
   public void addPluralize( String rule,
                             String replacement ) {
-    final Rule pluralizeRule = new Rule(rule, replacement);
+    Rule pluralizeRule = new Rule(rule, replacement);
     this.plurals.addFirst(pluralizeRule);
   }
 
   public void addSingularize( String rule,
                               String replacement ) {
-    final Rule singularizeRule = new Rule(rule, replacement);
+    Rule singularizeRule = new Rule(rule, replacement);
     this.singulars.addFirst(singularizeRule);
   }
 

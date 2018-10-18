@@ -1,7 +1,5 @@
 package jrocks;
 
-import java.util.Objects;
-
 /**
  * Builder for the JRocksApplication bean.
  */
