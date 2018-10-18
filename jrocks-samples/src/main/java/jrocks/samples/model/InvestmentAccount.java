@@ -11,7 +11,7 @@ public class InvestmentAccount extends BankAccount {
     return rate;
   }
 
-  public InvestmentAccount setRate(final Double rate) {
+  public InvestmentAccount setRate(Double rate) {
     this.rate = rate;
     return this;
   }

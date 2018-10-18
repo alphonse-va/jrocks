@@ -10,7 +10,7 @@ public class User {
     return username;
   }
 
-  public User setUsername(final String username) {
+  public User setUsername(String username) {
     this.username = username;
     return this;
   }
@@ -19,7 +19,7 @@ public class User {
     return firstname;
   }
 
-  public User setFirstname(final String firstname) {
+  public User setFirstname(String firstname) {
     this.firstname = firstname;
     return this;
   }
@@ -28,7 +28,7 @@ public class User {
     return lastname;
   }
 
-  public User setLastname(final String lastname) {
+  public User setLastname(String lastname) {
     this.lastname = lastname;
     return this;
   }

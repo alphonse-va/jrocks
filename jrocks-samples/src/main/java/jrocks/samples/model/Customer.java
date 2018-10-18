@@ -14,7 +14,7 @@ public class Customer extends User {
     return customerId;
   }
 
-  public Customer setCustomerId(final String customerId) {
+  public Customer setCustomerId(String customerId) {
     this.customerId = customerId;
     return this;
   }
@@ -23,7 +23,7 @@ public class Customer extends User {
     return accounts;
   }
 
-  public Customer setAccounts(final List<BankAccount> accounts) {
+  public Customer setAccounts(List<BankAccount> accounts) {
     this.accounts = accounts;
     return this;
   }
@@ -32,7 +32,7 @@ public class Customer extends User {
     return investmentAccounts;
   }
 
-  public Customer setInvestmentAccounts(final List<InvestmentAccount> investmentAccounts) {
+  public Customer setInvestmentAccounts(List<InvestmentAccount> investmentAccounts) {
     this.investmentAccounts = investmentAccounts;
     return this;
   }

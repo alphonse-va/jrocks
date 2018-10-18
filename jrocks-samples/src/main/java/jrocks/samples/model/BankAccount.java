@@ -8,7 +8,7 @@ class BankAccount {
     return accountNumber;
   }
 
-  public BankAccount setAccountNumber(final Iban accountNumber) {
+  public BankAccount setAccountNumber(Iban accountNumber) {
     this.accountNumber = accountNumber;
     return this;
   }
