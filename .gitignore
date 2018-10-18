@@ -1,4 +1,10 @@
 ######################
+# JRocks
+######################
+
+*/.jrocks
+
+######################
 # Eclipse
 ######################
 *.pydevproject
@@ -110,4 +116,6 @@ Desktop.ini
 # Maven Wrapper
 ######################
 !.mvn/wrapper/maven-wrapper.jar
+
+
 
