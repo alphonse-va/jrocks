@@ -1,15 +1,16 @@
-package jrocks.shell.command.bean;
+package jrocks.shell.command;
 
 import jrocks.api.ClassInfoApi;
 import jrocks.api.ClassInfoParameterApi;
-import jrocks.shell.config.JRocksConfig;
-import jrocks.shell.config.JRocksProjectConfig;
 import jrocks.shell.TerminalLogger;
+import jrocks.shell.autocomplete.AdditionalFlagValueProvider;
 import jrocks.shell.autocomplete.AllClassValueProvider;
 import jrocks.shell.autocomplete.ClassFieldsValueProvider;
-import jrocks.shell.command.BaseClassInfoCommand;
+import jrocks.shell.autocomplete.TemplateGeneratorValueProvider;
+import jrocks.shell.config.JRocksConfig;
+import jrocks.shell.config.JRocksProjectConfig;
+import jrocks.shell.generator.TemplateGenerator;
 import jrocks.shell.parameter.BaseClassInfoParameterBuilder;
-import jrocks.template.bean.builder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.Availability;
 import org.springframework.shell.standard.ShellComponent;
@@ -17,28 +18,37 @@ import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellMethodAvailability;
 import org.springframework.shell.standard.ShellOption;
 
-import java.io.File;
+import java.util.List;
 
 @ShellComponent
-public class BuilderCommand extends BaseClassInfoCommand {
+public class GeneratorCommand extends BaseClassInfoCommand {
+
+  private final List<TemplateGenerator> templates;
 
   @Autowired
-  public BuilderCommand(JRocksConfig jRocksConfig, JRocksProjectConfig projectConfig, TerminalLogger terminalLogger) {
+  public GeneratorCommand(JRocksConfig jRocksConfig, JRocksProjectConfig projectConfig, TerminalLogger terminalLogger, List<TemplateGenerator> templates) {
     super(jRocksConfig, projectConfig, terminalLogger);
+    this.templates = templates;
   }
 
-  @ShellMethod(value = "Builder Generator", key = "builder", group = "Bean")
-  public void builder(
+  @ShellMethod(value = "Generator", key = "gen", group = "Application")
+  public void generator(
+      @ShellOption(value = "--generator", help = "Name of the generator", valueProvider = TemplateGeneratorValueProvider.class) String generatorName,
       @ShellOption(value = "--class", help = "Source class", valueProvider = AllClassValueProvider.class) String classCanonicalName,
-      @ShellOption(value = "--suffix", help = "Suffix to add; default Builder", defaultValue = "Builder") String suffix,
       @ShellOption(value = "--suffix-to-remove", help = "Suffix to remove", defaultValue = "") String suffixToRemove,
 
       @ShellOption(value = "--excluded-fields", help = "Fields to exclude", defaultValue = "[]", valueProvider = ClassFieldsValueProvider.class) String[] excludedFields,
       @ShellOption(value = "--included-fields", help = "Fields to include", defaultValue = "[]", valueProvider = ClassFieldsValueProvider.class) String[] includedFields,
       @ShellOption(value = "--mandatory-fields", help = "Mandatory fields", defaultValue = "[]", valueProvider = ClassFieldsValueProvider.class) String[] mandatoryFields,
       @ShellOption(value = "--force", help = "Overwrite existing files") boolean isForced,
-      @ShellOption(value = "--verbose", help = "Verbose output") boolean isVerbose
+      @ShellOption(value = "--verbose", help = "Verbose output") boolean isVerbose,
+      @ShellOption(value = "--additional-flags", help = "Generator specific additional flags", defaultValue = "[]", valueProvider = AdditionalFlagValueProvider.class) String[] additionalFlags
   ) {
+
+    TemplateGenerator template = templates.stream()
+        .filter(t -> t.getName().equals(generatorName))
+        .findAny()
+        .orElseThrow(() -> new IllegalStateException(String.format("Generator named '%s' doesn't exist, please review your inputs.", generatorName)));
 
     ClassInfoParameterApi parameter = new BaseClassInfoParameterBuilder()
         .setClassCanonicalName(classCanonicalName)
@@ -46,21 +56,18 @@ public class BuilderCommand extends BaseClassInfoCommand {
         .setExcludedFields(excludedFields)
         .setIncludedFields(includedFields)
         .setMandatoryFields(mandatoryFields)
-        .setSuffix(suffix)
+        .setSuffix(template.getSuffix())
         .setSuffixToRemove(suffixToRemove)
+        .setAddtionalFlags(additionalFlags)
         .build();
 
-    getLogger().setVerbose(isVerbose);
-    getLogger().info("Generate DTO for %s class with parameters:\n%s", parameter.getClassCanonicalName(), parameter);
-
-
     ClassInfoApi classInfo = getClassInfoApi(parameter);
-    String generatedSource = builder.template(classInfo, parameter).render().toString();
+    getLogger().info("Generate %s for %s class with parameters:\n%s", template.getName(), parameter.getClassCanonicalName(), parameter);
 
-    writeSource(generatedSource, parameter, classInfo);
+    template.generateSource(parameter, classInfo);
   }
 
-  @ShellMethodAvailability("builder")
+  @ShellMethodAvailability("generator")
   private Availability availabilityCheck() {
     return getProjectConfig().isInitialized()
         ? Availability.available()

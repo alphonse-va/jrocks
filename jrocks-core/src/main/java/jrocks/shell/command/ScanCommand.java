@@ -1,32 +1,41 @@
-package jrocks.shell.config;
+package jrocks.shell.command;
 
 import jrocks.shell.ClassPathScanner;
 import jrocks.shell.TerminalLogger;
-import jrocks.shell.command.BaseCommand;
+import jrocks.shell.config.JRocksConfig;
+import jrocks.shell.config.JRocksProjectConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.Availability;
+import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellMethodAvailability;
 
 @ShellComponent
+@ShellCommandGroup("Indexer")
 public class ScanCommand extends BaseCommand {
 
-  @Autowired
-  private ClassPathScanner scanner;
+  private final ClassPathScanner scanner;
 
-  protected ScanCommand(JRocksConfig jRocksConfig, JRocksProjectConfig projectConfig, TerminalLogger terminalLogger) {
+  @Autowired
+  protected ScanCommand(JRocksConfig jRocksConfig, JRocksProjectConfig projectConfig, TerminalLogger terminalLogger, final ClassPathScanner scanner) {
     super(jRocksConfig, projectConfig, terminalLogger);
+    this.scanner = scanner;
   }
 
-  @ShellMethod(key = "rebuild-cache", value = "Rebuild cache", group = "Config")
+  @ShellMethod(key = "rebuild-index", value = "Rebuild index")
   public void scanClassPath() {
       scanner.rebuild();
   }
 
-  @ShellMethod(key = "show-classes", value = "Show all classes eligible for autocomplete", group = "Config")
-  public void show() {
+  @ShellMethod(key = "show-indexed-classes", value = "Show all classes indexed classes")
+  public void showIndexedClasses() {
     scanner.getAllClasses().forEach(c -> getLogger().info(c));
+  }
+
+  @ShellMethod(key = "show-index-stats", value = "Show index stats")
+  public void show() {
+    scanner.getAllClassInfo().count();
   }
 
   @ShellMethodAvailability({"rebuild-cache", "show-classes"})

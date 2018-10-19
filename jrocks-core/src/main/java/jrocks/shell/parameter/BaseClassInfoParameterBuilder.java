@@ -19,6 +19,12 @@ public class BaseClassInfoParameterBuilder {
   private String suffix;
   private String suffixToRemove;
   private File file;
+  private List<String> addtionalFlags;
+
+  public BaseClassInfoParameter build() {
+    Objects.requireNonNull(classCanonicalName, "classCanonicalName is required");
+    return new BaseClassInfoParameter(classCanonicalName, force, excludedFields, includedFields, mandatoryFields, suffix, suffixToRemove, file, addtionalFlags);
+  }
 
   public BaseClassInfoParameterBuilder setClassCanonicalName(String classCanonicalName) {
     this.classCanonicalName = classCanonicalName;
@@ -55,13 +61,13 @@ public class BaseClassInfoParameterBuilder {
     return this;
   }
 
-  public BaseClassInfoParameter build() {
-    Objects.requireNonNull(classCanonicalName, "classCanonicalName is required");
-    return new BaseClassInfoParameter(classCanonicalName, force, excludedFields, includedFields, mandatoryFields, suffix, suffixToRemove, file);
-  }
-
   public BaseClassInfoParameterBuilder setFile(File file) {
     this.file = file;
+    return this;
+  }
+
+  public BaseClassInfoParameterBuilder setAddtionalFlags(String[] addtionalFlags) {
+    this.addtionalFlags = asList(addtionalFlags);
     return this;
   }
 }

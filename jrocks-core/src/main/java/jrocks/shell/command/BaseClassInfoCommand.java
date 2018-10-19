@@ -30,52 +30,16 @@ public abstract class BaseClassInfoCommand extends BaseCommand {
     super(jRocksConfig, projectConfig, terminalLogger);
   }
 
-  protected ClassInfoApi getClassInfoApi(ClassInfoParameterApi parameter) {
-
+  ClassInfoApi getClassInfoApi(ClassInfoParameterApi parameter) {
     ClassInfo sourceClass = classPathScanner.getAllClassInfo()
         .filter(ci -> ci.getName().equals(parameter.getClassCanonicalName()))
         .findAny()
         .orElseThrow(() -> new IllegalStateException(format("Class '%s' not found on the class path", parameter.getClassCanonicalName())));
-
     return new ClassInfoBuilder(sourceClass).build();
   }
 
   protected static void setLoggingLevel(Level level) {
     ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ROOT_LOGGER_NAME);
     root.setLevel(level);
-  }
-
-  protected void writeSource(String generatedSource, ClassInfoParameterApi parameter, ClassInfoApi classInfoApi) {
-
-    String outputDurectory = classInfoApi.getSourceClassPath().getAbsolutePath();
-
-    // TODO encapsulate project configs
-    int outputDirectoryIdx = getProjectConfig().getOutputDirectories().indexOf(outputDurectory);
-    String destDirectory = getProjectConfig().getSourceDirectories().get(outputDirectoryIdx);
-
-    Path path = Paths.get(destDirectory + File.separator + classInfoApi.canonicalName().replace(".", File.separator) + parameter.suffix() + ".java");
-    File file = path.toFile();
-    if (file.exists() && !parameter.isForce()) {
-      getLogger().error("%s file exists, please add --force if you want to overwrite", path.toString());
-      return;
-    }
-    try {
-      File dir = new File(destDirectory);
-      if (!dir.isDirectory()) {
-        boolean success = dir.mkdirs();
-        if (success) {
-          getLogger().info("Created path: " + dir.getPath());
-        } else {
-          getLogger().info("Could not create path: " + dir.getPath());
-        }
-      } else {
-        getLogger().info("Path exists: " + dir.getPath());
-      }
-      Path savedFile = Files.write(path, generatedSource.getBytes());
-      getLogger().info("%s class generated with success.", savedFile.getFileName().toFile().getAbsolutePath());
-      getLogger().verbose("Generated source: \n\n%s", generatedSource);
-    } catch (IOException e) {
-      throw new IllegalStateException(format("Enable to create '%s' file!", destDirectory), e);
-    }
   }
 }

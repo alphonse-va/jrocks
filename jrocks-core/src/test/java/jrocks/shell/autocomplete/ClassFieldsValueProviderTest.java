@@ -56,8 +56,8 @@
 //  }
 //
 //  //@Test
-//  void getSourceClassName() {
-//    final Optional<Class<?>> actual = valueProvider.getSourceClassName(VALID_COMPLETION_CONTEXT);
+//  void getBuilderName() {
+//    final Optional<Class<?>> actual = valueProvider.getBuilderName(VALID_COMPLETION_CONTEXT);
 //    assertThat(actual).isPresent();
 //  }
 //

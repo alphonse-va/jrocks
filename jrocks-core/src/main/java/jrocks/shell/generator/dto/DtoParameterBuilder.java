@@ -1,4 +1,4 @@
-package jrocks.shell.command.bean;
+package jrocks.shell.generator.dto;
 
 import jrocks.api.ClassInfoParameterApi;
 
@@ -8,7 +8,7 @@ public class DtoParameterBuilder {
   private ClassInfoParameterApi classInfoParameter;
 
 
-  public DtoParameterBuilder setWithFactoryMethod(boolean withFactoryMethod) {
+  DtoParameterBuilder setWithFactoryMethod(boolean withFactoryMethod) {
     this.withFactoryMethod = withFactoryMethod;
     return this;
   }

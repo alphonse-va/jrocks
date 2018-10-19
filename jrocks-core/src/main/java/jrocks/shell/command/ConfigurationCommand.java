@@ -1,19 +1,19 @@
-package jrocks.shell.config;
+package jrocks.shell.command;
 
 import jrocks.shell.TerminalLogger;
 import jrocks.shell.autocomplete.PackageValueProvider;
-import jrocks.shell.command.BaseCommand;
+import jrocks.shell.config.JRocksConfig;
+import jrocks.shell.config.JRocksProjectConfig;
 import jrocks.shell.config.JRocksProjectConfig.PropertyCode;
+import jrocks.shell.config.MavenProjectUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.Availability;
-import org.springframework.shell.standard.ShellComponent;
-import org.springframework.shell.standard.ShellMethod;
-import org.springframework.shell.standard.ShellMethodAvailability;
-import org.springframework.shell.standard.ShellOption;
+import org.springframework.shell.standard.*;
 
 import java.io.File;
 
 @ShellComponent
+@ShellCommandGroup(value = "Configuration")
 public class ConfigurationCommand extends BaseCommand {
 
   private final MavenProjectUtil mavenProjectUtil;
@@ -24,7 +24,7 @@ public class ConfigurationCommand extends BaseCommand {
     this.mavenProjectUtil = mavenProjectUtil;
   }
 
-  @ShellMethod(key = "init", value = "Initialize JRocks project", group = "Config")
+  @ShellMethod(key = "init", value = "Initialize JRocks project")
   public void initialize(@ShellOption(valueProvider = PackageValueProvider.class) String basePackage, boolean force) {
     if (getProjectConfig().isInitialized() && !force)
       if (!isMavenProject())
@@ -44,19 +44,19 @@ public class ConfigurationCommand extends BaseCommand {
     showConfig();
   }
 
-  @ShellMethod(key = "show-config", value = "Show JRocks configuration", group = "Config")
+  @ShellMethod(key = "show-config", value = "Show JRocks configuration")
   void showConfig() {
     getLogger().info("\n" + getProjectConfig().toString() + "\n");
     getLogger().info(getConfig().toString() + "\n");
   }
 
-  @ShellMethod(key = "set-config", value = "Set Configuration Property", group = "Config")
+  @ShellMethod(key = "set-config", value = "Set Configuration Property")
   void setConfig(PropertyCode property, String value) {
     getProjectConfig().storeProperty(property, value);
     getLogger().info("✔ %s='%s'", property.getPropertyName(), value);
   }
 
-  @ShellMethod(value = "Show debug information", group = "Config")
+  @ShellMethod(value = "Show debug information")
   void debug(boolean enable, boolean disable) {
     boolean status = enable || !disable;
     getLogger().setVerbose(status);

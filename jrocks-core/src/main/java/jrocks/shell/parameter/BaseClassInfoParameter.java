@@ -27,13 +27,16 @@ public class BaseClassInfoParameter implements ClassInfoParameterApi {
 
   private File file;
 
+  private List<String> additionalFlags;
+
   BaseClassInfoParameter(String classCanonicalName,
                          boolean force,
                          List<String> excludedFields,
                          List<String> includedFields,
                          List<String> mandatoryFields,
                          String suffix,
-                         String suffixToRemove, File file) {
+                         String suffixToRemove, File file,
+                         List<String> additionalFlags) {
     this.classCanonicalName = classCanonicalName;
     this.force = force;
     this.excludedFields = excludedFields != null ? excludedFields : new ArrayList<>();
@@ -42,6 +45,7 @@ public class BaseClassInfoParameter implements ClassInfoParameterApi {
     this.suffix = suffix;
     this.suffixToRemove = suffixToRemove;
     this.file = file;
+    this.additionalFlags = additionalFlags;
   }
 
   protected BaseClassInfoParameter(ClassInfoParameterApi parameter) {
@@ -52,7 +56,8 @@ public class BaseClassInfoParameter implements ClassInfoParameterApi {
         parameter.getMandatoryFields(),
         parameter.suffix(),
         parameter.suffixToRemove(),
-        parameter.getFile());
+        parameter.getFile(),
+        parameter.getAdditionalFlags());
   }
 
   @Override
@@ -109,6 +114,11 @@ public class BaseClassInfoParameter implements ClassInfoParameterApi {
   @Override
   public File getFile() {
     return file;
+  }
+
+  @Override
+  public List<String> getAdditionalFlags() {
+    return additionalFlags;
   }
 
   @Override

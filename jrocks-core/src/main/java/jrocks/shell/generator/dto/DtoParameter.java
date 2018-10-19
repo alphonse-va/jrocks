@@ -1,4 +1,4 @@
-package jrocks.shell.command.bean;
+package jrocks.shell.generator.dto;
 
 import jrocks.api.ClassInfoParameterApi;
 import jrocks.shell.parameter.BaseClassInfoParameter;
@@ -11,7 +11,6 @@ public class DtoParameter extends BaseClassInfoParameter {
     super(parameter);
     this.withFactoryMethod = withFactoryMethod;
   }
-
 
   public boolean withFactoryMethod() {
     return withFactoryMethod;

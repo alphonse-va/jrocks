@@ -1,6 +1,7 @@
 package jrocks.api;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public interface ClassInfoParameterApi {
@@ -24,4 +25,6 @@ public interface ClassInfoParameterApi {
   boolean toExclude(String field);
 
   File getFile();
+
+  List<String> getAdditionalFlags();
 }

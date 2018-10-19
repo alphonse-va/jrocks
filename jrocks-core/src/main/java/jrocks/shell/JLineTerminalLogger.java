@@ -38,7 +38,7 @@ public class JLineTerminalLogger implements TerminalLogger {
   }
 
   private void printMessage(String message, Object[] values, int red) {
-    terminal.writer().println(new AttributedString(format(message, values),
+    terminal.writer().println(" " + new AttributedString(format(message, values),
         AttributedStyle.DEFAULT.foreground(red)).toAnsi());
   }
 

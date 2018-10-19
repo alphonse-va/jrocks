@@ -2,8 +2,7 @@ package jrocks.shell.autocomplete;
 
 import com.google.common.annotations.VisibleForTesting;
 import jrocks.shell.ClassPathScanner;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import jrocks.shell.TerminalLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.shell.CompletionContext;
@@ -21,12 +20,15 @@ import static org.apache.commons.lang3.StringUtils.substringAfterLast;
 @Component
 public class ClassFieldsValueProvider extends ValueProviderSupport {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(ClassFieldsValueProvider.class);
-
   private final ClassPathScanner classPathScanner;
 
+  private final TerminalLogger logger;
+
   @Autowired
-  public ClassFieldsValueProvider(ClassPathScanner classPathScanner) {this.classPathScanner = classPathScanner;}
+  public ClassFieldsValueProvider(ClassPathScanner classPathScanner, final TerminalLogger logger) {
+    this.classPathScanner = classPathScanner;
+    this.logger = logger;
+  }
 
   @Override
   public List<CompletionProposal> complete(MethodParameter parameter, CompletionContext completionContext, String[] hints) {
@@ -54,7 +56,7 @@ public class ClassFieldsValueProvider extends ValueProviderSupport {
         .collect(Collectors.toList());
   }
 
-  private boolean isFieldAlreadyContained(CompletionContext completionContext, String name) {
+  private boolean isFieldAlreadyContained(CompletionContext completionContext, CharSequence name) {
     return Arrays.stream(completionContext.currentWord().split(","))
         .noneMatch(w -> w.contains(name));
   }
@@ -67,7 +69,7 @@ public class ClassFieldsValueProvider extends ValueProviderSupport {
         .findAny();
 
     if (!classIdx.isPresent()) {
-      LOGGER.error("--class parameter must be specified");
+      logger.error("--class parameter must be specified");
       return Optional.empty();
     }
     String className = words.get(classIdx.getAsInt() + 1);
