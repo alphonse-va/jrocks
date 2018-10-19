@@ -1,6 +1,7 @@
 package jrocks.api;
 
-import java.lang.annotation.Annotation;
+import io.github.classgraph.AnnotationInfo;
+
 import java.util.stream.Stream;
 
 public interface FieldClassInfoApi extends ClassInfoApi {
@@ -9,9 +10,9 @@ public interface FieldClassInfoApi extends ClassInfoApi {
 
   String fieldNameCapitalized();
 
-  Stream<Annotation> fieldAnnotations();
+  Stream<AnnotationInfo> fieldAnnotations();
 
-  boolean isAnnotatedWith(Class<? extends Annotation>... annotationClass);
+  boolean isAnnotatedWith(String... annotationClasses);
 
   boolean hasNotNull();
 
@@ -49,9 +50,9 @@ public interface FieldClassInfoApi extends ClassInfoApi {
 
   String minSize();
 
-  int digitsInteger();
+  Integer digitsInteger();
 
-  int digitsFraction();
+  Integer digitsFraction();
 
   boolean isRequired();
 

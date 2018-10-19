@@ -27,7 +27,7 @@ public class ClassPathScanner {
   private ScanResult scanResult;
 
   /**
-   * REMEMBER: No constructor parameter here due to circular deps mess
+   * REMEMBER: No constructor parameter here due to circular deps with spring shell bean
    */
   @Autowired
   private TerminalLogger terminalLogger;
@@ -46,16 +46,21 @@ public class ClassPathScanner {
 
         scanResult = new ClassGraph()
             .enableAllInfo()
+//            .enableExternalClasses()
+//            .enableSystemPackages()
             .overrideClassLoaders(new URLClassLoader(projectConfig.getOutputDirectoriesAsURLs().toArray(new URL[0])))
             .whitelistPackages(basePackage)
             .scan();
       } catch (IllegalArgumentException e) {
         /*
           Fail back without base package
-          ClassGraph can throw IllegalArgumentException: This style of whitelisting/blacklisting is no longer supported
-          for invalid whitelistPackages
+
+          REMEMBER: ClassGraph can throw IllegalArgumentException: This style of whitelisting/blacklisting is no longer
+          supported for invalid whitelistPackages
+
           */
-        terminalLogger.warning("Base package '%s' configuration parameter seems to be malformed", basePackage);
+        terminalLogger.error("basePackage '%s' configuration parameter seems to be malformed", basePackage);
+        terminalLogger.warning("Please update your configuration:\n\n%s", projectConfig.toString());
         scanResult = new ClassGraph()
             .enableAllInfo()
             .overrideClassLoaders(new URLClassLoader(projectConfig.getOutputDirectoriesAsURLs().toArray(new URL[0])))
@@ -67,7 +72,7 @@ public class ClassPathScanner {
       classes.forEach(cl -> terminalLogger.verbose(cl.getName()));
       terminalLogger.verbose("\n\n");
     } else {
-      terminalLogger.verbose("Class path scanning skipped, JRocks is not yet initialized!");
+      terminalLogger.verbose("Classpath scanning skipped, JRocks is not yet initialized!");
     }
   }
 
@@ -86,17 +91,22 @@ public class ClassPathScanner {
         .collect(Collectors.toList());
   }
 
+  public Stream<ClassInfo> getAllClassInfo() {
+    rebuildIfNeeded();
+    return classes.stream();
+  }
+
   public List<String> getAllFieldsWithSetters(String className) {
     rebuildIfNeeded();
     return getFieldNames(className)
-        .filter(fieldName -> isMethodNameExist(className, "set", fieldName))
+        .filter(fieldName -> doesMethodExist(className, "set", fieldName))
         .collect(Collectors.toList());
   }
 
   public List<String> getAllFieldsWithGetters(String className) {
     rebuildIfNeeded();
     return getFieldNames(className)
-        .filter(fieldName -> isMethodNameExist(className, "get", fieldName))
+        .filter(fieldName -> doesMethodExist(className, "get", fieldName))
         .collect(Collectors.toList());
   }
 
@@ -104,9 +114,9 @@ public class ClassPathScanner {
     rebuildIfNeeded();
     return getFieldNames(className)
         .filter(fieldName ->
-            isMethodNameExist(className, "set", fieldName)
-                && (isMethodNameExist(className, "get", fieldName)
-                || isMethodNameExist(className, "is", fieldName)))
+            doesMethodExist(className, "set", fieldName)
+                && (doesMethodExist(className, "get", fieldName)
+                || doesMethodExist(className, "is", fieldName)))
         .collect(Collectors.toList());
   }
 
@@ -114,8 +124,8 @@ public class ClassPathScanner {
     return classes.get(className).getDeclaredFieldInfo().getNames().stream();
   }
 
-  private boolean isMethodNameExist(String className, String set, String fieldName) {
-    return !classes.get(className).getMethodInfo().get(getMethodName(set, fieldName)).isEmpty();
+  private boolean doesMethodExist(String className, String methodName, String fieldName) {
+    return !classes.get(className).getMethodInfo().get(getMethodName(methodName, fieldName)).isEmpty();
   }
 
   private static String getMethodName(String prefix, String fieldName) {

@@ -4,6 +4,7 @@ import jrocks.api.ClassInfoApi;
 import jrocks.api.FieldClassInfoApi;
 import jrocks.template.util.Inflector;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -11,7 +12,7 @@ import java.util.stream.Collectors;
 
 import static org.apache.commons.lang3.StringUtils.startsWith;
 
-public class BaseClassInfo implements ClassInfoApi {
+public class ReflectiveClassInfo implements ClassInfoApi {
 
   private static final Inflector INFLECTOR = new Inflector();
 
@@ -19,7 +20,7 @@ public class BaseClassInfo implements ClassInfoApi {
 
   private List<FieldClassInfoApi> properties = new ArrayList<>();
 
-  BaseClassInfo(Class<?> beanClass) {
+  public ReflectiveClassInfo(Class<?> beanClass) {
     this.beanClass = beanClass;
   }
 
@@ -68,6 +69,8 @@ public class BaseClassInfo implements ClassInfoApi {
         .map(ClassInfoApi::canonicalName).distinct().collect(Collectors.toList());
   }
 
+  // getters
+
   @Override
   public List<FieldClassInfoApi> getFields() {
     return properties;
@@ -77,8 +80,10 @@ public class BaseClassInfo implements ClassInfoApi {
     this.properties = properties;
   }
 
+  // internals
+
   @Override
-  public void addProperty(FieldClassInfoApi metaData) {
+  public void addField(FieldClassInfoApi metaData) {
     properties.add(metaData);
   }
 
@@ -87,12 +92,12 @@ public class BaseClassInfo implements ClassInfoApi {
     return properties.stream().anyMatch(FieldClassInfoApi::isRequired);
   }
 
-  private static Predicate<FieldClassInfoApi> javaLangFilter() {
-    return f -> !startsWith(f.canonicalName(), "java.lang");
+  @Override
+  public File getSourceClassPath() {
+    return null;
   }
 
-  @Override
-  public Class<?> getBeanClass() {
-    return beanClass;
+  private Predicate<FieldClassInfoApi> javaLangFilter() {
+    return f -> !startsWith(f.canonicalName(), "java.lang");
   }
 }

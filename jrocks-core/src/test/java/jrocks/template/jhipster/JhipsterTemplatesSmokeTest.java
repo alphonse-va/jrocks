@@ -1,7 +1,8 @@
 package jrocks.template.jhipster;
 
+import io.github.classgraph.ClassInfo;
 import jrocks.model.EntityClassInfo;
-import jrocks.samples.model.Matrix;
+import jrocks.model.ReflectiveClassInfo;
 import jrocks.template.AbstractSmokeTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,7 +17,10 @@ class JhipsterTemplatesSmokeTest extends AbstractSmokeTest {
 
   @BeforeEach
   void before() {
-    metaData = new EntityClassInfo(Matrix.class, Long.class);
+    ClassInfo matrixClassInfo = classes.get("jrocks.samples.model.Matrix");
+    ReflectiveClassInfo longClassInfo = new ReflectiveClassInfo(Long.class);
+
+    metaData = new EntityClassInfo(matrixClassInfo, longClassInfo);
   }
 
   @Test
@@ -40,7 +44,7 @@ class JhipsterTemplatesSmokeTest extends AbstractSmokeTest {
 
     String actual = serviceimpl.template(metaData).render().toString();
     assertThat(actual).contains("MatrixServiceImpl");
-   // assertThatClassCompile(repositoryEntry, new SimpleEntry<>(metaData.canonicalName() + "ServiceImpl", actual));
+    // assertThatClassCompile(repositoryEntry, new SimpleEntry<>(metaData.canonicalName() + "ServiceImpl", actual));
   }
 
   @Test

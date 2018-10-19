@@ -1,16 +1,19 @@
 package jrocks.model;
 
+import io.github.classgraph.ClassGraph;
+import io.github.classgraph.ClassInfo;
+import io.github.classgraph.ClassInfoList;
+import io.github.classgraph.ScanResult;
 import jrocks.api.FieldClassInfoApi;
-import jrocks.samples.model.Matrix;
-import org.apache.commons.lang3.reflect.FieldUtils;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javax.validation.constraints.Size;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
-class FieldClassInfoApiTest {
+class ClassGraphFieldInfoApiTest {
+
+  private static ClassInfoList classes;
 
   private FieldClassInfoApi usernameMD;
   private FieldClassInfoApi passwordMD;
@@ -19,14 +22,25 @@ class FieldClassInfoApiTest {
   private FieldClassInfoApi emailMD;
   private FieldClassInfoApi decimalMD;
 
+  @BeforeAll
+  static void beforeAll() {
+    ScanResult scanResult = new ClassGraph()
+        .enableAllInfo()
+        .whitelistPackages("jrocks")
+        .scan();
+    classes = scanResult.getAllStandardClasses();
+  }
+
   @BeforeEach
   void before() {
-    usernameMD = new FieldClassInfo(FieldUtils.getField(Matrix.class, "username", true));
-    passwordMD = new FieldClassInfo(FieldUtils.getField(Matrix.class, "password", true));
-    digitMD = new FieldClassInfo(FieldUtils.getField(Matrix.class, "digit", true));
-    dateMD = new FieldClassInfo(FieldUtils.getField(Matrix.class, "date", true));
-    emailMD = new FieldClassInfo(FieldUtils.getField(Matrix.class, "email", true));
-    decimalMD = new FieldClassInfo(FieldUtils.getField(Matrix.class, "decimal", true));
+    ClassInfo classInfo = classes.get("jrocks.samples.model.Matrix");
+
+    usernameMD = new ClassGraphFieldInfo(classInfo.getFieldInfo("username"));
+    passwordMD = new ClassGraphFieldInfo(classInfo.getFieldInfo("password"));
+    digitMD = new ClassGraphFieldInfo(classInfo.getFieldInfo("digit"));
+    dateMD = new ClassGraphFieldInfo(classInfo.getFieldInfo("date"));
+    emailMD = new ClassGraphFieldInfo(classInfo.getFieldInfo("email"));
+    decimalMD = new ClassGraphFieldInfo(classInfo.getFieldInfo("decimal"));
   }
 
   @Test
@@ -72,7 +86,7 @@ class FieldClassInfoApiTest {
 
   @Test
   void isAnnotedWith() {
-    assertThat(usernameMD.isAnnotatedWith(Size.class)).isTrue();
+    assertThat(usernameMD.isAnnotatedWith("javax.validation.constraints.Size")).isTrue();
   }
 
   @Test

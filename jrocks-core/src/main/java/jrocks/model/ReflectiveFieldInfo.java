@@ -1,7 +1,8 @@
 package jrocks.model;
 
+import io.github.classgraph.AnnotationInfo;
+import io.github.classgraph.utils.ReflectionUtils;
 import jrocks.api.FieldClassInfoApi;
-import jrocks.template.annotations.BuilderProperty;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.validation.constraints.*;
@@ -9,15 +10,14 @@ import java.beans.FeatureDescriptor;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.MethodDescriptor;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.stream.Stream;
 
-public class FieldClassInfo extends BaseClassInfo implements FieldClassInfoApi {
+public class ReflectiveFieldInfo extends ReflectiveClassInfo implements FieldClassInfoApi {
 
   private Field field;
 
-  FieldClassInfo(Field field) {
+  ReflectiveFieldInfo(Field field) {
     super(field.getType());
     this.field = field;
   }
@@ -33,13 +33,15 @@ public class FieldClassInfo extends BaseClassInfo implements FieldClassInfoApi {
   }
 
   @Override
-  public Stream<Annotation> fieldAnnotations() {
-    return Stream.of(field.getAnnotations());
+  public Stream<AnnotationInfo> fieldAnnotations() {
+    // TODO
+    //return Stream.of(field.getAnnotations());
+    return null;
   }
 
   @Override
-  public boolean isAnnotatedWith(Class<? extends Annotation>... annotationClasses) {
-    return Stream.of(annotationClasses).anyMatch(clazz -> field.getAnnotation(clazz) != null);
+  public boolean isAnnotatedWith(String... annotationClasses) {
+    return Stream.of(annotationClasses).anyMatch(className -> ReflectionUtils.classForNameOrNull(className) != null);
   }
 
   @Override
@@ -143,20 +145,22 @@ public class FieldClassInfo extends BaseClassInfo implements FieldClassInfoApi {
   }
 
   @Override
-  public int digitsInteger() {
+  public Integer digitsInteger() {
     Digits digits = field.getAnnotation(Digits.class);
     return digits != null ? digits.integer() : 0;
   }
 
   @Override
-  public int digitsFraction() {
+  public Integer digitsFraction() {
     Digits digits = field.getAnnotation(Digits.class);
     return digits != null ? digits.fraction() : 0;
   }
 
   @Override
   public boolean isRequired() {
-    return isAnnotatedWith(BuilderProperty.class, NotNull.class, NotEmpty.class, NotBlank.class);
+// TODO
+    //return isAnnotatedWith(BuilderProperty.class, NotNull.class, NotEmpty.class, NotBlank.class);
+    return false;
   }
 
   @Override

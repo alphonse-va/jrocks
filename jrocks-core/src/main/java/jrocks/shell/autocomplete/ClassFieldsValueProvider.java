@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static java.lang.String.format;
-import static org.apache.commons.lang3.StringUtils.*;
+import static org.apache.commons.lang3.StringUtils.substringAfterLast;
 
 @Component
 public class ClassFieldsValueProvider extends ValueProviderSupport {
@@ -30,23 +30,23 @@ public class ClassFieldsValueProvider extends ValueProviderSupport {
 
   @Override
   public List<CompletionProposal> complete(MethodParameter parameter, CompletionContext completionContext, String[] hints) {
-    return getSourceClass(completionContext)
+    return getSourceClassName(completionContext)
         .map(cp -> getCompletionProposals(cp, completionContext))
         .orElse(new ArrayList<>());
   }
 
   @VisibleForTesting
-  List<CompletionProposal> getCompletionProposals(Class<?> clazz, CompletionContext completionContext) {
+  List<CompletionProposal> getCompletionProposals(String className, CompletionContext completionContext) {
     String word = completionContext.currentWordUpToCursor();
     String lastProposal = substringAfterLast(word, ",").isEmpty()
         ? word.split(",")[word.split(",").length - 1]
         : substringAfterLast(word, ",");
 
 
-    boolean lastProposalIsField = classPathScanner.getAllFieldsWithGetterAndSetters(clazz.getCanonicalName())
+    boolean lastProposalIsField = classPathScanner.getAllFieldsWithGetterAndSetters(className)
         .stream().anyMatch(name -> !lastProposal.isEmpty() && name.startsWith(lastProposal.trim()));
 
-    return classPathScanner.getAllFieldsWithGetterAndSetters(clazz.getCanonicalName()).stream()
+    return classPathScanner.getAllFieldsWithGetterAndSetters(className).stream()
         .filter(name -> isFieldAlreadyContained(completionContext, name))
         .map(fieldName -> lastProposalIsField
             ? new CompletionProposal(format("%s,%s", word, fieldName).replace(",,", ",").trim())
@@ -60,7 +60,7 @@ public class ClassFieldsValueProvider extends ValueProviderSupport {
   }
 
   @VisibleForTesting
-  Optional<Class<?>> getSourceClass(CompletionContext completionContext) throws IllegalStateException {
+  Optional<String> getSourceClassName(CompletionContext completionContext) throws IllegalStateException {
     List<String> words = completionContext.getWords();
     OptionalInt classIdx = IntStream.range(0, words.size() - 1)
         .filter(i -> words.get(i).equals("--class"))
@@ -70,13 +70,7 @@ public class ClassFieldsValueProvider extends ValueProviderSupport {
       LOGGER.error("--class parameter must be specified");
       return Optional.empty();
     }
-
     String className = words.get(classIdx.getAsInt() + 1);
-    try {
-      return Optional.ofNullable(Class.forName(className));
-    } catch (ClassNotFoundException e) {
-      LOGGER.error("Class {} not found on class path", className);
-      return Optional.empty();
-    }
+    return Optional.ofNullable(className);
   }
 }

@@ -19,7 +19,6 @@ public class BaseClassInfoParameterBuilder {
   private String suffix;
   private String suffixToRemove;
   private File file;
-  private Class<?> sourceClass;
 
   public BaseClassInfoParameterBuilder setClassCanonicalName(String classCanonicalName) {
     this.classCanonicalName = classCanonicalName;
@@ -58,15 +57,10 @@ public class BaseClassInfoParameterBuilder {
 
   public BaseClassInfoParameter build() {
     Objects.requireNonNull(classCanonicalName, "classCanonicalName is required");
-    sourceClass = classForNameOrNull(classCanonicalName);
-    if (sourceClass == null) {
-      throw new IllegalStateException(format("Class '%s' not found on the class path", classCanonicalName));
-    }
-    file = new File(sourceClass.getProtectionDomain().getCodeSource().getLocation().getPath());
     return new BaseClassInfoParameter(classCanonicalName, force, excludedFields, includedFields, mandatoryFields, suffix, suffixToRemove, file);
   }
 
-  public BaseClassInfoParameterBuilder setFile(final File file) {
+  public BaseClassInfoParameterBuilder setFile(File file) {
     this.file = file;
     return this;
   }

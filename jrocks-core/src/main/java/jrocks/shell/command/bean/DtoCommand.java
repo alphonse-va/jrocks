@@ -58,7 +58,7 @@ public class DtoCommand extends BaseClassInfoCommand {
 
     ClassInfoApi classInfo = getClassInfoApi(dtoParameter);
     String generatedSource = dto.template(classInfo, dtoParameter).render().toString();
-    writeSource(generatedSource, dtoParameter);
+    writeSource(generatedSource, dtoParameter, classInfo);
 
     if (!isWithFactoryMethod) {
       BaseClassInfoParameter mapperParameter = new BaseClassInfoParameterBuilder()
@@ -68,7 +68,7 @@ public class DtoCommand extends BaseClassInfoCommand {
           .setSuffixToRemove(suffixToRemove)
           .build();
       String generatedMapperSource = mapper.template(classInfo, dtoParameter).render().toString();
-      writeSource(generatedMapperSource, mapperParameter);
+      writeSource(generatedMapperSource, mapperParameter, classInfo);
     }
   }
 

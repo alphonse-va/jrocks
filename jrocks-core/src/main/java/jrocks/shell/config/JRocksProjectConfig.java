@@ -1,5 +1,6 @@
 package jrocks.shell.config;
 
+import com.google.common.annotations.VisibleForTesting;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -199,6 +200,12 @@ public class JRocksProjectConfig {
           return false;
       }
     }
+  }
+
+  @VisibleForTesting
+  public JRocksProjectConfig setInitialized(boolean initialized) {
+    this.initialized = initialized;
+    return this;
   }
 
   @Override

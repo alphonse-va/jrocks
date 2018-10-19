@@ -34,10 +34,10 @@ public class @bean.simpleName()Builder {
     return @bean.propertyName();
   }
 
-@for (FieldClassInfoApi field : bean.getFields()) {
-  @if(field.isRequired() || param.toInclude(field.fieldName())) {
-  public @bean.simpleName()Builder @field.setter()(@field.simpleName() @field.fieldName()) {
-    @String.format("%s.set%s(%s)", bean.propertyName(), field.fieldNameCapitalized(), field.fieldName());
+@for (FieldClassInfoApi fieldInfo : bean.getFields()) {
+  @if(fieldInfo.isRequired() || param.toInclude(fieldInfo.fieldName())) {
+  public @bean.simpleName()Builder @fieldInfo.setter()(@fieldInfo.simpleName() @fieldInfo.fieldName()) {
+    @String.format("%s.set%s(%s)", bean.propertyName(), fieldInfo.fieldNameCapitalized(), fieldInfo.fieldName());
     return this;
   }
 

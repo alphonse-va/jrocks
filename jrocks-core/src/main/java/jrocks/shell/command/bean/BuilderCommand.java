@@ -57,7 +57,7 @@ public class BuilderCommand extends BaseClassInfoCommand {
     ClassInfoApi classInfo = getClassInfoApi(parameter);
     String generatedSource = builder.template(classInfo, parameter).render().toString();
 
-    writeSource(generatedSource, parameter);
+    writeSource(generatedSource, parameter, classInfo);
   }
 
   @ShellMethodAvailability("builder")

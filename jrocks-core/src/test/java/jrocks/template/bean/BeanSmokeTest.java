@@ -1,7 +1,8 @@
 package jrocks.template.bean;
 
+import io.github.classgraph.ClassInfo;
 import jrocks.api.ClassInfoApi;
-import jrocks.model.BaseClassInfoBuilder;
+import jrocks.model.ClassInfoBuilder;
 import jrocks.samples.model.Matrix;
 import jrocks.shell.command.bean.DtoParameter;
 import jrocks.shell.command.bean.DtoParameterBuilder;
@@ -20,7 +21,8 @@ class BeanSmokeTest extends AbstractSmokeTest {
 
   @BeforeEach
   void beforeEach() {
-    infoApi = new BaseClassInfoBuilder(Matrix.class).build();
+    ClassInfo classInfo = classes.get("jrocks.samples.model.Matrix");
+    infoApi = new ClassInfoBuilder(classInfo).build();
   }
 
   @Test
@@ -58,7 +60,7 @@ class BeanSmokeTest extends AbstractSmokeTest {
 //
 //  @Test
 //  void dtoWithReplaceSuffix() {
-//    final ClassInfoApi toMetaData = new BaseClassInfoBuilder(MatrixTo.class).build();
+//    final ClassInfoApi toMetaData = new ClassInfoBuilder(MatrixTo.class).build();
 //    final MapperData dtoData = new MapperData()
 //        .setSuffix("Dto")
 //        .setSuffixToRemove("To")

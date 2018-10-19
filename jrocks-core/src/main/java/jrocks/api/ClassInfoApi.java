@@ -1,5 +1,6 @@
 package jrocks.api;
 
+import java.io.File;
 import java.util.List;
 
 public interface ClassInfoApi {
@@ -22,9 +23,9 @@ public interface ClassInfoApi {
 
   List<FieldClassInfoApi> getFields();
 
-  void addProperty(FieldClassInfoApi metaData);
+  void addField(FieldClassInfoApi metaData);
 
   boolean hasRequiredFields();
 
-  Class<?> getBeanClass();
+  File getSourceClassPath();
 }

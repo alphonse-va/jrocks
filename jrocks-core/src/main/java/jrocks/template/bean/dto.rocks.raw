@@ -24,18 +24,18 @@ import javax.validation.constraints.NotNull;
 @@Generated(value = "jrocks", date = "@LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME)")
 public class @param.applySuffix(bean.simpleName()) {
 
-@for (FieldClassInfoApi field : bean.getFields()) {
-  @if (param.getMandatoryFields().contains(field.fieldName())) {
+@for (FieldClassInfoApi fieldInfo : bean.getFields()) {
+  @if (param.getMandatoryFields().contains(fieldInfo.fieldName())) {
   @@NotNull
   }
-  private @field.simpleName() @field.fieldName();
+  private @fieldInfo.simpleName() @fieldInfo.fieldName();
 
 }
 @if(param.withFactoryMethod()) {
   public static @param.applySuffix(bean.simpleName()) from(@bean.simpleName() from) {
     return new @param.applySuffix(bean.simpleName())()
-@for ((ForIterator i, FieldClassInfoApi field) : bean.getFields()) {
-        @String.format(".%s(from.%s())", field.setter(), field.getter())@if(i.last()) {;}
+@for ((ForIterator i, FieldClassInfoApi fieldInfo) : bean.getFields()) {
+        @String.format(".%s(from.%s())", fieldInfo.setter(), fieldInfo.getter())@if(i.last()) {;}
 }
   }
 }
@@ -43,20 +43,20 @@ public class @param.applySuffix(bean.simpleName()) {
 @if(param.withFactoryMethod()) {
   public static @bean.simpleName() to(@param.applySuffix(bean.simpleName()) to) {
     return new @bean.simpleName()()
-@for ((ForIterator i, FieldClassInfoApi field) : bean.getFields()) {
-        @String.format(".%s(to.%s())", field.setter(), field.getter())@if(i.last()) {;}
+@for ((ForIterator i, FieldClassInfoApi fieldInfo) : bean.getFields()) {
+        @String.format(".%s(to.%s())", fieldInfo.setter(), fieldInfo.getter())@if(i.last()) {;}
 }
   }
 }
-@for (FieldClassInfoApi field : bean.getFields()) {
+@for (FieldClassInfoApi fieldInfo : bean.getFields()) {
 
-  public @param.applySuffix(bean.simpleName()) @field.setter()(@field.simpleName() @field.fieldName()) {
-    @String.format("this.%s = %s;", field.fieldName(), field.fieldName());
+  public @param.applySuffix(bean.simpleName()) @fieldInfo.setter()(@fieldInfo.simpleName() @fieldInfo.fieldName()) {
+    @String.format("this.%s = %s;", fieldInfo.fieldName(), fieldInfo.fieldName());
     return this;
   }
 
-  public @field.simpleName() @field.getter()() {
-    return @field.fieldName();
+  public @fieldInfo.simpleName() @fieldInfo.getter()() {
+    return @fieldInfo.fieldName();
   }
 }
 }

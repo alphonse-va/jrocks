@@ -92,10 +92,10 @@ public class BaseClassInfoParameter implements ClassInfoParameterApi {
 
   // TODO: simple name and property name suffix
   public String applySuffix(String input) {
-    return isNotBlank(suffixToRemove) ? input.replaceAll(suffixToRemove + "$", suffix) : input + suffix;
+    return isNotBlank(suffixToRemove) ? input.replaceAll(suffixToRemove, suffix) : input + suffix;
   }
 
-  // TODO indicate somewhere in some way that in the end.. excludes preceded includes
+  // TODO indicate that in the end.. excludes preceded includes
   @Override
   public boolean toInclude(String field) {
     return !excludedFields.isEmpty() && includedFields.contains(field);
