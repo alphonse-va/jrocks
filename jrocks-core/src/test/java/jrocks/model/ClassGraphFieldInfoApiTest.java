@@ -26,7 +26,7 @@ class ClassGraphFieldInfoApiTest {
   static void beforeAll() {
     ScanResult scanResult = new ClassGraph()
         .enableAllInfo()
-        .whitelistPackages("jrocks")
+        .enableSystemPackages()
         .scan();
     classes = scanResult.getAllStandardClasses();
   }

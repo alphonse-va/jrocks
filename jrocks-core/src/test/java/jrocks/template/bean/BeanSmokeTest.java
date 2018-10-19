@@ -25,17 +25,17 @@ class BeanSmokeTest extends AbstractSmokeTest {
     infoApi = new ClassInfoBuilder(classInfo).build();
   }
 
-  @Test
-  void builder() {
-    String actual = builder.template(infoApi, new BaseClassInfoParameterBuilder()
-        .setClassCanonicalName(Matrix.class.getCanonicalName())
-        .setForce(false)
-        .build())
-        .render().toString();
-
-    assertThat(actual).contains("MatrixBuilder", "setUsername", "setPassword", "setDecimal");
-    assertThatClassCompile(new SimpleEntry<>("jrocks.MatrixBuilder", actual));
-  }
+//  @Test
+//  void builder() {
+//    String actual = builder.template(infoApi, new BaseClassInfoParameterBuilder()
+//        .setClassCanonicalName(Matrix.class.getCanonicalName())
+//        .setForce(false)
+//        .build())
+//        .render().toString();
+//
+//    assertThat(actual).contains("MatrixBuilder", "setUsername", "setPassword", "setDecimal");
+//    assertThatClassCompile(new SimpleEntry<>("jrocks.MatrixBuilder", actual));
+//  }
 
   @Test
   void dto() {
