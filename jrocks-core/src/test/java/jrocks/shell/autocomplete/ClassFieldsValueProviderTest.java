@@ -1,8 +1,8 @@
 //package jrocks.shell.autocomplete;
 //
-//import jrocks.ClassPathScanner;
+//import jrocks.shell.ClassPathScanner;
 //import jrocks.shell.JLineTerminalLogger;
-//import jrocks.shell.JRocksConfig;
+//import jrocks.shell.config.JRocksConfig;
 //import jrocks.shell.command.JRocksCommandStatus;
 //import org.junit.jupiter.api.BeforeEach;
 //import org.springframework.shell.CompletionContext;

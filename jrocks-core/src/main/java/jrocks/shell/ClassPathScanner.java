@@ -1,15 +1,16 @@
-package jrocks;
+package jrocks.shell;
 
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ClassInfo;
 import io.github.classgraph.ClassInfoList;
 import io.github.classgraph.ScanResult;
-import jrocks.shell.JRocksProjectConfig;
-import jrocks.shell.TerminalLogger;
+import jrocks.shell.config.JRocksProjectConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -26,7 +27,7 @@ public class ClassPathScanner {
   private ScanResult scanResult;
 
   /**
-   * REMEMBER: Not constructor parameter due to circular deps mess
+   * REMEMBER: No constructor parameter here due to circular deps mess
    */
   @Autowired
   private TerminalLogger terminalLogger;
@@ -39,11 +40,27 @@ public class ClassPathScanner {
   @PostConstruct
   public void rebuild() {
     if (projectConfig.isInitialized()) {
-      scanResult = new ClassGraph()
-          .enableAllInfo()
-          .whitelistPaths(projectConfig.getOutputDirectory())
-          .whitelistPackages(projectConfig.getBasePackage())
-          .scan();
+
+      String basePackage = projectConfig.getBasePackage();
+      try {
+
+        scanResult = new ClassGraph()
+            .enableAllInfo()
+            .overrideClassLoaders(new URLClassLoader(projectConfig.getOutputDirectoriesAsURLs().toArray(new URL[0])))
+            .whitelistPackages(basePackage)
+            .scan();
+      } catch (IllegalArgumentException e) {
+        /*
+          Fail back without base package
+          ClassGraph can throw IllegalArgumentException: This style of whitelisting/blacklisting is no longer supported
+          for invalid whitelistPackages
+          */
+        terminalLogger.warning("Base package '%s' configuration parameter seems to be malformed", basePackage);
+        scanResult = new ClassGraph()
+            .enableAllInfo()
+            .overrideClassLoaders(new URLClassLoader(projectConfig.getOutputDirectoriesAsURLs().toArray(new URL[0])))
+            .scan();
+      }
       classes = scanResult.getAllStandardClasses();
 
       terminalLogger.verbose("Classes available for completion\n");

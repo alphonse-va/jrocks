@@ -1,8 +1,6 @@
-package jrocks.shell.command.config;
+package jrocks.shell.config;
 
-import jrocks.ClassPathScanner;
-import jrocks.shell.JRocksConfig;
-import jrocks.shell.JRocksProjectConfig;
+import jrocks.shell.ClassPathScanner;
 import jrocks.shell.TerminalLogger;
 import jrocks.shell.command.BaseCommand;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +21,7 @@ public class ScanCommand extends BaseCommand {
 
   @ShellMethod(key = "rebuild-cache", value = "Rebuild cache", group = "Config")
   public void scanClassPath() {
-    if (getProjectConfig().isInitialized()) {
       scanner.rebuild();
-    }
   }
 
   @ShellMethod(key = "show-classes", value = "Show all classes eligible for autocomplete", group = "Config")

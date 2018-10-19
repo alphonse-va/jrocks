@@ -68,8 +68,6 @@ public class BaseClassInfo implements ClassInfoApi {
         .map(ClassInfoApi::canonicalName).distinct().collect(Collectors.toList());
   }
 
-  // getters
-
   @Override
   public List<FieldClassInfoApi> getFields() {
     return properties;
@@ -78,8 +76,6 @@ public class BaseClassInfo implements ClassInfoApi {
   public void setProperties(List<FieldClassInfoApi> properties) {
     this.properties = properties;
   }
-
-  // internals
 
   @Override
   public void addProperty(FieldClassInfoApi metaData) {
@@ -91,7 +87,12 @@ public class BaseClassInfo implements ClassInfoApi {
     return properties.stream().anyMatch(FieldClassInfoApi::isRequired);
   }
 
-  private Predicate<FieldClassInfoApi> javaLangFilter() {
+  private static Predicate<FieldClassInfoApi> javaLangFilter() {
     return f -> !startsWith(f.canonicalName(), "java.lang");
+  }
+
+  @Override
+  public Class<?> getBeanClass() {
+    return beanClass;
   }
 }

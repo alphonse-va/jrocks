@@ -4,8 +4,8 @@ import ch.qos.logback.classic.Level;
 import jrocks.api.ClassInfoApi;
 import jrocks.api.ClassInfoParameterApi;
 import jrocks.model.BaseClassInfoBuilder;
-import jrocks.shell.JRocksConfig;
-import jrocks.shell.JRocksProjectConfig;
+import jrocks.shell.config.JRocksConfig;
+import jrocks.shell.config.JRocksProjectConfig;
 import jrocks.shell.TerminalLogger;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
@@ -41,24 +41,15 @@ public abstract class BaseClassInfoCommand extends BaseCommand {
 
   protected void writeSource(String generatedSource, ClassInfoParameterApi parameter) {
     String sourceName = StringUtils.substringAfterLast(parameter.getClassCanonicalName(), ".");
-    String relativePath = StringUtils.removeEnd(parameter.getClassCanonicalName(), sourceName)
-        .replaceAll("\\.", File.separator);
-
-    String destDir = format("%s%s%s%s",
-        File.separator,
-        getProjectConfig().getSourceDirectory(),
-        File.separator,
-        relativePath
-    );
-
-    Path path = Paths.get(destDir + File.separator + sourceName + parameter.suffix() + ".java");
+    String destDirectory = parameter.getFile().getParentFile().getAbsolutePath();
+    Path path = Paths.get(destDirectory + File.separator + sourceName + parameter.suffix() + ".java");
     File file = path.toFile();
     if (file.exists() && !parameter.isForce()) {
       getLogger().error("%s file exists, please add --force if you want to overwrite", path.toString());
       return;
     }
     try {
-      File dir = new File(destDir);
+      File dir = new File(destDirectory);
       if (!dir.isDirectory()) {
         boolean success = dir.mkdirs();
         if (success) {
@@ -73,7 +64,7 @@ public abstract class BaseClassInfoCommand extends BaseCommand {
       getLogger().info("%s class generated with success.", savedFile.getFileName());
       getLogger().verbose("Generated source: \n\n%s", generatedSource);
     } catch (IOException e) {
-      throw new IllegalStateException(format("Enable to create '%s' file!", destDir), e);
+      throw new IllegalStateException(format("Enable to create '%s' file!", destDirectory), e);
     }
   }
 }

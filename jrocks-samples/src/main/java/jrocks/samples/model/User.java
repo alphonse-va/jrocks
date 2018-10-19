@@ -1,9 +1,16 @@
 package jrocks.samples.model;
 
+import javax.validation.constraints.NotNull;
+
 public class User {
 
+  @NotNull
   private String username;
+
+  @NotNull
   private String firstname;
+
+  @NotNull
   private String lastname;
 
   public String getUsername() {

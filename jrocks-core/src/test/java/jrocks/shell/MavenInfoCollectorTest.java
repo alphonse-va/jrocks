@@ -13,7 +13,7 @@ class MavenInfoCollectorTest {
   void collect() {
     final File pomFile = new File("/home/fons/dev/git/jrocks/jrocks-core/pom.xml");
     final MavenInfoCollector mavenInfoCollector = new MavenInfoCollector(pomFile);
-    System.out.printf(mavenInfoCollector.getSourceDirectory());
+    System.out.printf(mavenInfoCollector.getSourceDirectories());
   }
 
 }*/

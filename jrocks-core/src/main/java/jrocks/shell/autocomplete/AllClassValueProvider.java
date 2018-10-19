@@ -1,6 +1,6 @@
 package jrocks.shell.autocomplete;
 
-import jrocks.ClassPathScanner;
+import jrocks.shell.ClassPathScanner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.shell.CompletionContext;

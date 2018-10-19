@@ -1,8 +1,8 @@
 package jrocks.shell.command.bean;
 
 import jrocks.api.ClassInfoApi;
-import jrocks.shell.JRocksConfig;
-import jrocks.shell.JRocksProjectConfig;
+import jrocks.shell.config.JRocksConfig;
+import jrocks.shell.config.JRocksProjectConfig;
 import jrocks.shell.TerminalLogger;
 import jrocks.shell.autocomplete.AllClassValueProvider;
 import jrocks.shell.autocomplete.ClassFieldsValueProvider;
@@ -32,7 +32,6 @@ public class DtoCommand extends BaseClassInfoCommand {
       @ShellOption(value = "--suffix", help = "Suffix to add; default DTO", defaultValue = "DTO") String suffix,
       @ShellOption(value = "--suffix-to-remove", help = "Suffix to remove", defaultValue = "") String suffixToRemove,
       @ShellOption(value = "--with-factory-method", help = "Generate DTO with factory method") boolean isWithFactoryMethod,
-      @ShellOption(value = "--recursive", help = "Also generating DTO for children") boolean isRecursive,
 
       @ShellOption(value = "--excluded-fields", help = "Fields to exclude", defaultValue = "[]", valueProvider = ClassFieldsValueProvider.class) String[] excludedFields,
       @ShellOption(value = "--included-fields", help = "Fields to include", defaultValue = "[]", valueProvider = ClassFieldsValueProvider.class) String[] includedFields,

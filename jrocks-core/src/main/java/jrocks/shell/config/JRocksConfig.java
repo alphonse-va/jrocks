@@ -1,4 +1,4 @@
-package jrocks.shell;
+package jrocks.shell.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

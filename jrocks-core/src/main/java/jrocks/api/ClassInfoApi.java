@@ -25,4 +25,6 @@ public interface ClassInfoApi {
   void addProperty(FieldClassInfoApi metaData);
 
   boolean hasRequiredFields();
+
+  Class<?> getBeanClass();
 }

@@ -2,6 +2,7 @@ package jrocks.shell.parameter;
 
 import jrocks.api.ClassInfoParameterApi;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,13 +25,15 @@ public class BaseClassInfoParameter implements ClassInfoParameterApi {
 
   private boolean force;
 
+  private File file;
+
   BaseClassInfoParameter(String classCanonicalName,
                          boolean force,
                          List<String> excludedFields,
                          List<String> includedFields,
                          List<String> mandatoryFields,
                          String suffix,
-                         String suffixToRemove) {
+                         String suffixToRemove, File file) {
     this.classCanonicalName = classCanonicalName;
     this.force = force;
     this.excludedFields = excludedFields != null ? excludedFields : new ArrayList<>();
@@ -38,6 +41,7 @@ public class BaseClassInfoParameter implements ClassInfoParameterApi {
     this.mandatoryFields = mandatoryFields != null ? mandatoryFields : new ArrayList<>();
     this.suffix = suffix;
     this.suffixToRemove = suffixToRemove;
+    this.file = file;
   }
 
   protected BaseClassInfoParameter(ClassInfoParameterApi parameter) {
@@ -47,7 +51,8 @@ public class BaseClassInfoParameter implements ClassInfoParameterApi {
         parameter.getIncludedFields(),
         parameter.getMandatoryFields(),
         parameter.suffix(),
-        parameter.suffixToRemove());
+        parameter.suffixToRemove(),
+        parameter.getFile());
   }
 
   @Override
@@ -99,6 +104,11 @@ public class BaseClassInfoParameter implements ClassInfoParameterApi {
   @Override
   public boolean toExclude(String field) {
     return excludedFields.contains(field);
+  }
+
+  @Override
+  public File getFile() {
+    return file;
   }
 
   @Override

@@ -1,5 +1,6 @@
 package jrocks.api;
 
+import java.io.File;
 import java.util.List;
 
 public interface ClassInfoParameterApi {
@@ -21,4 +22,6 @@ public interface ClassInfoParameterApi {
   boolean toInclude(String field);
 
   boolean toExclude(String field);
+
+  File getFile();
 }

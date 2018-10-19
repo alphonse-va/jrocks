@@ -1,9 +1,12 @@
 package jrocks.shell.parameter;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static io.github.classgraph.utils.ReflectionUtils.classForNameOrNull;
+import static java.lang.String.format;
 import static java.util.Arrays.asList;
 
 public class BaseClassInfoParameterBuilder {
@@ -15,6 +18,8 @@ public class BaseClassInfoParameterBuilder {
   private List<String> mandatoryFields = new ArrayList<>();
   private String suffix;
   private String suffixToRemove;
+  private File file;
+  private Class<?> sourceClass;
 
   public BaseClassInfoParameterBuilder setClassCanonicalName(String classCanonicalName) {
     this.classCanonicalName = classCanonicalName;
@@ -53,6 +58,16 @@ public class BaseClassInfoParameterBuilder {
 
   public BaseClassInfoParameter build() {
     Objects.requireNonNull(classCanonicalName, "classCanonicalName is required");
-    return new BaseClassInfoParameter(classCanonicalName, force, excludedFields, includedFields, mandatoryFields, suffix, suffixToRemove);
+    sourceClass = classForNameOrNull(classCanonicalName);
+    if (sourceClass == null) {
+      throw new IllegalStateException(format("Class '%s' not found on the class path", classCanonicalName));
+    }
+    file = new File(sourceClass.getProtectionDomain().getCodeSource().getLocation().getPath());
+    return new BaseClassInfoParameter(classCanonicalName, force, excludedFields, includedFields, mandatoryFields, suffix, suffixToRemove, file);
+  }
+
+  public BaseClassInfoParameterBuilder setFile(final File file) {
+    this.file = file;
+    return this;
   }
 }

@@ -2,8 +2,8 @@ package jrocks.shell.command.bean;
 
 import jrocks.api.ClassInfoApi;
 import jrocks.api.ClassInfoParameterApi;
-import jrocks.shell.JRocksConfig;
-import jrocks.shell.JRocksProjectConfig;
+import jrocks.shell.config.JRocksConfig;
+import jrocks.shell.config.JRocksProjectConfig;
 import jrocks.shell.TerminalLogger;
 import jrocks.shell.autocomplete.AllClassValueProvider;
 import jrocks.shell.autocomplete.ClassFieldsValueProvider;
@@ -16,6 +16,8 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellMethodAvailability;
 import org.springframework.shell.standard.ShellOption;
+
+import java.io.File;
 
 @ShellComponent
 public class BuilderCommand extends BaseClassInfoCommand {
@@ -51,6 +53,7 @@ public class BuilderCommand extends BaseClassInfoCommand {
     getLogger().setVerbose(isVerbose);
     getLogger().info("Generate DTO for %s class with parameters:\n%s", parameter.getClassCanonicalName(), parameter);
 
+
     ClassInfoApi classInfo = getClassInfoApi(parameter);
     String generatedSource = builder.template(classInfo, parameter).render().toString();
 
@@ -58,7 +61,7 @@ public class BuilderCommand extends BaseClassInfoCommand {
   }
 
   @ShellMethodAvailability("builder")
-  public Availability availabilityCheck() {
+  private Availability availabilityCheck() {
     return getProjectConfig().isInitialized()
         ? Availability.available()
         : Availability.unavailable("you firstly need to execute 'init' command to initialize your JRocks project!");

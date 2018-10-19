@@ -1,9 +1,9 @@
 //package jrocks.shell.autocomplete;
 //
-//import jrocks.ClassPathScanner;
+//import jrocks.shell.ClassPathScanner;
 //import jrocks.shell.JLineTerminalLogger;
-//import jrocks.shell.JRocksConfig;
-//import jrocks.shell.JRocksProjectConfig;
+//import jrocks.shell.config.JRocksConfig;
+//import jrocks.shell.config.JRocksProjectConfig;
 //import jrocks.shell.command.JRocksCommandStatus;
 //import org.junit.jupiter.api.BeforeAll;
 //import org.junit.jupiter.api.BeforeEach;
@@ -25,7 +25,7 @@
 //  static void beforeAll() {
 //    JRocksProjectConfig jRocksConfig = new JRocksConfig()
 //        .setBasePackage("jrocks.samples")
-//        .setOutputDirectory("/home/fons/dev/git/jrocks/jrocks-core/target/classes");
+//        .setOutputDirectories("/home/fons/dev/git/jrocks/jrocks-core/target/classes");
 //    scanner = new ClassPathScanner(jRocksConfig, new JRocksCommandStatus().setInititalized(true));
 //    scanner.setTerminalLogger(new JLineTerminalLogger());
 //  }
