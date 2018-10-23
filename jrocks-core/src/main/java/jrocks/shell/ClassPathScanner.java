@@ -67,12 +67,8 @@ public class ClassPathScanner {
             .scan();
       }
       classes = scanResult.getAllStandardClasses();
-
-      terminalLogger.verbose("Classes available for completion\n");
-      classes.forEach(cl -> terminalLogger.verbose(cl.getName()));
-      terminalLogger.verbose("\n\n");
     } else {
-      terminalLogger.verbose("Classpath scanning skipped, JRocks is not yet initialized!");
+      terminalLogger.warning("Classpath scanning skipped, JRocks is not yet initialized!");
     }
   }
 

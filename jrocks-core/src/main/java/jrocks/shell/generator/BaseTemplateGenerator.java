@@ -3,7 +3,6 @@ package jrocks.shell.generator;
 import jrocks.api.ClassInfoApi;
 import jrocks.api.ClassInfoParameterApi;
 import jrocks.shell.TerminalLogger;
-import jrocks.shell.config.JRocksConfig;
 import jrocks.shell.config.JRocksProjectConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -17,25 +16,17 @@ import static java.lang.String.format;
 
 public abstract class BaseTemplateGenerator implements TemplateGenerator {
 
-  private final JRocksConfig config;
-
+  private TerminalLogger logger;
   private JRocksProjectConfig projectConfig;
 
-  private TerminalLogger logger;
-
   @Autowired
-  protected BaseTemplateGenerator(JRocksConfig config, JRocksProjectConfig projectConfig, TerminalLogger logger) {
+  protected BaseTemplateGenerator(JRocksProjectConfig projectConfig, TerminalLogger logger) {
     this.projectConfig = projectConfig;
     this.logger = logger;
-    this.config = config;
   }
 
   protected TerminalLogger getLogger() {
     return logger;
-  }
-
-  protected JRocksConfig getConfig() {
-    return config;
   }
 
   public JRocksProjectConfig getProjectConfig() {
@@ -66,8 +57,6 @@ public abstract class BaseTemplateGenerator implements TemplateGenerator {
         } else {
           getLogger().info("Could not create path: " + dir.getPath());
         }
-      } else {
-        getLogger().info("Path exists: " + dir.getPath());
       }
       Path savedFile = Files.write(path, generatedSource.getBytes());
       getLogger().info("%s class generated with success.", savedFile.toFile().getAbsolutePath());

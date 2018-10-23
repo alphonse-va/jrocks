@@ -25,7 +25,7 @@ public class ClassFieldsValueProvider extends ValueProviderSupport {
   private final TerminalLogger logger;
 
   @Autowired
-  public ClassFieldsValueProvider(ClassPathScanner classPathScanner, final TerminalLogger logger) {
+  public ClassFieldsValueProvider(ClassPathScanner classPathScanner, TerminalLogger logger) {
     this.classPathScanner = classPathScanner;
     this.logger = logger;
   }
@@ -69,7 +69,7 @@ public class ClassFieldsValueProvider extends ValueProviderSupport {
         .findAny();
 
     if (!classIdx.isPresent()) {
-      logger.error("--class parameter must be specified");
+      logger.verbose("--class parameter must be specified");
       return Optional.empty();
     }
     String className = words.get(classIdx.getAsInt() + 1);

@@ -46,8 +46,8 @@ public class ConfigurationCommand extends BaseCommand {
 
   @ShellMethod(key = "show-config", value = "Show JRocks configuration")
   void showConfig() {
-    getLogger().info("\n" + getProjectConfig().toString() + "\n");
-    getLogger().info(getConfig().toString() + "\n");
+    getLogger().info(getProjectConfig().toString());
+    getLogger().info(getConfig().toString());
   }
 
   @ShellMethod(key = "set-config", value = "Set Configuration Property")

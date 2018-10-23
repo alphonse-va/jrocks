@@ -1,10 +1,10 @@
-package jrocks.shell.generator;
+package jrocks.shell.generator.builder;
 
 import jrocks.api.ClassInfoApi;
 import jrocks.api.ClassInfoParameterApi;
 import jrocks.shell.TerminalLogger;
-import jrocks.shell.config.JRocksConfig;
 import jrocks.shell.config.JRocksProjectConfig;
+import jrocks.shell.generator.BaseTemplateGenerator;
 import jrocks.template.bean.builder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component;
 public class BuilderTemplateGenerator extends BaseTemplateGenerator {
 
   @Autowired
-  protected BuilderTemplateGenerator(JRocksConfig config, JRocksProjectConfig projectConfig, TerminalLogger logger) {
-    super(config, projectConfig, logger);
+  protected BuilderTemplateGenerator(JRocksProjectConfig projectConfig, TerminalLogger logger) {
+    super(projectConfig, logger);
   }
 
   @Override

@@ -18,7 +18,7 @@ public class ScanCommand extends BaseCommand {
   private final ClassPathScanner scanner;
 
   @Autowired
-  protected ScanCommand(JRocksConfig jRocksConfig, JRocksProjectConfig projectConfig, TerminalLogger terminalLogger, final ClassPathScanner scanner) {
+  protected ScanCommand(JRocksConfig jRocksConfig, JRocksProjectConfig projectConfig, TerminalLogger terminalLogger, ClassPathScanner scanner) {
     super(jRocksConfig, projectConfig, terminalLogger);
     this.scanner = scanner;
   }

@@ -16,9 +16,12 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static java.lang.String.format;
+
 @Component
 public final class MavenProjectUtil {
 
+  private static final String HELP_EFFECTIVE_POM = "help:effective-pom";
   private static final boolean IS_WINDOWS = System.getProperty("os.name").toLowerCase().startsWith("windows");
 
   public List<MavenProject> loadProjects() {
@@ -40,9 +43,9 @@ public final class MavenProjectUtil {
   private List<String> grabMavenEffectivePoms() {
     ProcessBuilder builder = new ProcessBuilder();
     if (IS_WINDOWS) {
-      builder.command("mvn.exe", "help:effective-pom");
+      builder.command("mvn.exe", HELP_EFFECTIVE_POM);
     } else {
-      builder.command("mvn", "help:effective-pom");
+      builder.command("mvn", HELP_EFFECTIVE_POM);
     }
     try {
       Process process = builder.start();
@@ -55,7 +58,7 @@ public final class MavenProjectUtil {
       executorService.shutdown();
       return effectivePomToListOfPoms(result.toString());
     } catch (IOException | InterruptedException e) {
-      throw new IllegalStateException("Error while executing 'mvn help:effective-pom' command", e);
+      throw new IllegalStateException(format("Error while executing 'mvn %s' command", HELP_EFFECTIVE_POM), e);
     }
   }
 

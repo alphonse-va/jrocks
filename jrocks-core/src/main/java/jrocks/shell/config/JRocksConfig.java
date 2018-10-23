@@ -46,7 +46,7 @@ public class JRocksConfig {
 
   @Override
   public String toString() {
-    return new StringJoiner("\n", "JRocks Configuration:\n\n", "")
+    return new StringJoiner("\n", "JRocks Configuration:\n", "")
         .add("\tname='" + name + "'")
         .add("\tversion='" + version + "'")
         .add("\tconfigFileName='" + configFileName + "'")

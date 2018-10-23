@@ -40,9 +40,8 @@ public class GeneratorCommand extends BaseClassInfoCommand {
       @ShellOption(value = "--excluded-fields", help = "Fields to exclude", defaultValue = "[]", valueProvider = ClassFieldsValueProvider.class) String[] excludedFields,
       @ShellOption(value = "--included-fields", help = "Fields to include", defaultValue = "[]", valueProvider = ClassFieldsValueProvider.class) String[] includedFields,
       @ShellOption(value = "--mandatory-fields", help = "Mandatory fields", defaultValue = "[]", valueProvider = ClassFieldsValueProvider.class) String[] mandatoryFields,
-      @ShellOption(value = "--force", help = "Overwrite existing files") boolean isForced,
-      @ShellOption(value = "--verbose", help = "Verbose output") boolean isVerbose,
-      @ShellOption(value = "--additional-flags", help = "Generator specific additional flags", defaultValue = "[]", valueProvider = AdditionalFlagValueProvider.class) String[] additionalFlags
+      @ShellOption(value = "--additional-flags", help = "Generator specific additional flags", defaultValue = "[]", valueProvider = AdditionalFlagValueProvider.class) String[] additionalFlags,
+      @ShellOption(value = "--force", help = "Overwrite existing files") boolean isForced
   ) {
 
     TemplateGenerator template = templates.stream()
