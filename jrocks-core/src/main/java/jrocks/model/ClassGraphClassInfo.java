@@ -1,8 +1,6 @@
 package jrocks.model;
 
 import io.github.classgraph.ClassInfo;
-import jrocks.api.ClassInfoApi;
-import jrocks.api.FieldClassInfoApi;
 import jrocks.template.util.Inflector;
 
 import java.io.File;

@@ -1,11 +1,10 @@
 package jrocks.shell.generator.dto;
 
-import jrocks.api.ClassInfoApi;
-import jrocks.api.ClassInfoParameterApi;
+import jrocks.model.ClassInfoApi;
+import jrocks.model.ClassInfoParameterApi;
 import jrocks.shell.TerminalLogger;
 import jrocks.shell.config.ConfigService;
 import jrocks.shell.generator.BaseTemplateGenerator;
-import jrocks.shell.parameter.BaseClassInfoParameter;
 import jrocks.shell.parameter.BaseClassInfoParameterBuilder;
 import jrocks.template.bean.dto;
 import jrocks.template.bean.mapper;
@@ -37,7 +36,7 @@ public class DtoTemplateGenerator extends BaseTemplateGenerator {
     writeSource(generatedSource, parameter, classInfo);
 
     if (!dtoParameter.withFactoryMethod()) {
-      BaseClassInfoParameter mapperParameter = new BaseClassInfoParameterBuilder()
+      ClassInfoParameterApi mapperParameter = new BaseClassInfoParameterBuilder()
           .setClassCanonicalName(parameter.getClassCanonicalName())
           .setForce(parameter.isForce())
           .setSuffix(parameter.suffix() + "Mapper")
@@ -54,7 +53,7 @@ public class DtoTemplateGenerator extends BaseTemplateGenerator {
   }
 
   @Override
-  public List<String> getAddtionalFlags() {
+  public List<String> getAdditionalFlags() {
     return Collections.singletonList(WITH_FACTORY_METHODS_FLAG);
   }
 

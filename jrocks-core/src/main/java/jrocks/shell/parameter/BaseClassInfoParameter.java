@@ -1,6 +1,6 @@
 package jrocks.shell.parameter;
 
-import jrocks.api.ClassInfoParameterApi;
+import jrocks.model.ClassInfoParameterApi;
 
 import java.io.File;
 import java.util.ArrayList;

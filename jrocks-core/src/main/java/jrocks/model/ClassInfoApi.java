@@ -1,4 +1,4 @@
-package jrocks.api;
+package jrocks.model;
 
 import java.io.File;
 import java.util.List;

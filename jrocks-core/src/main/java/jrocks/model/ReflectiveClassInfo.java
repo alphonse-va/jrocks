@@ -1,7 +1,5 @@
 package jrocks.model;
 
-import jrocks.api.ClassInfoApi;
-import jrocks.api.FieldClassInfoApi;
 import jrocks.template.util.Inflector;
 
 import java.io.File;

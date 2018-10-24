@@ -1,7 +1,6 @@
 package jrocks.model;
 
 import io.github.classgraph.*;
-import jrocks.api.FieldClassInfoApi;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;

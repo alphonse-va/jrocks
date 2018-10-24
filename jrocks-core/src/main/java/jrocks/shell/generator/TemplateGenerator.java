@@ -1,7 +1,7 @@
 package jrocks.shell.generator;
 
-import jrocks.api.ClassInfoApi;
-import jrocks.api.ClassInfoParameterApi;
+import jrocks.model.ClassInfoApi;
+import jrocks.model.ClassInfoParameterApi;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,7 @@ public interface TemplateGenerator {
 
   String getName();
 
-  default List<String> getAddtionalFlags() {
+  default List<String> getAdditionalFlags() {
     return new ArrayList<>();
   }
 

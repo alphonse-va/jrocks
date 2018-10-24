@@ -29,7 +29,7 @@ public class AdditionalFlagValueProvider extends ValueProviderSupport {
     String builderName = getBuilderName(completionContext);
     return templates.stream()
         .filter(t -> t.getName().equals(builderName))
-        .map(TemplateGenerator::getAddtionalFlags)
+        .map(TemplateGenerator::getAdditionalFlags)
         .flatMap(Collection::stream)
         .map(CompletionProposal::new)
         .collect(Collectors.toList());

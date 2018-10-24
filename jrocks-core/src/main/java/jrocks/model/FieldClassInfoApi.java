@@ -1,4 +1,4 @@
-package jrocks.api;
+package jrocks.model;
 
 import io.github.classgraph.AnnotationInfo;
 

@@ -1,7 +1,6 @@
 package jrocks.model;
 
 import io.github.classgraph.ClassInfo;
-import jrocks.api.EntityClassInfoApi;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

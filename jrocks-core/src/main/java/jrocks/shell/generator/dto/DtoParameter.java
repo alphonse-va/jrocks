@@ -1,6 +1,6 @@
 package jrocks.shell.generator.dto;
 
-import jrocks.api.ClassInfoParameterApi;
+import jrocks.model.ClassInfoParameterApi;
 import jrocks.shell.parameter.BaseClassInfoParameter;
 
 public class DtoParameter extends BaseClassInfoParameter {

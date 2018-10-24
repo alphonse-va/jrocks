@@ -1,5 +1,5 @@
-@import jrocks.api.ClassInfoApi
-@import jrocks.api.FieldClassInfoApi
+@import jrocks.model.ClassInfoApi
+@import jrocks.model.FieldClassInfoApi
 @import jrocks.shell.generator.dto.DtoParameter
 @import java.time.LocalDateTime
 @import java.time.format.DateTimeFormatter

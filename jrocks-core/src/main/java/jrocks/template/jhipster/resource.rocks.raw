@@ -1,4 +1,4 @@
-@import jrocks.api.EntityClassInfoApi
+@import jrocks.model.EntityClassInfoApi
 
 @args(EntityClassInfoApi md)
 

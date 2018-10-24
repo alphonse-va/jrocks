@@ -1,7 +1,7 @@
 package jrocks.template.bean;
 
 import io.github.classgraph.ClassInfo;
-import jrocks.api.ClassInfoApi;
+import jrocks.model.ClassInfoApi;
 import jrocks.model.ClassInfoBuilder;
 import jrocks.samples.model.Matrix;
 import jrocks.shell.generator.dto.DtoParameter;

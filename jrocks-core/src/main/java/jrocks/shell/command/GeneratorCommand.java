@@ -1,7 +1,7 @@
 package jrocks.shell.command;
 
-import jrocks.api.ClassInfoApi;
-import jrocks.api.ClassInfoParameterApi;
+import jrocks.model.ClassInfoApi;
+import jrocks.model.ClassInfoParameterApi;
 import jrocks.shell.TerminalLogger;
 import jrocks.shell.autocomplete.AdditionalFlagValueProvider;
 import jrocks.shell.autocomplete.AllClassValueProvider;

@@ -1,7 +1,7 @@
-@import jrocks.api.ClassInfoApi
-@import jrocks.api.FieldClassInfoApi
+@import jrocks.model.ClassInfoApi
+@import jrocks.model.FieldClassInfoApi
 @import jrocks.template.annotations.BuilderProperty
-@import jrocks.api.ClassInfoParameterApi
+@import jrocks.model.ClassInfoParameterApi
 @import java.time.LocalDateTime
 @import java.time.format.DateTimeFormatter
 

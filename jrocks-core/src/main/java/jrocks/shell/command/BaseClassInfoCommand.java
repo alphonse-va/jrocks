@@ -2,8 +2,8 @@ package jrocks.shell.command;
 
 import ch.qos.logback.classic.Level;
 import io.github.classgraph.ClassInfo;
-import jrocks.api.ClassInfoApi;
-import jrocks.api.ClassInfoParameterApi;
+import jrocks.model.ClassInfoApi;
+import jrocks.model.ClassInfoParameterApi;
 import jrocks.model.ClassInfoBuilder;
 import jrocks.shell.ClassPathScanner;
 import jrocks.shell.TerminalLogger;

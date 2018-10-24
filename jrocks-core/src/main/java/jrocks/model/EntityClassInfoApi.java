@@ -1,4 +1,4 @@
-package jrocks.api;
+package jrocks.model;
 
 public interface EntityClassInfoApi extends ClassInfoApi {
 

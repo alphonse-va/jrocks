@@ -2,7 +2,6 @@ package jrocks.model;
 
 import io.github.classgraph.ClassInfo;
 import io.github.classgraph.ClassRefTypeSignature;
-import jrocks.api.ClassInfoApi;
 
 
 /**

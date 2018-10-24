@@ -2,7 +2,6 @@ package jrocks.model;
 
 import io.github.classgraph.AnnotationInfo;
 import io.github.classgraph.utils.ReflectionUtils;
-import jrocks.api.FieldClassInfoApi;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.validation.constraints.*;
