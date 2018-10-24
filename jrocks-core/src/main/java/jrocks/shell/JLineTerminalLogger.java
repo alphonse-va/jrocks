@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Nonnull;
+import java.util.stream.Stream;
 
 import static java.lang.String.format;
 import static org.jline.utils.AttributedStyle.*;
@@ -41,33 +42,35 @@ public class JLineTerminalLogger implements TerminalLogger {
   }
 
   private void printMessage(String message, Object[] values, int color) {
-
-    AttributedString messagePrefix;
-    switch (color) {
-      case BLUE:
-        messagePrefix = getMessagePrefix(color, "[INFO] ");
-        break;
-      case YELLOW:
-        messagePrefix = getMessagePrefix(color, "[WARN] ");
-        break;
-      case RED:
-        messagePrefix = getMessagePrefix(color, "[ERROR] ");
-        break;
-      case MAGENTA:
-        messagePrefix = getMessagePrefix(color, "[VERB] ");
-        break;
-      default:
-        messagePrefix = getMessagePrefix(color, "[INFO] ");
-        break;
-    }
-
-    terminal.writer().print(messagePrefix.toAnsi());
-    terminal.writer().println(new AttributedString(format(message, values), AttributedStyle.DEFAULT).toAnsi());
+    String formattedMessage = format(message, values);
+    Stream.of(formattedMessage.split("\n"))
+        .forEach(m -> {
+          terminal.writer().print(getMessagePrefix(color).toAnsi());
+          terminal.writer().println(new AttributedString(m, AttributedStyle.DEFAULT).toAnsi());
+        });
   }
 
   @Nonnull
-  private AttributedString getMessagePrefix(int color, String s) {
-    return new AttributedString(s, AttributedStyle.DEFAULT.foreground(color));
+  private AttributedString getMessagePrefix(int color) {
+    String messagePrefix;
+    switch (color) {
+      case BLUE:
+        messagePrefix = "*";
+        break;
+      case YELLOW:
+        messagePrefix = "*";
+        break;
+      case RED:
+        messagePrefix = "*";
+        break;
+      case MAGENTA:
+        messagePrefix = "*";
+        break;
+      default:
+        messagePrefix = "[I]";
+        break;
+    }
+    return new AttributedString(messagePrefix + " ", AttributedStyle.DEFAULT.foreground(color));
   }
 
   @Override

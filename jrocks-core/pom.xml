@@ -11,7 +11,6 @@
         <version>0.0.1</version>
     </parent>
 
-    <groupId>be.unlock</groupId>
     <artifactId>jrocks-core</artifactId>
     <version>0.0.1</version>
     <packaging>jar</packaging>
@@ -67,11 +66,10 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- Test deps -->
         <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-jpa</artifactId>
-            <version>2.0.8.RELEASE</version>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
+            <version>4.12.1</version>
             <scope>test</scope>
         </dependency>
 
@@ -85,6 +83,31 @@
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-core</artifactId>
             <version>3.3.9</version>
+        </dependency>
+
+        <!-- YALM -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-yaml</artifactId>
+            <version>2.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.2.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.4</version>
+        </dependency>
+
+        <!-- Test deps -->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+            <version>2.0.8.RELEASE</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -155,7 +178,7 @@
                     <dependency>
                         <groupId>org.junit.jupiter</groupId>
                         <artifactId>junit-jupiter-engine</artifactId>
-                        <version>5.1.0</version>
+                        <version>5.3.1</version>
                     </dependency>
                 </dependencies>
             </plugin>

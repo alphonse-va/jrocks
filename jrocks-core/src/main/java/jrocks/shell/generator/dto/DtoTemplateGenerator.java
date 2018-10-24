@@ -3,7 +3,7 @@ package jrocks.shell.generator.dto;
 import jrocks.api.ClassInfoApi;
 import jrocks.api.ClassInfoParameterApi;
 import jrocks.shell.TerminalLogger;
-import jrocks.shell.config.JRocksProjectConfig;
+import jrocks.shell.config.ConfigService;
 import jrocks.shell.generator.BaseTemplateGenerator;
 import jrocks.shell.parameter.BaseClassInfoParameter;
 import jrocks.shell.parameter.BaseClassInfoParameterBuilder;
@@ -21,8 +21,8 @@ public class DtoTemplateGenerator extends BaseTemplateGenerator {
   private static final String WITH_FACTORY_METHODS_FLAG = "with-factory-method";
 
   @Autowired
-  protected DtoTemplateGenerator(JRocksProjectConfig projectConfig, TerminalLogger logger) {
-    super(projectConfig, logger);
+  protected DtoTemplateGenerator(ConfigService configService, TerminalLogger logger) {
+    super(configService, logger);
   }
 
   @Override

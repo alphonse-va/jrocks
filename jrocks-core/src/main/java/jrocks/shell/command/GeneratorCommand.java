@@ -7,8 +7,7 @@ import jrocks.shell.autocomplete.AdditionalFlagValueProvider;
 import jrocks.shell.autocomplete.AllClassValueProvider;
 import jrocks.shell.autocomplete.ClassFieldsValueProvider;
 import jrocks.shell.autocomplete.TemplateGeneratorValueProvider;
-import jrocks.shell.config.JRocksConfig;
-import jrocks.shell.config.JRocksProjectConfig;
+import jrocks.shell.config.ConfigService;
 import jrocks.shell.generator.TemplateGenerator;
 import jrocks.shell.parameter.BaseClassInfoParameterBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +25,8 @@ public class GeneratorCommand extends BaseClassInfoCommand {
   private final List<TemplateGenerator> templates;
 
   @Autowired
-  public GeneratorCommand(JRocksConfig jRocksConfig, JRocksProjectConfig projectConfig, TerminalLogger terminalLogger, List<TemplateGenerator> templates) {
-    super(jRocksConfig, projectConfig, terminalLogger);
+  public GeneratorCommand(ConfigService configService, TerminalLogger terminalLogger, List<TemplateGenerator> templates) {
+    super(configService, terminalLogger);
     this.templates = templates;
   }
 
@@ -68,7 +67,7 @@ public class GeneratorCommand extends BaseClassInfoCommand {
 
   @ShellMethodAvailability("generator")
   private Availability availabilityCheck() {
-    return getProjectConfig().isInitialized()
+    return getConfigService().isInitialized()
         ? Availability.available()
         : Availability.unavailable("you firstly need to execute 'init' command to initialize your JRocks project!");
   }

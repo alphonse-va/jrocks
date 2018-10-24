@@ -1,57 +1,38 @@
 package jrocks.shell.config;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.StringJoiner;
+import java.util.stream.Collectors;
+
 public class ProjectConfig {
 
-  private String name;
-  private String version;
-  private String sourceDirectory;
-  private String outputDirectory;
-  private String buildDirectory;
-  private String basePackage;
+  private String basePackage = "";
+  private boolean autoRebuild = true;
+  private Set<ModuleConfig> modules;
 
-  public String getName() {
-    return name;
+  public void addModule(ModuleConfig module) {
+    if (modules == null) modules = new HashSet<>();
+    modules.add(module);
   }
 
-  public ProjectConfig setName(String name) {
-    this.name = name;
-    return this;
+  @JsonIgnore
+  public URL[] getOutputDirectoriesAsURLs() {
+    return getModules().stream().map(m -> {
+      try {
+        return new URL("file://" + m.getOutputDirectory());
+      } catch (MalformedURLException e) {
+        throw new IllegalStateException("Not a valid URL " + m.getOutputDirectory());
+      }
+    }).toArray(URL[]::new);
   }
 
-  public String getVersion() {
-    return version;
-  }
-
-  public ProjectConfig setVersion(String version) {
-    this.version = version;
-    return this;
-  }
-
-  public String getSourceDirectory() {
-    return sourceDirectory;
-  }
-
-  public ProjectConfig setSourceDirectory(String sourceDirectory) {
-    this.sourceDirectory = sourceDirectory;
-    return this;
-  }
-
-  public String getOutputDirectory() {
-    return outputDirectory;
-  }
-
-  public ProjectConfig setOutputDirectory(String outputDirectory) {
-    this.outputDirectory = outputDirectory;
-    return this;
-  }
-
-  public String getBuildDirectory() {
-    return buildDirectory;
-  }
-
-  public ProjectConfig setBuildDirectory(String buildDirectory) {
-    this.buildDirectory = buildDirectory;
-    return this;
+  public Set<ModuleConfig> getModules() {
+    return modules == null ? modules = new HashSet<>() : modules;
   }
 
   public String getBasePackage() {
@@ -61,5 +42,24 @@ public class ProjectConfig {
   public ProjectConfig setBasePackage(String basePackage) {
     this.basePackage = basePackage;
     return this;
+  }
+
+  public boolean isAutoRebuild() {
+    return autoRebuild;
+  }
+
+  public ProjectConfig setAutoRebuild(boolean autoRebuild) {
+    this.autoRebuild = autoRebuild;
+    return this;
+  }
+
+
+  @Override
+  public String toString() {
+    return new StringJoiner("\n", "Project Configuration:\n", "")
+        .add("\tBase Package: '" + basePackage + "'")
+        .add("\tAuto Rebuild: " + autoRebuild)
+        .add("\tModules:" + modules.stream().map(ModuleConfig::toString).collect(Collectors.joining()))
+        .toString();
   }
 }

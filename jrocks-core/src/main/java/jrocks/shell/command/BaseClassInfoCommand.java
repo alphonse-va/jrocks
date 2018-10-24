@@ -7,16 +7,9 @@ import jrocks.api.ClassInfoParameterApi;
 import jrocks.model.ClassInfoBuilder;
 import jrocks.shell.ClassPathScanner;
 import jrocks.shell.TerminalLogger;
-import jrocks.shell.config.JRocksConfig;
-import jrocks.shell.config.JRocksProjectConfig;
+import jrocks.shell.config.ConfigService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import static ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME;
 import static java.lang.String.format;
@@ -26,8 +19,8 @@ public abstract class BaseClassInfoCommand extends BaseCommand {
   @Autowired
   private ClassPathScanner classPathScanner;
 
-  protected BaseClassInfoCommand(JRocksConfig jRocksConfig, JRocksProjectConfig projectConfig, TerminalLogger terminalLogger) {
-    super(jRocksConfig, projectConfig, terminalLogger);
+  protected BaseClassInfoCommand(ConfigService configService, TerminalLogger terminalLogger) {
+    super(configService, terminalLogger);
   }
 
   ClassInfoApi getClassInfoApi(ClassInfoParameterApi parameter) {

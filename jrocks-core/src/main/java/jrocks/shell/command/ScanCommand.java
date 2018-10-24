@@ -2,8 +2,7 @@ package jrocks.shell.command;
 
 import jrocks.shell.ClassPathScanner;
 import jrocks.shell.TerminalLogger;
-import jrocks.shell.config.JRocksConfig;
-import jrocks.shell.config.JRocksProjectConfig;
+import jrocks.shell.config.ConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.Availability;
 import org.springframework.shell.standard.ShellCommandGroup;
@@ -18,14 +17,14 @@ public class ScanCommand extends BaseCommand {
   private final ClassPathScanner scanner;
 
   @Autowired
-  protected ScanCommand(JRocksConfig jRocksConfig, JRocksProjectConfig projectConfig, TerminalLogger terminalLogger, ClassPathScanner scanner) {
-    super(jRocksConfig, projectConfig, terminalLogger);
+  protected ScanCommand(ConfigService configService, TerminalLogger terminalLogger, ClassPathScanner scanner) {
+    super(configService, terminalLogger);
     this.scanner = scanner;
   }
 
   @ShellMethod(key = "rebuild-index", value = "Rebuild index")
   public void scanClassPath() {
-      scanner.rebuild();
+    scanner.rebuild();
   }
 
   @ShellMethod(key = "show-indexed-classes", value = "Show all classes indexed classes")
@@ -40,7 +39,7 @@ public class ScanCommand extends BaseCommand {
 
   @ShellMethodAvailability({"rebuild-cache", "show-classes"})
   public Availability availabilityCheck() {
-    return getProjectConfig().isInitialized()
+    return getConfigService().isInitialized()
         ? Availability.available()
         : Availability.unavailable("you firstly need to execute 'init' command to initialize your JRocks project!");
   }

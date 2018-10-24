@@ -1,6 +1,7 @@
 package jrocks.shell.autocomplete;
 
-import jrocks.shell.config.JRocksProjectConfig;
+import jrocks.shell.config.ConfigService;
+import jrocks.shell.config.ModuleConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.shell.CompletionContext;
@@ -21,15 +22,16 @@ import static java.lang.String.format;
 @Component
 public class PackageValueProvider extends ValueProviderSupport {
 
-  private final JRocksProjectConfig projectConfig;
+  private final ConfigService projectConfig;
 
   @Autowired
-  public PackageValueProvider(JRocksProjectConfig projectConfig) {this.projectConfig = projectConfig;}
+  public PackageValueProvider(ConfigService configService) {this.projectConfig = configService;}
 
   @Override
   public List<CompletionProposal> complete(MethodParameter parameter, CompletionContext completionContext, String[] hints) {
     List<CompletionProposal> proposals = new ArrayList<>();
-    projectConfig.getOutputDirectories()
+    projectConfig.getConfig().getModules().stream()
+        .map(ModuleConfig::getOutputDirectory)
         .forEach(outputDirectory -> {
           try {
             Path outputDirectoryPath = Paths.get(outputDirectory);

@@ -1,4 +1,4 @@
 jrocks:
   name: jrocks
   version: ${project.version}
-  configFileName: .jrocks
+  configFilename: .jrocks

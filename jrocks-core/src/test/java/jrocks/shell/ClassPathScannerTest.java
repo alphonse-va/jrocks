@@ -2,29 +2,40 @@ package jrocks.shell;
 
 import io.github.classgraph.ClassInfo;
 import jrocks.mock.TerminalLoggerMock;
-import jrocks.shell.config.JRocksProjectConfig;
+import jrocks.shell.config.ConfigService;
+import jrocks.shell.config.ModuleConfig;
+import jrocks.shell.config.ProjectConfig;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static org.mockito.Mockito.when;
+
+@ExtendWith(MockitoExtension.class)
 class ClassPathScannerTest {
 
   private ClassPathScanner classPathScanner;
-  private JRocksProjectConfig projectConfig;
 
   @BeforeEach
-  void beforeEach() {
-    projectConfig = new JRocksProjectConfig();
-    projectConfig.addOutputDirectory("./target/classes");
-    projectConfig.addSourceDirectory("./src/main/java");
-    projectConfig.addBuildDirectory("./target");
-    projectConfig.setBasePackage("jrocks");
-    projectConfig.setInitialized(true);
+  void beforeEach(@Mock ConfigService configService) {
+    ProjectConfig projectConfig = new ProjectConfig();
 
-    classPathScanner = new ClassPathScanner(projectConfig);
+    projectConfig
+        .setBasePackage("jrocks")
+        .setAutoRebuild(true)
+        .addModule(new ModuleConfig()
+            .setOutputDirectory("./target/classes")
+            .setSourceDirectory("./src/main/java"));
+
+    when(configService.getConfig()).thenReturn(projectConfig);
+    when(configService.isInitialized()).thenReturn(true);
+
+    classPathScanner = new ClassPathScanner(configService);
     classPathScanner.setTerminalLogger(new TerminalLoggerMock());
     classPathScanner.rebuild();
   }
@@ -40,7 +51,6 @@ class ClassPathScannerTest {
   @Test
   void getAllClassInfo() {
     Stream<ClassInfo> allClassInfo = classPathScanner.getAllClassInfo();
-    classPathScanner.getAllClassInfo().filter(ci -> ci.getName().endsWith("JRocksApplication")).map(ClassInfo::getClasspathElementFile).collect(Collectors.toList());
     Assertions.assertThat(allClassInfo).isNotEmpty();
   }
 

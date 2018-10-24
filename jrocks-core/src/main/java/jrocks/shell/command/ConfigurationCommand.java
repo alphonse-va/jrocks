@@ -2,10 +2,9 @@ package jrocks.shell.command;
 
 import jrocks.shell.TerminalLogger;
 import jrocks.shell.autocomplete.PackageValueProvider;
-import jrocks.shell.config.JRocksConfig;
-import jrocks.shell.config.JRocksProjectConfig;
-import jrocks.shell.config.JRocksProjectConfig.PropertyCode;
+import jrocks.shell.config.ConfigService;
 import jrocks.shell.config.MavenProjectUtil;
+import jrocks.shell.config.ModuleConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.Availability;
 import org.springframework.shell.standard.*;
@@ -19,41 +18,37 @@ public class ConfigurationCommand extends BaseCommand {
   private final MavenProjectUtil mavenProjectUtil;
 
   @Autowired
-  public ConfigurationCommand(JRocksConfig jRocksConfig, JRocksProjectConfig projectConfig, TerminalLogger terminalLogger, MavenProjectUtil mavenProjectUtil) {
-    super(jRocksConfig, projectConfig, terminalLogger);
+  public ConfigurationCommand(ConfigService configService, TerminalLogger terminalLogger, MavenProjectUtil mavenProjectUtil) {
+    super(configService, terminalLogger);
     this.mavenProjectUtil = mavenProjectUtil;
   }
 
   @ShellMethod(key = "init", value = "Initialize JRocks project")
   public void initialize(@ShellOption(valueProvider = PackageValueProvider.class) String basePackage, boolean force) {
-    if (getProjectConfig().isInitialized() && !force)
+    if (getConfigService().isInitialized() && !force)
       if (!isMavenProject())
         throw new IllegalStateException("init command must be executed from a maven root directory");
 
-    JRocksProjectConfig projectConfig = getProjectConfig();
-    projectConfig.clearDirectories();
     mavenProjectUtil.loadProjects()
-        .forEach(mavenProject -> {
-          projectConfig.addSourceDirectory(mavenProject.getBuild().getSourceDirectory());
-          projectConfig.addOutputDirectory(mavenProject.getBuild().getOutputDirectory());
-          projectConfig.addBuildDirectory(mavenProject.getBuild().getDirectory());
-        });
-    projectConfig.setBasePackage(basePackage);
-    projectConfig.setAutoRebuild(true);
-    projectConfig.store();
+        .forEach(mavenProject ->
+            getConfigService()
+                .addModule(new ModuleConfig()
+                    .setName(mavenProject.getName())
+                    .setVersion(mavenProject.getVersion())
+                    .setSourceDirectory(mavenProject.getBuild().getSourceDirectory())
+                    .setOutputDirectory(mavenProject.getBuild().getOutputDirectory())));
+
+    getConfigService().getConfig()
+        .setBasePackage(basePackage)
+        .setAutoRebuild(true);
+    getConfigService().save();
     showConfig();
   }
 
   @ShellMethod(key = "show-config", value = "Show JRocks configuration")
   void showConfig() {
-    getLogger().info(getProjectConfig().toString());
-    getLogger().info(getConfig().toString());
-  }
-
-  @ShellMethod(key = "set-config", value = "Set Configuration Property")
-  void setConfig(PropertyCode property, String value) {
-    getProjectConfig().storeProperty(property, value);
-    getLogger().info("✔ %s='%s'", property.getPropertyName(), value);
+    getLogger().info(getConfigService().getConfig().toString());
+    getLogger().info(getConfigService().getGlobalConfig().toString());
   }
 
   @ShellMethod(value = "Show debug information")
@@ -66,7 +61,7 @@ public class ConfigurationCommand extends BaseCommand {
 
   @ShellMethodAvailability({"show-config"})
   public Availability availabilityCheck() {
-    return getProjectConfig().isInitialized()
+    return getConfigService().isInitialized()
         ? Availability.available()
         : Availability.unavailable("you firstly need to execute 'init' command to initialize your JRocks project!");
   }

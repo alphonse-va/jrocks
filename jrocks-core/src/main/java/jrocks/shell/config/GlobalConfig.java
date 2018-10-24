@@ -9,7 +9,7 @@ import java.util.StringJoiner;
 @Configuration
 @EnableConfigurationProperties
 @ConfigurationProperties(prefix="jrocks")
-public class JRocksConfig {
+public class GlobalConfig {
 
   private String name;
 
@@ -21,7 +21,7 @@ public class JRocksConfig {
     return name;
   }
 
-  public JRocksConfig setName(String name) {
+  public GlobalConfig setName(String name) {
     this.name = name;
     return this;
   }
@@ -30,7 +30,7 @@ public class JRocksConfig {
     return version;
   }
 
-  public JRocksConfig setVersion(String version) {
+  public GlobalConfig setVersion(String version) {
     this.version = version;
     return this;
   }
@@ -39,7 +39,7 @@ public class JRocksConfig {
     return configFileName;
   }
 
-  public JRocksConfig setConfigFileName(String configFileName) {
+  public GlobalConfig setConfigFileName(String configFileName) {
     this.configFileName = configFileName;
     return this;
   }
@@ -47,9 +47,9 @@ public class JRocksConfig {
   @Override
   public String toString() {
     return new StringJoiner("\n", "JRocks Configuration:\n", "")
-        .add("\tname='" + name + "'")
-        .add("\tversion='" + version + "'")
-        .add("\tconfigFileName='" + configFileName + "'")
+        .add("\tName:'" + name + "'")
+        .add("\tVersion: '" + version + "'")
+        .add("\tConfig Filename: '" + configFileName + "'")
         .toString();
   }
 }

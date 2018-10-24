@@ -4,7 +4,7 @@ import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ClassInfo;
 import io.github.classgraph.ClassInfoList;
 import io.github.classgraph.ScanResult;
-import jrocks.shell.config.JRocksProjectConfig;
+import jrocks.shell.config.ConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +20,6 @@ import static org.apache.commons.lang3.StringUtils.capitalize;
 @Component
 public class ClassPathScanner {
 
-  private final JRocksProjectConfig projectConfig;
 
   private ClassInfoList classes;
 
@@ -32,23 +31,26 @@ public class ClassPathScanner {
   @Autowired
   private TerminalLogger terminalLogger;
 
+  private final ConfigService configService;
+
   @Autowired
-  public ClassPathScanner(JRocksProjectConfig projectConfig) {
-    this.projectConfig = projectConfig;
+  public ClassPathScanner(ConfigService configService) {
+    this.configService = configService;
   }
 
   @PostConstruct
   public void rebuild() {
-    if (projectConfig.isInitialized()) {
+    if (configService.isInitialized()) {
 
-      String basePackage = projectConfig.getBasePackage();
+      String basePackage = configService.getConfig().getBasePackage();
+      URL[] outputDirectoriesAsURLs = configService.getConfig().getOutputDirectoriesAsURLs();
       try {
 
         scanResult = new ClassGraph()
             .enableAllInfo()
 //            .enableExternalClasses()
 //            .enableSystemPackages()
-            .overrideClassLoaders(new URLClassLoader(projectConfig.getOutputDirectoriesAsURLs().toArray(new URL[0])))
+            .overrideClassLoaders(new URLClassLoader(outputDirectoriesAsURLs))
             .whitelistPackages(basePackage)
             .scan();
       } catch (IllegalArgumentException e) {
@@ -60,10 +62,10 @@ public class ClassPathScanner {
 
           */
         terminalLogger.error("basePackage '%s' configuration parameter seems to be malformed", basePackage);
-        terminalLogger.warning("Please update your configuration:\n\n%s", projectConfig.toString());
+        terminalLogger.warning("Please update your configuration:\n\n%s", configService.toString());
         scanResult = new ClassGraph()
             .enableAllInfo()
-            .overrideClassLoaders(new URLClassLoader(projectConfig.getOutputDirectoriesAsURLs().toArray(new URL[0])))
+            .overrideClassLoaders(new URLClassLoader(outputDirectoriesAsURLs))
             .scan();
       }
       classes = scanResult.getAllStandardClasses();
@@ -137,7 +139,7 @@ public class ClassPathScanner {
    * TODO: We could use an aspect to call this method
    */
   private void rebuildIfNeeded() {
-    if (projectConfig.isAutoRebuild()) {
+    if (configService.getConfig().isAutoRebuild()) {
       rebuild();
     } else if (scanResult.classpathContentsModifiedSinceScan()) {
       rebuild();

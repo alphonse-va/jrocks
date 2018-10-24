@@ -3,7 +3,8 @@ package jrocks.shell.generator;
 import jrocks.api.ClassInfoApi;
 import jrocks.api.ClassInfoParameterApi;
 import jrocks.shell.TerminalLogger;
-import jrocks.shell.config.JRocksProjectConfig;
+import jrocks.shell.config.ConfigService;
+import jrocks.shell.config.ModuleConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
@@ -11,17 +12,18 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Set;
 
 import static java.lang.String.format;
 
 public abstract class BaseTemplateGenerator implements TemplateGenerator {
 
   private TerminalLogger logger;
-  private JRocksProjectConfig projectConfig;
+  private ConfigService configService;
 
   @Autowired
-  protected BaseTemplateGenerator(JRocksProjectConfig projectConfig, TerminalLogger logger) {
-    this.projectConfig = projectConfig;
+  protected BaseTemplateGenerator(ConfigService configService, TerminalLogger logger) {
+    this.configService = configService;
     this.logger = logger;
   }
 
@@ -29,19 +31,18 @@ public abstract class BaseTemplateGenerator implements TemplateGenerator {
     return logger;
   }
 
-  public JRocksProjectConfig getProjectConfig() {
-    return projectConfig;
-  }
-
   protected void writeSource(String generatedSource, ClassInfoParameterApi parameter, ClassInfoApi classInfoApi) {
 
     String outputDurectory = classInfoApi.getSourceClassPath().getAbsolutePath();
 
-    // TODO encapsulate project configs
-    int outputDirectoryIdx = getProjectConfig().getOutputDirectories().indexOf(outputDurectory);
-    String destDirectory = getProjectConfig().getSourceDirectories().get(outputDirectoryIdx);
+    Set<ModuleConfig> modules = configService.getConfig().getModules();
+    String destDirectory = modules.stream()
+        .filter(config -> config.getOutputDirectory().equals(outputDurectory))
+        .map(ModuleConfig::getSourceDirectory)
+        .findAny()
+        .orElse(modules.iterator().next().getOutputDirectory());
 
-    // TODO cleanups file writhing
+    // TODO cleanups file writing
     Path path = Paths.get(destDirectory + File.separator + classInfoApi.canonicalName().replace(".", File.separator) + parameter.suffix() + ".java");
     File file = path.toFile();
     if (file.exists() && !parameter.isForce()) {

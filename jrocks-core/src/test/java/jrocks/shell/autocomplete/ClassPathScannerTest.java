@@ -3,7 +3,7 @@
 //import jrocks.shell.ClassPathScanner;
 //import jrocks.shell.JLineTerminalLogger;
 //import jrocks.shell.config.JRocksConfig;
-//import jrocks.shell.config.JRocksProjectConfig;
+//import jrocks.shell.config.ProjectConfig;
 //import jrocks.shell.command.JRocksCommandStatus;
 //import org.junit.jupiter.api.BeforeAll;
 //import org.junit.jupiter.api.BeforeEach;
@@ -23,7 +23,7 @@
 //
 //  @BeforeAll
 //  static void beforeAll() {
-//    JRocksProjectConfig jRocksConfig = new JRocksConfig()
+//    ProjectConfig jRocksConfig = new JRocksConfig()
 //        .setBasePackage("jrocks.samples")
 //        .setOutputDirectories("/home/fons/dev/git/jrocks/jrocks-core/target/classes");
 //    scanner = new ClassPathScanner(jRocksConfig, new JRocksCommandStatus().setInititalized(true));
