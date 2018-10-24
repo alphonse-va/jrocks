@@ -59,7 +59,7 @@ public class GeneratorCommand extends BaseClassInfoCommand {
         .setAddtionalFlags(additionalFlags)
         .build();
 
-    ClassInfo classInfo = getClassInfoApi(parameter);
+    ClassInfo classInfo = getClassInfo(parameter);
     getLogger().info("Generate %s for %s class with parameters:\n%s", template.getName(), parameter.getClassCanonicalName(), parameter);
 
     template.generateSource(parameter, classInfo);

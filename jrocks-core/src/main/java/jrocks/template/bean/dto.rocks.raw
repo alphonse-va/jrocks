@@ -6,7 +6,7 @@
 
 @option discardLogicWhitespace=true
 
-@args(ClassInfoApi bean, DtoParameter param)
+@args(ClassInfo bean, DtoParameter param)
 
 package @bean.packageName();
 
@@ -24,7 +24,7 @@ import javax.validation.constraints.NotNull;
 @@Generated(value = "jrocks", date = "@LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME)")
 public class @param.applySuffix(bean.simpleName()) {
 
-@for (FieldClassInfoApi fieldInfo : bean.getFields()) {
+@for (FieldClassInfo fieldInfo : bean.getFields()) {
   @if (param.getMandatoryFields().contains(fieldInfo.fieldName())) {
   @@NotNull
   }
@@ -34,7 +34,7 @@ public class @param.applySuffix(bean.simpleName()) {
 @if(param.withFactoryMethod()) {
   public static @param.applySuffix(bean.simpleName()) from(@bean.simpleName() from) {
     return new @param.applySuffix(bean.simpleName())()
-@for ((ForIterator i, FieldClassInfoApi fieldInfo) : bean.getFields()) {
+@for ((ForIterator i, FieldClassInfo fieldInfo) : bean.getFields()) {
         @String.format(".%s(from.%s())", fieldInfo.setter(), fieldInfo.getter())@if(i.last()) {;}
 }
   }
@@ -43,12 +43,12 @@ public class @param.applySuffix(bean.simpleName()) {
 @if(param.withFactoryMethod()) {
   public static @bean.simpleName() to(@param.applySuffix(bean.simpleName()) to) {
     return new @bean.simpleName()()
-@for ((ForIterator i, FieldClassInfoApi fieldInfo) : bean.getFields()) {
+@for ((ForIterator i, FieldClassInfo fieldInfo) : bean.getFields()) {
         @String.format(".%s(to.%s())", fieldInfo.setter(), fieldInfo.getter())@if(i.last()) {;}
 }
   }
 }
-@for (FieldClassInfoApi fieldInfo : bean.getFields()) {
+@for (FieldClassInfo fieldInfo : bean.getFields()) {
 
   public @param.applySuffix(bean.simpleName()) @fieldInfo.setter()(@fieldInfo.simpleName() @fieldInfo.fieldName()) {
     @String.format("this.%s = %s;", fieldInfo.fieldName(), fieldInfo.fieldName());

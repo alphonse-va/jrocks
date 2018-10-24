@@ -1,6 +1,6 @@
 @import jrocks.model.EntityClassInfo
 
-@args(EntityClassInfoApi md)
+@args(EntityClassInfo md)
 
 package @String.format("%s.%s", md.packageName(), "service");
 

@@ -6,7 +6,7 @@
 
 @option discardLogicWhitespace=true
 
-@args(ClassInfoApi bean, DtoParameter parameter)
+@args(ClassInfo bean, DtoParameter parameter)
 
 package @bean.packageName();
 
@@ -24,14 +24,14 @@ public class @bean.simpleName()@parameter.suffix()Mapper {
 
   public @bean.simpleName()@parameter.suffix() from(@bean.simpleName() from) {
     return new @bean.simpleName()@parameter.suffix()()
-@for ((ForIterator i, FieldClassInfoApi fieldInfo) : bean.getFields()) {
+@for ((ForIterator i, FieldClassInfo fieldInfo) : bean.getFields()) {
         @String.format(".%s(from.%s())", fieldInfo.setter(), fieldInfo.getter())@if(i.last()) {;}
 }
   }
 
   public @bean.simpleName() to(@bean.simpleName()@parameter.suffix() to) {
     return new @bean.simpleName()()
-@for ((ForIterator i, FieldClassInfoApi fieldInfo) : bean.getFields()) {
+@for ((ForIterator i, FieldClassInfo fieldInfo) : bean.getFields()) {
         @String.format(".%s(to.%s())", fieldInfo.setter(), fieldInfo.getter())@if(i.last()) {;}
 }
   }

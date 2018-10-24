@@ -22,7 +22,7 @@ public abstract class BaseClassInfoCommand extends BaseCommand {
     super(configService, terminalLogger);
   }
 
-  ClassInfo getClassInfoApi(ClassInfoParameter parameter) {
+  ClassInfo getClassInfo(ClassInfoParameter parameter) {
     io.github.classgraph.ClassInfo sourceClass = classPathScanner.getAllClassInfo()
         .filter(ci -> ci.getName().equals(parameter.getClassCanonicalName()))
         .findAny()
