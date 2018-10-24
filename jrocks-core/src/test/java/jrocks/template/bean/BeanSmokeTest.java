@@ -1,7 +1,6 @@
 package jrocks.template.bean;
 
-import io.github.classgraph.ClassInfo;
-import jrocks.model.ClassInfoApi;
+import jrocks.model.ClassInfo;
 import jrocks.model.ClassInfoBuilder;
 import jrocks.samples.model.Matrix;
 import jrocks.shell.generator.dto.DtoParameter;
@@ -17,11 +16,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class BeanSmokeTest extends AbstractSmokeTest {
 
-  private ClassInfoApi infoApi;
+  private ClassInfo infoApi;
 
   @BeforeEach
   void beforeEach() {
-    ClassInfo classInfo = classes.get("jrocks.samples.model.Matrix");
+    io.github.classgraph.ClassInfo classInfo = classes.get("jrocks.samples.model.Matrix");
     infoApi = new ClassInfoBuilder(classInfo).build();
   }
 
@@ -60,7 +59,7 @@ class BeanSmokeTest extends AbstractSmokeTest {
 //
 //  @Test
 //  void dtoWithReplaceSuffix() {
-//    final ClassInfoApi toMetaData = new ClassInfoBuilder(MatrixTo.class).build();
+//    final ClassInfo toMetaData = new ClassInfoBuilder(MatrixTo.class).build();
 //    final MapperData dtoData = new MapperData()
 //        .setSuffix("Dto")
 //        .setSuffixToRemove("To")

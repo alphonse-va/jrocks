@@ -4,7 +4,7 @@ import io.github.classgraph.AnnotationInfo;
 
 import java.util.stream.Stream;
 
-public interface FieldClassInfoApi extends ClassInfoApi {
+public interface FieldClassInfo extends ClassInfo {
 
   String fieldName();
 

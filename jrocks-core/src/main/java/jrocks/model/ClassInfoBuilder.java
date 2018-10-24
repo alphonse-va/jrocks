@@ -1,6 +1,5 @@
 package jrocks.model;
 
-import io.github.classgraph.ClassInfo;
 import io.github.classgraph.ClassRefTypeSignature;
 
 
@@ -8,30 +7,30 @@ import io.github.classgraph.ClassRefTypeSignature;
  *
  * Class info builder class
  *
- * @implNote  We fall back to reflection based ClassInfoApi when GlassGraph doesn't fill {@code io.github.classgraph.ClassInfo}
+ * @implNote  We fall back to reflection based ClassInfo when GlassGraph doesn't fill {@code io.github.classgraph.ClassInfo}
  * for internal classes e.g {@code java.lang.Long}
  *
  */
 public class ClassInfoBuilder {
 
-  private ClassInfoApi classInfoApi;
+  private ClassInfo classInfo;
 
-  private ClassInfo beanClass;
+  private io.github.classgraph.ClassInfo beanClass;
 
-  public ClassInfoBuilder(ClassInfo beanClass) {
+  public ClassInfoBuilder(io.github.classgraph.ClassInfo beanClass) {
     this.beanClass = beanClass;
-    this.classInfoApi = new ClassGraphClassInfo(beanClass);
+    this.classInfo = new ClassGraphClassInfo(beanClass);
   }
 
-  public ClassInfoApi build() {
+  public ClassInfo build() {
     beanClass.getDeclaredFieldInfo().forEach(fieldInfo -> {
-      ClassInfo fieldClassInfo = ((ClassRefTypeSignature) fieldInfo.getTypeDescriptor()).getClassInfo();
+      io.github.classgraph.ClassInfo fieldClassInfo = ((ClassRefTypeSignature) fieldInfo.getTypeDescriptor()).getClassInfo();
       if (fieldClassInfo == null) {
-        classInfoApi.addField(new ReflectiveFieldInfo(fieldInfo.loadClassAndGetField()));
+        classInfo.addField(new ReflectiveFieldInfo(fieldInfo.loadClassAndGetField()));
       } else {
-        classInfoApi.addField(new ClassGraphFieldInfo(fieldInfo));
+        classInfo.addField(new ClassGraphFieldInfo(fieldInfo));
       }
     });
-    return classInfoApi;
+    return classInfo;
   }
 }

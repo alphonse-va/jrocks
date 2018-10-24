@@ -3,7 +3,7 @@ package jrocks.model;
 import java.io.File;
 import java.util.List;
 
-public interface ClassInfoApi {
+public interface ClassInfo {
 
   String packageName();
 
@@ -21,9 +21,9 @@ public interface ClassInfoApi {
 
   List<String> fieldCanonicalNames();
 
-  List<FieldClassInfoApi> getFields();
+  List<FieldClassInfo> getFields();
 
-  void addField(FieldClassInfoApi metaData);
+  void addField(FieldClassInfo metaData);
 
   boolean hasRequiredFields();
 

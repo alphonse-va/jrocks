@@ -14,12 +14,12 @@ class ClassGraphFieldInfoApiTest {
 
   private static ClassInfoList classes;
 
-  private FieldClassInfoApi usernameMD;
-  private FieldClassInfoApi passwordMD;
-  private FieldClassInfoApi digitMD;
-  private FieldClassInfoApi dateMD;
-  private FieldClassInfoApi emailMD;
-  private FieldClassInfoApi decimalMD;
+  private FieldClassInfo usernameMD;
+  private FieldClassInfo passwordMD;
+  private FieldClassInfo digitMD;
+  private FieldClassInfo dateMD;
+  private FieldClassInfo emailMD;
+  private FieldClassInfo decimalMD;
 
   @BeforeAll
   static void beforeAll() {

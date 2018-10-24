@@ -1,14 +1,14 @@
 package jrocks.shell.generator;
 
-import jrocks.model.ClassInfoApi;
-import jrocks.model.ClassInfoParameterApi;
+import jrocks.model.ClassInfo;
+import jrocks.model.ClassInfoParameter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public interface TemplateGenerator {
 
-  void generateSource(ClassInfoParameterApi parameter, ClassInfoApi classInfo);
+  void generateSource(ClassInfoParameter parameter, ClassInfo classInfo);
 
   String getName();
 

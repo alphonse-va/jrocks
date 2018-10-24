@@ -1,9 +1,8 @@
 package jrocks.shell.command;
 
 import ch.qos.logback.classic.Level;
-import io.github.classgraph.ClassInfo;
-import jrocks.model.ClassInfoApi;
-import jrocks.model.ClassInfoParameterApi;
+import jrocks.model.ClassInfo;
+import jrocks.model.ClassInfoParameter;
 import jrocks.model.ClassInfoBuilder;
 import jrocks.shell.ClassPathScanner;
 import jrocks.shell.TerminalLogger;
@@ -23,8 +22,8 @@ public abstract class BaseClassInfoCommand extends BaseCommand {
     super(configService, terminalLogger);
   }
 
-  ClassInfoApi getClassInfoApi(ClassInfoParameterApi parameter) {
-    ClassInfo sourceClass = classPathScanner.getAllClassInfo()
+  ClassInfo getClassInfoApi(ClassInfoParameter parameter) {
+    io.github.classgraph.ClassInfo sourceClass = classPathScanner.getAllClassInfo()
         .filter(ci -> ci.getName().equals(parameter.getClassCanonicalName()))
         .findAny()
         .orElseThrow(() -> new IllegalStateException(format("Class '%s' not found on the class path", parameter.getClassCanonicalName())));

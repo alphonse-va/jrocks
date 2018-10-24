@@ -1,7 +1,7 @@
 package jrocks.shell.generator;
 
-import jrocks.model.ClassInfoApi;
-import jrocks.model.ClassInfoParameterApi;
+import jrocks.model.ClassInfo;
+import jrocks.model.ClassInfoParameter;
 import jrocks.shell.TerminalLogger;
 import jrocks.shell.config.ConfigService;
 import jrocks.shell.config.ModuleConfig;
@@ -31,9 +31,9 @@ public abstract class BaseTemplateGenerator implements TemplateGenerator {
     return logger;
   }
 
-  protected void writeSource(String generatedSource, ClassInfoParameterApi parameter, ClassInfoApi classInfoApi) {
+  protected void writeSource(String generatedSource, ClassInfoParameter parameter, ClassInfo classInfo) {
 
-    String outputDurectory = classInfoApi.getSourceClassPath().getAbsolutePath();
+    String outputDurectory = classInfo.getSourceClassPath().getAbsolutePath();
 
     Set<ModuleConfig> modules = configService.getConfig().getModules();
     String destDirectory = modules.stream()
@@ -43,7 +43,7 @@ public abstract class BaseTemplateGenerator implements TemplateGenerator {
         .orElse(modules.iterator().next().getOutputDirectory());
 
     // TODO cleanups file writing
-    Path path = Paths.get(destDirectory + File.separator + classInfoApi.canonicalName().replace(".", File.separator) + parameter.suffix() + ".java");
+    Path path = Paths.get(destDirectory + File.separator + classInfo.canonicalName().replace(".", File.separator) + parameter.suffix() + ".java");
     File file = path.toFile();
     if (file.exists() && !parameter.isForce()) {
       getLogger().error("%s file exists, please add --force if you want to overwrite", path.toString());

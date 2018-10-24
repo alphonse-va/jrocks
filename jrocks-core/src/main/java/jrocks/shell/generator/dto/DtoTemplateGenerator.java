@@ -1,7 +1,7 @@
 package jrocks.shell.generator.dto;
 
-import jrocks.model.ClassInfoApi;
-import jrocks.model.ClassInfoParameterApi;
+import jrocks.model.ClassInfo;
+import jrocks.model.ClassInfoParameter;
 import jrocks.shell.TerminalLogger;
 import jrocks.shell.config.ConfigService;
 import jrocks.shell.generator.BaseTemplateGenerator;
@@ -25,7 +25,7 @@ public class DtoTemplateGenerator extends BaseTemplateGenerator {
   }
 
   @Override
-  public void generateSource(ClassInfoParameterApi parameter, ClassInfoApi classInfo) {
+  public void generateSource(ClassInfoParameter parameter, ClassInfo classInfo) {
 
     DtoParameter dtoParameter = new DtoParameterBuilder()
         .setClassInfoParameter(parameter)
@@ -36,7 +36,7 @@ public class DtoTemplateGenerator extends BaseTemplateGenerator {
     writeSource(generatedSource, parameter, classInfo);
 
     if (!dtoParameter.withFactoryMethod()) {
-      ClassInfoParameterApi mapperParameter = new BaseClassInfoParameterBuilder()
+      ClassInfoParameter mapperParameter = new BaseClassInfoParameterBuilder()
           .setClassCanonicalName(parameter.getClassCanonicalName())
           .setForce(parameter.isForce())
           .setSuffix(parameter.suffix() + "Mapper")

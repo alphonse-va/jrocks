@@ -1,7 +1,7 @@
 package jrocks.template.jhipster;
 
 import io.github.classgraph.ClassInfo;
-import jrocks.model.EntityClassInfo;
+import jrocks.model.ReflectiveEntityClassInfo;
 import jrocks.model.ReflectiveClassInfo;
 import jrocks.template.AbstractSmokeTest;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,14 +13,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class JhipsterTemplatesSmokeTest extends AbstractSmokeTest {
 
-  private EntityClassInfo metaData;
+  private ReflectiveEntityClassInfo metaData;
 
   @BeforeEach
   void before() {
     ClassInfo matrixClassInfo = classes.get("jrocks.samples.model.Matrix");
     ReflectiveClassInfo longClassInfo = new ReflectiveClassInfo(Long.class);
 
-    metaData = new EntityClassInfo(matrixClassInfo, longClassInfo);
+    metaData = new ReflectiveEntityClassInfo(matrixClassInfo, longClassInfo);
   }
 
   @Test

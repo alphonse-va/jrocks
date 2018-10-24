@@ -11,10 +11,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class EntityClassInfoTest {
+class ReflectiveEntityClassInfoTest {
 
   private static ClassInfoList classes;
-  private EntityClassInfoApi md;
+  private EntityClassInfo md;
 
 
   @BeforeAll
@@ -30,7 +30,7 @@ class EntityClassInfoTest {
   void before() {
     ClassInfo matrixClassInfo = classes.get("jrocks.samples.model.Matrix");
     ReflectiveClassInfo longClassInfo = new ReflectiveClassInfo(Long.class);
-    md = new EntityClassInfo(matrixClassInfo, longClassInfo);
+    md = new ReflectiveEntityClassInfo(matrixClassInfo, longClassInfo);
   }
 
   @Test

@@ -12,7 +12,7 @@ import java.beans.MethodDescriptor;
 import java.lang.reflect.Field;
 import java.util.stream.Stream;
 
-public class ReflectiveFieldInfo extends ReflectiveClassInfo implements FieldClassInfoApi {
+public class ReflectiveFieldInfo extends ReflectiveClassInfo implements FieldClassInfo {
 
   private Field field;
 

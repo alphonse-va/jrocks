@@ -1,6 +1,5 @@
 package jrocks.model;
 
-import io.github.classgraph.ClassInfo;
 import jrocks.template.util.Inflector;
 
 import java.io.File;
@@ -12,15 +11,15 @@ import java.util.stream.Collectors;
 
 import static org.apache.commons.lang3.StringUtils.startsWith;
 
-public class ClassGraphClassInfo implements ClassInfoApi {
+public class ClassGraphClassInfo implements ClassInfo {
 
   private static final Inflector INFLECTOR = new Inflector();
 
-  private ClassInfo classInfo;
+  private io.github.classgraph.ClassInfo classInfo;
 
-  private List<FieldClassInfoApi> properties = new ArrayList<>();
+  private List<FieldClassInfo> properties = new ArrayList<>();
 
-  ClassGraphClassInfo(ClassInfo classInfo) {
+  ClassGraphClassInfo(io.github.classgraph.ClassInfo classInfo) {
     Objects.requireNonNull(classInfo);
     this.classInfo = classInfo;
   }
@@ -58,35 +57,35 @@ public class ClassGraphClassInfo implements ClassInfoApi {
   @Override
   public List<String> requiredFieldCanonicalNames() {
     return properties.stream()
-        .filter(FieldClassInfoApi::isRequired)
+        .filter(FieldClassInfo::isRequired)
         .filter(javaLangFilter())
-        .map(ClassInfoApi::canonicalName).distinct().collect(Collectors.toList());
+        .map(ClassInfo::canonicalName).distinct().collect(Collectors.toList());
   }
 
   @Override
   public List<String> fieldCanonicalNames() {
     return properties.stream()
         .filter(javaLangFilter())
-        .map(ClassInfoApi::canonicalName).distinct().collect(Collectors.toList());
+        .map(ClassInfo::canonicalName).distinct().collect(Collectors.toList());
   }
 
   @Override
-  public List<FieldClassInfoApi> getFields() {
+  public List<FieldClassInfo> getFields() {
     return properties;
   }
 
-  public void setProperties(List<FieldClassInfoApi> properties) {
+  public void setProperties(List<FieldClassInfo> properties) {
     this.properties = properties;
   }
 
   @Override
-  public void addField(FieldClassInfoApi metaData) {
+  public void addField(FieldClassInfo metaData) {
     properties.add(metaData);
   }
 
   @Override
   public boolean hasRequiredFields() {
-    return properties.stream().anyMatch(FieldClassInfoApi::isRequired);
+    return properties.stream().anyMatch(FieldClassInfo::isRequired);
   }
 
   @Override
@@ -94,7 +93,7 @@ public class ClassGraphClassInfo implements ClassInfoApi {
     return classInfo.getClasspathElementFile();
   }
 
-  private static Predicate<FieldClassInfoApi> javaLangFilter() {
+  private static Predicate<FieldClassInfo> javaLangFilter() {
     return f -> !startsWith(f.canonicalName(), "java.lang");
   }
 }

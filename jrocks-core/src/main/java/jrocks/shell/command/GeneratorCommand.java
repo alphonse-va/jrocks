@@ -1,7 +1,7 @@
 package jrocks.shell.command;
 
-import jrocks.model.ClassInfoApi;
-import jrocks.model.ClassInfoParameterApi;
+import jrocks.model.ClassInfo;
+import jrocks.model.ClassInfoParameter;
 import jrocks.shell.TerminalLogger;
 import jrocks.shell.autocomplete.AdditionalFlagValueProvider;
 import jrocks.shell.autocomplete.AllClassValueProvider;
@@ -48,7 +48,7 @@ public class GeneratorCommand extends BaseClassInfoCommand {
         .findAny()
         .orElseThrow(() -> new IllegalStateException(String.format("Generator named '%s' doesn't exist, please review your inputs.", generatorName)));
 
-    ClassInfoParameterApi parameter = new BaseClassInfoParameterBuilder()
+    ClassInfoParameter parameter = new BaseClassInfoParameterBuilder()
         .setClassCanonicalName(classCanonicalName)
         .setForce(isForced)
         .setExcludedFields(excludedFields)
@@ -59,7 +59,7 @@ public class GeneratorCommand extends BaseClassInfoCommand {
         .setAddtionalFlags(additionalFlags)
         .build();
 
-    ClassInfoApi classInfo = getClassInfoApi(parameter);
+    ClassInfo classInfo = getClassInfoApi(parameter);
     getLogger().info("Generate %s for %s class with parameters:\n%s", template.getName(), parameter.getClassCanonicalName(), parameter);
 
     template.generateSource(parameter, classInfo);

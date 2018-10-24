@@ -1,7 +1,7 @@
 package jrocks.shell.generator.builder;
 
-import jrocks.model.ClassInfoApi;
-import jrocks.model.ClassInfoParameterApi;
+import jrocks.model.ClassInfo;
+import jrocks.model.ClassInfoParameter;
 import jrocks.shell.TerminalLogger;
 import jrocks.shell.config.ConfigService;
 import jrocks.shell.generator.BaseTemplateGenerator;
@@ -18,7 +18,7 @@ public class BuilderTemplateGenerator extends BaseTemplateGenerator {
   }
 
   @Override
-  public void generateSource(ClassInfoParameterApi parameter, ClassInfoApi classInfo) {
+  public void generateSource(ClassInfoParameter parameter, ClassInfo classInfo) {
     String generatedSource = builder.template(classInfo, parameter).render().toString();
     writeSource(generatedSource, parameter, classInfo);
   }

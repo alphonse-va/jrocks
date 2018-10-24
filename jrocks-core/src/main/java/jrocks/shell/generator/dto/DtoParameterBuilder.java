@@ -1,11 +1,11 @@
 package jrocks.shell.generator.dto;
 
-import jrocks.model.ClassInfoParameterApi;
+import jrocks.model.ClassInfoParameter;
 
 public class DtoParameterBuilder {
 
   private boolean withFactoryMethod;
-  private ClassInfoParameterApi classInfoParameter;
+  private ClassInfoParameter classInfoParameter;
 
 
   DtoParameterBuilder setWithFactoryMethod(boolean withFactoryMethod) {
@@ -13,7 +13,7 @@ public class DtoParameterBuilder {
     return this;
   }
 
-  public DtoParameterBuilder setClassInfoParameter(ClassInfoParameterApi classInfoParameter) {
+  public DtoParameterBuilder setClassInfoParameter(ClassInfoParameter classInfoParameter) {
     this.classInfoParameter = classInfoParameter;
     return this;
   }

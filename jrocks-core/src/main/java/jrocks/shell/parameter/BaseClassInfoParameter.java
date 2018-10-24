@@ -1,6 +1,6 @@
 package jrocks.shell.parameter;
 
-import jrocks.model.ClassInfoParameterApi;
+import jrocks.model.ClassInfoParameter;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import java.util.List;
 import static java.lang.String.format;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
-public class BaseClassInfoParameter implements ClassInfoParameterApi {
+public class BaseClassInfoParameter implements ClassInfoParameter {
 
   private String classCanonicalName;
 
@@ -48,7 +48,7 @@ public class BaseClassInfoParameter implements ClassInfoParameterApi {
     this.additionalFlags = additionalFlags;
   }
 
-  protected BaseClassInfoParameter(ClassInfoParameterApi parameter) {
+  protected BaseClassInfoParameter(ClassInfoParameter parameter) {
     this(parameter.getClassCanonicalName(),
         parameter.isForce(),
         parameter.getExcludedFields(),

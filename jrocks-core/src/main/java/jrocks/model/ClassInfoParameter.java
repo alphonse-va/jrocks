@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public interface ClassInfoParameterApi {
+public interface ClassInfoParameter {
 
   List<String> getExcludedFields();
 
