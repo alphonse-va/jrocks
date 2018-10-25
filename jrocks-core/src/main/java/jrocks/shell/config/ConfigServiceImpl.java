@@ -33,7 +33,7 @@ public class ConfigServiceImpl implements ConfigService {
     try {
       load();
     } catch (RuntimeException e) {
-      // ignore
+      throw e;
     }
   }
 
