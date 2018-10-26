@@ -29,4 +29,5 @@ echo "- JRocks installed with success."
 echo
 echo "Please execute '. ~/.jrocks_alias' to apply changes into your current shell"
 echo
+# cd without echo directory
 cd ~-
