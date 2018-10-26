@@ -2,9 +2,8 @@ package jrocks.shell.generator.builder;
 
 import jrocks.model.ClassInfo;
 import jrocks.model.ClassInfoParameter;
-import jrocks.shell.TerminalLogger;
-import jrocks.shell.config.ConfigService;
 import jrocks.shell.generator.BaseTemplateGenerator;
+import jrocks.shell.generator.TemplateWriterService;
 import jrocks.template.bean.builder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,8 +12,8 @@ import org.springframework.stereotype.Component;
 public class BuilderTemplateGenerator extends BaseTemplateGenerator {
 
   @Autowired
-  protected BuilderTemplateGenerator(ConfigService configService, TerminalLogger logger) {
-    super(configService, logger);
+  public BuilderTemplateGenerator(TemplateWriterService writerService) {
+    super(writerService);
   }
 
   @Override
@@ -24,12 +23,7 @@ public class BuilderTemplateGenerator extends BaseTemplateGenerator {
   }
 
   @Override
-  public String getName() {
-    return "BUILDER";
-  }
-
-  @Override
-  public String getSuffix() {
+  public String suffix() {
     return "Builder";
   }
 }

@@ -2,9 +2,8 @@ package jrocks.shell.generator.dto;
 
 import jrocks.model.ClassInfo;
 import jrocks.model.ClassInfoParameter;
-import jrocks.shell.TerminalLogger;
-import jrocks.shell.config.ConfigService;
 import jrocks.shell.generator.BaseTemplateGenerator;
+import jrocks.shell.generator.TemplateWriterService;
 import jrocks.shell.parameter.BaseClassInfoParameterBuilder;
 import jrocks.template.bean.dto;
 import jrocks.template.bean.mapper;
@@ -20,8 +19,8 @@ public class DtoTemplateGenerator extends BaseTemplateGenerator {
   private static final String WITH_FACTORY_METHODS_FLAG = "with-factory-method";
 
   @Autowired
-  protected DtoTemplateGenerator(ConfigService configService, TerminalLogger logger) {
-    super(configService, logger);
+  public DtoTemplateGenerator(TemplateWriterService writerService) {
+    super(writerService);
   }
 
   @Override
@@ -48,17 +47,12 @@ public class DtoTemplateGenerator extends BaseTemplateGenerator {
   }
 
   @Override
-  public String getName() {
-    return "DTO";
-  }
-
-  @Override
-  public List<String> getAdditionalFlags() {
+  public List<String> additionalFlags() {
     return Collections.singletonList(WITH_FACTORY_METHODS_FLAG);
   }
 
   @Override
-  public String getSuffix() {
+  public String suffix() {
     return "Dto";
   }
 }

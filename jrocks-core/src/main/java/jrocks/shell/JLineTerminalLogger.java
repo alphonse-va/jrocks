@@ -5,6 +5,7 @@ import org.jline.terminal.Terminal;
 import org.jline.utils.AttributedString;
 import org.jline.utils.AttributedStyle;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Nonnull;
@@ -16,7 +17,7 @@ import static org.jline.utils.AttributedStyle.*;
 @Service
 public class JLineTerminalLogger implements TerminalLogger {
 
-  @Autowired
+  @Autowired @Lazy
   private Terminal terminal;
 
   private boolean verbose;

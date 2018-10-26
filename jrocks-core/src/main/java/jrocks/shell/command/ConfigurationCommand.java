@@ -25,43 +25,43 @@ public class ConfigurationCommand extends BaseCommand {
 
   @ShellMethod(key = "init", value = "Initialize JRocks project")
   public void initialize(@ShellOption(valueProvider = PackageValueProvider.class) String basePackage, boolean force) {
-    if (getConfigService().isInitialized() && !force)
+    if (configService().isInitialized() && !force)
       if (!isMavenProject())
         throw new IllegalStateException("init command must be executed from a maven root directory");
 
     mavenProjectUtil.loadProjects()
         .forEach(mavenProject ->
-            getConfigService()
+            configService()
                 .addModule(new ModuleConfig()
                     .setName(mavenProject.getName())
                     .setVersion(mavenProject.getVersion())
                     .setSourceDirectory(mavenProject.getBuild().getSourceDirectory())
                     .setOutputDirectory(mavenProject.getBuild().getOutputDirectory())));
 
-    getConfigService().getConfig()
+    configService().getConfig()
         .setBasePackage(basePackage)
         .setAutoRebuild(true);
-    getConfigService().save();
+    configService().save();
     showConfig();
   }
 
   @ShellMethod(key = "show-config", value = "Show JRocks configuration")
   void showConfig() {
-    getLogger().info(getConfigService().getConfig().toString());
-    getLogger().info(getConfigService().getGlobalConfig().toString());
+    terminalLogger().info(configService().getConfig().toString());
+    terminalLogger().info(configService().getGlobalConfig().toString());
   }
 
   @ShellMethod(value = "Show debug information")
   void debug(boolean enable, boolean disable) {
     boolean status = enable || !disable;
-    getLogger().setVerbose(status);
+    terminalLogger().setVerbose(status);
     String statusString = status ? "enabled" : "disabled";
-    getLogger().info("Debug information " + statusString);
+    terminalLogger().info("Debug information " + statusString);
   }
 
   @ShellMethodAvailability({"show-config"})
   public Availability availabilityCheck() {
-    return getConfigService().isInitialized()
+    return configService().isInitialized()
         ? Availability.available()
         : Availability.unavailable("you firstly need to execute 'init' command to initialize your JRocks project!");
   }

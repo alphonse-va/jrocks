@@ -1,21 +1,15 @@
 package jrocks;
 
-import org.jline.utils.AttributedString;
-import org.jline.utils.AttributedStyle;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.shell.jline.PromptProvider;
+import org.springframework.shell.jline.JLineShellAutoConfiguration;
 
-@SpringBootApplication
+@SpringBootApplication(exclude = JLineShellAutoConfiguration.class)
 public class JRocksApplication {
+
 
   public static void main(String[] args) {
     SpringApplication.run(JRocksApplication.class, args);
   }
 
-  @Bean
-  public PromptProvider myPromptProvider() {
-    return () -> new AttributedString("jrocks $ ", AttributedStyle.DEFAULT.foreground(AttributedStyle.YELLOW));
-  }
 }

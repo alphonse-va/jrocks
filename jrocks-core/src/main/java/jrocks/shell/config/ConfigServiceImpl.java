@@ -5,6 +5,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
@@ -48,7 +49,7 @@ public class ConfigServiceImpl implements ConfigService {
     try {
       config = mapper.readValue(new File(configFileName), ProjectConfig.class);
     } catch (IOException e) {
-      throw new IllegalStateException(format("Cannot read '%s' YAML file", configFileName), e);
+      System.err.println("Config file" + configFileName + "not found!\n\n\tPlease initialize your project with 'init' command");
     }
   }
 
@@ -79,6 +80,6 @@ public class ConfigServiceImpl implements ConfigService {
 
   @Override
   public boolean isInitialized() {
-    return getConfig() != null;
+    return getConfig() != null && !CollectionUtils.isEmpty(getConfig().getModules());
   }
 }

@@ -29,7 +29,7 @@ public class ScanCommand extends BaseCommand {
 
   @ShellMethod(key = "show-indexed-classes", value = "Show all classes indexed classes")
   public void showIndexedClasses() {
-    scanner.getAllClasses().forEach(c -> getLogger().info(c));
+    scanner.getAllClasses().forEach(c -> terminalLogger().info(c));
   }
 
   @ShellMethod(key = "show-index-stats", value = "Show index stats")
@@ -37,9 +37,9 @@ public class ScanCommand extends BaseCommand {
     scanner.getAllClassInfo().count();
   }
 
-  @ShellMethodAvailability({"rebuild-cache", "show-classes"})
+  @ShellMethodAvailability({"rebuild-index", "show-indexed-classes", "show-index-stats"})
   public Availability availabilityCheck() {
-    return getConfigService().isInitialized()
+    return configService().isInitialized()
         ? Availability.available()
         : Availability.unavailable("you firstly need to execute 'init' command to initialize your JRocks project!");
   }

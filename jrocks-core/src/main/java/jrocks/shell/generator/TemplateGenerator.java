@@ -10,11 +10,9 @@ public interface TemplateGenerator {
 
   void generateSource(ClassInfoParameter parameter, ClassInfo classInfo);
 
-  String getName();
-
-  default List<String> getAdditionalFlags() {
+  default List<String> additionalFlags() {
     return new ArrayList<>();
   }
 
-  String getSuffix();
+  String suffix();
 }

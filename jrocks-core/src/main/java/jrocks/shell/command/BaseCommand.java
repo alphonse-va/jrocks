@@ -4,7 +4,7 @@ import jrocks.shell.TerminalLogger;
 import jrocks.shell.config.ConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public abstract class BaseCommand {
+public abstract class BaseCommand implements Command {
 
   private ConfigService configService;
 
@@ -16,11 +16,13 @@ public abstract class BaseCommand {
     this.logger = logger;
   }
 
-  protected TerminalLogger getLogger() {
+  @Override
+  public TerminalLogger terminalLogger() {
     return logger;
   }
 
-  public ConfigService getConfigService() {
+  @Override
+  public ConfigService configService() {
     return configService;
   }
 }
