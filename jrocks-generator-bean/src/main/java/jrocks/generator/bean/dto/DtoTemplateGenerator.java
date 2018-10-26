@@ -1,19 +1,17 @@
-package jrocks.shell.generator.dto;
+package jrocks.generator.bean.dto;
 
 import jrocks.model.ClassInfo;
 import jrocks.model.ClassInfoParameter;
 import jrocks.shell.generator.BaseTemplateGenerator;
 import jrocks.shell.generator.TemplateWriterService;
 import jrocks.shell.parameter.BaseClassInfoParameterBuilder;
-import jrocks.template.bean.dto;
-import jrocks.template.bean.mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.List;
 
-import static jrocks.shell.generator.dto.DtoCommand.WITH_FACTORY_METHODS_FLAG;
+import static jrocks.generator.bean.dto.DtoCommand.WITH_FACTORY_METHODS_FLAG;
 
 @Component
 public class DtoTemplateGenerator extends BaseTemplateGenerator {

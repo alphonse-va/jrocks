@@ -1,6 +1,6 @@
 @import jrocks.model.ClassInfo
 @import jrocks.model.FieldClassInfo
-@import jrocks.template.annotations.BuilderProperty
+@import jrocks.generator.bean.annotations.BuilderProperty
 @import jrocks.model.ClassInfoParameter
 @import java.time.LocalDateTime
 @import java.time.format.DateTimeFormatter

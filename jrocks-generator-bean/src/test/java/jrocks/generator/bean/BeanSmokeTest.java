@@ -1,12 +1,13 @@
-package jrocks.template.bean;
+package jrocks.generator.bean;
 
+import jrocks.generator.bean.dto.DtoParameter;
+import jrocks.generator.bean.dto.DtoParameterBuilder;
+import jrocks.generator.bean.dto.dto;
+import jrocks.generator.test.AbstractSmokeTest;
 import jrocks.model.ClassInfo;
 import jrocks.model.ClassInfoBuilder;
 import jrocks.samples.model.Matrix;
-import jrocks.shell.generator.dto.DtoParameter;
-import jrocks.shell.generator.dto.DtoParameterBuilder;
 import jrocks.shell.parameter.BaseClassInfoParameterBuilder;
-import jrocks.template.AbstractSmokeTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

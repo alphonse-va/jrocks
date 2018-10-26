@@ -1,10 +1,9 @@
-package jrocks.shell.generator.builder;
+package jrocks.generator.bean.builder;
 
 import jrocks.model.ClassInfo;
 import jrocks.model.ClassInfoParameter;
 import jrocks.shell.generator.BaseTemplateGenerator;
 import jrocks.shell.generator.TemplateWriterService;
-import jrocks.template.bean.builder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

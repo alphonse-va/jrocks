@@ -1,4 +1,4 @@
-package jrocks.template.annotations;
+package jrocks.generator.bean.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

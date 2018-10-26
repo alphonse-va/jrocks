@@ -31,7 +31,8 @@
         <dependency>
             <groupId>be.unlock</groupId>
             <artifactId>jrocks-sample</artifactId>
-            <version>0.0.1</version>
+            <version>${project.version}</version>
+            <scope>test</scope>
         </dependency>
 
         <!-- Rocker template engine deps -->
@@ -120,50 +121,6 @@
         </resources>
 
         <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <executable>true</executable>
-                </configuration>
-            </plugin>
-
-            <!-- Template Engine -->
-            <plugin>
-                <groupId>com.fizzed</groupId>
-                <artifactId>rocker-maven-plugin</artifactId>
-                <version>0.24.0</version>
-                <executions>
-                    <execution>
-                        <id>generate-rocker-commands</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <suffixRegex>.*\.rocks.raw</suffixRegex>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <version>3.0.0</version>
-                <executions>
-                    <execution>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>add-source</goal>
-                        </goals>
-                        <configuration>
-                            <sources>
-                                <source>${project.build.directory}/generated-sources/jrocks</source>
-                            </sources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
             <!-- Test-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

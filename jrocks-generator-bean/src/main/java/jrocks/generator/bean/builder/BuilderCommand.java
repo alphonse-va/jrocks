@@ -1,4 +1,4 @@
-package jrocks.shell.generator.builder;
+package jrocks.generator.bean.builder;
 
 import jrocks.shell.JRocksCommand;
 import jrocks.shell.TerminalLogger;

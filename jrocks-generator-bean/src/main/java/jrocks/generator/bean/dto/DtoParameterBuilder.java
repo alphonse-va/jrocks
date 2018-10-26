@@ -1,4 +1,4 @@
-package jrocks.shell.generator.dto;
+package jrocks.generator.bean.dto;
 
 import jrocks.model.ClassInfoParameter;
 
