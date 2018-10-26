@@ -6,8 +6,10 @@ import jrocks.shell.command.GeneratorCommand;
 import jrocks.shell.config.ConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@JRocksCommand(value = "Builder generator", key = "builder", group = "Application")
+@JRocksCommand(value = "Builder Generator", key = BuilderCommand.GENERATOR_NAME, group = "Application")
 public class BuilderCommand extends GeneratorCommand {
+
+  static final String GENERATOR_NAME = "builder";
 
   @Autowired
   public BuilderCommand(BuilderTemplateGenerator templateGenerator, ConfigService configService, TerminalLogger terminalLogger) {
@@ -16,6 +18,6 @@ public class BuilderCommand extends GeneratorCommand {
 
   @Override
   public String name() {
-    return "builder";
+    return GENERATOR_NAME;
   }
 }

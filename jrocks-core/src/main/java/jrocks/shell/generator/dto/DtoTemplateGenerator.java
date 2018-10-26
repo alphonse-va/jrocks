@@ -13,10 +13,10 @@ import org.springframework.stereotype.Component;
 import java.util.Collections;
 import java.util.List;
 
+import static jrocks.shell.generator.dto.DtoCommand.WITH_FACTORY_METHODS_FLAG;
+
 @Component
 public class DtoTemplateGenerator extends BaseTemplateGenerator {
-
-  private static final String WITH_FACTORY_METHODS_FLAG = "with-factory-method";
 
   @Autowired
   public DtoTemplateGenerator(TemplateWriterService writerService) {

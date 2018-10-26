@@ -15,7 +15,7 @@ public class DtoCommand extends GeneratorCommand {
   static final String WITH_FACTORY_METHODS_FLAG = "with-factory-method";
 
   @Autowired
-  public DtoCommand(ConfigService configService, TerminalLogger terminalLogger, DtoTemplateGenerator templateGenerator) {
+  public DtoCommand(DtoTemplateGenerator templateGenerator, ConfigService configService, TerminalLogger terminalLogger) {
     super(templateGenerator, configService, terminalLogger);
   }
 
