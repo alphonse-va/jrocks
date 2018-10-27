@@ -2,6 +2,7 @@ package jrocks.shell.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import jrocks.shell.TerminalLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -25,8 +26,13 @@ public class ConfigServiceImpl implements ConfigService {
 
   private GlobalConfig globalConfig;
 
+  private TerminalLogger logger;
+
   @Autowired
-  public ConfigServiceImpl(GlobalConfig globalConfig) {this.globalConfig = globalConfig;}
+  public ConfigServiceImpl(GlobalConfig globalConfig, TerminalLogger logger) {
+    this.globalConfig = globalConfig;
+    this.logger = logger;
+  }
 
   @PostConstruct
   void postConstruct() {
@@ -49,7 +55,8 @@ public class ConfigServiceImpl implements ConfigService {
     try {
       config = mapper.readValue(new File(configFileName), ProjectConfig.class);
     } catch (IOException e) {
-      System.err.println("Config file" + configFileName + "not found!\n\n\tPlease initialize your project with 'init' command");
+      logger.warning("Config file '%s' not found!", configFileName);
+      logger.warning("Please initialize your project with 'init' command!");
     }
   }
 

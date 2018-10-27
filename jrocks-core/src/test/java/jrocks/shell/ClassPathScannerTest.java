@@ -35,8 +35,7 @@ class ClassPathScannerTest {
     when(configService.getConfig()).thenReturn(projectConfig);
     when(configService.isInitialized()).thenReturn(true);
 
-    classPathScanner = new ClassPathScanner(configService);
-    classPathScanner.setTerminalLogger(new TerminalLoggerMock());
+    classPathScanner = new ClassPathScanner(configService, new TerminalLoggerMock());
     classPathScanner.rebuild();
   }
 

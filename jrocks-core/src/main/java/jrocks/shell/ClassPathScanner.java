@@ -28,14 +28,14 @@ public class ClassPathScanner {
   /**
    * REMEMBER: No constructor parameter here due to circular deps with spring shell bean
    */
-  @Autowired
-  private TerminalLogger terminalLogger;
+  private final TerminalLogger terminalLogger;
 
   private final ConfigService configService;
 
   @Autowired
-  public ClassPathScanner(ConfigService configService) {
+  public ClassPathScanner(ConfigService configService, final TerminalLogger terminalLogger) {
     this.configService = configService;
+    this.terminalLogger = terminalLogger;
   }
 
   @PostConstruct
@@ -70,7 +70,7 @@ public class ClassPathScanner {
       }
       classes = scanResult.getAllStandardClasses();
     } else {
-      terminalLogger.warning("Classpath scanning skipped, JRocks is not yet initialized!");
+      terminalLogger.verbose("Classpath scanning skipped, JRocks is not yet initialized!");
     }
   }
 
@@ -130,10 +130,6 @@ public class ClassPathScanner {
     return prefix + capitalize(fieldName);
   }
 
-  public ClassPathScanner setTerminalLogger(TerminalLogger terminalLogger) {
-    this.terminalLogger = terminalLogger;
-    return this;
-  }
 
   /**
    * TODO: We could use an aspect to call this method
