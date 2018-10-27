@@ -6,6 +6,8 @@ import io.github.classgraph.ScanResult;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.tools.*;
 import java.io.File;
@@ -19,6 +21,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public abstract class AbstractTemplateSmokeTest {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(AbstractTemplateSmokeTest.class);
 
   private static StandardJavaFileManager standardJavaFileManager;
   private static final JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
@@ -54,7 +58,7 @@ public abstract class AbstractTemplateSmokeTest {
     List<JavaSourceFromString> sources = Stream.of(entries).map(source -> new JavaSourceFromString(source.getKey(), source.getValue())).collect(Collectors.toList());
 
     DiagnosticListener<JavaFileObject> diagnosticListener = e -> {
-      System.out.println(Stream.of(entries).map(AbstractMap.SimpleEntry::getValue).collect(Collectors.joining("\n")));
+      Stream.of(entries).forEach(entry -> LOGGER.error("\nClass: {}\nSource: \n{}", entry.getKey(), entry.getValue()));
       Assertions.assertThat(String.format("%s:%s %s%n", e.getLineNumber(), e.getColumnNumber(), e.getMessage(Locale.ENGLISH))).isNull();
     };
     javaCompiler.getTask(null, null, diagnosticListener, Arrays.asList(options), null, sources).call();
