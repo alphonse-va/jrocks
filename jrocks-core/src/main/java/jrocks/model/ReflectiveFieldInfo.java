@@ -8,7 +8,6 @@ import javax.validation.constraints.*;
 import java.beans.FeatureDescriptor;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
-import java.beans.MethodDescriptor;
 import java.lang.reflect.Field;
 import java.util.stream.Stream;
 
@@ -29,13 +28,6 @@ public class ReflectiveFieldInfo extends ReflectiveClassInfo implements FieldCla
   @Override
   public String fieldNameCapitalized() {
     return StringUtils.capitalize(field.getName());
-  }
-
-  @Override
-  public Stream<AnnotationInfo> fieldAnnotations() {
-    // TODO
-    //return Stream.of(field.getAnnotations());
-    return null;
   }
 
   @Override
@@ -191,20 +183,8 @@ public class ReflectiveFieldInfo extends ReflectiveClassInfo implements FieldCla
     }
   }
 
-  private boolean isSetter(MethodDescriptor m) {
-    Class<?>[] parameterTypes = m.getMethod().getParameterTypes();
-    if (parameterTypes.length > 1) {
-      return false;
-    }
-    boolean hasSetterParamType = Stream.of(parameterTypes).anyMatch(t -> t.equals(field.getType()));
-    return hasSetterParamType && !m.isHidden() && m.getName().equals("set" + fieldNameCapitalized());
-  }
-
-  private boolean isGetter(MethodDescriptor m) {
-    boolean hasReturnType = m.getMethod().getReturnType().equals(field.getType());
-    return hasReturnType && !m.isHidden()
-        && (m.getName().equals("get" + fieldNameCapitalized())
-        || m.getName().equals("is" + fieldNameCapitalized())
-        || m.getName().equals("has" + fieldNameCapitalized()));
+  @Override
+  public Stream<AnnotationInfo> fieldAnnotations() {
+    throw new IllegalArgumentException("not supported for reflective field info!");
   }
 }
