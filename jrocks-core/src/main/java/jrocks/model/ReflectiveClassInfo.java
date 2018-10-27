@@ -1,6 +1,6 @@
 package jrocks.model;
 
-import jrocks.template.util.Inflector;
+import jrocks.util.Inflector;
 
 import java.io.File;
 import java.util.ArrayList;

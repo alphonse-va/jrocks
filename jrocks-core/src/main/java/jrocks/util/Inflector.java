@@ -1,4 +1,4 @@
-package jrocks.template.util;
+package jrocks.util;
 
 /*
  * JBoss DNA (http://www.jboss.org/dna)
