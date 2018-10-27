@@ -12,8 +12,10 @@
 package @bean.packageName();
 
 import javax.annotation.Generated;
-@for (String name : bean.requiredFieldCanonicalNames()) {
-import @name;
+@for (FieldClassInfo fieldInfo : bean.getFields()) {
+  @if(param.toInclude(fieldInfo.fieldName())) {
+import @fieldInfo.canonicalName();
+}
 }
 import java.util.Objects;
 
@@ -35,7 +37,7 @@ public class @bean.simpleName()Builder {
   }
 
 @for (FieldClassInfo fieldInfo : bean.getFields()) {
-  @if(fieldInfo.isRequired() || param.toInclude(fieldInfo.fieldName())) {
+  @if(param.toInclude(fieldInfo.fieldName())) {
   public @bean.simpleName()Builder @fieldInfo.setter()(@fieldInfo.simpleName() @fieldInfo.fieldName()) {
     @String.format("%s.set%s(%s)", bean.propertyName(), fieldInfo.fieldNameCapitalized(), fieldInfo.fieldName());
     return this;

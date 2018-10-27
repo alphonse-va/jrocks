@@ -52,7 +52,9 @@ public abstract class AbstractTemplateSmokeTest {
 
     String[] options = new String[]{"-d", tmpDir.toFile().getAbsolutePath()};
     List<JavaSourceFromString> sources = Stream.of(entries).map(source -> new JavaSourceFromString(source.getKey(), source.getValue())).collect(Collectors.toList());
+
     DiagnosticListener<JavaFileObject> diagnosticListener = e -> {
+      System.out.println(Stream.of(entries).map(AbstractMap.SimpleEntry::getValue).collect(Collectors.joining("\n")));
       Assertions.assertThat(String.format("%s:%s %s%n", e.getLineNumber(), e.getColumnNumber(), e.getMessage(Locale.ENGLISH))).isNull();
     };
     javaCompiler.getTask(null, null, diagnosticListener, Arrays.asList(options), null, sources).call();

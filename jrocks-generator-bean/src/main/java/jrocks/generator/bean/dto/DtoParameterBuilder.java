@@ -8,12 +8,12 @@ public class DtoParameterBuilder {
   private ClassInfoParameter classInfoParameter;
 
 
-  DtoParameterBuilder setWithFactoryMethod(boolean withFactoryMethod) {
+  public DtoParameterBuilder withFactoryMethod(boolean withFactoryMethod) {
     this.withFactoryMethod = withFactoryMethod;
     return this;
   }
 
-  public DtoParameterBuilder setClassInfoParameter(ClassInfoParameter classInfoParameter) {
+  public DtoParameterBuilder classInfoParameter(ClassInfoParameter classInfoParameter) {
     this.classInfoParameter = classInfoParameter;
     return this;
   }

@@ -103,7 +103,7 @@ public class BaseClassInfoParameter implements ClassInfoParameter {
   // TODO indicate that in the end.. excludes preceded includes
   @Override
   public boolean toInclude(String field) {
-    return !excludedFields.isEmpty() && includedFields.contains(field);
+    return !excludedFields.isEmpty() || includedFields.contains(field) || includedFields.isEmpty();
   }
 
   @Override

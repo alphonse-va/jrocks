@@ -25,8 +25,8 @@ public class DtoTemplateGenerator extends BaseTemplateGenerator {
   public void generateSource(ClassInfoParameter parameter, ClassInfo classInfo) {
 
     DtoParameter dtoParameter = new DtoParameterBuilder()
-        .setClassInfoParameter(parameter)
-        .setWithFactoryMethod(parameter.getAdditionalFlags().contains(WITH_FACTORY_METHODS_FLAG))
+        .classInfoParameter(parameter)
+        .withFactoryMethod(parameter.getAdditionalFlags().contains(WITH_FACTORY_METHODS_FLAG))
         .build();
 
     String generatedSource = dto.template(classInfo, dtoParameter).render().toString();
