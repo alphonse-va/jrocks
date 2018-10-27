@@ -157,9 +157,7 @@ public class ReflectiveFieldInfo extends ReflectiveClassInfo implements FieldCla
 
   @Override
   public boolean isRequired() {
-// TODO
-    //return isAnnotatedWith(BuilderProperty.class, NotNull.class, NotEmpty.class, NotBlank.class);
-    return false;
+    return isAnnotatedWith(NotNull.class.getCanonicalName(), NotEmpty.class.getCanonicalName(), NotBlank.class.getCanonicalName());
   }
 
   @Override
