@@ -26,8 +26,8 @@ class DtoTemplateSmokeTest extends AbstractTemplateSmokeTest {
   void dto() {
     DtoParameter dtoParameter = new DtoParameterBuilder()
         .classInfoParameter(new BaseClassInfoParameterBuilder()
-            .setClassCanonicalName(Matrix.class.getCanonicalName())
-            .setSuffix("Dto")
+            .withClassCanonicalName(Matrix.class.getCanonicalName())
+            .withSuffix("Dto")
             .build())
         .build();
     String actual = dto.template(classInfo, dtoParameter).render().toString();
@@ -40,8 +40,8 @@ class DtoTemplateSmokeTest extends AbstractTemplateSmokeTest {
     DtoParameter dtoParameter = new DtoParameterBuilder()
         .withFactoryMethod(true)
         .classInfoParameter(new BaseClassInfoParameterBuilder()
-            .setClassCanonicalName(Matrix.class.getCanonicalName())
-            .setSuffix("Dto")
+            .withClassCanonicalName(Matrix.class.getCanonicalName())
+            .withSuffix("Dto")
             .build())
         .build();
     String actual = dto.template(classInfo, dtoParameter).render().toString();
@@ -54,8 +54,8 @@ class DtoTemplateSmokeTest extends AbstractTemplateSmokeTest {
     DtoParameter dtoParameter = new DtoParameterBuilder()
         .withFactoryMethod(true)
         .classInfoParameter(new BaseClassInfoParameterBuilder()
-            .setClassCanonicalName(Matrix.class.getCanonicalName())
-            .setSuffix("Dto")
+            .withClassCanonicalName(Matrix.class.getCanonicalName())
+            .withSuffix("Dto")
             .build())
         .build();
 
@@ -64,10 +64,10 @@ class DtoTemplateSmokeTest extends AbstractTemplateSmokeTest {
 
     DtoParameter mapperParameter = new DtoParameterBuilder()
         .classInfoParameter(new BaseClassInfoParameterBuilder()
-            .setClassCanonicalName(dtoParameter.getClassCanonicalName())
-            .setForce(dtoParameter.isForce())
-            .setSuffix(dtoParameter.suffix())
-            .setSuffixToRemove(dtoParameter.suffixToRemove())
+            .withClassCanonicalName(dtoParameter.classCanonicalName())
+            .withForce(dtoParameter.isForce())
+            .withSuffix(dtoParameter.suffix())
+            .withSuffixToRemove(dtoParameter.suffixToRemove())
             .build())
         .build();
 

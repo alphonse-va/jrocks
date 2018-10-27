@@ -34,10 +34,10 @@ public class DtoTemplateGenerator extends BaseTemplateGenerator {
 
     if (!dtoParameter.withFactoryMethod()) {
       ClassInfoParameter mapperParameter = new BaseClassInfoParameterBuilder()
-          .setClassCanonicalName(parameter.getClassCanonicalName())
-          .setForce(parameter.isForce())
-          .setSuffix(parameter.suffix() + "Mapper")
-          .setSuffixToRemove(parameter.suffixToRemove())
+          .withClassCanonicalName(parameter.classCanonicalName())
+          .withForce(parameter.isForce())
+          .withSuffix(parameter.suffix() + "Mapper")
+          .withSuffixToRemove(parameter.suffixToRemove())
           .build();
       String generatedMapperSource = mapper.template(classInfo, dtoParameter).render().toString();
       writeSource(generatedMapperSource, mapperParameter, classInfo);

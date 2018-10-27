@@ -25,8 +25,8 @@ class BuilderTemplateSmokeTest extends AbstractTemplateSmokeTest {
   @Test
   void builder() {
     String actual = builder.template(classInfo, new BaseClassInfoParameterBuilder()
-        .setClassCanonicalName(Matrix.class.getCanonicalName())
-        .setForce(false)
+        .withClassCanonicalName(Matrix.class.getCanonicalName())
+        .withForce(false)
         .build())
         .render().toString();
 

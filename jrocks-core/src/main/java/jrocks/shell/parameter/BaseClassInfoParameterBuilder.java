@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static io.github.classgraph.utils.ReflectionUtils.classForNameOrNull;
-import static java.lang.String.format;
 import static java.util.Arrays.asList;
 
 public class BaseClassInfoParameterBuilder {
@@ -26,47 +24,47 @@ public class BaseClassInfoParameterBuilder {
     return new BaseClassInfoParameter(classCanonicalName, force, excludedFields, includedFields, mandatoryFields, suffix, suffixToRemove, file, addtionalFlags);
   }
 
-  public BaseClassInfoParameterBuilder setClassCanonicalName(String classCanonicalName) {
+  public BaseClassInfoParameterBuilder withClassCanonicalName(String classCanonicalName) {
     this.classCanonicalName = classCanonicalName;
     return this;
   }
 
-  public BaseClassInfoParameterBuilder setForce(boolean force) {
+  public BaseClassInfoParameterBuilder withForce(boolean force) {
     this.force = force;
     return this;
   }
 
-  public BaseClassInfoParameterBuilder setExcludedFields(String[] excludedFields) {
+  public BaseClassInfoParameterBuilder withExcludedFields(String[] excludedFields) {
     this.excludedFields = asList(excludedFields);
     return this;
   }
 
-  public BaseClassInfoParameterBuilder setIncludedFields(String[] includedFields) {
+  public BaseClassInfoParameterBuilder withIncludedFields(String[] includedFields) {
     this.includedFields = asList(includedFields);
     return this;
   }
 
-  public BaseClassInfoParameterBuilder setMandatoryFields(String[] mandatoryFields) {
+  public BaseClassInfoParameterBuilder withMandatoryFields(String[] mandatoryFields) {
     this.mandatoryFields = asList(mandatoryFields);
     return this;
   }
 
-  public BaseClassInfoParameterBuilder setSuffix(String suffix) {
+  public BaseClassInfoParameterBuilder withSuffix(String suffix) {
     this.suffix = suffix;
     return this;
   }
 
-  public BaseClassInfoParameterBuilder setSuffixToRemove(String suffixToRemove) {
+  public BaseClassInfoParameterBuilder withSuffixToRemove(String suffixToRemove) {
     this.suffixToRemove = suffixToRemove;
     return this;
   }
 
-  public BaseClassInfoParameterBuilder setFile(File file) {
+  public BaseClassInfoParameterBuilder withFile(File file) {
     this.file = file;
     return this;
   }
 
-  public BaseClassInfoParameterBuilder setAddtionalFlags(String[] addtionalFlags) {
+  public BaseClassInfoParameterBuilder withAdditionalFlags(String[] addtionalFlags) {
     this.addtionalFlags = asList(addtionalFlags);
     return this;
   }

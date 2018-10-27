@@ -49,18 +49,18 @@ public abstract class GeneratorCommand extends BaseCommand {
       @ShellOption(value = "--force", help = "Overwrite existing files") boolean isForced) {
 
     ClassInfoParameter parameter = new BaseClassInfoParameterBuilder()
-        .setClassCanonicalName(classCanonicalName)
-        .setForce(isForced)
-        .setExcludedFields(excludedFields)
-        .setIncludedFields(includedFields)
-        .setMandatoryFields(mandatoryFields)
-        .setSuffix(templateGenerator.suffix())
-        .setSuffixToRemove(suffixToRemove)
-        .setAddtionalFlags(additionalFlags)
+        .withClassCanonicalName(classCanonicalName)
+        .withForce(isForced)
+        .withExcludedFields(excludedFields)
+        .withIncludedFields(includedFields)
+        .withMandatoryFields(mandatoryFields)
+        .withSuffix(templateGenerator.suffix())
+        .withSuffixToRemove(suffixToRemove)
+        .withAdditionalFlags(additionalFlags)
         .build();
 
     ClassInfo classInfo = getClassInfo(parameter);
-    terminalLogger().info("Generate %s for %s class with parameters:\n%s", this.getClass().getAnnotation(JRocksCommand.class).value(), parameter.getClassCanonicalName(), parameter);
+    terminalLogger().info("Generate %s for %s class with parameters:\n%s", this.getClass().getAnnotation(JRocksCommand.class).value(), parameter.classCanonicalName(), parameter);
 
     templateGenerator.generateSource(parameter, classInfo);
   }
@@ -73,9 +73,9 @@ public abstract class GeneratorCommand extends BaseCommand {
 
   private ClassInfo getClassInfo(ClassInfoParameter parameter) {
     io.github.classgraph.ClassInfo sourceClass = classPathScanner.getAllClassInfo()
-        .filter(ci -> ci.getName().equals(parameter.getClassCanonicalName()))
+        .filter(ci -> ci.getName().equals(parameter.classCanonicalName()))
         .findAny()
-        .orElseThrow(() -> new IllegalStateException(format("Class '%s' not found on the class path", parameter.getClassCanonicalName())));
+        .orElseThrow(() -> new IllegalStateException(format("Class '%s' not found on the class path", parameter.classCanonicalName())));
     return new ClassInfoBuilder(sourceClass).build();
   }
 }

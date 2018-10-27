@@ -14,7 +14,7 @@ import javax.annotation.Generated;
 @for (String name : bean.fieldCanonicalNames()) {
 import @name;
 }
-@if (!param.getMandatoryFields().isEmpty()|| bean.hasRequiredFields()) {
+@if (!param.mandatoryFields().isEmpty()|| bean.hasRequiredFields()) {
 import javax.validation.constraints.NotNull;
 }
 
@@ -25,7 +25,7 @@ import javax.validation.constraints.NotNull;
 public class @param.applySuffix(bean.simpleName()) {
 
 @for (FieldClassInfo fieldInfo : bean.getFields()) {
-  @if (param.getMandatoryFields().contains(fieldInfo.fieldName())) {
+  @if (param.mandatoryFields().contains(fieldInfo.fieldName())) {
   @@NotNull
   }
   private @fieldInfo.simpleName() @fieldInfo.fieldName();

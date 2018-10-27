@@ -49,11 +49,11 @@ public class BaseClassInfoParameter implements ClassInfoParameter {
   }
 
   protected BaseClassInfoParameter(ClassInfoParameter parameter) {
-    this(parameter.getClassCanonicalName(),
+    this(parameter.classCanonicalName(),
         parameter.isForce(),
-        parameter.getExcludedFields(),
-        parameter.getIncludedFields(),
-        parameter.getMandatoryFields(),
+        parameter.excludedFields(),
+        parameter.includedFields(),
+        parameter.mandatoryFields(),
         parameter.suffix(),
         parameter.suffixToRemove(),
         parameter.getFile(),
@@ -61,22 +61,22 @@ public class BaseClassInfoParameter implements ClassInfoParameter {
   }
 
   @Override
-  public List<String> getExcludedFields() {
+  public List<String> excludedFields() {
     return excludedFields;
   }
 
   @Override
-  public List<String> getIncludedFields() {
+  public List<String> includedFields() {
     return includedFields;
   }
 
   @Override
-  public List<String> getMandatoryFields() {
+  public List<String> mandatoryFields() {
     return mandatoryFields;
   }
 
   @Override
-  public String getClassCanonicalName() {
+  public String classCanonicalName() {
     return classCanonicalName;
   }
 

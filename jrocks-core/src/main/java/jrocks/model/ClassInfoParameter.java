@@ -1,18 +1,17 @@
 package jrocks.model;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 public interface ClassInfoParameter {
 
-  List<String> getExcludedFields();
+  List<String> excludedFields();
 
-  List<String> getIncludedFields();
+  List<String> includedFields();
 
-  List<String> getMandatoryFields();
+  List<String> mandatoryFields();
 
-  String getClassCanonicalName();
+  String classCanonicalName();
 
   boolean isForce();
 

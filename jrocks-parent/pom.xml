@@ -22,8 +22,8 @@
     <modules>
         <module>../jrocks-samples</module>
         <module>../jrocks-core</module>
-        <module>../jrocks-generator-test</module>
-        <module>../jrocks-generator-bean</module>
+        <module>../jrocks-gen-test</module>
+        <module>../jrocks-gen-bean</module>
         <module>../jrocks-package</module>
     </modules>
 

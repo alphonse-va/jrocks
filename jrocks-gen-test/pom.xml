@@ -11,7 +11,7 @@
         <version>0.0.1</version>
     </parent>
 
-    <artifactId>jrocks-generator-test</artifactId>
+    <artifactId>jrocks-gen-test</artifactId>
     <version>0.0.1</version>
     <packaging>jar</packaging>
 
