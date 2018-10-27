@@ -35,7 +35,7 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Spring boot deps -->
+        <!-- Spring Boot -->
         <dependency>
             <groupId>org.springframework.shell</groupId>
             <artifactId>spring-shell-starter</artifactId>
@@ -53,6 +53,8 @@
             <artifactId>classgraph</artifactId>
             <version>4.2.1</version>
         </dependency>
+
+        <!-- Maven project info -->
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-core</artifactId>
