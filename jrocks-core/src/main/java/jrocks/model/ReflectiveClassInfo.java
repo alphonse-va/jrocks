@@ -18,7 +18,7 @@ public class ReflectiveClassInfo implements ClassInfo {
 
   private List<FieldClassInfo> properties = new ArrayList<>();
 
-  public ReflectiveClassInfo(Class<?> beanClass) {
+  ReflectiveClassInfo(Class<?> beanClass) {
     this.beanClass = beanClass;
   }
 
@@ -67,18 +67,10 @@ public class ReflectiveClassInfo implements ClassInfo {
         .map(ClassInfo::canonicalName).distinct().collect(Collectors.toList());
   }
 
-  // getters
-
   @Override
   public List<FieldClassInfo> getFields() {
     return properties;
   }
-
-  public void setProperties(List<FieldClassInfo> properties) {
-    this.properties = properties;
-  }
-
-  // internals
 
   @Override
   public void addField(FieldClassInfo metaData) {
