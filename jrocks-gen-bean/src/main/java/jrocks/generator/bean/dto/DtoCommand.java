@@ -2,7 +2,7 @@ package jrocks.generator.bean.dto;
 
 import jrocks.shell.JRocksCommand;
 import jrocks.shell.TerminalLogger;
-import jrocks.shell.command.GeneratorCommand;
+import jrocks.shell.command.ClassGeneratorCommand;
 import jrocks.shell.config.ConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 
 @JRocksCommand(value = "DTO generator", key = "dto", group = "Application")
-public class DtoCommand extends GeneratorCommand {
+public class DtoCommand extends ClassGeneratorCommand {
 
   static final String WITH_FACTORY_METHODS_FLAG = "with-factory-method";
 

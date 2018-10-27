@@ -11,9 +11,9 @@ import java.util.stream.Collectors;
 public class GeneratorCommandHolder {
 
   @Autowired(required = false)
-  private List<GeneratorCommand> generatorCommands;
+  private List<ClassGeneratorCommand> generatorCommands;
 
-  private GeneratorCommand currentCommand;
+  private ClassGeneratorCommand currentCommand;
 
   public void setCurrentCommand(String commandName) {
     if (generatorCommands == null) return;
@@ -22,13 +22,13 @@ public class GeneratorCommandHolder {
         .orElse(null);
   }
 
-  public GeneratorCommand getCurrentCommand() {
+  public ClassGeneratorCommand getCurrentCommand() {
     return currentCommand;
   }
 
   public List<String> getGeneratorNames() {
     return generatorCommands == null
         ? new ArrayList<>()
-        : generatorCommands.stream().map(GeneratorCommand::name).collect(Collectors.toList());
+        : generatorCommands.stream().map(ClassGeneratorCommand::name).collect(Collectors.toList());
   }
 }

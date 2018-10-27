@@ -20,7 +20,7 @@ import org.springframework.shell.standard.ShellOption;
 
 import static java.lang.String.format;
 
-public abstract class GeneratorCommand extends BaseCommand {
+public abstract class ClassGeneratorCommand extends BaseCommand {
 
   private TemplateGenerator templateGenerator;
 
@@ -29,7 +29,7 @@ public abstract class GeneratorCommand extends BaseCommand {
   @Autowired
   private ClassPathScanner classPathScanner;
 
-  public GeneratorCommand(TemplateGenerator templateGenerator, ConfigService configService, TerminalLogger terminalLogger) {
+  public ClassGeneratorCommand(TemplateGenerator templateGenerator, ConfigService configService, TerminalLogger terminalLogger) {
     super(configService, terminalLogger);
     this.templateGenerator = templateGenerator;
   }

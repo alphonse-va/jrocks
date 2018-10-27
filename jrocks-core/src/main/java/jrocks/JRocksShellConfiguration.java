@@ -1,7 +1,7 @@
 package jrocks;
 
 import jrocks.shell.ExtendedDefaultParser;
-import jrocks.shell.command.GeneratorCommand;
+import jrocks.shell.command.ClassGeneratorCommand;
 import jrocks.shell.command.GeneratorCommandHolder;
 import org.jline.reader.*;
 import org.jline.reader.impl.history.DefaultHistory;
@@ -39,6 +39,7 @@ import java.util.stream.Collectors;
 import static org.springframework.shell.jline.InteractiveShellApplicationRunner.SPRING_SHELL_INTERACTIVE;
 import static org.springframework.shell.jline.ScriptShellApplicationRunner.SPRING_SHELL_SCRIPT;
 
+@SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
 @Configuration
 public class JRocksShellConfiguration {
 
@@ -158,18 +159,6 @@ public class JRocksShellConfiguration {
   }
 
   /**
-   * Sanitize the buffer input given the customizations applied to the JLine parser (<em>e.g.</em> support for
-   * line continuations, <em>etc.</em>)
-   */
-  static List<String> sanitizeInput(List<String> words) {
-    words = words.stream()
-        .map(s -> s.replaceAll("^\\n+|\\n+$", "")) // CR at beginning/end of line introduced by backslash continuation
-        .map(s -> s.replaceAll("\\n+", " ")) // CR in middle of word introduced by return inside a quoted string
-        .collect(Collectors.toList());
-    return words;
-  }
-
-  /**
    * A bridge between JLine's {@link Completer} contract and our own.
    *
    * @author Eric Bottard
@@ -189,8 +178,8 @@ public class JRocksShellConfiguration {
       // TODO find out a commons way to enable/disable some parameter based on others
       List<CompletionProposal> proposals = shell.complete(context);
       if (generatorCommandHolder.getGeneratorNames().contains(context.getWords().get(0))
-          && !context.getWords().contains(GeneratorCommand.CLASS_PARAM)) {
-        proposals = proposals.stream().filter(p -> p.value().equals(GeneratorCommand.CLASS_PARAM)).collect(Collectors.toList());
+          && !context.getWords().contains(ClassGeneratorCommand.CLASS_PARAM)) {
+        proposals = proposals.stream().filter(p -> p.value().equals(ClassGeneratorCommand.CLASS_PARAM)).collect(Collectors.toList());
       }
       proposals.stream()
           .map(p -> new Candidate(
@@ -211,6 +200,18 @@ public class JRocksShellConfiguration {
 
     void setGeneratorCommandHolder(GeneratorCommandHolder generatorCommandHolder) {
       this.generatorCommandHolder = generatorCommandHolder;
+    }
+
+    /**
+     * Sanitize the buffer input given the customizations applied to the JLine parser (<em>e.g.</em> support for
+     * line continuations, <em>etc.</em>)
+     */
+    private static List<String> sanitizeInput(List<String> words) {
+      words = words.stream()
+          .map(s -> s.replaceAll("^\\n+|\\n+$", "")) // CR at beginning/end of line introduced by backslash continuation
+          .map(s -> s.replaceAll("\\n+", " ")) // CR in middle of word introduced by return inside a quoted string
+          .collect(Collectors.toList());
+      return words;
     }
   }
 }
