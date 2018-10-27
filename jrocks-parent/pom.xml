@@ -28,6 +28,7 @@
     </modules>
 
     <dependencies>
+
         <!-- Test deps -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
