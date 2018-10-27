@@ -3,7 +3,7 @@ package jrocks.generator.bean;
 import jrocks.generator.bean.dto.DtoParameter;
 import jrocks.generator.bean.dto.DtoParameterBuilder;
 import jrocks.generator.bean.dto.dto;
-import jrocks.generator.test.AbstractSmokeTest;
+import jrocks.generator.test.AbstractTemplateSmokeTest;
 import jrocks.model.ClassInfo;
 import jrocks.model.ClassInfoBuilder;
 import jrocks.samples.model.Matrix;
@@ -15,7 +15,7 @@ import java.util.AbstractMap.SimpleEntry;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class BeanSmokeTest extends AbstractSmokeTest {
+class BeanTemplateSmokeTest extends AbstractTemplateSmokeTest {
 
   private ClassInfo infoApi;
 

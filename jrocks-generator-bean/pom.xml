@@ -20,6 +20,27 @@
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>be.unlock</groupId>
+            <artifactId>jrocks-core</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>be.unlock</groupId>
+            <artifactId>jrocks-samples</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>be.unlock</groupId>
+            <artifactId>jrocks-generator-test</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <!-- Template Engine -->
@@ -61,25 +82,4 @@
         </plugins>
 
     </build>
-
-    <dependencies>
-        <dependency>
-            <groupId>be.unlock</groupId>
-            <artifactId>jrocks-core</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>be.unlock</groupId>
-            <artifactId>jrocks-samples</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>be.unlock</groupId>
-            <artifactId>jrocks-generator-test</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
 </project>

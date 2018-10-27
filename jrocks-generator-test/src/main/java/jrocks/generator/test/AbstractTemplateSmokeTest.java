@@ -8,19 +8,21 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 
 import javax.tools.*;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
-import java.util.AbstractMap;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class AbstractSmokeTest {
+public abstract class AbstractTemplateSmokeTest {
 
   private static StandardJavaFileManager standardJavaFileManager;
   private static final JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
+  private static Path tmpDir;
   protected static ClassInfoList classes;
 
   @BeforeAll
@@ -31,16 +33,24 @@ public class AbstractSmokeTest {
         .whitelistPackages("jrocks")
         .scan();
     classes = scanResult.getAllStandardClasses();
+
+    try {
+      tmpDir = Files.createTempDirectory("jrocks-smoke-test-");
+    } catch (IOException e) {
+      throw new IllegalStateException("Error while creating temp directory", e);
+    }
   }
 
   @AfterAll
   static void afterAll() throws IOException {
     if (standardJavaFileManager != null) standardJavaFileManager.close();
+    delete(tmpDir.toFile());
   }
 
   @SafeVarargs
   protected static void assertThatClassCompile(AbstractMap.SimpleEntry<String, String>... entries) {
-    String[] options = new String[]{"-d", "/home/fons/dev/git/jrocks/jrocks-core/target"};
+
+    String[] options = new String[]{"-d", tmpDir.toFile().getAbsolutePath()};
     List<JavaSourceFromString> sources = Stream.of(entries).map(source -> new JavaSourceFromString(source.getKey(), source.getValue())).collect(Collectors.toList());
     DiagnosticListener<JavaFileObject> diagnosticListener = e -> {
       Assertions.assertThat(String.format("%s:%s %s%n", e.getLineNumber(), e.getColumnNumber(), e.getMessage(Locale.ENGLISH))).isNull();
@@ -49,18 +59,10 @@ public class AbstractSmokeTest {
   }
 
   private static class JavaSourceFromString extends SimpleJavaFileObject {
-    /**
-     * The source code of this "file".
-     */
+
     final String code;
 
-    /**
-     * Constructs a new JavaSourceFromString.
-     *
-     * @param name the name of the compilation unit represented by this file object
-     * @param code the source code for the compilation unit represented by this file object
-     */
-    public JavaSourceFromString(String name, String code) {
+    JavaSourceFromString(String name, String code) {
       super(URI.create("string:///" + name.replace('.', '/') + Kind.SOURCE.extension),
           Kind.SOURCE);
       this.code = code;
@@ -70,5 +72,12 @@ public class AbstractSmokeTest {
     public CharSequence getCharContent(boolean ignoreEncodingErrors) {
       return code;
     }
+  }
+
+  private static void delete(File tempDir) throws IOException {
+    if (tempDir.isDirectory())
+      for (File c : Objects.requireNonNull(tempDir.listFiles()))
+        delete(c);
+    if (!tempDir.delete()) throw new FileNotFoundException("Enable to delete file: " + tempDir);
   }
 }
