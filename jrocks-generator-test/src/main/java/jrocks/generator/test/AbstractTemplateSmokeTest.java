@@ -54,13 +54,14 @@ public abstract class AbstractTemplateSmokeTest {
   @SafeVarargs
   protected static void assertThatClassCompile(AbstractMap.SimpleEntry<String, String>... entries) {
 
-    String[] options = new String[]{"-d", tmpDir.toFile().getAbsolutePath()};
-    List<JavaSourceFromString> sources = Stream.of(entries).map(source -> new JavaSourceFromString(source.getKey(), source.getValue())).collect(Collectors.toList());
-
     DiagnosticListener<JavaFileObject> diagnosticListener = e -> {
       Stream.of(entries).forEach(entry -> LOGGER.error("\nClass: {}\nSource: \n{}", entry.getKey(), entry.getValue()));
       Assertions.assertThat(String.format("%s:%s %s%n", e.getLineNumber(), e.getColumnNumber(), e.getMessage(Locale.ENGLISH))).isNull();
     };
+
+    String[] options = new String[]{"-d", tmpDir.toFile().getAbsolutePath()};
+    List<JavaSourceFromString> sources = Stream.of(entries).map(source -> new JavaSourceFromString(source.getKey(), source.getValue())).collect(Collectors.toList());
+
     javaCompiler.getTask(null, null, diagnosticListener, Arrays.asList(options), null, sources).call();
   }
 
