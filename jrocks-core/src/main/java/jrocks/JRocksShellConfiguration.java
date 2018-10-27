@@ -178,8 +178,8 @@ public class JRocksShellConfiguration {
       // TODO find out a commons way to enable/disable some parameter based on others
       List<CompletionProposal> proposals = shell.complete(context);
       if (generatorCommandHolder.getGeneratorNames().contains(context.getWords().get(0))
-          && !context.getWords().contains(ClassGeneratorCommand.CLASS_PARAM)) {
-        proposals = proposals.stream().filter(p -> p.value().equals(ClassGeneratorCommand.CLASS_PARAM)).collect(Collectors.toList());
+          && !context.getWords().contains(ClassGeneratorCommand.PARAM_CLASS)) {
+        proposals = proposals.stream().filter(p -> p.value().equals(ClassGeneratorCommand.PARAM_CLASS)).collect(Collectors.toList());
       }
       proposals.stream()
           .map(p -> new Candidate(

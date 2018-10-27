@@ -20,11 +20,18 @@ import org.springframework.shell.standard.ShellOption;
 
 import static java.lang.String.format;
 
+@SuppressWarnings("WeakerAccess")
 public abstract class ClassGeneratorCommand extends BaseCommand {
 
-  private TemplateGenerator templateGenerator;
+  public static final String PARAM_CLASS = "--class";
+  public static final String PARAM_SUFFIX_TO_REMOVE = "--suffix-to-remove";
+  public static final String PARAM_EXCLUDED_FIELDS = "--excluded-fields";
+  public static final String PARAM_INCLUDED_FIELDS = "--included-fields";
+  public static final String PARAM_MANDATORY_FIELDS = "--mandatory-fields";
+  public static final String PARAM_ADDITIONAL_FLAGS = "--additional-flags";
+  public static final String PARAM_FORCE = "--force";
 
-  public static final String CLASS_PARAM = "--class";
+  private TemplateGenerator templateGenerator;
 
   @Autowired
   private ClassPathScanner classPathScanner;
@@ -39,14 +46,14 @@ public abstract class ClassGeneratorCommand extends BaseCommand {
   @ShellMethod
   @JRocksShellMethod
   public void generator(
-      @ShellOption(value = CLASS_PARAM, help = "Source class", valueProvider = AllClassValueProvider.class) String classCanonicalName,
-      @ShellOption(value = "--suffix-to-remove", help = "Suffix to remove", defaultValue = "") String suffixToRemove,
+      @ShellOption(value = PARAM_CLASS, help = "Source class", valueProvider = AllClassValueProvider.class) String classCanonicalName,
+      @ShellOption(value = PARAM_SUFFIX_TO_REMOVE, help = "Suffix to remove", defaultValue = "") String suffixToRemove,
 
-      @ShellOption(value = "--excluded-fields", help = "Fields to exclude", defaultValue = "[]", valueProvider = ClassFieldsValueProvider.class) String[] excludedFields,
-      @ShellOption(value = "--included-fields", help = "Fields to include", defaultValue = "[]", valueProvider = ClassFieldsValueProvider.class) String[] includedFields,
-      @ShellOption(value = "--mandatory-fields", help = "Mandatory fields", defaultValue = "[]", valueProvider = ClassFieldsValueProvider.class) String[] mandatoryFields,
-      @ShellOption(value = "--additional-flags", help = "Generator additional flags", defaultValue = "[]", valueProvider = AdditionalFlagValueProvider.class) String[] additionalFlags,
-      @ShellOption(value = "--force", help = "Overwrite existing files") boolean isForced) {
+      @ShellOption(value = PARAM_EXCLUDED_FIELDS, help = "Fields to exclude", defaultValue = "[]", valueProvider = ClassFieldsValueProvider.class) String[] excludedFields,
+      @ShellOption(value = PARAM_INCLUDED_FIELDS, help = "Fields to include", defaultValue = "[]", valueProvider = ClassFieldsValueProvider.class) String[] includedFields,
+      @ShellOption(value = PARAM_MANDATORY_FIELDS, help = "Mandatory fields", defaultValue = "[]", valueProvider = ClassFieldsValueProvider.class) String[] mandatoryFields,
+      @ShellOption(value = PARAM_ADDITIONAL_FLAGS, help = "Generator additional flags", defaultValue = "[]", valueProvider = AdditionalFlagValueProvider.class) String[] additionalFlags,
+      @ShellOption(value = PARAM_FORCE, help = "Overwrite existing files") boolean isForced) {
 
     ClassInfoParameter parameter = new BaseClassInfoParameterBuilder()
         .withClassCanonicalName(classCanonicalName)
