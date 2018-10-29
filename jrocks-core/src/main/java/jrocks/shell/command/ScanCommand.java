@@ -1,8 +1,6 @@
 package jrocks.shell.command;
 
 import jrocks.shell.ClassPathScanner;
-import jrocks.shell.TerminalLogger;
-import jrocks.shell.config.ConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.Availability;
 import org.springframework.shell.standard.ShellCommandGroup;
@@ -17,8 +15,7 @@ public class ScanCommand extends BaseCommand {
   private final ClassPathScanner scanner;
 
   @Autowired
-  protected ScanCommand(ConfigService configService, TerminalLogger terminalLogger, ClassPathScanner scanner) {
-    super(configService, terminalLogger);
+  protected ScanCommand(ClassPathScanner scanner) {
     this.scanner = scanner;
   }
 

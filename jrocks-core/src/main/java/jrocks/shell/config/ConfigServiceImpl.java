@@ -24,13 +24,12 @@ public class ConfigServiceImpl implements ConfigService {
 
   private ProjectConfig config;
 
-  private GlobalConfig globalConfig;
+  private final GlobalConfig globalConfig;
 
-  private TerminalLogger logger;
+  private final TerminalLogger logger;
 
   @Autowired
-  public ConfigServiceImpl(GlobalConfig globalConfig, TerminalLogger logger) {
-    this.globalConfig = globalConfig;
+  public ConfigServiceImpl(GlobalConfig globalConfig, TerminalLogger logger) {this.globalConfig = globalConfig;
     this.logger = logger;
   }
 

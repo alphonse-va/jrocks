@@ -2,7 +2,6 @@ package jrocks.shell.autocomplete;
 
 import jrocks.shell.command.GeneratorCommandHolder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.core.MethodParameter;
 import org.springframework.shell.CompletionContext;
 import org.springframework.shell.CompletionProposal;
@@ -15,8 +14,6 @@ import java.util.stream.Collectors;
 @Component
 public class AdditionalFlagValueProvider extends ValueProviderSupport {
 
-  @Autowired
-  @Lazy
   private final GeneratorCommandHolder generatorCommandHolder;
 
   @Autowired

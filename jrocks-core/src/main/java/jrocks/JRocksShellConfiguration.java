@@ -44,6 +44,7 @@ import static org.springframework.shell.jline.ScriptShellApplicationRunner.SPRIN
 public class JRocksShellConfiguration {
 
   @Autowired
+  @Lazy
   private GeneratorCommandHolder generatorCommandHolder;
 
   @Autowired
@@ -79,7 +80,7 @@ public class JRocksShellConfiguration {
 
   @Bean
   public PromptProvider promptProvider() {
-    return () -> new AttributedString("jrocks $ ", AttributedStyle.DEFAULT.foreground(AttributedStyle.YELLOW));
+    return () -> new AttributedString("jrocks $ ", AttributedStyle.DEFAULT.foreground(AttributedStyle.BLUE));
   }
 
   /**
@@ -134,7 +135,7 @@ public class JRocksShellConfiguration {
   public LineReader lineReader() {
     LineReaderBuilder lineReaderBuilder = LineReaderBuilder.builder()
         .terminal(terminal())
-        .appName("Spring Shell")
+        .appName("JRocks Shell")
         .completer(completer())
         .history(history)
         .highlighter((reader, buffer) -> {

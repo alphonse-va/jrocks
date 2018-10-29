@@ -3,17 +3,10 @@ package jrocks.generator.bean.builder;
 import jrocks.model.ClassInfo;
 import jrocks.model.ClassInfoParameter;
 import jrocks.shell.generator.BaseTemplateGenerator;
-import jrocks.shell.generator.TemplateWriterService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class BuilderTemplateGenerator extends BaseTemplateGenerator {
-
-  @Autowired
-  public BuilderTemplateGenerator(TemplateWriterService writerService) {
-    super(writerService);
-  }
 
   @Override
   public void generateSource(ClassInfoParameter parameter, ClassInfo classInfo) {

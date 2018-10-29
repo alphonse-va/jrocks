@@ -27,12 +27,12 @@
         <moduleSet>
             <useAllReactorProjects>true</useAllReactorProjects>
             <includes>
-                <include>be.unlock:jrocks-generator-bean:jar:</include>
+                <include>be.unlock:jrocks-gen-bean:jar:</include>
             </includes>
             <binaries>
                 <outputDirectory>jrocks/plugins</outputDirectory>
                 <includes>
-                    <include>be.unlock:jrocks-generator-bean</include>
+                    <include>be.unlock:jrocks-gen-bean</include>
                 </includes>
                 <unpack>false</unpack>
             </binaries>

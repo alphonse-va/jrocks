@@ -1,10 +1,7 @@
 package jrocks.generator.bean.dto;
 
 import jrocks.shell.JRocksCommand;
-import jrocks.shell.TerminalLogger;
 import jrocks.shell.command.ClassGeneratorCommand;
-import jrocks.shell.config.ConfigService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collections;
 import java.util.List;
@@ -14,11 +11,9 @@ public class DtoCommand extends ClassGeneratorCommand {
 
   static final String WITH_FACTORY_METHODS_FLAG = "with-factory-method";
 
-  @Autowired
-  public DtoCommand(DtoTemplateGenerator templateGenerator, ConfigService configService, TerminalLogger terminalLogger) {
-    super(templateGenerator, configService, terminalLogger);
+  public DtoCommand(DtoTemplateGenerator templateGenerator) {
+    super(templateGenerator);
   }
-
 
   @Override
   public List<String> additionalFlags() {

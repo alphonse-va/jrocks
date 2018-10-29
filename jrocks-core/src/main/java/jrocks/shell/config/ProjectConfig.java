@@ -20,7 +20,8 @@ public class ProjectConfig {
     modules.add(module);
   }
 
-  @JsonIgnore
+
+  @JsonIgnore // YALM ignore
   public URL[] getOutputDirectoriesAsURLs() {
     return getModules().stream().map(m -> {
       try {

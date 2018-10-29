@@ -1,8 +1,6 @@
 package jrocks.shell.command;
 
-import jrocks.shell.TerminalLogger;
 import jrocks.shell.autocomplete.PackageValueProvider;
-import jrocks.shell.config.ConfigService;
 import jrocks.shell.config.MavenProjectUtil;
 import jrocks.shell.config.ModuleConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +16,7 @@ public class ConfigurationCommand extends BaseCommand {
   private final MavenProjectUtil mavenProjectUtil;
 
   @Autowired
-  public ConfigurationCommand(ConfigService configService, TerminalLogger terminalLogger, MavenProjectUtil mavenProjectUtil) {
-    super(configService, terminalLogger);
+  public ConfigurationCommand(MavenProjectUtil mavenProjectUtil) {
     this.mavenProjectUtil = mavenProjectUtil;
   }
 

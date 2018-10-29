@@ -6,14 +6,13 @@ import jrocks.model.ClassInfoParameter;
 import jrocks.shell.ClassPathScanner;
 import jrocks.shell.JRocksCommand;
 import jrocks.shell.JRocksShellMethod;
-import jrocks.shell.TerminalLogger;
 import jrocks.shell.autocomplete.AdditionalFlagValueProvider;
 import jrocks.shell.autocomplete.AllClassValueProvider;
 import jrocks.shell.autocomplete.ClassFieldsValueProvider;
-import jrocks.shell.config.ConfigService;
 import jrocks.shell.generator.TemplateGenerator;
 import jrocks.shell.parameter.BaseClassInfoParameterBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.shell.Availability;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
@@ -33,11 +32,9 @@ public abstract class ClassGeneratorCommand extends BaseCommand {
 
   private TemplateGenerator templateGenerator;
 
-  @Autowired
   private ClassPathScanner classPathScanner;
 
-  public ClassGeneratorCommand(TemplateGenerator templateGenerator, ConfigService configService, TerminalLogger terminalLogger) {
-    super(configService, terminalLogger);
+  public ClassGeneratorCommand(TemplateGenerator templateGenerator) {
     this.templateGenerator = templateGenerator;
   }
 
@@ -84,5 +81,11 @@ public abstract class ClassGeneratorCommand extends BaseCommand {
         .findAny()
         .orElseThrow(() -> new IllegalStateException(format("Class '%s' not found on the class path", parameter.classCanonicalName())));
     return new ClassInfoBuilder(sourceClass).build();
+  }
+
+  @Autowired
+  @Lazy
+  public void setClassPathScanner(ClassPathScanner classPathScanner) {
+    this.classPathScanner = classPathScanner;
   }
 }
