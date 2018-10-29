@@ -14,6 +14,14 @@ import static jrocks.generator.bean.dto.DtoCommand.WITH_FACTORY_METHODS_FLAG;
 @Component
 public class DtoTemplateGenerator extends BaseTemplateGenerator {
 
+  /**
+   *
+   * FIXME: define a generateSource contract that receive a class and returns a list of files to write
+   *
+   * @param parameter
+   * @param classInfo
+   */
+
   @Override
   public void generateSource(ClassInfoParameter parameter, ClassInfo classInfo) {
 
