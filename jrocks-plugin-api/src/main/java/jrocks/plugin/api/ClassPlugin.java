@@ -4,5 +4,13 @@ import java.util.List;
 
 public interface ClassPlugin {
 
-  List<GeneratedSource> generateSources(ClassParameter parameter, ClassApi clazz) ;
+  String names();
+
+  String description();
+
+  default String group() {
+    return "Class";
+  }
+
+  List<GeneratedSource> generateSources(ClassParameter parameter, ClassApi clazz);
 }
