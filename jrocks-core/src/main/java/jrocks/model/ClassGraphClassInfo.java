@@ -55,14 +55,6 @@ public class ClassGraphClassInfo implements ClassInfo {
   }
 
   @Override
-  public List<String> requiredFieldCanonicalNames() {
-    return properties.stream()
-        .filter(FieldClassInfo::isRequired)
-        .filter(javaLangFilter())
-        .map(ClassInfo::canonicalName).distinct().collect(Collectors.toList());
-  }
-
-  @Override
   public List<String> fieldCanonicalNames() {
     return properties.stream()
         .filter(javaLangFilter())

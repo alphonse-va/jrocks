@@ -1,6 +1,5 @@
 package jrocks.model;
 
-import io.github.classgraph.AnnotationInfo;
 import io.github.classgraph.utils.ReflectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -181,10 +180,5 @@ public class ReflectiveFieldInfo extends ReflectiveClassInfo implements FieldCla
     } catch (IntrospectionException e) {
       throw new IllegalStateException(e.getMessage(), e);
     }
-  }
-
-  @Override
-  public Stream<AnnotationInfo> fieldAnnotations() {
-    throw new IllegalArgumentException("not supported for reflective field info!");
   }
 }
