@@ -1,16 +1,10 @@
 package jrocks.model;
 
-import io.github.classgraph.AnnotationInfo;
-
-import java.util.stream.Stream;
-
 public interface FieldClassInfo extends ClassInfo {
 
   String fieldName();
 
   String fieldNameCapitalized();
-
-  Stream<AnnotationInfo> fieldAnnotations();
 
   boolean isAnnotatedWith(String... annotationClasses);
 

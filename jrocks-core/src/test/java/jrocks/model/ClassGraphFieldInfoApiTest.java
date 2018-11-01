@@ -79,11 +79,6 @@ class ClassGraphFieldInfoApiTest {
   }
 
   @Test
-  void fieldAnnotations() {
-    assertThat(usernameMD.fieldAnnotations().findAny()).isPresent();
-  }
-
-  @Test
   void isAnnotedWith() {
     assertThat(usernameMD.isAnnotatedWith("javax.validation.constraints.Size")).isTrue();
   }
