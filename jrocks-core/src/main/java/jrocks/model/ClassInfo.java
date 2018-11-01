@@ -17,8 +17,6 @@ public interface ClassInfo {
 
   String pluralPropertyName();
 
-  List<String> requiredFieldCanonicalNames();
-
   List<String> fieldCanonicalNames();
 
   List<FieldClassInfo> getFields();

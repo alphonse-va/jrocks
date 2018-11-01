@@ -72,14 +72,14 @@ public abstract class ClassGeneratorCommand extends BaseCommand {
   private Availability generatorAvailability() {
     return configService().isInitialized()
         ? Availability.available()
-        : Availability.unavailable("You firstly need to execute 'init' command to initialize your JRocks project!");
+        : Availability.unavailable("you need to execute 'init' command to initialize JRocks!");
   }
 
   private ClassInfo getClassInfo(ClassInfoParameter parameter) {
     io.github.classgraph.ClassInfo sourceClass = classPathScanner.getAllClassInfo()
         .filter(ci -> ci.getName().equals(parameter.classCanonicalName()))
         .findAny()
-        .orElseThrow(() -> new IllegalStateException(format("Class '%s' not found on the class path", parameter.classCanonicalName())));
+        .orElseThrow(() -> new IllegalStateException(format("Class '%s' not found into index", parameter.classCanonicalName())));
     return new ClassInfoBuilder(sourceClass).build();
   }
 

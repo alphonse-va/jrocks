@@ -1,10 +1,12 @@
 package jrocks.model;
 
-import io.github.classgraph.*;
+import io.github.classgraph.AnnotationInfo;
+import io.github.classgraph.AnnotationParameterValue;
+import io.github.classgraph.ClassRefTypeSignature;
+import io.github.classgraph.FieldInfo;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;
-import java.beans.MethodDescriptor;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -26,11 +28,6 @@ public class ClassGraphFieldInfo extends ClassGraphClassInfo implements FieldCla
   @Override
   public String fieldNameCapitalized() {
     return StringUtils.capitalize(fieldInfo.getName());
-  }
-
-  @Override
-  public Stream<AnnotationInfo> fieldAnnotations() {
-    return fieldInfo.getAnnotationInfo().stream();
   }
 
   @Override
@@ -193,20 +190,5 @@ public class ClassGraphFieldInfo extends ClassGraphClassInfo implements FieldCla
         .filter(m -> m.equals("set" + StringUtils.capitalize(fieldInfo.getName())))
         .findAny()
         .orElseThrow(() -> new IllegalStateException("fieldInfo '" + fieldName() + "' need a setter!"));
-  }
-
-  private boolean isSetter(MethodDescriptor m) {
-    Class<?>[] parameterTypes = m.getMethod().getParameterTypes();
-    if (parameterTypes.length > 1) {
-      return false;
-    }
-    return !m.isHidden() && m.getName().equals("set" + fieldNameCapitalized());
-  }
-
-  private boolean isGetter(MethodDescriptor m) {
-    return !m.isHidden()
-        && (m.getName().equals("get" + fieldNameCapitalized())
-        || m.getName().equals("is" + fieldNameCapitalized())
-        || m.getName().equals("has" + fieldNameCapitalized()));
   }
 }
