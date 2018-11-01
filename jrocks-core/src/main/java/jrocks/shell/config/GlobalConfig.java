@@ -4,6 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+import java.io.File;
 import java.util.StringJoiner;
 
 @Configuration
@@ -16,6 +17,8 @@ public class GlobalConfig {
   private String version;
 
   private String configFileName;
+
+  private File pluginDirectory;
 
   public String getName() {
     return name;
@@ -51,5 +54,14 @@ public class GlobalConfig {
         .add("\tVersion: '" + version + "'")
         .add("\tConfig Filename: '" + configFileName + "'")
         .toString();
+  }
+
+  public File getPluginDirectory() {
+    return pluginDirectory;
+  }
+
+  public GlobalConfig setPluginDirectory(File pluginDirectory) {
+    this.pluginDirectory = pluginDirectory;
+    return this;
   }
 }

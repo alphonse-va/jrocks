@@ -1,16 +1,19 @@
 package jrocks.shell;
 
-import io.github.classgraph.ClassGraph;
-import io.github.classgraph.ClassInfo;
-import io.github.classgraph.ClassInfoList;
-import io.github.classgraph.ScanResult;
+import io.github.classgraph.*;
+import jrocks.model.CommandInfo;
+import jrocks.model.PluginInfo;
 import jrocks.shell.config.ConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -116,6 +119,62 @@ public class ClassPathScanner {
                 && (doesMethodExist(className, "get", fieldName)
                 || doesMethodExist(className, "is", fieldName)))
         .collect(Collectors.toList());
+  }
+
+  public List<PluginInfo> listInstalledPlugins() {
+    File pluginDirectory = configService.globalConfig().getPluginDirectory();
+
+    try {
+      List<PluginInfo> result = new ArrayList<>();
+      Files.newDirectoryStream(pluginDirectory.toPath(),
+          path -> path.toString().endsWith(".jar"))
+          .forEach(path -> {
+            PluginInfo pluginInfo = new PluginInfo().setJarFile(path.toFile());
+            ScanResult pluginsScanResult = new ClassGraph()
+                .enableAllInfo()
+                .overrideClasspath(path.toFile().getAbsolutePath())
+                .scan();
+            String jrocksCommandEnum = JRocksCommand.class.getCanonicalName();
+            ClassInfoList commandsClassInfo = pluginsScanResult.getClassesWithAnnotation(jrocksCommandEnum);
+            for (ClassInfo classInfo : commandsClassInfo) {
+              AnnotationInfo annotationInfo = classInfo.getAnnotationInfo().get(jrocksCommandEnum);
+              String key = "", description = "", group = "";
+              for (AnnotationParameterValue parameter : annotationInfo.getParameterValues()) {
+                switch (parameter.getName()) {
+                  case "key":
+                    key = annValueAsString(parameter.getValue());
+                    break;
+                  case "value":
+                    description = annValueAsString(parameter.getValue());
+                    break;
+                  case "group":
+                    group = annValueAsString(parameter.getValue());
+                    break;
+                }
+              }
+              pluginInfo.addCommand(new CommandInfo(key, description, group));
+            }
+            result.add(pluginInfo);
+          });
+      return result;
+    } catch (IOException e) {
+      throw new IllegalStateException("todo", e);
+    }
+
+  }
+
+  private String annValueAsString(Object value) {
+    String result;
+    if (value instanceof String[]) {
+      result = Stream.of((String[]) value).collect(Collectors.joining(" "));
+    } else if (value instanceof String) {
+      result = (String) value;
+    } else if (value instanceof Object[]) {
+      result = Stream.of((Object[]) value).map(String.class::cast).collect(Collectors.joining(" "));
+    } else {
+      result = value.toString();
+    }
+    return result;
   }
 
   private Stream<String> getFieldNames(String className) {

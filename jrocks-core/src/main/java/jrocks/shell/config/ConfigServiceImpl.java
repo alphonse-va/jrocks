@@ -80,7 +80,7 @@ public class ConfigServiceImpl implements ConfigService {
   }
 
   @Override
-  public GlobalConfig getGlobalConfig() {
+  public GlobalConfig globalConfig() {
     return globalConfig;
   }
 

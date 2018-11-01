@@ -11,7 +11,7 @@ public interface ConfigService {
 
   void setConfig(ProjectConfig config);
 
-  GlobalConfig getGlobalConfig();
+  GlobalConfig globalConfig();
 
   boolean isInitialized();
 }

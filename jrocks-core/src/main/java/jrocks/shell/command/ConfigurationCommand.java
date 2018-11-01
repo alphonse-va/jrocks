@@ -1,5 +1,6 @@
 package jrocks.shell.command;
 
+import jrocks.shell.ClassPathScanner;
 import jrocks.shell.autocomplete.PackageValueProvider;
 import jrocks.shell.config.MavenProjectUtil;
 import jrocks.shell.config.ModuleConfig;
@@ -14,6 +15,9 @@ import java.io.File;
 public class ConfigurationCommand extends BaseCommand {
 
   private final MavenProjectUtil mavenProjectUtil;
+
+  @Autowired
+  private ClassPathScanner classPathScanner;
 
   @Autowired
   public ConfigurationCommand(MavenProjectUtil mavenProjectUtil) {
@@ -45,7 +49,7 @@ public class ConfigurationCommand extends BaseCommand {
   @ShellMethod(key = "show-config", value = "Show JRocks configuration")
   void showConfig() {
     terminalLogger().info(configService().getConfig().toString());
-    terminalLogger().info(configService().getGlobalConfig().toString());
+    terminalLogger().info(configService().globalConfig().toString());
   }
 
   @ShellMethod(value = "Show debug information")
@@ -54,6 +58,31 @@ public class ConfigurationCommand extends BaseCommand {
     terminalLogger().setVerbose(status);
     String statusString = status ? "enabled" : "disabled";
     terminalLogger().info("Debug information " + statusString);
+  }
+
+  @ShellMethod("Show plugins")
+  void showPlugins() {
+
+    File pluginDirectory = configService().globalConfig().getPluginDirectory();
+    if (pluginDirectory == null) {
+      terminalLogger().error("jrocks.plugins not defined");
+      return;
+    }
+    if (!pluginDirectory.exists() || !pluginDirectory.isDirectory()) {
+      terminalLogger().error(
+          "Plugin directory not found, please fix your config\n\tjrock.plugin-dir: %s",
+          configService().globalConfig().getPluginDirectory().getAbsolutePath());
+      return;
+    }
+
+    classPathScanner.listInstalledPlugins()
+        .forEach(p -> {
+          terminalLogger().info("Plugin: %s\nProvides:", p.getJarFile());
+          p.getCommands().forEach(c -> {
+            terminalLogger().info("\t%s: %s (group: %s)", c.getKey(), c.getDescription(), c.getGroup());
+          });
+        });
+
   }
 
   @ShellMethodAvailability({"show-config"})
@@ -65,5 +94,9 @@ public class ConfigurationCommand extends BaseCommand {
 
   private boolean isMavenProject() {
     return new File("pom.xml").exists();
+  }
+
+  public void setClassPathScanner(ClassPathScanner classPathScanner) {
+    this.classPathScanner=classPathScanner;
   }
 }
