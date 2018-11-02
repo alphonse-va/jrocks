@@ -15,7 +15,7 @@ public interface JRocksPlugin {
     return "Class";
   }
 
-  List<GeneratedSource> generateSources(ClassParameter parameter, ClassApi clazz);
+  List<GeneratedSource> generateSources(ClassParameter parameter, ClassApi classApi);
 
 
   default List<String> additionalFlags() {

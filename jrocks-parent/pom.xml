@@ -21,13 +21,11 @@
 
     <modules>
         <module>../jrocks-samples</module>
+        <module>../jrocks-plugin-api</module>
+        <module>../jrocks-plugin-bean</module>
         <module>../jrocks-core</module>
         <!--<module>../jrocks-gen-test</module>-->
         <!--<module>../jrocks-gen-bean</module>-->
-
-        <module>../jrocks-plugin-api</module>
-        <module>../jrocks-plugin-bean</module>
-
         <module>../jrocks-package</module>
     </modules>
 

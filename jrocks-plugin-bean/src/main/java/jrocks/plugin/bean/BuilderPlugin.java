@@ -29,13 +29,13 @@ public class BuilderPlugin implements JRocksPlugin {
   }
 
   @Override
-  public List<GeneratedSource> generateSources(ClassParameter parameter, ClassApi clazz) {
+  public List<GeneratedSource> generateSources(ClassParameter parameter, ClassApi classApi) {
 
-    ClassName sourceClassName = ClassName.bestGuess(clazz.name());
-    ClassName builderClassName = ClassName.bestGuess(clazz.name() + parameter.suffix());
+    ClassName sourceClassName = ClassName.bestGuess(classApi.name());
+    ClassName builderClassName = ClassName.bestGuess(classApi.name() + parameter.suffix());
 
     FieldSpec.Builder buildingField = FieldSpec
-        .builder(sourceClassName, clazz.propertyName(), Modifier.PRIVATE)
+        .builder(sourceClassName, classApi.propertyName(), Modifier.PRIVATE)
         .initializer("new $T()", sourceClassName);
 
     TypeSpec.Builder builderTypeBuilder = TypeSpec.classBuilder(builderClassName)
@@ -43,15 +43,16 @@ public class BuilderPlugin implements JRocksPlugin {
         .addField(buildingField.build());
 
     MethodSpec.Builder builderMethod = MethodSpec.methodBuilder("build").addModifiers(Modifier.PUBLIC);
-    for (FieldApi field : clazz.fields()) {
-      builderTypeBuilder.addMethod(PoeticUtils.withFor(clazz.propertyName(), field, builderClassName));
+    classApi.fields().forEach(field -> {
+      builderTypeBuilder.addMethod(PoeticUtils.withMethodSpecFor(classApi.propertyName(), field, builderClassName));
       if (field.isRequired() || parameter.mandatoryFields().contains(field.fieldName())) {
-        builderMethod.addStatement("$T.requireNonNull($L.get$L())", Objects.class, clazz.propertyName(), field.fieldNameCapitalized()).build();
+        builderMethod.addStatement("$T.requireNonNull($L.get$L())", Objects.class, classApi.propertyName(), field.fieldNameCapitalized()).build();
       }
-    }
-    builderMethod.addStatement("return $L", clazz.propertyName()).returns(sourceClassName);
+    });
+    builderMethod.addStatement("return $L", classApi.propertyName()).returns(sourceClassName);
+
     TypeSpec builderType = builderTypeBuilder.addMethod(builderMethod.build()).build();
-    String content = JavaFile.builder(clazz.packageName(), builderType).build().toString();
-    return Collections.singletonList(new GeneratedSourceSupport().setContent(content).setPath(clazz.getSourceClassPath()));
+    String content = JavaFile.builder(classApi.packageName(), builderType).build().toString();
+    return Collections.singletonList(new GeneratedSourceSupport().setContent(content).setPath(classApi.getSourceClassPath()));
   }
 }

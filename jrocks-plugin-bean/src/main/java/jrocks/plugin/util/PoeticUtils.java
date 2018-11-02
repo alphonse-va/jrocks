@@ -24,7 +24,7 @@ public class PoeticUtils {
         .build();
   }
 
-  public static MethodSpec withFor(String fieldName, FieldApi field, ClassName returnType) {
+  public static MethodSpec withMethodSpecFor(String fieldName, FieldApi field, ClassName returnType) {
     ClassName fieldType = ClassName.bestGuess(field.name());
 
     return MethodSpec.methodBuilder("with" + field.fieldNameCapitalized())
