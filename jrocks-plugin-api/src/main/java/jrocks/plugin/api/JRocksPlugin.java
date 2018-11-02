@@ -21,4 +21,6 @@ public interface JRocksPlugin {
   default List<String> additionalFlags() {
     return new ArrayList<>();
   }
+
+  String suffix();
 }

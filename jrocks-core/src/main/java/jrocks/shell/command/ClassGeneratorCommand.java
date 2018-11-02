@@ -12,6 +12,7 @@ import jrocks.shell.autocomplete.AllClassValueProvider;
 import jrocks.shell.autocomplete.ClassFieldsValueProvider;
 import jrocks.shell.generator.TemplateWriterService;
 import jrocks.shell.parameter.BaseClassInfoParameterBuilder;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.shell.Availability;
@@ -49,13 +50,15 @@ public class ClassGeneratorCommand extends BaseCommand {
   public void generator(
       @ShellOption(value = PARAM_CLASS, help = "Source class", valueProvider = AllClassValueProvider.class) String classCanonicalName,
       @ShellOption(value = PARAM_SUFFIX, help = "Suffix to remove", defaultValue = "") String suffixToRemove,
-      @ShellOption(value = PARAM_SUFFIX_TO_REMOVE, help = "Suffix to remove", defaultValue = "Builder") String suffix,
+      @ShellOption(value = PARAM_SUFFIX_TO_REMOVE, help = "Suffix to remove", defaultValue = "") String suffix,
 
       @ShellOption(value = PARAM_EXCLUDED_FIELDS, help = "Fields to exclude", defaultValue = "[]", valueProvider = ClassFieldsValueProvider.class) String[] excludedFields,
       @ShellOption(value = PARAM_INCLUDED_FIELDS, help = "Fields to include", defaultValue = "[]", valueProvider = ClassFieldsValueProvider.class) String[] includedFields,
       @ShellOption(value = PARAM_MANDATORY_FIELDS, help = "Mandatory fields", defaultValue = "[]", valueProvider = ClassFieldsValueProvider.class) String[] mandatoryFields,
       @ShellOption(value = PARAM_ADDITIONAL_FLAGS, help = "Generator additional flags", defaultValue = "[]", valueProvider = AdditionalFlagValueProvider.class) String[] additionalFlags,
       @ShellOption(value = PARAM_FORCE, help = "Overwrite existing files") boolean isForced) {
+
+    JRocksPlugin plugin = currentPluginHolder.getCurrentCommand();
 
 
     ClassInfoParameter parameter = new BaseClassInfoParameterBuilder()
@@ -64,13 +67,12 @@ public class ClassGeneratorCommand extends BaseCommand {
         .withExcludedFields(excludedFields)
         .withIncludedFields(includedFields)
         .withMandatoryFields(mandatoryFields)
-        .withSuffix(suffix)
+        .withSuffix(StringUtils.isNotBlank(suffix) ?suffix : plugin.suffix())
         .withSuffixToRemove(suffixToRemove)
         .withAdditionalFlags(additionalFlags)
         .build();
 
     ClassApi classInfo = getClassInfo(parameter);
-    JRocksPlugin plugin = currentPluginHolder.getCurrentCommand();
     terminalLogger().info("Generate %s for %s class with parameters:\n%s", plugin.name(), parameter.classCanonicalName(), parameter);
 
     List<GeneratedSource> generatedSources = plugin.generateSources(parameter, classInfo);

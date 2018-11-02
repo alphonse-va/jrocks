@@ -55,4 +55,9 @@ public class BuilderPlugin implements JRocksPlugin {
     String content = JavaFile.builder(classApi.packageName(), builderType).build().toString();
     return Collections.singletonList(new GeneratedSourceSupport().setContent(content).setPath(classApi.getSourceClassPath()));
   }
+
+  @Override
+  public String suffix() {
+    return "Builder";
+  }
 }
