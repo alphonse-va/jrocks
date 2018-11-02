@@ -8,6 +8,8 @@ public interface ClassPlugin {
 
   String description();
 
+  List<String> keys();
+
   default String group() {
     return "Class";
   }

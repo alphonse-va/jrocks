@@ -1,6 +1,6 @@
 package jrocks.plugin.api;
 
-public interface FieldApi {
+public interface FieldApi extends ClassApi {
 
   String fieldName();
 

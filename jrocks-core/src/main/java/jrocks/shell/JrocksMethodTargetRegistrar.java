@@ -60,7 +60,7 @@ public class JrocksMethodTargetRegistrar extends StandardMethodTargetRegistrar {
    * </ul>
    */
   private String getOrInferGroup(Method method, Class<?> jrocksCommandClass) {
-    final JRocksCommand jrocksClassAnn = jrocksCommandClass.getAnnotation(JRocksCommand.class);
+    JRocksCommand jrocksClassAnn = jrocksCommandClass.getAnnotation(JRocksCommand.class);
     if (!jrocksClassAnn.group().equals(ShellMethod.INHERITED)) {
       return jrocksClassAnn.group();
     }
@@ -93,7 +93,7 @@ public class JrocksMethodTargetRegistrar extends StandardMethodTargetRegistrar {
    */
   private Supplier<Availability> findAvailabilityIndicator(String[] commandKeys, Object bean, Method method) {
     ShellMethodAvailability explicit = method.getAnnotation(ShellMethodAvailability.class);
-    final Method indicator;
+    Method indicator;
     if (explicit != null) {
       Assert.isTrue(explicit.value().length == 1, "When set on a @" +
           ShellMethod.class.getSimpleName() + " method, the value of the @"

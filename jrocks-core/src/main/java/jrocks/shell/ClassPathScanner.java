@@ -36,7 +36,7 @@ public class ClassPathScanner {
   private final ConfigService configService;
 
   @Autowired
-  public ClassPathScanner(ConfigService configService, final TerminalLogger terminalLogger) {
+  public ClassPathScanner(ConfigService configService, TerminalLogger terminalLogger) {
     this.configService = configService;
     this.terminalLogger = terminalLogger;
   }
