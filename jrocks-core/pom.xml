@@ -30,6 +30,18 @@
     <dependencies>
         <dependency>
             <groupId>be.unlock</groupId>
+            <artifactId>jrocks-plugin-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>be.unlock</groupId>
+            <artifactId>jrocks-plugin-bean</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>be.unlock</groupId>
             <artifactId>jrocks-sample</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>

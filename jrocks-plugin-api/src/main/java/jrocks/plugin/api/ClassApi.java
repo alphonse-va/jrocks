@@ -7,23 +7,19 @@ public interface ClassApi {
 
   String packageName();
 
-  String simpleName();
-
   String pluralSimpleName();
 
   String name();
+
+  String simpleName();
 
   String propertyName();
 
   String pluralPropertyName();
 
-  List<String> names();
-
   List<FieldApi> fields();
 
   void addField(FieldApi field);
-
-  boolean hasRequiredFields();
 
   File getSourceClassPath();
 }

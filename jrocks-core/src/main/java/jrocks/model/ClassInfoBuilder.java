@@ -1,6 +1,7 @@
 package jrocks.model;
 
 import io.github.classgraph.ClassRefTypeSignature;
+import jrocks.plugin.api.ClassApi;
 
 
 /**
@@ -13,7 +14,7 @@ import io.github.classgraph.ClassRefTypeSignature;
  */
 public class ClassInfoBuilder {
 
-  private ClassInfo classInfo;
+  private ClassApi classInfo;
 
   private io.github.classgraph.ClassInfo beanClass;
 
@@ -22,7 +23,7 @@ public class ClassInfoBuilder {
     this.classInfo = new ClassGraphClassInfo(beanClass);
   }
 
-  public ClassInfo build() {
+  public ClassApi build() {
     beanClass.getDeclaredFieldInfo().forEach(fieldInfo -> {
       io.github.classgraph.ClassInfo fieldClassInfo = ((ClassRefTypeSignature) fieldInfo.getTypeDescriptor()).getClassInfo();
       if (fieldClassInfo == null) {

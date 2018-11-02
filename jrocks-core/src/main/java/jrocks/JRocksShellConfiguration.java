@@ -2,7 +2,7 @@ package jrocks;
 
 import jrocks.shell.ExtendedDefaultParser;
 import jrocks.shell.command.ClassGeneratorCommand;
-import jrocks.shell.command.GeneratorCommandHolder;
+import jrocks.shell.command.CurrentPluginHolder;
 import org.jline.reader.*;
 import org.jline.reader.impl.history.DefaultHistory;
 import org.jline.terminal.Terminal;
@@ -45,7 +45,7 @@ public class JRocksShellConfiguration {
 
   @Autowired
   @Lazy
-  private GeneratorCommandHolder generatorCommandHolder;
+  private CurrentPluginHolder currentPluginHolder;
 
   @Autowired
   private PromptProvider promptProvider;
@@ -120,7 +120,7 @@ public class JRocksShellConfiguration {
   @PostConstruct
   public void lateInit() {
     completer().setShell(shell);
-    completer().setGeneratorCommandHolder(generatorCommandHolder);
+    completer().setCurrentPluginHolder(currentPluginHolder);
   }
 
   @Bean
@@ -148,7 +148,7 @@ public class JRocksShellConfiguration {
             }
           }
           if (best != null) {
-            generatorCommandHolder.setCurrentCommand(best);
+            currentPluginHolder.setCurrentCommand(best);
             return new AttributedStringBuilder(buffer.length()).append(best, AttributedStyle.BOLD).append(buffer.substring(l)).toAttributedString();
           } else {
             return new AttributedString(buffer, AttributedStyle.DEFAULT.foreground(AttributedStyle.RED));
@@ -168,7 +168,7 @@ public class JRocksShellConfiguration {
 
     private Shell shell;
 
-    private GeneratorCommandHolder generatorCommandHolder;
+    private CurrentPluginHolder currentPluginHolder;
 
     @Override
     public void complete(LineReader reader, ParsedLine line, List<Candidate> candidates) {
@@ -178,7 +178,7 @@ public class JRocksShellConfiguration {
 
       // TODO find out a commons way to enable/disable some parameter based on others
       List<CompletionProposal> proposals = shell.complete(context);
-      if (generatorCommandHolder.getGeneratorNames().contains(context.getWords().get(0))
+      if (currentPluginHolder.getPluginNames().contains(context.getWords().get(0))
           && !context.getWords().contains(ClassGeneratorCommand.PARAM_CLASS)) {
         proposals = proposals.stream().filter(p -> p.value().equals(ClassGeneratorCommand.PARAM_CLASS)).collect(Collectors.toList());
       }
@@ -199,8 +199,8 @@ public class JRocksShellConfiguration {
       this.shell = shell;
     }
 
-    void setGeneratorCommandHolder(GeneratorCommandHolder generatorCommandHolder) {
-      this.generatorCommandHolder = generatorCommandHolder;
+    void setCurrentPluginHolder(CurrentPluginHolder currentPluginHolder) {
+      this.currentPluginHolder = currentPluginHolder;
     }
 
     /**

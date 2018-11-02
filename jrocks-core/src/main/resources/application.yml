@@ -2,7 +2,7 @@ jrocks:
   name: jrocks
   version: ${project.version}
   configFilename: .jrocks
-  pluginDirectory: ${JROCKS_HOME}/plugins
+#  pluginDirectory: ${JROCKS_HOME}/plugins
 
 spring:
   banner:

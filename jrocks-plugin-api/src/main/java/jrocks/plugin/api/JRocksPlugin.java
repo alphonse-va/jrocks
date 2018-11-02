@@ -1,10 +1,11 @@
 package jrocks.plugin.api;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public interface ClassPlugin {
+public interface JRocksPlugin {
 
-  String names();
+  String name();
 
   String description();
 
@@ -15,4 +16,9 @@ public interface ClassPlugin {
   }
 
   List<GeneratedSource> generateSources(ClassParameter parameter, ClassApi clazz);
+
+
+  default List<String> additionalFlags() {
+    return new ArrayList<>();
+  }
 }

@@ -1,17 +1,18 @@
 package jrocks.model;
 
+import jrocks.plugin.api.ClassApi;
+import jrocks.plugin.api.FieldApi;
+
 import java.io.File;
 import java.util.List;
 
-public interface ClassInfo {
+public interface ClassInfo extends ClassApi {
 
   String packageName();
 
-  String simpleName();
+  String name();
 
   String pluralSimpleName();
-
-  String canonicalName();
 
   String propertyName();
 
@@ -19,9 +20,9 @@ public interface ClassInfo {
 
   List<String> fieldCanonicalNames();
 
-  List<FieldClassInfo> getFields();
+  List<FieldApi> fields();
 
-  void addField(FieldClassInfo metaData);
+  void addField(FieldApi metaData);
 
   boolean hasRequiredFields();
 

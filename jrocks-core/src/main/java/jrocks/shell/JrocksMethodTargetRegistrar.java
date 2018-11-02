@@ -1,17 +1,15 @@
 package jrocks.shell;
 
+import jrocks.plugin.api.JRocksPlugin;
+import jrocks.shell.command.ClassGeneratorCommand;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.shell.*;
-import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellMethodAvailability;
-import org.springframework.shell.standard.StandardMethodTargetRegistrar;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
-import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Method;
 import java.util.*;
@@ -21,60 +19,36 @@ import java.util.stream.Collectors;
 import static org.springframework.util.StringUtils.collectionToDelimitedString;
 
 @Component
-public class JrocksMethodTargetRegistrar extends StandardMethodTargetRegistrar {
+public class JrocksMethodTargetRegistrar implements MethodTargetRegistrar {
 
-  @Autowired
-  private ListableBeanFactory applicationContext;
-
+  private final ListableBeanFactory applicationContext;
 
   private Map<String, MethodTarget> commands = new HashMap<>();
 
+  @Autowired
+  public JrocksMethodTargetRegistrar(ListableBeanFactory applicationContext) {this.applicationContext = applicationContext;}
+
   @Override
   public void register(ConfigurableCommandRegistry registry) {
-    Map<String, Object> commandBeans = applicationContext.getBeansWithAnnotation(JRocksCommand.class);
-    for (Object bean : commandBeans.values()) {
-      Class<?> clazz = bean.getClass();
-      JRocksCommand shellMapping = clazz.getAnnotation(JRocksCommand.class);
-      ReflectionUtils.doWithMethods(clazz, method -> {
-        String[] keys = shellMapping.key();
-        if (keys.length == 0) {
-          keys = new String[]{Utils.unCamelify(method.getName())};
-        }
-        String group = getOrInferGroup(method, clazz);
-        for (String key : keys) {
-          Supplier<Availability> availabilityIndicator = findAvailabilityIndicator(keys, bean, method);
-          MethodTarget target = new MethodTarget(method, bean, new Command.Help(shellMapping.value(), group), availabilityIndicator);
-          registry.register(key, target);
-          commands.put(key, target);
-        }
-      }, method -> method.getAnnotation(JRocksShellMethod.class) != null);
+    Map<String, JRocksPlugin> plugins = applicationContext.getBeansOfType(JRocksPlugin.class);
+
+    ClassGeneratorCommand generatorCommand = applicationContext.getBean(ClassGeneratorCommand.class);
+    Method method = findJRocksShellMethod(generatorCommand.getClass());
+    for (JRocksPlugin plugin : plugins.values()) {
+      plugin.keys().forEach(key -> {
+        Supplier<Availability> availabilityIndicator = findAvailabilityIndicator(plugin.keys().toArray(new String[0]), generatorCommand, method);
+        MethodTarget target = new MethodTarget(method, generatorCommand, new Command.Help(plugin.description(), plugin.group()), availabilityIndicator);
+        registry.register(key, target);
+        commands.put(key, target);
+      });
     }
   }
 
-  /**
-   * Gets the group from the following places, in order:<ul>
-   * <li>explicit annotation at the method level</li>
-   * <li>explicit annotation at the class level</li>
-   * <li>explicit annotation at the package level</li>
-   * <li>implicit from the class name</li>
-   * </ul>
-   */
-  private String getOrInferGroup(Method method, Class<?> jrocksCommandClass) {
-    JRocksCommand jrocksClassAnn = jrocksCommandClass.getAnnotation(JRocksCommand.class);
-    if (!jrocksClassAnn.group().equals(ShellMethod.INHERITED)) {
-      return jrocksClassAnn.group();
-    }
-    Class<?> clazz = method.getDeclaringClass();
-    ShellCommandGroup classAnn = AnnotationUtils.getAnnotation(clazz, ShellCommandGroup.class);
-    if (classAnn != null && !classAnn.value().equals(ShellCommandGroup.INHERIT_AND_INFER)) {
-      return classAnn.value();
-    }
-    ShellCommandGroup packageAnn = AnnotationUtils.getAnnotation(clazz.getPackage(), ShellCommandGroup.class);
-    if (packageAnn != null && !packageAnn.value().equals(ShellCommandGroup.INHERIT_AND_INFER)) {
-      return packageAnn.value();
-    }
-    // Shameful copy/paste from https://stackoverflow.com/questions/7593969/regex-to-split-camelcase-or-titlecase-advanced
-    return StringUtils.arrayToDelimitedString(clazz.getSimpleName().split("(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])"), " ");
+  private static Method findJRocksShellMethod(Class<?> clazz) {
+    for (Method method : clazz.getMethods())
+      if (method.isAnnotationPresent(JRocksShellMethod.class))
+        return (method);
+    return (null);
   }
 
   /**

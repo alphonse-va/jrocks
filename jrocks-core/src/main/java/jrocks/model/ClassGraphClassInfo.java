@@ -1,5 +1,7 @@
 package jrocks.model;
 
+import jrocks.plugin.api.ClassApi;
+import jrocks.plugin.api.FieldApi;
 import jrocks.plugin.util.Inflector;
 
 import java.io.File;
@@ -17,7 +19,7 @@ public class ClassGraphClassInfo implements ClassInfo {
 
   private io.github.classgraph.ClassInfo classInfo;
 
-  private List<FieldClassInfo> properties = new ArrayList<>();
+  private List<FieldApi> properties = new ArrayList<>();
 
   ClassGraphClassInfo(io.github.classgraph.ClassInfo classInfo) {
     Objects.requireNonNull(classInfo);
@@ -30,18 +32,18 @@ public class ClassGraphClassInfo implements ClassInfo {
   }
 
   @Override
+  public String name() {
+    return classInfo.getName();
+  }
+
+  @Override
   public String simpleName() {
     return classInfo.getSimpleName();
   }
 
   @Override
   public String pluralSimpleName() {
-    return INFLECTOR.pluralize(simpleName());
-  }
-
-  @Override
-  public String canonicalName() {
-    return classInfo.getName();
+    return INFLECTOR.pluralize(name());
   }
 
   @Override
@@ -58,26 +60,28 @@ public class ClassGraphClassInfo implements ClassInfo {
   public List<String> fieldCanonicalNames() {
     return properties.stream()
         .filter(javaLangFilter())
-        .map(ClassInfo::canonicalName).distinct().collect(Collectors.toList());
+        .map(ClassApi::name)
+        .distinct()
+        .collect(Collectors.toList());
   }
 
   @Override
-  public List<FieldClassInfo> getFields() {
+  public List<FieldApi> fields() {
     return properties;
   }
 
-  public void setProperties(List<FieldClassInfo> properties) {
+  public void setProperties(List<FieldApi> properties) {
     this.properties = properties;
   }
 
   @Override
-  public void addField(FieldClassInfo metaData) {
+  public void addField(FieldApi metaData) {
     properties.add(metaData);
   }
 
   @Override
   public boolean hasRequiredFields() {
-    return properties.stream().anyMatch(FieldClassInfo::isRequired);
+    return properties.stream().anyMatch(FieldApi::isRequired);
   }
 
   @Override
@@ -85,7 +89,7 @@ public class ClassGraphClassInfo implements ClassInfo {
     return classInfo.getClasspathElementFile();
   }
 
-  private static Predicate<FieldClassInfo> javaLangFilter() {
-    return f -> !startsWith(f.canonicalName(), "java.lang");
+  private static Predicate<FieldApi> javaLangFilter() {
+    return f -> !startsWith(f.name(), "java.lang");
   }
 }

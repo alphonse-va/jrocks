@@ -2,17 +2,19 @@ package jrocks.plugin.bean;
 
 import com.squareup.javapoet.*;
 import jrocks.plugin.api.*;
-import jrocks.plugin.util.PoetUtils;
+import jrocks.plugin.util.PoeticUtils;
+import org.springframework.stereotype.Component;
 
 import javax.lang.model.element.Modifier;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class BuilderPlugin implements ClassPlugin {
+@Component
+public class BuilderPlugin implements JRocksPlugin {
 
   @Override
-  public String names() {
+  public String name() {
     return "builder";
   }
 
@@ -29,15 +31,20 @@ public class BuilderPlugin implements ClassPlugin {
   @Override
   public List<GeneratedSource> generateSources(ClassParameter parameter, ClassApi clazz) {
 
-    ClassName sourceClassName = ClassName.get(clazz.packageName(), clazz.simpleName());
-    ClassName builderClassName = ClassName.get(clazz.packageName(), clazz.simpleName() + parameter.suffix());
+    ClassName sourceClassName = ClassName.bestGuess(clazz.name());
+    ClassName builderClassName = ClassName.bestGuess(clazz.name() + parameter.suffix());
+
+    FieldSpec.Builder buildingField = FieldSpec
+        .builder(sourceClassName, clazz.propertyName(), Modifier.PRIVATE)
+        .initializer("new $T()", sourceClassName);
 
     TypeSpec.Builder builderTypeBuilder = TypeSpec.classBuilder(builderClassName)
-        .addField(FieldSpec.builder(sourceClassName, clazz.propertyName(), Modifier.PRIVATE).build());
+        .addModifiers(Modifier.PUBLIC)
+        .addField(buildingField.build());
 
     MethodSpec.Builder builderMethod = MethodSpec.methodBuilder("build").addModifiers(Modifier.PUBLIC);
     for (FieldApi field : clazz.fields()) {
-      builderTypeBuilder.addMethod(PoetUtils.setterFor("with", field, builderClassName));
+      builderTypeBuilder.addMethod(PoeticUtils.withFor(clazz.propertyName(), field, builderClassName));
       if (field.isRequired() || parameter.mandatoryFields().contains(field.fieldName())) {
         builderMethod.addStatement("$T.requireNonNull($L.get$L())", Objects.class, clazz.propertyName(), field.fieldNameCapitalized()).build();
       }

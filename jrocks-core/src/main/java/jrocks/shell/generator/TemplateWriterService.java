@@ -1,9 +1,9 @@
 package jrocks.shell.generator;
 
-import jrocks.model.ClassInfo;
-import jrocks.model.ClassInfoParameter;
+import jrocks.plugin.api.ClassApi;
+import jrocks.plugin.api.ClassParameter;
 
 public interface TemplateWriterService {
 
-  void writeTemplate(String generatedSource, ClassInfoParameter parameter, ClassInfo classInfo);
+  void writeClass(String generatedSource, ClassParameter parameter, ClassApi clazz);
 }

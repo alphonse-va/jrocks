@@ -28,7 +28,7 @@ class BuilderPluginTest {
 
     when(classMock.packageName()).thenReturn("jrocks.mock");
     when(classMock.name()).thenReturn("jrocks.mock.Mock");
-    when(classMock.simpleName()).thenReturn("Mock");
+    when(classMock.name()).thenReturn("Mock");
     when(classMock.propertyName()).thenReturn("mock");
 
     FieldApi nameField = mock(FieldApi.class);

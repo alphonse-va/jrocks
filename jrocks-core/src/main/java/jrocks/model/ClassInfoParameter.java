@@ -1,9 +1,11 @@
 package jrocks.model;
 
+import jrocks.plugin.api.ClassParameter;
+
 import java.io.File;
 import java.util.List;
 
-public interface ClassInfoParameter {
+public interface ClassInfoParameter extends ClassParameter {
 
   List<String> excludedFields();
 

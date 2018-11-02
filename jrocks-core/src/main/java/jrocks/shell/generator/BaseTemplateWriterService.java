@@ -1,7 +1,7 @@
 package jrocks.shell.generator;
 
-import jrocks.model.ClassInfo;
-import jrocks.model.ClassInfoParameter;
+import jrocks.plugin.api.ClassApi;
+import jrocks.plugin.api.ClassParameter;
 import jrocks.shell.TerminalLogger;
 import jrocks.shell.config.ConfigService;
 import jrocks.shell.config.ModuleConfig;
@@ -31,8 +31,8 @@ public class BaseTemplateWriterService implements TemplateWriterService {
   }
 
   @Override
-  public void writeTemplate(String generatedSource, ClassInfoParameter parameter, ClassInfo classInfo) {
-    String outputDirectory = classInfo.getSourceClassPath().getAbsolutePath();
+  public void writeClass(String generatedSource, ClassParameter parameter, ClassApi clazz) {
+    String outputDirectory = clazz.getSourceClassPath().getAbsolutePath();
 
     Set<ModuleConfig> modules = configService.getConfig().getModules();
     String destDirectory = modules.stream()
@@ -42,7 +42,7 @@ public class BaseTemplateWriterService implements TemplateWriterService {
         .orElse(modules.iterator().next().getOutputDirectory());
 
     // TODO cleanups file writing
-    Path path = Paths.get(destDirectory + File.separator + classInfo.canonicalName().replace(".", File.separator) + parameter.suffix() + ".java");
+    Path path = Paths.get(destDirectory + File.separator + clazz.name().replace(".", File.separator) + parameter.suffix() + ".java");
     File file = path.toFile();
     if (file.exists() && !parameter.isForce()) {
       terminalLogger.error("%s file exists, please user --force if you want to overwrite", path.toString());

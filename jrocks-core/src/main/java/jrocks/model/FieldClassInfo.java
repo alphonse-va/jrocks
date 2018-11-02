@@ -1,6 +1,8 @@
 package jrocks.model;
 
-public interface FieldClassInfo extends ClassInfo {
+import jrocks.plugin.api.FieldApi;
+
+public interface FieldClassInfo extends FieldApi {
 
   String fieldName();
 

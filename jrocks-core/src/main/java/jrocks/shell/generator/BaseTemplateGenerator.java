@@ -10,7 +10,7 @@ public abstract class BaseTemplateGenerator implements TemplateGenerator {
   private TemplateWriterService writerService;
 
   protected void writeSource(String generatedSource, ClassInfoParameter parameter, ClassInfo classInfo) {
-    writerService.writeTemplate(generatedSource, parameter, classInfo);
+    writerService.writeClass(generatedSource, parameter, classInfo);
   }
 
   @Lazy

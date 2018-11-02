@@ -1,26 +1,31 @@
 package jrocks.shell.command;
 
-import jrocks.model.ClassInfo;
 import jrocks.model.ClassInfoBuilder;
 import jrocks.model.ClassInfoParameter;
+import jrocks.plugin.api.ClassApi;
+import jrocks.plugin.api.GeneratedSource;
+import jrocks.plugin.api.JRocksPlugin;
 import jrocks.shell.ClassPathScanner;
-import jrocks.shell.JRocksCommand;
 import jrocks.shell.JRocksShellMethod;
 import jrocks.shell.autocomplete.AdditionalFlagValueProvider;
 import jrocks.shell.autocomplete.AllClassValueProvider;
 import jrocks.shell.autocomplete.ClassFieldsValueProvider;
-import jrocks.shell.generator.TemplateGenerator;
+import jrocks.shell.generator.TemplateWriterService;
 import jrocks.shell.parameter.BaseClassInfoParameterBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.shell.Availability;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 import static java.lang.String.format;
 
 @SuppressWarnings("WeakerAccess")
-public abstract class ClassGeneratorCommand extends BaseCommand {
+@Component
+public class ClassGeneratorCommand extends BaseCommand {
 
   public static final String PARAM_CLASS = "--class";
   public static final String PARAM_SUFFIX_TO_REMOVE = "--suffix-to-remove";
@@ -29,22 +34,22 @@ public abstract class ClassGeneratorCommand extends BaseCommand {
   public static final String PARAM_MANDATORY_FIELDS = "--mandatory-fields";
   public static final String PARAM_ADDITIONAL_FLAGS = "--additional-flags";
   public static final String PARAM_FORCE = "--force";
-
-  private TemplateGenerator templateGenerator;
+  private static final String PARAM_SUFFIX = "--suffix";
 
   private ClassPathScanner classPathScanner;
 
-  public ClassGeneratorCommand(TemplateGenerator templateGenerator) {
-    this.templateGenerator = templateGenerator;
-  }
+  @Autowired
+  private TemplateWriterService writerService;
 
-  public abstract String name();
+  @Autowired
+  private CurrentPluginHolder currentPluginHolder;
 
   @ShellMethod
   @JRocksShellMethod
   public void generator(
       @ShellOption(value = PARAM_CLASS, help = "Source class", valueProvider = AllClassValueProvider.class) String classCanonicalName,
-      @ShellOption(value = PARAM_SUFFIX_TO_REMOVE, help = "Suffix to remove", defaultValue = "") String suffixToRemove,
+      @ShellOption(value = PARAM_SUFFIX, help = "Suffix to remove", defaultValue = "") String suffixToRemove,
+      @ShellOption(value = PARAM_SUFFIX_TO_REMOVE, help = "Suffix to remove", defaultValue = "Builder") String suffix,
 
       @ShellOption(value = PARAM_EXCLUDED_FIELDS, help = "Fields to exclude", defaultValue = "[]", valueProvider = ClassFieldsValueProvider.class) String[] excludedFields,
       @ShellOption(value = PARAM_INCLUDED_FIELDS, help = "Fields to include", defaultValue = "[]", valueProvider = ClassFieldsValueProvider.class) String[] includedFields,
@@ -52,21 +57,27 @@ public abstract class ClassGeneratorCommand extends BaseCommand {
       @ShellOption(value = PARAM_ADDITIONAL_FLAGS, help = "Generator additional flags", defaultValue = "[]", valueProvider = AdditionalFlagValueProvider.class) String[] additionalFlags,
       @ShellOption(value = PARAM_FORCE, help = "Overwrite existing files") boolean isForced) {
 
+
     ClassInfoParameter parameter = new BaseClassInfoParameterBuilder()
         .withClassCanonicalName(classCanonicalName)
         .withForce(isForced)
         .withExcludedFields(excludedFields)
         .withIncludedFields(includedFields)
         .withMandatoryFields(mandatoryFields)
-        .withSuffix(templateGenerator.suffix())
+        .withSuffix(suffix)
         .withSuffixToRemove(suffixToRemove)
         .withAdditionalFlags(additionalFlags)
         .build();
 
-    ClassInfo classInfo = getClassInfo(parameter);
-    terminalLogger().info("Generate %s for %s class with parameters:\n%s", this.getClass().getAnnotation(JRocksCommand.class).value(), parameter.classCanonicalName(), parameter);
+    ClassApi classInfo = getClassInfo(parameter);
+    JRocksPlugin plugin = currentPluginHolder.getCurrentCommand();
+    terminalLogger().info("Generate %s for %s class with parameters:\n%s", plugin.name(), parameter.classCanonicalName(), parameter);
 
-    templateGenerator.generateSource(parameter, classInfo);
+    List<GeneratedSource> generatedSources = plugin.generateSources(parameter, classInfo);
+
+    System.out.println(generatedSources.get(0).content());
+
+    writerService.writeClass(generatedSources.get(0).content(), parameter, classInfo);
   }
 
   private Availability generatorAvailability() {
@@ -75,7 +86,7 @@ public abstract class ClassGeneratorCommand extends BaseCommand {
         : Availability.unavailable("you need to execute 'init' command to initialize JRocks!");
   }
 
-  private ClassInfo getClassInfo(ClassInfoParameter parameter) {
+  private ClassApi getClassInfo(ClassInfoParameter parameter) {
     io.github.classgraph.ClassInfo sourceClass = classPathScanner.getAllClassInfo()
         .filter(ci -> ci.getName().equals(parameter.classCanonicalName()))
         .findAny()

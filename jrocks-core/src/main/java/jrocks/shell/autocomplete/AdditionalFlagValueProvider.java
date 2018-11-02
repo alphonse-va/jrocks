@@ -1,6 +1,6 @@
 package jrocks.shell.autocomplete;
 
-import jrocks.shell.command.GeneratorCommandHolder;
+import jrocks.shell.command.CurrentPluginHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.shell.CompletionContext;
@@ -14,14 +14,14 @@ import java.util.stream.Collectors;
 @Component
 public class AdditionalFlagValueProvider extends ValueProviderSupport {
 
-  private final GeneratorCommandHolder generatorCommandHolder;
+  private final CurrentPluginHolder currentPluginHolder;
 
   @Autowired
-  public AdditionalFlagValueProvider(GeneratorCommandHolder generatorCommandHolder) {this.generatorCommandHolder = generatorCommandHolder;}
+  public AdditionalFlagValueProvider(CurrentPluginHolder currentPluginHolder) {this.currentPluginHolder = currentPluginHolder;}
 
   @Override
   public List<CompletionProposal> complete(MethodParameter parameter, CompletionContext completionContext, String[] hints) {
-    return generatorCommandHolder.getCurrentCommand().additionalFlags().stream().map(CompletionProposal::new).collect(Collectors.toList());
+    return currentPluginHolder.getCurrentCommand().additionalFlags().stream().map(CompletionProposal::new).collect(Collectors.toList());
   }
 }
 

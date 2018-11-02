@@ -50,7 +50,7 @@ class ClassGraphFieldInfoApiTest {
 
   @Test
   void simpleName() {
-    assertThat(usernameMD.simpleName()).isEqualTo(String.class.getSimpleName());
+    assertThat(usernameMD.name()).isEqualTo(String.class.getSimpleName());
   }
 
   @Test
@@ -60,7 +60,7 @@ class ClassGraphFieldInfoApiTest {
 
   @Test
   void entityCanonicalName() {
-    assertThat(usernameMD.canonicalName()).isEqualTo(String.class.getCanonicalName());
+    assertThat(usernameMD.name()).isEqualTo(String.class.getCanonicalName());
   }
 
   @Test

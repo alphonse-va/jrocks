@@ -1,5 +1,7 @@
 package jrocks.model;
 
+import jrocks.plugin.api.ClassApi;
+import jrocks.plugin.api.FieldApi;
 import jrocks.plugin.util.Inflector;
 
 import java.io.File;
@@ -16,7 +18,7 @@ public class ReflectiveClassInfo implements ClassInfo {
 
   private Class<?> beanClass;
 
-  private List<FieldClassInfo> properties = new ArrayList<>();
+  private List<FieldApi> properties = new ArrayList<>();
 
   ReflectiveClassInfo(Class<?> beanClass) {
     this.beanClass = beanClass;
@@ -28,23 +30,23 @@ public class ReflectiveClassInfo implements ClassInfo {
   }
 
   @Override
+  public String name() {
+    return beanClass.getCanonicalName();
+  }
+
+  @Override
   public String simpleName() {
     return beanClass.getSimpleName();
   }
 
   @Override
   public String pluralSimpleName() {
-    return INFLECTOR.pluralize(simpleName());
-  }
-
-  @Override
-  public String canonicalName() {
-    return beanClass.getCanonicalName();
+    return INFLECTOR.pluralize(name());
   }
 
   @Override
   public String propertyName() {
-    return Character.toLowerCase(simpleName().charAt(0)) + simpleName().substring(1);
+    return Character.toLowerCase(name().charAt(0)) + name().substring(1);
   }
 
   @Override
@@ -56,22 +58,22 @@ public class ReflectiveClassInfo implements ClassInfo {
   public List<String> fieldCanonicalNames() {
     return properties.stream()
         .filter(javaLangFilter())
-        .map(ClassInfo::canonicalName).distinct().collect(Collectors.toList());
+        .map(ClassApi::name).distinct().collect(Collectors.toList());
   }
 
   @Override
-  public List<FieldClassInfo> getFields() {
+  public List<FieldApi> fields() {
     return properties;
   }
 
   @Override
-  public void addField(FieldClassInfo metaData) {
-    properties.add(metaData);
+  public void addField(FieldApi field) {
+    properties.add(field);
   }
 
   @Override
   public boolean hasRequiredFields() {
-    return properties.stream().anyMatch(FieldClassInfo::isRequired);
+    return properties.stream().anyMatch(FieldApi::isRequired);
   }
 
   @Override
@@ -79,7 +81,7 @@ public class ReflectiveClassInfo implements ClassInfo {
     return null;
   }
 
-  private Predicate<FieldClassInfo> javaLangFilter() {
-    return f -> !startsWith(f.canonicalName(), "java.lang");
+  private Predicate<FieldApi> javaLangFilter() {
+    return f -> !startsWith(f.name(), "java.lang");
   }
 }
