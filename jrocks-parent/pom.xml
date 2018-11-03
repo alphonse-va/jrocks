@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>be.unlock</groupId>
     <artifactId>jrocks-parent</artifactId>
-    <version>0.3.0-SNAPSHOT</version>
+    <version>0.3.0</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -161,10 +159,18 @@
         </dependencies>
     </dependencyManagement>
     <scm>
-        <url>scm:git:file:///home/fons/dev/jrocks/.git</url>
-        <connection>scm:git:file:///home/fons/dev/jrocks/.git</connection>
-        <developerConnection>scm:git:file:///home/fons/dev/jrocks/.git</developerConnection>
+        <url>scm:git:file:///home/fons/dev/git/jrocks/.git</url>
+        <connection>scm:git:file:///home/fons/dev/git/jrocks/.git</connection>
+        <developerConnection>scm:git:file:///home/fons/dev/git/jrocks/.git</developerConnection>
+        <tag>jrocks-parent-0.3.0</tag>
     </scm>
+    <distributionManagement>
+        <repository>
+            <id>internal.repo</id>
+            <name>Internal repo</name>
+            <url>file:///home/fons/.m2/repository/</url>
+        </repository>
+    </distributionManagement>
     <build>
         <plugins>
             <plugin>
