@@ -8,7 +8,7 @@ import jrocks.plugin.api.ClassApi;
  *
  * Class info builder class
  *
- * @implNote  We fall back to reflection based ClassInfo when GlassGraph doesn't fill {@code io.github.classgraph.ClassInfo}
+ * NOTE:   We fall back to reflection based ClassInfo when GlassGraph doesn't fill {@code io.github.classgraph.ClassInfo}
  * for internal classes e.g {@code java.lang.Long}
  *
  */

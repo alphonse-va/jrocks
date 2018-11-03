@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Lazy;
  *
  * Base command
  *
- * @implNote  we use setter injection to prevent circular dependencies in plugin commands
+ * NOTE:   we use setter injection to prevent circular dependencies in plugin commands
  */
 public abstract class BaseCommand implements Command {
 
