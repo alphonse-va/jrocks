@@ -12,21 +12,18 @@ import java.util.List;
 @Component
 public class DtoPlugin implements JRocksPlugin {
 
+  public static final String LAYOUT_QUALIFIER = "DtoLayout";
+
   private final List<PluginLayout> layouts;
 
   @Autowired
-  public DtoPlugin(@Qualifier("DtoLayout") List<PluginLayout> layouts) {
+  public DtoPlugin(@Qualifier(LAYOUT_QUALIFIER) List<PluginLayout> layouts) {
     this.layouts = layouts;
   }
 
   @Override
   public String defaultSuffix() {
     return "DTO";
-  }
-
-  @Override
-  public List<PluginLayout> layouts() {
-    return layouts;
   }
 
   @Override
@@ -42,5 +39,15 @@ public class DtoPlugin implements JRocksPlugin {
   @Override
   public List<String> keys() {
     return Collections.singletonList("dto");
+  }
+
+  @Override
+  public List<PluginLayout> layouts() {
+    return layouts;
+  }
+
+  @Override
+  public String layoutQualifier() {
+    return LAYOUT_QUALIFIER;
   }
 }

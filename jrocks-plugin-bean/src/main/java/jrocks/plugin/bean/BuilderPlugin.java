@@ -12,10 +12,12 @@ import java.util.List;
 @Component
 public class BuilderPlugin implements JRocksPlugin {
 
+  public static final String LAYOUT_QUALIFIER = "BuilderLayout";
+
   private final List<PluginLayout> layouts;
 
   @Autowired
-  public BuilderPlugin(@Qualifier("BuilderLayout") List<PluginLayout> layouts) {
+  public BuilderPlugin(@Qualifier(LAYOUT_QUALIFIER) List<PluginLayout> layouts) {
     this.layouts = layouts;
   }
 
@@ -42,5 +44,10 @@ public class BuilderPlugin implements JRocksPlugin {
   @Override
   public List<PluginLayout> layouts() {
     return layouts;
+  }
+
+  @Override
+  public String layoutQualifier() {
+    return LAYOUT_QUALIFIER;
   }
 }

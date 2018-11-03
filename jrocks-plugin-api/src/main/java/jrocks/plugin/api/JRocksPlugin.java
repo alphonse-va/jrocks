@@ -22,5 +22,7 @@ public interface JRocksPlugin {
   String defaultSuffix();
 
   List<PluginLayout> layouts();
+
+  String layoutQualifier();
 }
 

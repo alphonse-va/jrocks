@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Component
-@Qualifier("BuilderLayout")
+@Qualifier(BuilderPlugin.LAYOUT_QUALIFIER)
 public class BuilderDefaultLayout implements PluginLayout {
 
   @Override

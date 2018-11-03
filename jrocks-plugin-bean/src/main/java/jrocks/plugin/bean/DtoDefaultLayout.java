@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Component
-@Qualifier("DtoLayout")
+@Qualifier(DtoPlugin.LAYOUT_QUALIFIER)
 public class DtoDefaultLayout implements PluginLayout {
 
   @Override
