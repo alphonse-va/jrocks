@@ -15,12 +15,12 @@ public interface JRocksPlugin {
     return "Class";
   }
 
-  List<GeneratedSource> generateSources(ClassParameter parameter, ClassApi classApi);
-
-
   default List<String> additionalFlags() {
     return new ArrayList<>();
   }
 
-  String suffix();
+  String defaultSuffix();
+
+  List<PluginLayout> layouts();
 }
+

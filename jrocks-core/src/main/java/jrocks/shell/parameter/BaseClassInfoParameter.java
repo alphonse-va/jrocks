@@ -95,7 +95,7 @@ public class BaseClassInfoParameter implements ClassInfoParameter {
     return suffixToRemove;
   }
 
-  // TODO: simple name and property name suffix
+  // TODO: simple name and property name defaultSuffix
   public String applySuffix(String input) {
     return isNotBlank(suffixToRemove) ? input.replaceAll(suffixToRemove, suffix) : input + suffix;
   }

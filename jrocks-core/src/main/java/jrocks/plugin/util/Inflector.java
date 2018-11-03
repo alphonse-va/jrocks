@@ -417,7 +417,7 @@ public class Inflector {
    * 3rd, 4th.
    *
    * @param number the non-negative number
-   * @return the string with the number and ordinal suffix
+   * @return the string with the number and ordinal defaultSuffix
    */
   public String ordinalize( int number ) {
     int remainder;

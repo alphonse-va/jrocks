@@ -7,6 +7,8 @@ import jrocks.plugin.api.FieldApi;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -16,7 +18,7 @@ class DtoPluginTest {
 
   @BeforeEach
   void setUp() {
-    dtoPlugin = new DtoPlugin();
+    dtoPlugin = new DtoPlugin(Collections.singletonList(new DtoDefaultLayout()));
   }
 
   @Test
@@ -49,7 +51,7 @@ class DtoPluginTest {
 
     when(classMock.fields()).thenReturn(ImmutableList.of(nameField, date));
 
-    System.out.println(dtoPlugin.generateSources(parameterMock, classMock).get(0).content());
+    System.out.println(dtoPlugin.layouts().get(0).generate(parameterMock, classMock).get(0).content());
 
   }
 }
