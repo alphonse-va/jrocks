@@ -8,6 +8,7 @@ import java.beans.FeatureDescriptor;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.lang.reflect.Field;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 public class ReflectiveFieldInfo extends ReflectiveClassInfo implements FieldClassInfo {
@@ -152,7 +153,7 @@ public class ReflectiveFieldInfo extends ReflectiveClassInfo implements FieldCla
   }
 
   @Override
-  public String getter() {
+  public Optional<String> getter() {
     try {
       return Stream.of(Introspector.getBeanInfo(field.getDeclaringClass()).getMethodDescriptors())
           .filter(m -> {
@@ -162,21 +163,19 @@ public class ReflectiveFieldInfo extends ReflectiveClassInfo implements FieldCla
                 || m.getMethod().getName().equals("has" + capitalizeName);
           })
           .map(FeatureDescriptor::getName)
-          .findAny()
-          .orElseThrow(() -> new IllegalStateException("field '" + fieldName() + "' need a getter!"));
+          .findAny();
     } catch (IntrospectionException e) {
       throw new IllegalStateException(e.getMessage(), e);
     }
   }
 
   @Override
-  public String setter() {
+  public Optional<String> setter() {
     try {
       return Stream.of(Introspector.getBeanInfo(field.getDeclaringClass()).getMethodDescriptors())
           .filter(m -> m.getMethod().getName().equals("set" + StringUtils.capitalize(field.getName())))
           .map(FeatureDescriptor::getName)
-          .findAny()
-          .orElseThrow(() -> new IllegalStateException("field '" + fieldName() + "' need a setter!"));
+          .findAny();
     } catch (IntrospectionException e) {
       throw new IllegalStateException(e.getMessage(), e);
     }

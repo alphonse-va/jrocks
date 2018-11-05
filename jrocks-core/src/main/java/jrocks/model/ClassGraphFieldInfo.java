@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -175,20 +176,18 @@ public class ClassGraphFieldInfo extends ClassGraphClassInfo implements FieldCla
   }
 
   @Override
-  public String getter() {
+  public Optional<String> getter() {
     return fieldInfo.getDefiningClassInfo().getDeclaredMethodInfo().getNames().stream()
         .filter(m -> {
           String capitalizeName = StringUtils.capitalize(fieldInfo.getName());
           return m.equals("get" + capitalizeName) || m.equals("is" + capitalizeName) || m.equals("has" + capitalizeName);
-        }).findAny()
-        .orElseThrow(() -> new IllegalStateException("fieldInfo '" + fieldName() + "' need a getter!"));
+        }).findAny();
   }
 
   @Override
-  public String setter() {
+  public Optional<String> setter() {
     return fieldInfo.getDefiningClassInfo().getDeclaredMethodInfo().getNames().stream()
         .filter(m -> m.equals("set" + StringUtils.capitalize(fieldInfo.getName())))
-        .findAny()
-        .orElseThrow(() -> new IllegalStateException("fieldInfo '" + fieldName() + "' need a setter!"));
+        .findAny();
   }
 }

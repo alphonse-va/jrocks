@@ -1,5 +1,7 @@
 package jrocks.plugin.api;
 
+import java.util.Optional;
+
 public interface FieldApi extends ClassApi {
 
   String fieldName();
@@ -50,7 +52,7 @@ public interface FieldApi extends ClassApi {
 
   boolean isRequired();
 
-  String getter();
+  Optional<String> getter();
 
-  String setter();
+  Optional<String> setter();
 }

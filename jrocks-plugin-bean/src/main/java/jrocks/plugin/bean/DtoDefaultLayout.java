@@ -24,7 +24,7 @@ public class DtoDefaultLayout implements PluginLayout {
     ClassName sourceClassName = ClassName.bestGuess(classApi.name());
     ClassName dtoClassName = ClassName.bestGuess(classApi.name() + parameter.suffix());
 
-    // factory method
+    // from method
     MethodSpec.Builder fromMethod = MethodSpec
         .methodBuilder("from")
         .returns(dtoClassName)
@@ -32,32 +32,56 @@ public class DtoDefaultLayout implements PluginLayout {
         .addParameter(sourceClassName, classApi.propertyName())
         .addStatement("$T $L = new $T()", dtoClassName, "dto", dtoClassName);
 
-    for (FieldApi field : classApi.fields()) {
-      fromMethod.addStatement("dto.$L($L.$L())", field.setter(), classApi.propertyName(), field.getter());
-    }
-    fromMethod.addStatement("return dto");
+    // to method
+    MethodSpec.Builder toMethod = MethodSpec
+        .methodBuilder("to" + classApi.simpleName())
+        .returns(sourceClassName)
+        .addModifiers(Modifier.PUBLIC)
+        .addStatement("$T $L = new $T()", sourceClassName, "result", sourceClassName);
 
     TypeSpec.Builder dtoTypeBuilder = TypeSpec.classBuilder(dtoClassName)
-        .addModifiers(Modifier.PUBLIC)
-        .addMethod(fromMethod.build());
+        .addModifiers(Modifier.PUBLIC);
 
     classApi.fields().forEach(field -> {
+
+      // fields
       dtoTypeBuilder.addField(FieldSpec.builder(ClassName.bestGuess(field.name()), field.fieldName(), Modifier.PRIVATE).build());
 
+      // from statements
+      if(field.getter().isPresent() && field.setter().isPresent()) {
+        fromMethod.addStatement("dto.$L($L.$L())", field.setter().get(), classApi.propertyName(), field.getter().get());
+      }
+
+      // to statements
+      if(field.getter().isPresent() && field.setter().isPresent()) {
+        toMethod.addStatement("result.$L(this.$L())", field.setter().get(), field.getter().get());
+      }
+
       // setter
-      dtoTypeBuilder.addMethod(MethodSpec.methodBuilder(field.setter())
-          .addModifiers(Modifier.PUBLIC)
-          .returns(dtoClassName)
-          .addParameter(ClassName.bestGuess(field.name()), field.fieldName())
-          .addStatement("this.$L = $L", field.fieldName(), field.fieldName())
-          .addStatement("return this").build());
+      if (field.setter().isPresent()) {
+        dtoTypeBuilder.addMethod(MethodSpec.methodBuilder(field.setter().get())
+            .addModifiers(Modifier.PUBLIC)
+            .returns(dtoClassName)
+            .addParameter(ClassName.bestGuess(field.name()), field.fieldName())
+            .addStatement("this.$L = $L", field.fieldName(), field.fieldName())
+            .addStatement("return this").build());
+      }
 
       // getter
-      dtoTypeBuilder.addMethod(MethodSpec.methodBuilder(field.getter())
-          .addModifiers(Modifier.PUBLIC)
-          .returns(ClassName.bestGuess(field.name()))
-          .addStatement("return $L", field.fieldName()).build());
+      if(field.getter().isPresent()) {
+        dtoTypeBuilder.addMethod(MethodSpec.methodBuilder(field.getter().get())
+            .addModifiers(Modifier.PUBLIC)
+            .returns(ClassName.bestGuess(field.name()))
+            .addStatement("return $L", field.fieldName()).build());
+      }
+
     });
+    fromMethod.addStatement("return dto");
+    toMethod.addStatement("return result");
+    dtoTypeBuilder
+        .addMethod(fromMethod.build())
+        .addMethod(toMethod.build());
+
     String content = JavaFile.builder(classApi.packageName(), dtoTypeBuilder.build()).build().toString();
     return Collections.singletonList(new GeneratedSourceSupport().setContent(content).setPath(classApi.getSourceClassPath()));
   }

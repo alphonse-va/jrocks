@@ -2,6 +2,8 @@ package jrocks.model;
 
 import jrocks.plugin.api.FieldApi;
 
+import java.util.Optional;
+
 public interface FieldClassInfo extends FieldApi {
 
   String fieldName();
@@ -52,7 +54,7 @@ public interface FieldClassInfo extends FieldApi {
 
   boolean isRequired();
 
-  String getter();
+  Optional<String> getter();
 
-  String setter();
+  Optional<String> setter();
 }
