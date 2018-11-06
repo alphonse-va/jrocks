@@ -33,12 +33,12 @@ public class BuilderDefaultLayout implements PluginLayout {
         .addModifiers(Modifier.PUBLIC)
         .addField(buildingField.build());
 
-    MethodSpec.Builder builderMethod = MethodSpec.methodBuilder("generate").addModifiers(Modifier.PUBLIC);
+    MethodSpec.Builder builderMethod = MethodSpec.methodBuilder("build").addModifiers(Modifier.PUBLIC);
     classApi.fields().forEach(field -> {
       builderTypeBuilder.addMethod(PoeticUtils.withMethodSpecFor(classApi.propertyName(), field, builderClassName));
       if (field.isRequired() || parameter.mandatoryFields().contains(field.fieldName())) {
         if (field.getter().isPresent())
-          builderMethod.addStatement("$T.requireNonNull($L.get$L())", Objects.class, classApi.propertyName(), field.getter().get()).build();
+          builderMethod.addStatement("$T.requireNonNull($L.$L())", Objects.class, classApi.propertyName(), field.getter().get()).build();
       }
     });
     builderMethod.addStatement("return $L", classApi.propertyName()).returns(sourceClassName);

@@ -13,6 +13,8 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class BaseClassInfoParameter implements ClassInfoParameter {
 
+  private boolean dryRun;
+
   private String classCanonicalName;
 
   private List<String> excludedFields;
@@ -40,7 +42,7 @@ public class BaseClassInfoParameter implements ClassInfoParameter {
                          List<String> mandatoryFields,
                          String suffix,
                          String suffixToRemove, File file,
-                         List<String> additionalFlags, PluginLayout layout) {
+                         List<String> additionalFlags, PluginLayout layout, boolean dryRun) {
     this.classCanonicalName = classCanonicalName;
     this.force = force;
     this.excludedFields = excludedFields != null ? excludedFields : new ArrayList<>();
@@ -51,6 +53,7 @@ public class BaseClassInfoParameter implements ClassInfoParameter {
     this.file = file;
     this.additionalFlags = additionalFlags;
     this.layout = layout;
+    this.dryRun = dryRun;
   }
 
   protected BaseClassInfoParameter(ClassInfoParameter parameter) {
@@ -63,7 +66,8 @@ public class BaseClassInfoParameter implements ClassInfoParameter {
         parameter.suffixToRemove(),
         parameter.getFile(),
         parameter.getAdditionalFlags(),
-        parameter.getLayout());
+        parameter.getLayout(),
+        parameter.isDryRun());
   }
 
   @Override
@@ -89,6 +93,11 @@ public class BaseClassInfoParameter implements ClassInfoParameter {
   @Override
   public boolean isForce() {
     return force;
+  }
+
+  @Override
+  public boolean isDryRun() {
+    return dryRun;
   }
 
   @Override

@@ -18,6 +18,8 @@ public interface ClassInfoParameter extends ClassParameter {
 
   boolean isForce();
 
+  boolean isDryRun();
+
   String suffix();
 
   String suffixToRemove();
@@ -31,4 +33,5 @@ public interface ClassInfoParameter extends ClassParameter {
   List<String> getAdditionalFlags();
 
   PluginLayout getLayout();
+
 }

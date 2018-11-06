@@ -25,8 +25,23 @@ public class TerminalLoggerMock implements TerminalLogger {
   }
 
   @Override
+  public void setMessagePrefix(String messagePrefix) {
+
+  }
+
+  @Override
+  public void setDefaultMessagePrefix() {
+
+  }
+
+  @Override
   public void setVerbose(boolean verbose) {
 
+  }
+
+  @Override
+  public boolean isVerbose() {
+    return false;
   }
 
   @Override

@@ -11,34 +11,34 @@ import java.util.stream.Collectors;
 @Component
 public class PluginsHolder {
 
-  private final List<JRocksPlugin> generatorCommands;
+  private final List<JRocksPlugin> plugins;
 
-  private JRocksPlugin currentCommand;
+  private JRocksPlugin currentPlugin;
 
   @Autowired(required = false)
-  public PluginsHolder(List<JRocksPlugin> generatorCommands) {this.generatorCommands = generatorCommands;}
+  public PluginsHolder(List<JRocksPlugin> plugins) {this.plugins = plugins;}
 
-  public void setCurrentCommand(String name) {
-    if (generatorCommands == null) return;
-    currentCommand = generatorCommands.stream().filter(c -> c.name().equals(name))
+  public void initPlugin(String name) {
+    if (plugins == null) return;
+    currentPlugin = plugins.stream().filter(c -> c.name().equals(name))
         .findAny()
         .orElse(null);
   }
 
-  public JRocksPlugin getCurrentCommand() {
-    return currentCommand;
+  public JRocksPlugin getCurrentPlugin() {
+    return currentPlugin;
   }
 
   public List<String> getPluginNames() {
-    return generatorCommands == null
+    return plugins == null
         ? new ArrayList<>()
-        : generatorCommands.stream().map(JRocksPlugin::name)
+        : plugins.stream().map(JRocksPlugin::name)
         .collect(Collectors.toList());
   }
 
   public List<JRocksPlugin> getPlugins() {
-    return generatorCommands == null
+    return plugins == null
         ? new ArrayList<>()
-        : generatorCommands;
+        : plugins;
   }
 }

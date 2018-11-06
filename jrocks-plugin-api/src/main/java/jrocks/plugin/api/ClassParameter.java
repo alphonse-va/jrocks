@@ -15,6 +15,8 @@ public interface ClassParameter {
 
   boolean isForce();
 
+  boolean isDryRun();
+
   String suffix();
 
   String suffixToRemove();

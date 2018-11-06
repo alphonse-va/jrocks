@@ -21,7 +21,7 @@ public class AdditionalFlagValueProvider extends ValueProviderSupport {
 
   @Override
   public List<CompletionProposal> complete(MethodParameter parameter, CompletionContext completionContext, String[] hints) {
-    return pluginsHolder.getCurrentCommand().additionalFlags().stream().map(CompletionProposal::new).collect(Collectors.toList());
+    return pluginsHolder.getCurrentPlugin().additionalFlags().stream().map(CompletionProposal::new).collect(Collectors.toList());
   }
 }
 

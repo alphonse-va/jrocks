@@ -148,7 +148,7 @@ public class JRocksShellConfiguration {
             }
           }
           if (best != null) {
-            pluginsHolder.setCurrentCommand(best);
+            pluginsHolder.initPlugin(best);
             return new AttributedStringBuilder(buffer.length()).append(best, AttributedStyle.BOLD).append(buffer.substring(l)).toAttributedString();
           } else {
             return new AttributedString(buffer, AttributedStyle.DEFAULT.foreground(AttributedStyle.RED));

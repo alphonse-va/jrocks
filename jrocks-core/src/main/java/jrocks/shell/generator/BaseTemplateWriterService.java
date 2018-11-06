@@ -14,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import static java.lang.String.format;
 
@@ -41,7 +42,7 @@ public class BaseTemplateWriterService implements TemplateWriterService {
         .filter(config -> config.getOutputDirectory().equals(outputDirectory))
         .map(ModuleConfig::getSourceDirectory)
         .findAny()
-        .orElse(modules.iterator().next().getOutputDirectory());
+        .orElse(modules.iterator().next().getSourceDirectory());
 
     // TODO cleanups file writing
     Path path = Paths.get(destDirectory + File.separator + clazz.name().replace(".", File.separator) + parameter.suffix() + ".java");
@@ -55,14 +56,28 @@ public class BaseTemplateWriterService implements TemplateWriterService {
       if (!dir.isDirectory()) {
         boolean success = dir.mkdirs();
         if (success) {
-          terminalLogger.info("*%s* Created path: _%s_", TERM_NAME, dir.getPath());
+          terminalLogger.info("*%s* created path: _%s_", TERM_NAME, dir.getPath());
         } else {
-          terminalLogger.info("*%s* Could not create path: _%s_",TERM_NAME, dir.getPath());
+          terminalLogger.info("*%s* could not create path: _%s_", TERM_NAME, dir.getPath());
         }
       }
-      Path savedFile = Files.write(path, generatedSource.getBytes());
-      terminalLogger.info("*%s* _%s_ class created with success.", TERM_NAME, savedFile.toFile().getAbsolutePath());
-      terminalLogger.verbose("*%s* Generated source: \n\n%s\n", TERM_NAME, generatedSource);
+      if (terminalLogger.isVerbose() || parameter.isDryRun()) {
+        terminalLogger.newline();
+        terminalLogger.setMessagePrefix("  |  ");
+        Stream.of(generatedSource.split("\n"))
+            .forEach(l -> {
+              if (parameter.isDryRun())
+                terminalLogger.info("  %s", l);
+              else
+                terminalLogger.verbose("  %s", l);
+            });
+        terminalLogger.setDefaultMessagePrefix();
+        terminalLogger.newline();
+      }
+      if (!parameter.isDryRun()) {
+        Path savedFile = Files.write(path, generatedSource.getBytes());
+        terminalLogger.info("*%s* _%s_ class created with success.", TERM_NAME, savedFile.toFile().getAbsolutePath());
+      }
     } catch (IOException e) {
       throw new IllegalStateException(format("Enable to create *%s* file!", destDirectory), e);
     }

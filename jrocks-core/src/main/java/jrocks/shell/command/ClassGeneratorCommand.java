@@ -21,9 +21,11 @@ import org.springframework.shell.Availability;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import static java.lang.String.format;
 
@@ -40,6 +42,7 @@ public class ClassGeneratorCommand extends BaseCommand {
   public static final String PARAM_FORCE = "--force";
   private static final String PARAM_SUFFIX = "--defaultSuffix";
   private static final String PARAM_LAYOUT = "--layout";
+  private static final String PARAM_DRY = "--dry-run";
 
   private ClassPathScanner classPathScanner;
 
@@ -61,7 +64,8 @@ public class ClassGeneratorCommand extends BaseCommand {
       @ShellOption(value = PARAM_MANDATORY_FIELDS, help = "Mandatory fields", defaultValue = "", valueProvider = ClassFieldsValueProvider.class) String[] mandatoryFields,
       @ShellOption(value = PARAM_ADDITIONAL_FLAGS, help = "Generator additional flags", defaultValue = "", valueProvider = AdditionalFlagValueProvider.class) String[] additionalFlags,
       @ShellOption(value = PARAM_LAYOUT, help = "Template layout", defaultValue = "", valueProvider = LayoutValueProvider.class) String layout,
-      @ShellOption(value = PARAM_FORCE, help = "Overwrite existing files") boolean isForced) {
+      @ShellOption(value = PARAM_FORCE, help = "Overwrite existing files") boolean isForced,
+      @ShellOption(value = PARAM_DRY, help = "Only print result") boolean dryRun) {
 
 //    LineReader reader = LineReaderBuilder
 //        .builder()
@@ -104,12 +108,21 @@ public class ClassGeneratorCommand extends BaseCommand {
 //    terminalLogger().info("Finally!!!! %s", input);
 
 
-    JRocksPlugin plugin = pluginsHolder.getCurrentCommand();
-    final PluginLayout pluginLayout = plugin.layouts().stream()
+    JRocksPlugin plugin = pluginsHolder.getCurrentPlugin();
+    final Optional<PluginLayout> pluginLayoutOptional = plugin.layouts().stream()
         .filter(Objects::nonNull)
         .filter(l -> Objects.equals(l.name(), layout))
-        .findAny()
-        .orElse(plugin.layouts().get(0));
+        .findAny();
+    PluginLayout pluginLayout;
+    if(pluginLayoutOptional.isPresent()) {
+      pluginLayout = pluginLayoutOptional.get();
+    } else {
+      if (CollectionUtils.isEmpty(plugin.layouts())) {
+        throw new IllegalStateException("No layout found for plugin: " + plugin);
+      }
+      pluginLayout = plugin.layouts().get(0);
+      terminalLogger().warning("given layout *%s* not found, fail back to *%s*", layout, pluginLayout.name());
+    }
 
     ClassInfoParameter parameter = new BaseClassInfoParameterBuilder()
         .withClassCanonicalName(classCanonicalName)
@@ -121,6 +134,7 @@ public class ClassGeneratorCommand extends BaseCommand {
         .withSuffixToRemove(suffixToRemove)
         .withAdditionalFlags(additionalFlags)
         .withLayout(pluginLayout)
+        .withDriRun(dryRun)
         .build();
 
     ClassApi classInfo = getClassInfo(parameter);

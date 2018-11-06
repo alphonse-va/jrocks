@@ -10,7 +10,13 @@ public interface TerminalLogger {
 
   void verbose(String message, Object... values);
 
+  void setMessagePrefix(String messagePrefix);
+
+  void setDefaultMessagePrefix();
+
   void setVerbose(boolean verbose);
+
+  boolean isVerbose();
 
   void newline();
 }

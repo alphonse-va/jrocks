@@ -24,10 +24,11 @@ public class BaseClassInfoParameterBuilder {
   private File file;
   private List<String> addtionalFlags;
   private PluginLayout layout;
+  private boolean dryRun;
 
   public BaseClassInfoParameter build() {
     Objects.requireNonNull(classCanonicalName, "classCanonicalName is required");
-    return new BaseClassInfoParameter(classCanonicalName, force, excludedFields, includedFields, mandatoryFields, suffix, suffixToRemove, file, addtionalFlags, layout);
+    return new BaseClassInfoParameter(classCanonicalName, force, excludedFields, includedFields, mandatoryFields, suffix, suffixToRemove, file, addtionalFlags, layout, dryRun);
   }
 
   public BaseClassInfoParameterBuilder withClassCanonicalName(String classCanonicalName) {
@@ -82,6 +83,11 @@ public class BaseClassInfoParameterBuilder {
 
   public BaseClassInfoParameterBuilder withLayout(PluginLayout layout) {
     this.layout = layout;
+    return this;
+  }
+
+  public BaseClassInfoParameterBuilder withDriRun(boolean dryRun) {
+    this.dryRun = dryRun;
     return this;
   }
 }

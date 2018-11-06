@@ -23,7 +23,7 @@ public class LayoutValueProvider extends ValueProviderSupport {
 
   @Override
   public List<CompletionProposal> complete(MethodParameter methodParameter, CompletionContext completionContext, String[] strings) {
-    return pluginHolder.getCurrentCommand().layouts().stream()
+    return pluginHolder.getCurrentPlugin().layouts().stream()
         .map(l -> new CompletionProposal(l.name())).collect(Collectors.toList());
   }
 }

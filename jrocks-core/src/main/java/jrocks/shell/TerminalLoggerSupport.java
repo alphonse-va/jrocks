@@ -37,11 +37,15 @@ import static org.jline.utils.AttributedStyle.*;
 @Service
 public class TerminalLoggerSupport implements TerminalLogger {
 
+  private static final String DEFAULT_MESSAGE_PREFIX = "➜ ";
+
   @Autowired
   @Lazy
   private Terminal terminal;
 
   private boolean verbose;
+
+  private String messagePrefix = DEFAULT_MESSAGE_PREFIX;
 
   enum LogLevel {
     INFO,
@@ -113,7 +117,7 @@ public class TerminalLoggerSupport implements TerminalLogger {
     int color;
     switch (level) {
       case VERBOSE:
-        color = MAGENTA;
+        color = BRIGHT;
         break;
       case WARNING:
         color = YELLOW;
@@ -130,13 +134,28 @@ public class TerminalLoggerSupport implements TerminalLogger {
   }
 
   @Nonnull
-  private String getMessagePrefix() {
-    return "➜ ";
+  public String getMessagePrefix() {
+    return messagePrefix;
+  }
+
+  @Override
+  public void setMessagePrefix(String messagePrefix) {
+    this.messagePrefix = messagePrefix;
+  }
+
+  @Override
+  public void setDefaultMessagePrefix() {
+    this.messagePrefix = DEFAULT_MESSAGE_PREFIX;
   }
 
   @Override
   public void setVerbose(boolean verbose) {
     this.verbose = verbose;
+  }
+
+  @Override
+  public boolean isVerbose() {
+    return verbose;
   }
 
   @Override
