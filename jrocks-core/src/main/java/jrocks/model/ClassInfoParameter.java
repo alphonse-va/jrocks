@@ -1,6 +1,7 @@
 package jrocks.model;
 
 import jrocks.plugin.api.ClassParameter;
+import jrocks.plugin.api.PluginLayout;
 
 import java.io.File;
 import java.util.List;
@@ -28,4 +29,6 @@ public interface ClassInfoParameter extends ClassParameter {
   File getFile();
 
   List<String> getAdditionalFlags();
+
+  PluginLayout getLayout();
 }

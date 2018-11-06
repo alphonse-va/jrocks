@@ -45,7 +45,7 @@ public class BaseTemplateWriterService implements TemplateWriterService {
     Path path = Paths.get(destDirectory + File.separator + clazz.name().replace(".", File.separator) + parameter.suffix() + ".java");
     File file = path.toFile();
     if (file.exists() && !parameter.isForce()) {
-      terminalLogger.error("%s file exists, please user --force if you want to overwrite", path.toString());
+      terminalLogger.error("_%s_ file exists, please user _--force_ if you want to overwrite", path.toString());
       return;
     }
     try {
@@ -59,10 +59,10 @@ public class BaseTemplateWriterService implements TemplateWriterService {
         }
       }
       Path savedFile = Files.write(path, generatedSource.getBytes());
-      terminalLogger.info("%s class generated with success.", savedFile.toFile().getAbsolutePath());
+      terminalLogger.info("_%s_ class generated with success.", savedFile.toFile().getAbsolutePath());
       terminalLogger.verbose("Generated source: \n\n%s\n", generatedSource);
     } catch (IOException e) {
-      throw new IllegalStateException(format("Enable to create '%s' file!", destDirectory), e);
+      throw new IllegalStateException(format("Enable to create *%s* file!", destDirectory), e);
     }
   }
 }

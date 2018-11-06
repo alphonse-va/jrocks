@@ -23,6 +23,7 @@ import org.springframework.shell.standard.ShellOption;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Objects;
 
 import static java.lang.String.format;
 
@@ -55,10 +56,10 @@ public class ClassGeneratorCommand extends BaseCommand {
       @ShellOption(value = PARAM_SUFFIX, help = "Suffix to remove", defaultValue = "") String suffixToRemove,
       @ShellOption(value = PARAM_SUFFIX_TO_REMOVE, help = "Suffix to remove", defaultValue = "") String suffix,
 
-      @ShellOption(value = PARAM_EXCLUDED_FIELDS, help = "Fields to exclude", defaultValue = "[]", valueProvider = ClassFieldsValueProvider.class) String[] excludedFields,
-      @ShellOption(value = PARAM_INCLUDED_FIELDS, help = "Fields to include", defaultValue = "[]", valueProvider = ClassFieldsValueProvider.class) String[] includedFields,
-      @ShellOption(value = PARAM_MANDATORY_FIELDS, help = "Mandatory fields", defaultValue = "[]", valueProvider = ClassFieldsValueProvider.class) String[] mandatoryFields,
-      @ShellOption(value = PARAM_ADDITIONAL_FLAGS, help = "Generator additional flags", defaultValue = "[]", valueProvider = AdditionalFlagValueProvider.class) String[] additionalFlags,
+      @ShellOption(value = PARAM_EXCLUDED_FIELDS, help = "Fields to exclude", defaultValue = "", valueProvider = ClassFieldsValueProvider.class) String[] excludedFields,
+      @ShellOption(value = PARAM_INCLUDED_FIELDS, help = "Fields to include", defaultValue = "", valueProvider = ClassFieldsValueProvider.class) String[] includedFields,
+      @ShellOption(value = PARAM_MANDATORY_FIELDS, help = "Mandatory fields", defaultValue = "", valueProvider = ClassFieldsValueProvider.class) String[] mandatoryFields,
+      @ShellOption(value = PARAM_ADDITIONAL_FLAGS, help = "Generator additional flags", defaultValue = "", valueProvider = AdditionalFlagValueProvider.class) String[] additionalFlags,
       @ShellOption(value = PARAM_LAYOUT, help = "Template layout", defaultValue = "", valueProvider = LayoutValueProvider.class) String layout,
       @ShellOption(value = PARAM_FORCE, help = "Overwrite existing files") boolean isForced) {
 
@@ -104,6 +105,11 @@ public class ClassGeneratorCommand extends BaseCommand {
 
 
     JRocksPlugin plugin = currentPluginHolder.getCurrentCommand();
+    final PluginLayout pluginLayout = plugin.layouts().stream()
+        .filter(Objects::nonNull)
+        .filter(l -> Objects.equals(l.name(), layout))
+        .findAny()
+        .orElse(plugin.layouts().get(0));
 
     ClassInfoParameter parameter = new BaseClassInfoParameterBuilder()
         .withClassCanonicalName(classCanonicalName)
@@ -114,19 +120,18 @@ public class ClassGeneratorCommand extends BaseCommand {
         .withSuffix(StringUtils.isNotBlank(suffix) ? suffix : plugin.defaultSuffix())
         .withSuffixToRemove(suffixToRemove)
         .withAdditionalFlags(additionalFlags)
+        .withLayout(pluginLayout)
         .build();
 
     ClassApi classInfo = getClassInfo(parameter);
-    terminalLogger().info("Generate %s for %s class with parameters:\n%s", plugin.name(), parameter.classCanonicalName(), parameter);
-
-    final PluginLayout pluginLayout = plugin.layouts().stream()
-        .filter(l -> l.name().equalsIgnoreCase(layout))
-        .findAny()
-        .orElse(plugin.layouts().get(0));
+    terminalLogger().info("*[%s]* receive followed parameters:\n\t" +
+            "layout: _%s_\n\t" +
+            "source: _%s_\n\t" +
+            "destination: _%s_" +
+            "%s",
+        plugin.name(), pluginLayout.name(), classInfo.name(), parameter.classCanonicalName() + parameter.suffix(), parameter);
 
     List<GeneratedSource> generatedSources = pluginLayout.generate(parameter, classInfo);
-
-    System.out.println(generatedSources.get(0).content());
 
     writerService.writeClass(generatedSources.get(0).content(), parameter, classInfo);
   }
@@ -134,7 +139,7 @@ public class ClassGeneratorCommand extends BaseCommand {
   private Availability generatorAvailability() {
     return configService().isInitialized()
         ? Availability.available()
-        : Availability.unavailable("you need to execute 'init' command to initialize JRocks!");
+        : Availability.unavailable("you need to execute 'init' command to initialize JRocks");
   }
 
   private ClassApi getClassInfo(ClassInfoParameter parameter) {

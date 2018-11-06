@@ -21,7 +21,7 @@ import static java.lang.String.format;
 @Component
 public final class MavenProjectUtil {
 
-  private static final String HELP_EFFECTIVE_POM = "help:effective-pom";
+  private static final String EFFECTIVE_POM = "help:effective-pom";
   private static final boolean IS_WINDOWS = System.getProperty("os.name").toLowerCase().startsWith("windows");
 
   public List<MavenProject> loadProjects() {
@@ -43,9 +43,9 @@ public final class MavenProjectUtil {
   private List<String> grabMavenEffectivePoms() {
     ProcessBuilder builder = new ProcessBuilder();
     if (IS_WINDOWS) {
-      builder.command("mvn.exe", HELP_EFFECTIVE_POM);
+      builder.command("mvn.exe", EFFECTIVE_POM);
     } else {
-      builder.command("mvn", HELP_EFFECTIVE_POM);
+      builder.command("mvn", EFFECTIVE_POM);
     }
     try {
       Process process = builder.start();
@@ -58,7 +58,7 @@ public final class MavenProjectUtil {
       executorService.shutdown();
       return effectivePomToListOfPoms(result.toString());
     } catch (IOException | InterruptedException e) {
-      throw new IllegalStateException(format("Error while executing 'mvn %s' command", HELP_EFFECTIVE_POM), e);
+      throw new IllegalStateException(format("Error while executing 'mvn %s' command", EFFECTIVE_POM), e);
     }
   }
 
@@ -69,11 +69,11 @@ public final class MavenProjectUtil {
         .collect(Collectors.toList());
   }
 
-  private static class InputStreamConsumer implements Runnable {
+  public static class InputStreamConsumer implements Runnable {
     private InputStream inputStream;
     private Consumer<String> consumer;
 
-    InputStreamConsumer(InputStream inputStream, Consumer<String> consumer) {
+    public InputStreamConsumer(InputStream inputStream, Consumer<String> consumer) {
       this.inputStream = inputStream;
       this.consumer = consumer;
     }

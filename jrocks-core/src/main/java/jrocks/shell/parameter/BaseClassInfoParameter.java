@@ -1,12 +1,14 @@
 package jrocks.shell.parameter;
 
 import jrocks.model.ClassInfoParameter;
+import jrocks.plugin.api.PluginLayout;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.String.format;
+import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class BaseClassInfoParameter implements ClassInfoParameter {
@@ -29,6 +31,8 @@ public class BaseClassInfoParameter implements ClassInfoParameter {
 
   private List<String> additionalFlags;
 
+  private PluginLayout layout;
+
   BaseClassInfoParameter(String classCanonicalName,
                          boolean force,
                          List<String> excludedFields,
@@ -36,7 +40,7 @@ public class BaseClassInfoParameter implements ClassInfoParameter {
                          List<String> mandatoryFields,
                          String suffix,
                          String suffixToRemove, File file,
-                         List<String> additionalFlags) {
+                         List<String> additionalFlags, PluginLayout layout) {
     this.classCanonicalName = classCanonicalName;
     this.force = force;
     this.excludedFields = excludedFields != null ? excludedFields : new ArrayList<>();
@@ -46,6 +50,7 @@ public class BaseClassInfoParameter implements ClassInfoParameter {
     this.suffixToRemove = suffixToRemove;
     this.file = file;
     this.additionalFlags = additionalFlags;
+    this.layout = layout;
   }
 
   protected BaseClassInfoParameter(ClassInfoParameter parameter) {
@@ -57,7 +62,8 @@ public class BaseClassInfoParameter implements ClassInfoParameter {
         parameter.suffix(),
         parameter.suffixToRemove(),
         parameter.getFile(),
-        parameter.getAdditionalFlags());
+        parameter.getAdditionalFlags(),
+        parameter.getLayout());
   }
 
   @Override
@@ -122,8 +128,19 @@ public class BaseClassInfoParameter implements ClassInfoParameter {
   }
 
   @Override
+  public PluginLayout getLayout() {
+    return layout;
+  }
+
+  @Override
   public String toString() {
-    return format("\tClass: %s\n\tExcluded Fields: %s\n\tIncluded Fields: %s\n\tMandatory Fields: %s\n\tForce: %s",
-        classCanonicalName, excludedFields, includedFields, mandatoryFields, force);
+    StringBuilder result = new StringBuilder();
+    if (isNotEmpty(excludedFields)) result.append(format("\n\texcluded Fields: _%s_", excludedFields));
+    if (isNotEmpty(includedFields)) result.append(format("\n\tincluded Fields: _%s_", includedFields));
+    if (isNotEmpty(mandatoryFields)) result.append(format("\n\tmandatory Fields: _%s_", mandatoryFields));
+    result.append(format("\n\tforce: _%s_", force));
+    result.append(format("\n\tsuffix: _%s_", suffix));
+    result.append(format("\n\tsuffix to remove: _%s_", suffixToRemove));
+    return result.toString();
   }
 }

@@ -1,9 +1,14 @@
 package jrocks.shell.parameter;
 
+import jrocks.plugin.api.PluginLayout;
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
 
@@ -18,10 +23,11 @@ public class BaseClassInfoParameterBuilder {
   private String suffixToRemove;
   private File file;
   private List<String> addtionalFlags;
+  private PluginLayout layout;
 
   public BaseClassInfoParameter build() {
     Objects.requireNonNull(classCanonicalName, "classCanonicalName is required");
-    return new BaseClassInfoParameter(classCanonicalName, force, excludedFields, includedFields, mandatoryFields, suffix, suffixToRemove, file, addtionalFlags);
+    return new BaseClassInfoParameter(classCanonicalName, force, excludedFields, includedFields, mandatoryFields, suffix, suffixToRemove, file, addtionalFlags, layout);
   }
 
   public BaseClassInfoParameterBuilder withClassCanonicalName(String classCanonicalName) {
@@ -35,17 +41,22 @@ public class BaseClassInfoParameterBuilder {
   }
 
   public BaseClassInfoParameterBuilder withExcludedFields(String[] excludedFields) {
-    this.excludedFields = asList(excludedFields);
+    this.excludedFields = Arrays.stream(excludedFields)
+        .filter(StringUtils::isNotBlank)
+        .collect(Collectors.toList());
     return this;
   }
 
   public BaseClassInfoParameterBuilder withIncludedFields(String[] includedFields) {
-    this.includedFields = asList(includedFields);
+    this.includedFields = Arrays.stream(includedFields).filter(StringUtils::isNotBlank)
+        .collect(Collectors.toList());
     return this;
   }
 
   public BaseClassInfoParameterBuilder withMandatoryFields(String[] mandatoryFields) {
-    this.mandatoryFields = asList(mandatoryFields);
+    this.mandatoryFields = Arrays.stream(mandatoryFields)
+        .filter(StringUtils::isNotBlank)
+        .collect(Collectors.toList());
     return this;
   }
 
@@ -66,6 +77,11 @@ public class BaseClassInfoParameterBuilder {
 
   public BaseClassInfoParameterBuilder withAdditionalFlags(String[] addtionalFlags) {
     this.addtionalFlags = asList(addtionalFlags);
+    return this;
+  }
+
+  public BaseClassInfoParameterBuilder withLayout(PluginLayout layout) {
+    this.layout = layout;
     return this;
   }
 }

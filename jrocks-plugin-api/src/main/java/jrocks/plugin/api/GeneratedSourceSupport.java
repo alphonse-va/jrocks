@@ -26,4 +26,12 @@ public class GeneratedSourceSupport implements GeneratedSource {
     this.path = path;
     return this;
   }
+
+  public String getContent() {
+    return content;
+  }
+
+  public File getPath() {
+    return path;
+  }
 }

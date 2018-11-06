@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
+import java.util.Optional;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -37,8 +38,8 @@ class DtoPluginTest {
     when(nameField.fieldNameCapitalized()).thenReturn("Name");
     when(nameField.name()).thenReturn("String");
     when(nameField.packageName()).thenReturn("java.lang");
-    when(nameField.getter()).thenReturn("getName");
-    when(nameField.setter()).thenReturn("setName");
+    when(nameField.getter()).thenReturn(Optional.of("getName"));
+    when(nameField.setter()).thenReturn(Optional.of("setName"));
 
     FieldApi date = mock(FieldApi.class);
     when(date.fieldName()).thenReturn("myDate");
@@ -46,8 +47,8 @@ class DtoPluginTest {
     when(date.name()).thenReturn("java.util.Date");
     when(date.packageName()).thenReturn("java.util");
     when(date.isRequired()).thenReturn(true);
-    when(date.getter()).thenReturn("getMyDate");
-    when(date.setter()).thenReturn("setMyDate");
+    when(date.getter()).thenReturn(Optional.of("getMyDate"));
+    when(date.setter()).thenReturn(Optional.of("setMyDate"));
 
     when(classMock.fields()).thenReturn(ImmutableList.of(nameField, date));
 
