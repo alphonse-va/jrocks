@@ -9,14 +9,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class CurrentPluginHolder {
+public class PluginsHolder {
 
   private final List<JRocksPlugin> generatorCommands;
 
   private JRocksPlugin currentCommand;
 
   @Autowired(required = false)
-  public CurrentPluginHolder(List<JRocksPlugin> generatorCommands) {this.generatorCommands = generatorCommands;}
+  public PluginsHolder(List<JRocksPlugin> generatorCommands) {this.generatorCommands = generatorCommands;}
 
   public void setCurrentCommand(String name) {
     if (generatorCommands == null) return;
@@ -34,5 +34,11 @@ public class CurrentPluginHolder {
         ? new ArrayList<>()
         : generatorCommands.stream().map(JRocksPlugin::name)
         .collect(Collectors.toList());
+  }
+
+  public List<JRocksPlugin> getPlugins() {
+    return generatorCommands == null
+        ? new ArrayList<>()
+        : generatorCommands;
   }
 }

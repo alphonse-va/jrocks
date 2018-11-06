@@ -2,7 +2,7 @@ package jrocks;
 
 import jrocks.shell.ExtendedDefaultParser;
 import jrocks.shell.command.ClassGeneratorCommand;
-import jrocks.shell.command.CurrentPluginHolder;
+import jrocks.shell.command.PluginsHolder;
 import org.jline.reader.*;
 import org.jline.reader.impl.history.DefaultHistory;
 import org.jline.terminal.Terminal;
@@ -45,7 +45,7 @@ public class JRocksShellConfiguration {
 
   @Autowired
   @Lazy
-  private CurrentPluginHolder currentPluginHolder;
+  private PluginsHolder pluginsHolder;
 
   @Autowired
   private PromptProvider promptProvider;
@@ -120,7 +120,7 @@ public class JRocksShellConfiguration {
   @PostConstruct
   public void lateInit() {
     completer().setShell(shell);
-    completer().setCurrentPluginHolder(currentPluginHolder);
+    completer().setPluginsHolder(pluginsHolder);
   }
 
   @Bean
@@ -148,7 +148,7 @@ public class JRocksShellConfiguration {
             }
           }
           if (best != null) {
-            currentPluginHolder.setCurrentCommand(best);
+            pluginsHolder.setCurrentCommand(best);
             return new AttributedStringBuilder(buffer.length()).append(best, AttributedStyle.BOLD).append(buffer.substring(l)).toAttributedString();
           } else {
             return new AttributedString(buffer, AttributedStyle.DEFAULT.foreground(AttributedStyle.RED));
@@ -168,7 +168,7 @@ public class JRocksShellConfiguration {
 
     private Shell shell;
 
-    private CurrentPluginHolder currentPluginHolder;
+    private PluginsHolder pluginsHolder;
 
     @Override
     public void complete(LineReader reader, ParsedLine line, List<Candidate> candidates) {
@@ -178,7 +178,7 @@ public class JRocksShellConfiguration {
 
       // TODO find out a commons way to enable/disable some parameter based on others
       List<CompletionProposal> proposals = shell.complete(context);
-      if (currentPluginHolder.getPluginNames().contains(context.getWords().get(0))
+      if (pluginsHolder.getPluginNames().contains(context.getWords().get(0))
           && !context.getWords().contains(ClassGeneratorCommand.PARAM_CLASS)) {
         proposals = proposals.stream().filter(p -> p.value().equals(ClassGeneratorCommand.PARAM_CLASS)).collect(Collectors.toList());
       }
@@ -199,8 +199,8 @@ public class JRocksShellConfiguration {
       this.shell = shell;
     }
 
-    void setCurrentPluginHolder(CurrentPluginHolder currentPluginHolder) {
-      this.currentPluginHolder = currentPluginHolder;
+    void setPluginsHolder(PluginsHolder pluginsHolder) {
+      this.pluginsHolder = pluginsHolder;
     }
 
     /**

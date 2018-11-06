@@ -7,52 +7,26 @@
         <format>zip</format>
     </formats>
     <includeBaseDirectory>false</includeBaseDirectory>
-    <moduleSets>
-        <moduleSet>
-            <useAllReactorProjects>true</useAllReactorProjects>
+    <dependencySets>
+        <dependencySet>
+            <outputDirectory>/jrocks/plugins</outputDirectory>
             <includes>
-                <include>be.unlock:jrocks-core</include>
+                <include>*:jrocks-plugin-bean:*:*</include>
             </includes>
-            <binaries>
-                <outputDirectory>jrocks</outputDirectory>
-                <includes>
-                    <include>be.unlock:jrocks-core</include>
-                </includes>
-                <excludes>
-                    <exclude>be.unlock:jrocks-core:jar:run:0.0.1:compile</exclude>
-                </excludes>
-                <unpack>false</unpack>
-            </binaries>
-        </moduleSet>
-        <moduleSet>
-            <useAllReactorProjects>true</useAllReactorProjects>
+            <useProjectArtifact>true</useProjectArtifact>
+            <unpack>false</unpack>
+            <scope>runtime</scope>
+        </dependencySet>
+        <dependencySet>
+            <outputDirectory>/jrocks</outputDirectory>
             <includes>
-                <include>be.unlock:jrocks-plugin-bean:jar:</include>
+                <include>*:jrocks-core:*:run</include>
             </includes>
-            <binaries>
-                <outputDirectory>jrocks/plugins</outputDirectory>
-                <includes>
-                    <include>be.unlock:jrocks-plugin-bean</include>
-                </includes>
-                <unpack>false</unpack>
-            </binaries>
-        </moduleSet>
-        <moduleSet>
-            <useAllReactorProjects>true</useAllReactorProjects>
-            <includes>
-                <include>be.unlock:jrocks-package:jar:</include>
-            </includes>
-            <sources>
-                <fileSets>
-                    <fileSet>
-                        <includes>
-                            <include>**/*.sh</include>
-                        </includes>
-                    </fileSet>
-                </fileSets>
-            </sources>
-        </moduleSet>
-    </moduleSets>
+            <useProjectArtifact>true</useProjectArtifact>
+            <unpack>false</unpack>
+            <scope>runtime</scope>
+        </dependencySet>
+    </dependencySets>
     <files>
         <file>
             <source>src/main/resources/install.sh</source>

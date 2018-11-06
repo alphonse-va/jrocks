@@ -11,4 +11,6 @@ public interface TerminalLogger {
   void verbose(String message, Object... values);
 
   void setVerbose(boolean verbose);
+
+  void newline();
 }

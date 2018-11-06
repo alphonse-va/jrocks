@@ -47,7 +47,7 @@ public class ClassGeneratorCommand extends BaseCommand {
   private TemplateWriterService writerService;
 
   @Autowired
-  private CurrentPluginHolder currentPluginHolder;
+  private PluginsHolder pluginsHolder;
 
   @ShellMethod
   @JRocksShellMethod
@@ -104,7 +104,7 @@ public class ClassGeneratorCommand extends BaseCommand {
 //    terminalLogger().info("Finally!!!! %s", input);
 
 
-    JRocksPlugin plugin = currentPluginHolder.getCurrentCommand();
+    JRocksPlugin plugin = pluginsHolder.getCurrentCommand();
     final PluginLayout pluginLayout = plugin.layouts().stream()
         .filter(Objects::nonNull)
         .filter(l -> Objects.equals(l.name(), layout))

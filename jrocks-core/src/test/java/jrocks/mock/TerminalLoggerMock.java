@@ -28,4 +28,9 @@ public class TerminalLoggerMock implements TerminalLogger {
   public void setVerbose(boolean verbose) {
 
   }
+
+  @Override
+  public void newline() {
+
+  }
 }

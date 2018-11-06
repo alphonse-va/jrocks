@@ -7,11 +7,11 @@ public interface PluginLayout {
   String name();
 
   default String description() {
-    return "Not provided";
+    return "";
   }
 
   default String version() {
-    return "Not provided";
+    return "beta";
   }
 
   List<GeneratedSource> generate(ClassParameter parameter, ClassApi classApi);

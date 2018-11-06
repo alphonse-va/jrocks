@@ -45,6 +45,11 @@
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>3.1.0</version>
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/assembly/package.xml</descriptor>
+                    </descriptors>
+                </configuration>
                 <executions>
                     <execution>
                         <id>distro-assembly</id>
@@ -52,11 +57,7 @@
                         <goals>
                             <goal>single</goal>
                         </goals>
-                        <configuration>
-                            <descriptors>
-                                <descriptor>src/assembly/package.xml</descriptor>
-                            </descriptors>
-                        </configuration>
+
                     </execution>
                 </executions>
             </plugin>

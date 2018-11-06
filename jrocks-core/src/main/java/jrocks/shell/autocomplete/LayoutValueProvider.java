@@ -1,6 +1,6 @@
 package jrocks.shell.autocomplete;
 
-import jrocks.shell.command.CurrentPluginHolder;
+import jrocks.shell.command.PluginsHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.shell.CompletionContext;
@@ -14,10 +14,10 @@ import java.util.stream.Collectors;
 @Component
 public class LayoutValueProvider extends ValueProviderSupport {
 
-  private CurrentPluginHolder pluginHolder;
+  private PluginsHolder pluginHolder;
 
   @Autowired
-  public LayoutValueProvider(CurrentPluginHolder pluginHolder) {
+  public LayoutValueProvider(PluginsHolder pluginHolder) {
     this.pluginHolder = pluginHolder;
   }
 

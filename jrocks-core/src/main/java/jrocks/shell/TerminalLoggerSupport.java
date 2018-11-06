@@ -139,6 +139,11 @@ public class TerminalLoggerSupport implements TerminalLogger {
     this.verbose = verbose;
   }
 
+  @Override
+  public void newline() {
+    terminal.writer().println("");
+  }
+
   @VisibleForTesting
   void setTerminal(Terminal terminal) {
     this.terminal = terminal;

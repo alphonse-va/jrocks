@@ -7,8 +7,13 @@ import jrocks.shell.config.ModuleConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.Availability;
 import org.springframework.shell.standard.*;
+import org.springframework.shell.table.BorderStyle;
+import org.springframework.shell.table.Table;
+import org.springframework.shell.table.TableBuilder;
+import org.springframework.shell.table.TableModelBuilder;
 
 import java.io.File;
+import java.util.stream.Collectors;
 
 @ShellComponent
 @ShellCommandGroup(value = "Configuration")
@@ -18,6 +23,9 @@ public class ConfigurationCommand extends BaseCommand {
 
   @Autowired
   private ClassPathScanner classPathScanner;
+
+  @Autowired
+  private PluginsHolder pluginsHolder;
 
   @Autowired
   public ConfigurationCommand(MavenProjectUtil mavenProjectUtil) {
@@ -61,28 +69,27 @@ public class ConfigurationCommand extends BaseCommand {
   }
 
   @ShellMethod("Show plugins")
-  void showPlugins() {
-
-    File pluginDirectory = configService().globalConfig().getPluginDirectory();
-    if (pluginDirectory == null) {
-      terminalLogger().error("jrocks.plugins not defined");
-      return;
-    }
-    if (!pluginDirectory.exists() || !pluginDirectory.isDirectory()) {
-      terminalLogger().error(
-          "Plugin directory not found, please fix your config\n\tjrock.plugin-dir: %s",
-          configService().globalConfig().getPluginDirectory().getAbsolutePath());
-      return;
-    }
-
-    classPathScanner.listInstalledPlugins()
+  Table showPlugins() {
+    TableModelBuilder<Object> modelBuilder = new TableModelBuilder<>();
+    modelBuilder.addRow()
+        .addValue("Name")
+        .addValue("Description")
+        .addValue("Keys")
+        .addValue("Group")
+        .addValue("Layouts");
+    pluginsHolder.getPlugins()
         .forEach(p -> {
-          terminalLogger().info("Plugin: %s\nProvides:", p.getJarFile());
-          p.getCommands().forEach(c -> {
-            terminalLogger().info("\t%s: %s (group: %s)", c.getKey(), c.getDescription(), c.getGroup());
-          });
+          modelBuilder.addRow()
+              .addValue(p.name())
+              .addValue(p.description())
+              .addValue(p.keys())
+              .addValue(p.group())
+              .addValue(p.layouts().stream().map(l -> String.format("%s, %s (%s)", l.name(), l.description(), l.version())).collect(Collectors.joining("\n")));
         });
-
+    TableBuilder builder = new TableBuilder(modelBuilder.build());
+    terminalLogger().newline();
+    terminalLogger().info("*Plugins*");
+    return builder.addFullBorder(BorderStyle.fancy_light).build();
   }
 
   @ShellMethodAvailability({"show-config"})
@@ -97,6 +104,6 @@ public class ConfigurationCommand extends BaseCommand {
   }
 
   public void setClassPathScanner(ClassPathScanner classPathScanner) {
-    this.classPathScanner=classPathScanner;
+    this.classPathScanner = classPathScanner;
   }
 }
