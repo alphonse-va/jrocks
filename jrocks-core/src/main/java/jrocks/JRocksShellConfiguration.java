@@ -80,7 +80,7 @@ public class JRocksShellConfiguration {
 
   @Bean
   public PromptProvider promptProvider() {
-    return () -> new AttributedString("jrocks $ ", AttributedStyle.DEFAULT.foreground(AttributedStyle.BLUE));
+    return () -> new AttributedString("jrocks ➜ ", AttributedStyle.DEFAULT.foreground(AttributedStyle.YELLOW));
   }
 
   /**
