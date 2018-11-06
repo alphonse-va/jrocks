@@ -20,6 +20,8 @@ import static java.lang.String.format;
 @Service
 public class BaseTemplateWriterService implements TemplateWriterService {
 
+  private static final String TERM_NAME = "[writer]";
+
   private ConfigService configService;
 
   private TerminalLogger terminalLogger;
@@ -45,7 +47,7 @@ public class BaseTemplateWriterService implements TemplateWriterService {
     Path path = Paths.get(destDirectory + File.separator + clazz.name().replace(".", File.separator) + parameter.suffix() + ".java");
     File file = path.toFile();
     if (file.exists() && !parameter.isForce()) {
-      terminalLogger.error("_%s_ file exists, please user _--force_ if you want to overwrite", path.toString());
+      terminalLogger.error("*%s* _%s_ file exists, please user _--force_ if you want to overwrite", TERM_NAME, path.toString());
       return;
     }
     try {
@@ -53,14 +55,14 @@ public class BaseTemplateWriterService implements TemplateWriterService {
       if (!dir.isDirectory()) {
         boolean success = dir.mkdirs();
         if (success) {
-          terminalLogger.info("Created path: " + dir.getPath());
+          terminalLogger.info("*%s* Created path: _%s_", TERM_NAME, dir.getPath());
         } else {
-          terminalLogger.info("Could not create path: " + dir.getPath());
+          terminalLogger.info("*%s* Could not create path: _%s_",TERM_NAME, dir.getPath());
         }
       }
       Path savedFile = Files.write(path, generatedSource.getBytes());
-      terminalLogger.info("_%s_ class generated with success.", savedFile.toFile().getAbsolutePath());
-      terminalLogger.verbose("Generated source: \n\n%s\n", generatedSource);
+      terminalLogger.info("*%s* _%s_ class created with success.", TERM_NAME, savedFile.toFile().getAbsolutePath());
+      terminalLogger.verbose("*%s* Generated source: \n\n%s\n", TERM_NAME, generatedSource);
     } catch (IOException e) {
       throw new IllegalStateException(format("Enable to create *%s* file!", destDirectory), e);
     }

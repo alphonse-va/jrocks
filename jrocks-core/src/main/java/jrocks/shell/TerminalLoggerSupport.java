@@ -135,7 +135,7 @@ public class TerminalLoggerSupport implements TerminalLogger {
 
   @Nonnull
   private String getMessagePrefix() {
-    return " - ";
+    return " ";
   }
 
   @Override
