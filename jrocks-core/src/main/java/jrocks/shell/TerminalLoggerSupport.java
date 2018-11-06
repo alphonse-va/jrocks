@@ -80,26 +80,22 @@ public class TerminalLoggerSupport implements TerminalLogger {
     int lastMatchIdx = 0;
     while (matcher.find()) {
       final String withDelimiters = matcher.group(1);
-
       final int idxOfMatcher = formattedMessage.substring(lastMatchIdx).indexOf(withDelimiters) + lastMatchIdx;
-
       final String unformattedText = formattedMessage.substring(lastMatchIdx, idxOfMatcher);
+
       lastMatchIdx = lastMatchIdx + unformattedText.length() + withDelimiters.length();
+
+      terminal.writer().print(
+          new AttributedStringBuilder()
+              .style(AttributedStyle.DEFAULT.faint().foreground(colorFromLevel(level)))
+              .append(unformattedText).toAnsi());
+
       if (withDelimiters.startsWith("*")) {
-        terminal.writer().print(
-            new AttributedStringBuilder()
-                .style(AttributedStyle.DEFAULT.faint().foreground(colorFromLevel(level)))
-                .append(unformattedText).toAnsi());
         terminal.writer().print(
             new AttributedStringBuilder()
                 .style(AttributedStyle.DEFAULT.bold().foreground(colorFromLevel(level)))
                 .append(matcher.group(2)).toAnsi());
       } else if (withDelimiters.startsWith("_")) {
-        terminal.writer().print(
-            new AttributedStringBuilder()
-                .style(AttributedStyle.DEFAULT.faint().foreground(colorFromLevel(level)))
-                .append(unformattedText).toAnsi());
-
         terminal.writer().print(
             new AttributedStringBuilder()
                 .style(AttributedStyle.DEFAULT.italic().foreground(colorFromLevel(level)))
