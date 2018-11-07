@@ -1,6 +1,6 @@
 package jrocks.shell.parameter;
 
-import jrocks.model.ClassInfoParameter;
+import jrocks.model.ClassInfoParameterApi;
 import jrocks.plugin.api.PluginLayout;
 
 import java.io.File;
@@ -11,7 +11,7 @@ import static java.lang.String.format;
 import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
-public class BaseClassInfoParameter implements ClassInfoParameter {
+public class BaseClassInfoParameterApi implements ClassInfoParameterApi {
 
   private boolean dryRun;
 
@@ -35,14 +35,14 @@ public class BaseClassInfoParameter implements ClassInfoParameter {
 
   private PluginLayout layout;
 
-  BaseClassInfoParameter(String classCanonicalName,
-                         boolean force,
-                         List<String> excludedFields,
-                         List<String> includedFields,
-                         List<String> mandatoryFields,
-                         String suffix,
-                         String suffixToRemove, File file,
-                         List<String> additionalFlags, PluginLayout layout, boolean dryRun) {
+  BaseClassInfoParameterApi(String classCanonicalName,
+                            boolean force,
+                            List<String> excludedFields,
+                            List<String> includedFields,
+                            List<String> mandatoryFields,
+                            String suffix,
+                            String suffixToRemove, File file,
+                            List<String> additionalFlags, PluginLayout layout, boolean dryRun) {
     this.classCanonicalName = classCanonicalName;
     this.force = force;
     this.excludedFields = excludedFields != null ? excludedFields : new ArrayList<>();
@@ -56,7 +56,7 @@ public class BaseClassInfoParameter implements ClassInfoParameter {
     this.dryRun = dryRun;
   }
 
-  protected BaseClassInfoParameter(ClassInfoParameter parameter) {
+  protected BaseClassInfoParameterApi(ClassInfoParameterApi parameter) {
     this(parameter.classCanonicalName(),
         parameter.isForce(),
         parameter.excludedFields(),

@@ -14,5 +14,5 @@ public interface PluginLayout {
     return "beta";
   }
 
-  List<GeneratedSource> generate(ClassParameter parameter, ClassApi classApi);
+  List<GeneratedSource> generate(ClassParameterApi parameter, ClassApi classApi);
 }

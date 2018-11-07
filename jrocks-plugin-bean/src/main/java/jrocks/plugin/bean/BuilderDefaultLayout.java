@@ -21,7 +21,7 @@ public class BuilderDefaultLayout implements PluginLayout {
   }
 
   @Override
-  public List<GeneratedSource> generate(ClassParameter parameter, ClassApi classApi) {
+  public List<GeneratedSource> generate(ClassParameterApi parameter, ClassApi classApi) {
     ClassName sourceClassName = ClassName.bestGuess(classApi.name());
     ClassName builderClassName = ClassName.bestGuess(classApi.name() + parameter.suffix());
 

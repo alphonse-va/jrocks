@@ -2,7 +2,7 @@ package jrocks.plugin.bean;
 
 import com.google.common.collect.ImmutableList;
 import jrocks.plugin.api.ClassApi;
-import jrocks.plugin.api.ClassParameter;
+import jrocks.plugin.api.ClassParameterApi;
 import jrocks.plugin.api.FieldApi;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,7 +24,7 @@ class DtoPluginTest {
 
   @Test
   void generateSources() {
-    ClassParameter parameterMock = mock(ClassParameter.class);
+    ClassParameterApi parameterMock = mock(ClassParameterApi.class);
     ClassApi classMock = mock(ClassApi.class);
     when(parameterMock.suffix()).thenReturn("Dto");
 

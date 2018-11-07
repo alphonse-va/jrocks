@@ -4,9 +4,9 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>${artifactId}</artifactId>
-    <version>${version}</version>
-    <groupId>${groupId}</groupId>
+    <artifactId>lll</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <groupId>llll</groupId>
 
     <parent>
         <groupId>be.unlock</groupId>

@@ -1,7 +1,7 @@
 package jrocks.plugin.bean;
 
 import jrocks.plugin.api.ClassApi;
-import jrocks.plugin.api.ClassParameter;
+import jrocks.plugin.api.ClassParameterApi;
 import jrocks.plugin.api.FieldApi;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ class BuilderPluginTest {
 
   @Test
   void generateSources() {
-    ClassParameter parameter = mock(ClassParameter.class);
+    ClassParameterApi parameter = mock(ClassParameterApi.class);
     ClassApi classMock = mock(ClassApi.class);
     when(parameter.suffix()).thenReturn("Builder");
 

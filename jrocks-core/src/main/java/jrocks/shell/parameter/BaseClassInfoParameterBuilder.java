@@ -26,9 +26,9 @@ public class BaseClassInfoParameterBuilder {
   private PluginLayout layout;
   private boolean dryRun;
 
-  public BaseClassInfoParameter build() {
+  public BaseClassInfoParameterApi build() {
     Objects.requireNonNull(classCanonicalName, "classCanonicalName is required");
-    return new BaseClassInfoParameter(classCanonicalName, force, excludedFields, includedFields, mandatoryFields, suffix, suffixToRemove, file, addtionalFlags, layout, dryRun);
+    return new BaseClassInfoParameterApi(classCanonicalName, force, excludedFields, includedFields, mandatoryFields, suffix, suffixToRemove, file, addtionalFlags, layout, dryRun);
   }
 
   public BaseClassInfoParameterBuilder withClassCanonicalName(String classCanonicalName) {

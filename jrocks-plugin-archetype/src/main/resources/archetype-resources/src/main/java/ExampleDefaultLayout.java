@@ -24,11 +24,9 @@ public class ExampleDefaultLayout implements PluginLayout {
   @Override
   public List<GeneratedSource> generate(ClassParameter parameter, ClassApi classApi) {
 
-    ClassName sourceClassName = ClassName.bestGuess(classApi.name());
     ClassName exampleClassName = ClassName.bestGuess(classApi.name() + parameter.suffix());
 
-    TypeSpec.Builder exampleTypeBuilder = TypeSpec.classBuilder(exampleClassName)
-        .addModifiers(Modifier.PUBLIC);
+    TypeSpec.Builder exampleTypeBuilder = TypeSpec.classBuilder(exampleClassName).addModifiers(Modifier.PUBLIC);
 
     classApi.fields().forEach(field -> {
 

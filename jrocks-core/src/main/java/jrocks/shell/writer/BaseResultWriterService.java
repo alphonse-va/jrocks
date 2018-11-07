@@ -1,7 +1,7 @@
 package jrocks.shell.writer;
 
 import jrocks.plugin.api.ClassApi;
-import jrocks.plugin.api.ClassParameter;
+import jrocks.plugin.api.ClassParameterApi;
 import jrocks.shell.JRocksShellException;
 import jrocks.shell.TerminalLogger;
 import jrocks.shell.config.ConfigService;
@@ -35,7 +35,7 @@ public class BaseResultWriterService implements ResultWriterService {
   }
 
   @Override
-  public void writeClass(String generatedSource, ClassParameter parameter, ClassApi clazz) {
+  public void writeClass(String generatedSource, ClassParameterApi parameter, ClassApi clazz) {
     String outputDirectory = clazz.getSourceClassPath().getAbsolutePath();
 
     Set<ModuleConfig> modules = configService.getConfig().getModules();

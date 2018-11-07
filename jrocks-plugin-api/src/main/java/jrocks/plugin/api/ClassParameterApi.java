@@ -1,12 +1,9 @@
-package jrocks.model;
-
-import jrocks.plugin.api.ClassParameter;
-import jrocks.plugin.api.PluginLayout;
+package jrocks.plugin.api;
 
 import java.io.File;
 import java.util.List;
 
-public interface ClassInfoParameter extends ClassParameter {
+public interface ClassParameterApi {
 
   List<String> excludedFields();
 
@@ -31,7 +28,4 @@ public interface ClassInfoParameter extends ClassParameter {
   File getFile();
 
   List<String> getAdditionalFlags();
-
-  PluginLayout getLayout();
-
 }
