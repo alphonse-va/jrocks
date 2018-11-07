@@ -165,7 +165,7 @@ public class ReflectiveFieldInfo extends ReflectiveClassInfo implements FieldCla
           .map(FeatureDescriptor::getName)
           .findAny();
     } catch (IntrospectionException e) {
-      throw new IllegalStateException(e.getMessage(), e);
+      throw new JRocksModelException(e.getMessage(), e);
     }
   }
 
@@ -177,7 +177,7 @@ public class ReflectiveFieldInfo extends ReflectiveClassInfo implements FieldCla
           .map(FeatureDescriptor::getName)
           .findAny();
     } catch (IntrospectionException e) {
-      throw new IllegalStateException(e.getMessage(), e);
+      throw new JRocksModelException(e.getMessage(), e);
     }
   }
 }

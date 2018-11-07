@@ -12,8 +12,8 @@ import jrocks.shell.autocomplete.AdditionalFlagValueProvider;
 import jrocks.shell.autocomplete.AllClassValueProvider;
 import jrocks.shell.autocomplete.ClassFieldsValueProvider;
 import jrocks.shell.autocomplete.LayoutValueProvider;
-import jrocks.shell.generator.TemplateWriterService;
 import jrocks.shell.parameter.BaseClassInfoParameterBuilder;
+import jrocks.shell.writer.ResultWriterService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -47,7 +47,7 @@ public class ClassGeneratorCommand extends BaseCommand {
   private ClassPathScanner classPathScanner;
 
   @Autowired
-  private TemplateWriterService writerService;
+  private ResultWriterService writerService;
 
   @Autowired
   private PluginsHolder pluginsHolder;
@@ -118,7 +118,7 @@ public class ClassGeneratorCommand extends BaseCommand {
       pluginLayout = pluginLayoutOptional.get();
     } else {
       if (isEmpty(plugin.layouts())) {
-        throw new IllegalStateException("No layout found for plugin: " + plugin);
+        throw new JRocksShellCommandException("No layout found for plugin: " + plugin);
       }
       pluginLayout = plugin.layouts().get(0);
       terminalLogger().warning("*[%s]* given layout *'%s'* not found! (fail back to *%s*)",
@@ -161,7 +161,7 @@ public class ClassGeneratorCommand extends BaseCommand {
     io.github.classgraph.ClassInfo sourceClass = classPathScanner.getAllClassInfo()
         .filter(ci -> ci.getName().equals(parameter.classCanonicalName()))
         .findAny()
-        .orElseThrow(() -> new IllegalStateException(format("Class '%s' not found into index", parameter.classCanonicalName())));
+        .orElseThrow(() -> new JRocksShellCommandException(format("Class '%s' not found into index", parameter.classCanonicalName())));
     return new ClassInfoBuilder(sourceClass).build();
   }
 

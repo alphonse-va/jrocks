@@ -1,7 +1,8 @@
-package jrocks.shell.generator;
+package jrocks.shell.writer;
 
 import jrocks.plugin.api.ClassApi;
 import jrocks.plugin.api.ClassParameter;
+import jrocks.shell.JRocksShellException;
 import jrocks.shell.TerminalLogger;
 import jrocks.shell.config.ConfigService;
 import jrocks.shell.config.ModuleConfig;
@@ -19,7 +20,7 @@ import java.util.stream.Stream;
 import static java.lang.String.format;
 
 @Service
-public class BaseTemplateWriterService implements TemplateWriterService {
+public class BaseResultWriterService implements ResultWriterService {
 
   private static final String TERM_NAME = "[writer]";
 
@@ -28,7 +29,7 @@ public class BaseTemplateWriterService implements TemplateWriterService {
   private TerminalLogger terminalLogger;
 
   @Autowired
-  public BaseTemplateWriterService(ConfigService configService, TerminalLogger terminalLogger) {
+  public BaseResultWriterService(ConfigService configService, TerminalLogger terminalLogger) {
     this.configService = configService;
     this.terminalLogger = terminalLogger;
   }
@@ -79,7 +80,7 @@ public class BaseTemplateWriterService implements TemplateWriterService {
         terminalLogger.info("*%s* _%s_ class created with success.", TERM_NAME, savedFile.toFile().getAbsolutePath());
       }
     } catch (IOException e) {
-      throw new IllegalStateException(format("Enable to create *%s* file!", destDirectory), e);
+      throw new JRocksShellException(format("Enable to create *%s* file!", destDirectory), e);
     }
   }
 }

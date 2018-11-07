@@ -8,5 +8,4 @@ public interface Command {
   TerminalLogger terminalLogger();
 
   ConfigService configService();
-
 }

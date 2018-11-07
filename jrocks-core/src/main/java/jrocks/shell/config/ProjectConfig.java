@@ -1,6 +1,7 @@
 package jrocks.shell.config;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jrocks.shell.JRocksShellException;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -20,14 +21,13 @@ public class ProjectConfig {
     modules.add(module);
   }
 
-
-  @JsonIgnore // YALM ignore
+  @JsonIgnore // @YalmIgnore
   public URL[] getOutputDirectoriesAsURLs() {
     return getModules().stream().map(m -> {
       try {
         return new URL("file://" + m.getOutputDirectory());
       } catch (MalformedURLException e) {
-        throw new IllegalStateException("Not a valid URL " + m.getOutputDirectory());
+        throw new JRocksShellException("Not valid URL " + m.getOutputDirectory());
       }
     }).toArray(URL[]::new);
   }

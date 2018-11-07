@@ -47,7 +47,7 @@ public class JLineBuildInCommand extends BaseCommand {
     try {
       less.run(new Source.PathSource(file, file.getName()));
     } catch (IOException | InterruptedException e) {
-      throw new IllegalArgumentException(e);
+      throw new JRocksShellCommandException(e);
     }
   }
 
@@ -60,7 +60,7 @@ public class JLineBuildInCommand extends BaseCommand {
       nano.open(file.getAbsolutePath());
       nano.run();
     } catch (IOException e) {
-      throw new IllegalArgumentException(e);
+      throw new JRocksShellCommandException(e);
     }
   }
 
@@ -70,7 +70,7 @@ public class JLineBuildInCommand extends BaseCommand {
       TTop top = new TTop(terminal);
       top.run();
     } catch (IOException | InterruptedException e) {
-      throw new IllegalArgumentException(e);
+      throw new JRocksShellCommandException(e);
     }
   }
 

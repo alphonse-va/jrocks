@@ -2,10 +2,12 @@ package jrocks.shell.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import jrocks.shell.JRocksShellException;
 import jrocks.shell.TerminalLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.PostConstruct;
@@ -61,11 +63,11 @@ public class ConfigServiceImpl implements ConfigService {
 
   @Override
   public void save() {
-    if (config == null) throw new IllegalStateException("Config not yet initialized");
+    Assert.notNull(config , "Configuration not yet initialized!");
     try {
       mapper.writeValue(new File(configFileName), config);
     } catch (IOException e) {
-      throw new IllegalStateException(format("Cannot write '%s' YAML file", configFileName), e);
+      throw new JRocksShellException(format("Cannot write '%s' YAML file", configFileName), e);
     }
   }
 

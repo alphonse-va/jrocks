@@ -169,7 +169,7 @@ public class ClassGraphFieldInfo extends ClassGraphClassInfo implements FieldCla
 
   @Override
   public boolean isRequired() {
-    return fieldInfo.getAnnotationInfo().containsName("jrocks.generator.bean.annotations.BuilderProperty")
+    return fieldInfo.getAnnotationInfo().containsName("jrocks.writer.bean.annotations.BuilderProperty")
         || fieldInfo.getAnnotationInfo().containsName("javax.validation.constraints.NotNull")
         || fieldInfo.getAnnotationInfo().containsName("javax.validation.constraints.NotEmpty")
         || fieldInfo.getAnnotationInfo().containsName("javax.validation.constraints.NotBlank");

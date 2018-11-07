@@ -64,8 +64,8 @@ public class ClassPathScanner {
           supported for invalid whitelistPackages
 
           */
-        terminalLogger.error("basePackage '%s' configuration parameter seems to be malformed", basePackage);
-        terminalLogger.warning("Please update your configuration:\n\n%s", configService.toString());
+        terminalLogger.warning("basePackage '%s' configuration parameter seems to be malformed", basePackage);
+        terminalLogger.warning("Please update your configuration:\n\n%s", configService.getConfig());
         scanResult = new ClassGraph()
             .enableAllInfo()
             .overrideClassLoaders(new URLClassLoader(outputDirectoriesAsURLs))
@@ -158,7 +158,7 @@ public class ClassPathScanner {
           });
       return result;
     } catch (IOException e) {
-      throw new IllegalStateException("todo", e);
+      throw new JRocksShellException("todo", e);
     }
 
   }

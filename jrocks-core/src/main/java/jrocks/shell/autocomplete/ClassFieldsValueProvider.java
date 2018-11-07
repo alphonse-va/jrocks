@@ -62,7 +62,7 @@ public class ClassFieldsValueProvider extends ValueProviderSupport {
   }
 
   @VisibleForTesting
-  Optional<String> getSourceClassName(CompletionContext completionContext) throws IllegalStateException {
+  Optional<String> getSourceClassName(CompletionContext completionContext) {
     List<String> words = completionContext.getWords();
     OptionalInt classIdx = IntStream.range(0, words.size() - 1)
         .filter(i -> words.get(i).equals("--class"))

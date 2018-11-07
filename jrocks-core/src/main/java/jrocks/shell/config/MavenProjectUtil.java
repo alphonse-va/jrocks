@@ -1,6 +1,7 @@
 package jrocks.shell.config;
 
 import com.google.common.annotations.VisibleForTesting;
+import jrocks.shell.JRocksShellException;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.project.MavenProject;
@@ -36,7 +37,7 @@ public final class MavenProjectUtil {
       }
       return result;
     } catch (IOException | XmlPullParserException e) {
-      throw new IllegalStateException("Error while reading followed effective maven pom:\n\n" + effectivePoms, e);
+      throw new JRocksShellException("Error while reading followed effective maven pom:\n\n" + effectivePoms, e);
     }
   }
 
@@ -58,7 +59,7 @@ public final class MavenProjectUtil {
       executorService.shutdown();
       return effectivePomToListOfPoms(result.toString());
     } catch (IOException | InterruptedException e) {
-      throw new IllegalStateException(format("Error while executing 'mvn %s' command", EFFECTIVE_POM), e);
+      throw new JRocksShellException(format("Error while executing 'mvn %s' command", EFFECTIVE_POM), e);
     }
   }
 

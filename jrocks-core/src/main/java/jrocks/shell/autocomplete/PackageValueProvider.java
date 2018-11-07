@@ -1,5 +1,6 @@
 package jrocks.shell.autocomplete;
 
+import jrocks.shell.JRocksShellException;
 import jrocks.shell.config.ConfigService;
 import jrocks.shell.config.ModuleConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,13 +54,13 @@ public class PackageValueProvider extends ValueProviderSupport {
                   }
 
                 } catch (IOException e) {
-                  throw new IllegalStateException(e.getMessage(), e);
+                  throw new JRocksShellException(e.getMessage(), e);
                 }
 
               }
             });
           } catch (IOException e) {
-            throw new IllegalStateException(format("Error while walking '%s' file.", outputDirectory), e);
+            throw new JRocksShellException(format("Error while walking '%s' file.", outputDirectory), e);
           }
         });
 
