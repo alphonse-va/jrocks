@@ -21,13 +21,13 @@ import org.springframework.shell.Availability;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 import static java.lang.String.format;
+import static org.springframework.util.CollectionUtils.isEmpty;
 
 @SuppressWarnings("WeakerAccess")
 @Component
@@ -114,14 +114,15 @@ public class ClassGeneratorCommand extends BaseCommand {
         .filter(l -> Objects.equals(l.name(), layout))
         .findAny();
     PluginLayout pluginLayout;
-    if(pluginLayoutOptional.isPresent()) {
+    if (pluginLayoutOptional.isPresent()) {
       pluginLayout = pluginLayoutOptional.get();
     } else {
-      if (CollectionUtils.isEmpty(plugin.layouts())) {
+      if (isEmpty(plugin.layouts())) {
         throw new IllegalStateException("No layout found for plugin: " + plugin);
       }
       pluginLayout = plugin.layouts().get(0);
-      terminalLogger().warning("given layout *%s* not found, fail back to *%s*", layout, pluginLayout.name());
+      terminalLogger().warning("*[%s]* given layout *'%s'* not found! (fail back to *%s*)",
+          plugin.name(), layout, pluginLayout.name());
     }
 
     ClassInfoParameter parameter = new BaseClassInfoParameterBuilder()
