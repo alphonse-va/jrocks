@@ -24,7 +24,7 @@ public class DtoDefaultLayout implements PluginLayout {
 
   @Override
   public String description() {
-    return "Builder plugin default layout";
+    return "Dto plugin default layout";
   }
 
   @Override
