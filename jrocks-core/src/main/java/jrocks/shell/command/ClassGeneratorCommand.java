@@ -109,7 +109,7 @@ public class ClassGeneratorCommand extends BaseCommand {
 
 
     JRocksPlugin plugin = pluginsHolder.getCurrentPlugin();
-    final Optional<PluginLayout> pluginLayoutOptional = plugin.layouts().stream()
+    Optional<PluginLayout> pluginLayoutOptional = plugin.layouts().stream()
         .filter(Objects::nonNull)
         .filter(l -> Objects.equals(l.name(), layout))
         .findAny();

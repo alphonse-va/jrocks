@@ -78,7 +78,7 @@ public class ConfigurationCommand extends BaseCommand {
         .addValue("Layouts");
     pluginsHolder.getPlugins()
         .forEach(p -> {
-          final String layouts = p.layouts().stream()
+          String layouts = p.layouts().stream()
               .map(l -> String.format("%s, %s (%s)", l.name(), l.description(), l.version()))
               .collect(Collectors.joining("\n"));
           modelBuilder.addRow()

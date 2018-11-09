@@ -83,9 +83,9 @@ public class TerminalLoggerSupport implements TerminalLogger {
 
     int lastMatchIdx = 0;
     while (matcher.find()) {
-      final String withDelimiters = matcher.group(1);
-      final int idxOfMatcher = formattedMessage.substring(lastMatchIdx).indexOf(withDelimiters) + lastMatchIdx;
-      final String unformattedText = formattedMessage.substring(lastMatchIdx, idxOfMatcher);
+      String withDelimiters = matcher.group(1);
+      int idxOfMatcher = formattedMessage.substring(lastMatchIdx).indexOf(withDelimiters) + lastMatchIdx;
+      String unformattedText = formattedMessage.substring(lastMatchIdx, idxOfMatcher);
 
       lastMatchIdx = lastMatchIdx + unformattedText.length() + withDelimiters.length();
 
