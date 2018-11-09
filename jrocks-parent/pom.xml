@@ -10,6 +10,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <java.version>1.8</java.version>
@@ -20,7 +21,6 @@
         <module>../jrocks-plugin-api</module>
         <module>../jrocks-plugin-test</module>
         <module>../jrocks-plugin-bean</module>
-        <module>../jrocks-plugin-jaxrs</module>
         <module>../jrocks-core</module>
         <module>../jrocks</module>
     </modules>
@@ -54,14 +54,21 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- common deps -->
+        <!-- JDK Ex deps -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <!-- Logger -->
@@ -110,6 +117,11 @@
                 <version>3.8.1</version>
             </dependency>
             <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-collections4</artifactId>
+                <version>4.2</version>
+            </dependency>
+            <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>26.0-jre</version>
@@ -156,7 +168,6 @@
                 <artifactId>jackson-databind</artifactId>
                 <version>2.2.3</version>
             </dependency>
-
         </dependencies>
     </dependencyManagement>
     <scm>

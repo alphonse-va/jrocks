@@ -12,7 +12,6 @@
     </parent>
 
     <artifactId>jrocks</artifactId>
-    <version>0.3.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <properties>

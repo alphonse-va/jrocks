@@ -3,12 +3,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>be.unlock</groupId>
+    <parent>
+        <groupId>be.unlock</groupId>
+        <artifactId>jrocks-parent</artifactId>
+        <version>0.3.0-SNAPSHOT</version>
+    </parent>
+
     <artifactId>jrocks-plugin-archetype</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
     <packaging>maven-archetype</packaging>
 
-    <name>jrocks-plugin-archetype</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
