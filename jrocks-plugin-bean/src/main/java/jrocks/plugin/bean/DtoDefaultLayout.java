@@ -3,6 +3,7 @@ package jrocks.plugin.bean;
 import com.squareup.javapoet.*;
 import jrocks.plugin.api.*;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.lang.model.element.Modifier;
@@ -13,9 +14,22 @@ import java.util.List;
 @Qualifier(DtoPlugin.LAYOUT_QUALIFIER)
 public class DtoDefaultLayout implements PluginLayout {
 
+  @Value("${project.version}")
+  private String version;
+
   @Override
   public String name() {
     return "default";
+  }
+
+  @Override
+  public String description() {
+    return "Builder plugin default layout";
+  }
+
+  @Override
+  public String version() {
+    return version;
   }
 
   @Override
@@ -48,12 +62,12 @@ public class DtoDefaultLayout implements PluginLayout {
       dtoTypeBuilder.addField(FieldSpec.builder(ClassName.bestGuess(field.name()), field.fieldName(), Modifier.PRIVATE).build());
 
       // from statements
-      if(field.getter().isPresent() && field.setter().isPresent()) {
+      if (field.getter().isPresent() && field.setter().isPresent()) {
         fromMethod.addStatement("dto.$L($L.$L())", field.setter().get(), classApi.propertyName(), field.getter().get());
       }
 
       // to statements
-      if(field.getter().isPresent() && field.setter().isPresent()) {
+      if (field.getter().isPresent() && field.setter().isPresent()) {
         toMethod.addStatement("result.$L(this.$L())", field.setter().get(), field.getter().get());
       }
 
@@ -68,7 +82,7 @@ public class DtoDefaultLayout implements PluginLayout {
       }
 
       // getter
-      if(field.getter().isPresent()) {
+      if (field.getter().isPresent()) {
         dtoTypeBuilder.addMethod(MethodSpec.methodBuilder(field.getter().get())
             .addModifiers(Modifier.PUBLIC)
             .returns(ClassName.bestGuess(field.name()))

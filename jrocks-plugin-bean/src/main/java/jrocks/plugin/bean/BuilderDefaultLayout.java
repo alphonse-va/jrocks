@@ -4,6 +4,7 @@ import com.squareup.javapoet.*;
 import jrocks.plugin.api.*;
 import jrocks.plugin.util.PoeticUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.lang.model.element.Modifier;
@@ -15,9 +16,22 @@ import java.util.Objects;
 @Qualifier(BuilderPlugin.LAYOUT_QUALIFIER)
 public class BuilderDefaultLayout implements PluginLayout {
 
+  @Value("${project.version}")
+  private String version;
+
   @Override
   public String name() {
     return "default";
+  }
+
+  @Override
+  public String description() {
+    return "Builder plugin default layout";
+  }
+
+  @Override
+  public String version() {
+    return version;
   }
 
   @Override

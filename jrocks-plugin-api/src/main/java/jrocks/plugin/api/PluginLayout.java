@@ -6,13 +6,9 @@ public interface PluginLayout {
 
   String name();
 
-  default String description() {
-    return "";
-  }
+  String description();
 
-  default String version() {
-    return "beta";
-  }
+  String version();
 
   List<GeneratedSource> generate(ClassParameterApi parameter, ClassApi classApi);
 }
