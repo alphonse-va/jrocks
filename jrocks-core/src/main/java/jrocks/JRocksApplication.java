@@ -10,5 +10,4 @@ public class JRocksApplication {
   public static void main(String[] args) {
     SpringApplication.run(JRocksApplication.class, args);
   }
-
 }

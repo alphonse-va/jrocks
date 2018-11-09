@@ -40,10 +40,7 @@ public class PackageValueProvider extends ValueProviderSupport {
               if (path.toFile().isDirectory()) {
                 String relativePath = path.toFile().getAbsolutePath().replace(outputDirectory, "");
                 relativePath = relativePath.isEmpty() ? "" : relativePath.substring(1);
-
-                // looks for .class files
                 try {
-
                   String proposal = relativePath.replaceAll(File.separator, ".");
                   if (!proposal.isEmpty()) {
                     boolean containClasses = Files.walk(path).anyMatch(p -> p.toFile().getName().endsWith(".class"));
@@ -52,18 +49,15 @@ public class PackageValueProvider extends ValueProviderSupport {
                       proposals.add(new CompletionProposal(proposal));
                     }
                   }
-
                 } catch (IOException e) {
                   throw new JRocksShellException(e.getMessage(), e);
                 }
-
               }
             });
           } catch (IOException e) {
             throw new JRocksShellException(format("Error while walking '%s' file.", outputDirectory), e);
           }
         });
-
     return proposals;
   }
 }

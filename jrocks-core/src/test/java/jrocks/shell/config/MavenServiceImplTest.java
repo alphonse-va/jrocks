@@ -10,20 +10,20 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-class MavenProjectUtilTest {
+class MavenServiceImplTest {
 
-  private MavenProjectUtil mavenProjectUtil;
+  private MavenServiceImpl mavenServiceImpl;
 
   @BeforeEach
   void beforeEach() {
-    mavenProjectUtil = new MavenProjectUtil();
+    mavenServiceImpl = new MavenServiceImpl();
   }
 
   @Test
   void effectivePomToListOfPoms() throws IOException {
     String testFilePath = getClass().getClassLoader().getResource("effective-pom.txt").getPath();
     Path path = Paths.get(testFilePath);
-    List<String> poms = mavenProjectUtil.effectivePomToListOfPoms(String.join("\n", Files.readAllLines(path)));
+    List<String> poms = mavenServiceImpl.effectivePomToListOfPoms(String.join("\n", Files.readAllLines(path)));
     Assertions.assertThat(poms).size().isEqualTo(3);
   }
 }

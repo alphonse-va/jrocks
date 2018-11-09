@@ -2,7 +2,7 @@ package jrocks.shell.command;
 
 import jrocks.shell.ClassPathScanner;
 import jrocks.shell.autocomplete.PackageValueProvider;
-import jrocks.shell.config.MavenProjectUtil;
+import jrocks.shell.config.MavenService;
 import jrocks.shell.config.ModuleConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.Availability;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @ShellCommandGroup(value = "Configuration")
 public class ConfigurationCommand extends BaseCommand {
 
-  private final MavenProjectUtil mavenProjectUtil;
+  private final MavenService mavenService;
 
   @Autowired
   private ClassPathScanner classPathScanner;
@@ -28,8 +28,8 @@ public class ConfigurationCommand extends BaseCommand {
   private PluginsHolder pluginsHolder;
 
   @Autowired
-  public ConfigurationCommand(MavenProjectUtil mavenProjectUtil) {
-    this.mavenProjectUtil = mavenProjectUtil;
+  public ConfigurationCommand(MavenService mavenService) {
+    this.mavenService = mavenService;
   }
 
   @ShellMethod(key = "init", value = "Initialize JRocks project")
@@ -38,14 +38,13 @@ public class ConfigurationCommand extends BaseCommand {
       if (!isMavenProject())
         throw new IllegalStateException("init command must be executed from a maven root directory");
 
-    mavenProjectUtil.loadProjects()
-        .forEach(mavenProject ->
-            configService()
-                .addModule(new ModuleConfig()
-                    .setName(mavenProject.getName())
-                    .setVersion(mavenProject.getVersion())
-                    .setSourceDirectory(mavenProject.getBuild().getSourceDirectory())
-                    .setOutputDirectory(mavenProject.getBuild().getOutputDirectory())));
+    mavenService.loadProjects()
+        .forEach(mavenProject -> configService()
+            .addModule(new ModuleConfig()
+                .setName(mavenProject.getName())
+                .setVersion(mavenProject.getVersion())
+                .setSourceDirectory(mavenProject.getBuild().getSourceDirectory())
+                .setOutputDirectory(mavenProject.getBuild().getOutputDirectory())));
 
     configService().getConfig()
         .setBasePackage(basePackage)
@@ -79,12 +78,15 @@ public class ConfigurationCommand extends BaseCommand {
         .addValue("Layouts");
     pluginsHolder.getPlugins()
         .forEach(p -> {
+          final String layouts = p.layouts().stream()
+              .map(l -> String.format("%s, %s (%s)", l.name(), l.description(), l.version()))
+              .collect(Collectors.joining("\n"));
           modelBuilder.addRow()
               .addValue(p.name())
               .addValue(p.description())
               .addValue(p.keys())
               .addValue(p.group())
-              .addValue(p.layouts().stream().map(l -> String.format("%s, %s (%s)", l.name(), l.description(), l.version())).collect(Collectors.joining("\n")));
+              .addValue(layouts);
         });
     TableBuilder builder = new TableBuilder(modelBuilder.build());
     terminalLogger().newline();
@@ -98,6 +100,7 @@ public class ConfigurationCommand extends BaseCommand {
         ? Availability.available()
         : Availability.unavailable("you firstly need to execute 'init' command to initialize your JRocks project!");
   }
+
 
   private boolean isMavenProject() {
     return new File("pom.xml").exists();

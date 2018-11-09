@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.String.format;
-import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
+import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class BaseClassInfoParameterApi implements ClassInfoParameterApi {
@@ -42,7 +42,9 @@ public class BaseClassInfoParameterApi implements ClassInfoParameterApi {
                             List<String> mandatoryFields,
                             String suffix,
                             String suffixToRemove, File file,
-                            List<String> additionalFlags, PluginLayout layout, boolean dryRun) {
+                            List<String> additionalFlags,
+                            PluginLayout layout,
+                            boolean dryRun) {
     this.classCanonicalName = classCanonicalName;
     this.force = force;
     this.excludedFields = excludedFields != null ? excludedFields : new ArrayList<>();
@@ -51,23 +53,9 @@ public class BaseClassInfoParameterApi implements ClassInfoParameterApi {
     this.suffix = suffix;
     this.suffixToRemove = suffixToRemove;
     this.file = file;
-    this.additionalFlags = additionalFlags;
+    this.additionalFlags = additionalFlags != null ? additionalFlags : new ArrayList<>();
     this.layout = layout;
     this.dryRun = dryRun;
-  }
-
-  protected BaseClassInfoParameterApi(ClassInfoParameterApi parameter) {
-    this(parameter.classCanonicalName(),
-        parameter.isForce(),
-        parameter.excludedFields(),
-        parameter.includedFields(),
-        parameter.mandatoryFields(),
-        parameter.suffix(),
-        parameter.suffixToRemove(),
-        parameter.getFile(),
-        parameter.getAdditionalFlags(),
-        parameter.getLayout(),
-        parameter.isDryRun());
   }
 
   @Override

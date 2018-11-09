@@ -176,11 +176,13 @@ public class JRocksShellConfiguration {
 
       CompletionContext context = new CompletionContext(sanitizeInput(line.words()), line.wordIndex(), line.wordCursor());
 
-      // TODO find out a commons way to enable/disable some parameter based on others
+      // TODO find out a commons way to show/hide some parameter based on others
       List<CompletionProposal> proposals = shell.complete(context);
       if (pluginsHolder.getPluginNames().contains(context.getWords().get(0))
           && !context.getWords().contains(ClassGeneratorCommand.PARAM_CLASS)) {
-        proposals = proposals.stream().filter(p -> p.value().equals(ClassGeneratorCommand.PARAM_CLASS)).collect(Collectors.toList());
+        proposals = proposals.stream()
+            .filter(p -> p.value().equals(ClassGeneratorCommand.PARAM_CLASS))
+            .collect(Collectors.toList());
       }
       proposals.stream()
           .map(p -> new Candidate(
