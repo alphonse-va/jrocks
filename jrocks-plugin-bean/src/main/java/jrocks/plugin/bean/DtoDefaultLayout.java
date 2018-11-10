@@ -14,7 +14,7 @@ import java.util.List;
 @Qualifier(DtoPlugin.LAYOUT_QUALIFIER)
 public class DtoDefaultLayout implements PluginLayout {
 
-  @Value("${project.version}")
+  @Value("${jrocks.version}")
   private String version;
 
   @Override
@@ -40,7 +40,7 @@ public class DtoDefaultLayout implements PluginLayout {
 
     // from method
     MethodSpec.Builder fromMethod = MethodSpec
-        .methodBuilder("from")
+        .methodBuilder("toto")
         .returns(dtoClassName)
         .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
         .addParameter(sourceClassName, classApi.propertyName())

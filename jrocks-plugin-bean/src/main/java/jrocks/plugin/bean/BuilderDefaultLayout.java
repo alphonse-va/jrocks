@@ -16,7 +16,7 @@ import java.util.Objects;
 @Qualifier(BuilderPlugin.LAYOUT_QUALIFIER)
 public class BuilderDefaultLayout implements PluginLayout {
 
-  @Value("${project.version}")
+  @Value("${jrocks.version}")
   private String version;
 
   @Override
