@@ -23,7 +23,6 @@ class ClassGraphFieldInfoTest extends BaseFieldApiTest {
   @BeforeEach
   void before() {
     ClassInfo classInfo = classes.get("jrocks.plugin.test.model.Matrix");
-
     usernameMD = new ClassGraphFieldInfo(classInfo.getFieldInfo("username"));
     passwordMD = new ClassGraphFieldInfo(classInfo.getFieldInfo("password"));
     digitMD = new ClassGraphFieldInfo(classInfo.getFieldInfo("digit"));

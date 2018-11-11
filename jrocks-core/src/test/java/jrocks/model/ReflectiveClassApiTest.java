@@ -9,7 +9,6 @@ import java.util.stream.Stream;
 class ReflectiveClassApiTest extends ClassApiTest {
 
   @BeforeEach
-  @Override
   void before() {
     classApi = new ReflectiveClassInfo(Matrix.class);
     Stream.of(Matrix.class.getDeclaredFields())

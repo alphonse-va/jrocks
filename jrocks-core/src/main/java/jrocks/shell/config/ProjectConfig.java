@@ -58,9 +58,9 @@ public class ProjectConfig {
   @Override
   public String toString() {
     return new StringJoiner("\n", "Project Configuration:\n", "")
-        .add("\tBase Package: '" + basePackage + "'")
-        .add("\tAuto Rebuild: " + autoRebuild)
-        .add("\tModules:" + modules.stream().map(ModuleConfig::toString).collect(Collectors.joining()))
+        .add("\tBase Package: _" + basePackage + "_")
+        .add("\tAuto Rebuild: _" + autoRebuild + "_")
+        .add("\tModules: " + modules.stream().map(ModuleConfig::toString).collect(Collectors.joining(" ", "_", "_")))
         .toString();
   }
 }

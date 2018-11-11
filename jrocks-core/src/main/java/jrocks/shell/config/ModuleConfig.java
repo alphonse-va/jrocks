@@ -72,10 +72,10 @@ public class ModuleConfig {
   @Override
   public String toString() {
     return new StringJoiner("\n", "\n", "\n")
-        .add("\t\tName: '" + name + "'")
-        .add("\t\tVersion: '" + version + "'")
-        .add("\t\tSource Directory: '" + sourceDirectory + "'")
-        .add("\t\tOutput Directory: '" + outputDirectory + "'")
+        .add("\t\tName: _" + name + "_")
+        .add("\t\tVersion: _" + version + "_")
+        .add("\t\tSource Directory: _" + sourceDirectory + "_")
+        .add("\t\tOutput Directory: _" + outputDirectory + "_")
         .toString();
   }
 }

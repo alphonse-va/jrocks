@@ -10,8 +10,6 @@ abstract class ClassApiTest {
 
   ClassApi classApi;
 
-  abstract void before();
-
   @Test
   abstract void addField() throws NoSuchFieldException;
 
