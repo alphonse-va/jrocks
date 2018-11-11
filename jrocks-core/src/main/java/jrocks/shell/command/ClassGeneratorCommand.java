@@ -79,8 +79,7 @@ public class ClassGeneratorCommand extends BaseCommand {
         throw new JRocksShellCommandException("No generator found for plugin: " + plugin);
       }
       pluginGenerator = plugin.generators().get(0);
-      terminalLogger().warning(plugin, "given generator *'%s'* not found! (fail back to *%s*)",
-          plugin.name(), generator, pluginGenerator.name());
+      terminalLogger().info(plugin, "No generator specified, fail back to *%s*)", generator, pluginGenerator.name());
     }
 
     ClassParameterApi parameter = new BaseClassInfoParameterBuilder()
@@ -107,7 +106,7 @@ public class ClassGeneratorCommand extends BaseCommand {
             "source: _%s_\n\t" +
             "destination: _%s_" +
             "%s",
-        plugin.name(), pluginGenerator.name(), classInfo.name(), parameter.classCanonicalName() + parameter.suffix(), parameter);
+        pluginGenerator.name(), classInfo.name(), parameter.classCanonicalName() + parameter.suffix(), parameter);
 
     pluginGenerator.generate(parameter, classInfo).forEach(source -> {
       if (source.isJava())
@@ -133,7 +132,7 @@ public class ClassGeneratorCommand extends BaseCommand {
       AttributedStringBuilder promptBuilder = new AttributedStringBuilder()
           .style(AttributedStyle.DEFAULT.foreground(AttributedStyle.WHITE))
           .append(" ")
-          .append(format(question.text()))
+          .append(termFormat(question.text()))
           .style(AttributedStyle.DEFAULT);
       if (!proposals.isEmpty()) {
         promptBuilder
@@ -168,7 +167,7 @@ public class ClassGeneratorCommand extends BaseCommand {
   /**
    * TODO merge with {@link jrocks.shell.TerminalLoggerSupport#formatPluginMessage(JRocksPlugin, String)}
    */
-  private static String format(String message) {
+  private static String termFormat(String message) {
 
     Matcher matcher = Pattern.compile("([_|\\\\*]+?(.+?)[_|\\\\*])+?").matcher(message);
 
@@ -179,7 +178,6 @@ public class ClassGeneratorCommand extends BaseCommand {
       String withDelimiters = matcher.group(1);
       int idxOfMatcher = message.substring(lastMatchIdx).indexOf(withDelimiters) + lastMatchIdx;
       String unformattedText = message.substring(lastMatchIdx, idxOfMatcher);
-
       lastMatchIdx = lastMatchIdx + unformattedText.length() + withDelimiters.length();
 
       result.append(new AttributedStringBuilder()

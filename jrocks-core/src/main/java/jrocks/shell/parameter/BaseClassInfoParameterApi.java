@@ -8,6 +8,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static java.lang.String.format;
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
@@ -119,6 +120,11 @@ public class BaseClassInfoParameterApi implements ClassParameterApi {
   @Override
   public Map<Object, QuestionResponse> responses() {
     return responses;
+  }
+
+  @Override
+  public Optional<QuestionResponse> userResponse(Object key) {
+    return  Optional.ofNullable(responses.get(key));
   }
 
   @Override

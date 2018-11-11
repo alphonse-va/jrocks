@@ -3,6 +3,7 @@ package jrocks.plugin.api;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public interface ClassParameterApi {
 
@@ -27,6 +28,8 @@ public interface ClassParameterApi {
   boolean toExclude(String field);
 
   File getFile();
+
+  Optional<QuestionResponse> userResponse(Object key);
 
   List<String> getAdditionalFlags();
 
