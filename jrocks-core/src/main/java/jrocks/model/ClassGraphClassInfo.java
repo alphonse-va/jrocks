@@ -42,7 +42,7 @@ public class ClassGraphClassInfo implements ClassApi {
 
   @Override
   public String pluralSimpleName() {
-    return INFLECTOR.pluralize(name());
+    return INFLECTOR.pluralize(simpleName());
   }
 
   @Override

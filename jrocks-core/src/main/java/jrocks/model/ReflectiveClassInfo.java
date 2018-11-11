@@ -37,12 +37,12 @@ public class ReflectiveClassInfo implements ClassApi {
 
   @Override
   public String pluralSimpleName() {
-    return INFLECTOR.pluralize(name());
+    return INFLECTOR.pluralize(simpleName());
   }
 
   @Override
   public String propertyName() {
-    return Character.toLowerCase(name().charAt(0)) + name().substring(1);
+    return Character.toLowerCase(simpleName().charAt(0)) + simpleName().substring(1);
   }
 
   @Override

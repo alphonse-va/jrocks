@@ -7,11 +7,11 @@ public interface ClassApi {
 
   String packageName();
 
+  String simpleName();
+
   String pluralSimpleName();
 
   String name();
-
-  String simpleName();
 
   String propertyName();
 

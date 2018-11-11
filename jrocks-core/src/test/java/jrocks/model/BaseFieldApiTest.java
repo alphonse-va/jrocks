@@ -1,11 +1,6 @@
 package jrocks.model;
 
-import io.github.classgraph.ClassGraph;
-import io.github.classgraph.ClassInfo;
-import io.github.classgraph.ClassInfoList;
-import io.github.classgraph.ScanResult;
 import jrocks.plugin.api.FieldApi;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,37 +8,17 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ClassGraphFieldInfoApiTest {
+abstract class BaseFieldApiTest {
 
-  private static ClassInfoList classes;
-
-  private FieldApi usernameMD;
-  private FieldApi passwordMD;
-  private FieldApi digitMD;
-  private FieldApi dateMD;
-  private FieldApi emailMD;
-  private FieldApi decimalMD;
-
-  @BeforeAll
-  static void beforeAll() {
-    ScanResult scanResult = new ClassGraph()
-        .enableAllInfo()
-        .enableSystemPackages()
-        .scan();
-    classes = scanResult.getAllStandardClasses();
-  }
+  FieldApi usernameMD;
+  FieldApi passwordMD;
+  FieldApi digitMD;
+  FieldApi dateMD;
+  FieldApi emailMD;
+  FieldApi decimalMD;
 
   @BeforeEach
-  void before() {
-    ClassInfo classInfo = classes.get("jrocks.plugin.test.model.Matrix");
-
-    usernameMD = new ClassGraphFieldInfo(classInfo.getFieldInfo("username"));
-    passwordMD = new ClassGraphFieldInfo(classInfo.getFieldInfo("password"));
-    digitMD = new ClassGraphFieldInfo(classInfo.getFieldInfo("digit"));
-    dateMD = new ClassGraphFieldInfo(classInfo.getFieldInfo("date"));
-    emailMD = new ClassGraphFieldInfo(classInfo.getFieldInfo("email"));
-    decimalMD = new ClassGraphFieldInfo(classInfo.getFieldInfo("decimal"));
-  }
+  abstract void before() throws NoSuchFieldException;
 
   @Test
   void packageName() {
@@ -58,7 +33,7 @@ class ClassGraphFieldInfoApiTest {
 
   @Test
   void pluralSimpleName() {
-    assertThat(usernameMD.pluralSimpleName()).isEqualTo("java.lang.Strings");
+    assertThat(usernameMD.pluralSimpleName()).isEqualTo("Strings");
   }
 
   @Test
