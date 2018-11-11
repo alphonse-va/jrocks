@@ -4,6 +4,7 @@ import io.github.classgraph.AnnotationInfo;
 import io.github.classgraph.AnnotationParameterValue;
 import io.github.classgraph.ClassRefTypeSignature;
 import io.github.classgraph.FieldInfo;
+import jrocks.plugin.api.FieldApi;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;
@@ -12,7 +13,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-public class ClassGraphFieldInfo extends ClassGraphClassInfo implements FieldClassInfo {
+public class ClassGraphFieldInfo extends ClassGraphClassInfo implements FieldApi {
 
   private FieldInfo fieldInfo;
 

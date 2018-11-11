@@ -9,11 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import static org.apache.commons.lang3.StringUtils.startsWith;
 
-public class ClassGraphClassInfo implements ClassInfo {
+public class ClassGraphClassInfo implements ClassApi {
 
   private static final Inflector INFLECTOR = new Inflector();
 
@@ -54,15 +53,6 @@ public class ClassGraphClassInfo implements ClassInfo {
   @Override
   public String pluralPropertyName() {
     return INFLECTOR.pluralize(propertyName());
-  }
-
-  @Override
-  public List<String> fieldCanonicalNames() {
-    return properties.stream()
-        .filter(javaLangFilter())
-        .map(ClassApi::name)
-        .distinct()
-        .collect(Collectors.toList());
   }
 
   @Override

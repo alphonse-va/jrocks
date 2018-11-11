@@ -33,4 +33,6 @@ public interface ClassParameterApi {
   void addResponses(Map<Object, QuestionResponse> responses);
 
   Map<Object, QuestionResponse> responses();
+
+  PluginLayout getLayout();
 }

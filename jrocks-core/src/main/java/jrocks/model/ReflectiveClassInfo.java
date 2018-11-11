@@ -7,12 +7,8 @@ import jrocks.plugin.util.Inflector;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
-import static org.apache.commons.lang3.StringUtils.startsWith;
-
-public class ReflectiveClassInfo implements ClassInfo {
+public class ReflectiveClassInfo implements ClassApi {
 
   private static final Inflector INFLECTOR = new Inflector();
 
@@ -55,13 +51,6 @@ public class ReflectiveClassInfo implements ClassInfo {
   }
 
   @Override
-  public List<String> fieldCanonicalNames() {
-    return properties.stream()
-        .filter(javaLangFilter())
-        .map(ClassApi::name).distinct().collect(Collectors.toList());
-  }
-
-  @Override
   public List<FieldApi> fields() {
     return properties;
   }
@@ -79,9 +68,5 @@ public class ReflectiveClassInfo implements ClassInfo {
   @Override
   public File getSourceClassPath() {
     return null;
-  }
-
-  private Predicate<FieldApi> javaLangFilter() {
-    return f -> !startsWith(f.name(), "java.lang");
   }
 }

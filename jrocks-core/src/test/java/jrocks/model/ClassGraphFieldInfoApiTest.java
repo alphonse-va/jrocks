@@ -4,9 +4,12 @@ import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ClassInfo;
 import io.github.classgraph.ClassInfoList;
 import io.github.classgraph.ScanResult;
+import jrocks.plugin.api.FieldApi;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -14,12 +17,12 @@ class ClassGraphFieldInfoApiTest {
 
   private static ClassInfoList classes;
 
-  private FieldClassInfo usernameMD;
-  private FieldClassInfo passwordMD;
-  private FieldClassInfo digitMD;
-  private FieldClassInfo dateMD;
-  private FieldClassInfo emailMD;
-  private FieldClassInfo decimalMD;
+  private FieldApi usernameMD;
+  private FieldApi passwordMD;
+  private FieldApi digitMD;
+  private FieldApi dateMD;
+  private FieldApi emailMD;
+  private FieldApi decimalMD;
 
   @BeforeAll
   static void beforeAll() {
@@ -32,7 +35,7 @@ class ClassGraphFieldInfoApiTest {
 
   @BeforeEach
   void before() {
-    ClassInfo classInfo = classes.get("jrocks.samples.model.Matrix");
+    ClassInfo classInfo = classes.get("jrocks.plugin.test.model.Matrix");
 
     usernameMD = new ClassGraphFieldInfo(classInfo.getFieldInfo("username"));
     passwordMD = new ClassGraphFieldInfo(classInfo.getFieldInfo("password"));
@@ -50,12 +53,12 @@ class ClassGraphFieldInfoApiTest {
 
   @Test
   void simpleName() {
-    assertThat(usernameMD.name()).isEqualTo(String.class.getSimpleName());
+    assertThat(usernameMD.name()).isEqualTo(String.class.getCanonicalName());
   }
 
   @Test
   void pluralSimpleName() {
-    assertThat(usernameMD.pluralSimpleName()).isEqualTo("Strings");
+    assertThat(usernameMD.pluralSimpleName()).isEqualTo("java.lang.Strings");
   }
 
   @Test
@@ -192,11 +195,11 @@ class ClassGraphFieldInfoApiTest {
 
   @Test
   void getter() {
-    assertThat(digitMD.getter()).isEqualTo("getDigit");
+    assertThat(digitMD.getter()).isEqualTo(Optional.of("getDigit"));
   }
 
   @Test
   void setter() {
-    assertThat(digitMD.setter()).isEqualTo("setDigit");
+    assertThat(digitMD.setter()).isEqualTo(Optional.of("setDigit"));
   }
 }

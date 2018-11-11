@@ -1,6 +1,6 @@
 package jrocks.shell.parameter;
 
-import jrocks.model.ClassInfoParameterApi;
+import jrocks.plugin.api.ClassParameterApi;
 import jrocks.plugin.api.PluginLayout;
 import jrocks.plugin.api.QuestionResponse;
 
@@ -13,7 +13,7 @@ import static java.lang.String.format;
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
-public class BaseClassInfoParameterApi implements ClassInfoParameterApi {
+public class BaseClassInfoParameterApi implements ClassParameterApi {
 
   private boolean dryRun;
   private String classCanonicalName;

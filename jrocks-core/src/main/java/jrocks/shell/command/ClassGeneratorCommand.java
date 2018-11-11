@@ -1,7 +1,6 @@
 package jrocks.shell.command;
 
 import jrocks.model.ClassInfoBuilder;
-import jrocks.model.ClassInfoParameterApi;
 import jrocks.plugin.api.*;
 import jrocks.shell.ClassPathScanner;
 import jrocks.shell.JRocksShellMethod;
@@ -85,7 +84,7 @@ public class ClassGeneratorCommand extends BaseCommand {
     }
 
 
-    ClassInfoParameterApi parameter = new BaseClassInfoParameterBuilder()
+    ClassParameterApi parameter = new BaseClassInfoParameterBuilder()
         .withClassCanonicalName(classCanonicalName)
         .withForce(isForced)
         .withExcludedFields(excludedFields)
@@ -218,7 +217,7 @@ public class ClassGeneratorCommand extends BaseCommand {
         : Availability.unavailable("you need to execute 'init' command to initialize JRocks");
   }
 
-  private ClassApi getClassInfo(ClassInfoParameterApi parameter) {
+  private ClassApi getClassInfo(ClassParameterApi parameter) {
     io.github.classgraph.ClassInfo sourceClass = classPathScanner.getAllClassInfo()
         .filter(ci -> ci.getName().equals(parameter.classCanonicalName()))
         .findAny()

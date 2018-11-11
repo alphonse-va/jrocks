@@ -1,6 +1,7 @@
 package jrocks.model;
 
 import io.github.classgraph.utils.ReflectionUtils;
+import jrocks.plugin.api.FieldApi;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.validation.constraints.*;
@@ -11,7 +12,7 @@ import java.lang.reflect.Field;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public class ReflectiveFieldInfo extends ReflectiveClassInfo implements FieldClassInfo {
+public class ReflectiveFieldInfo extends ReflectiveClassInfo implements FieldApi {
 
   private Field field;
 

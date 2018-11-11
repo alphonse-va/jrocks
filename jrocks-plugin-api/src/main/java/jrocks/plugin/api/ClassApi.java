@@ -21,5 +21,7 @@ public interface ClassApi {
 
   void addField(FieldApi field);
 
+  boolean hasRequiredFields();
+
   File getSourceClassPath();
 }
