@@ -1,6 +1,7 @@
 package jrocks.shell;
 
 import com.google.common.annotations.VisibleForTesting;
+import jrocks.plugin.api.JRocksPlugin;
 import org.jline.terminal.Terminal;
 import org.jline.utils.AttributedString;
 import org.jline.utils.AttributedStringBuilder;
@@ -74,6 +75,51 @@ public class TerminalLoggerSupport implements TerminalLogger {
     if (verbose) printMessage(message, values, LogLevel.VERBOSE);
   }
 
+  @Override
+  public void info(JRocksPlugin plugin, String message, Object... values) {
+    info(formatPluginMessage(plugin, message), values);
+  }
+
+  @Override
+  public void warning(JRocksPlugin plugin, String message, Object... values) {
+    warning(formatPluginMessage(plugin, message), values);
+  }
+
+  @Override
+  public void error(JRocksPlugin plugin, String message, Object... values) {
+    error(formatPluginMessage(plugin, message), values);
+  }
+
+  @Override
+  public void verbose(JRocksPlugin plugin, String message, Object... values) {
+    verbose(formatPluginMessage(plugin, message), values);
+  }
+
+  @Override
+  public void setMessagePrefix(String messagePrefix) {
+    this.messagePrefix = messagePrefix;
+  }
+
+  @Override
+  public void setDefaultMessagePrefix() {
+    this.messagePrefix = DEFAULT_MESSAGE_PREFIX;
+  }
+
+  @Override
+  public void setVerbose(boolean verbose) {
+    this.verbose = verbose;
+  }
+
+  @Override
+  public boolean isVerbose() {
+    return verbose;
+  }
+
+  @Override
+  public void newline() {
+    terminal.writer().println("");
+  }
+
   private void printMessage(String message, Object[] values, LogLevel level) {
 
     terminal.writer().print(new AttributedString(getMessagePrefix(), AttributedStyle.DEFAULT).toAnsi());
@@ -112,7 +158,6 @@ public class TerminalLoggerSupport implements TerminalLogger {
             .append(formattedMessage.substring(lastMatchIdx)).toAnsi());
   }
 
-
   private int colorFromLevel(LogLevel level) {
     int color;
     switch (level) {
@@ -133,38 +178,18 @@ public class TerminalLoggerSupport implements TerminalLogger {
     return color;
   }
 
+
   @Nonnull
-  public String getMessagePrefix() {
+  private String getMessagePrefix() {
     return messagePrefix;
-  }
-
-  @Override
-  public void setMessagePrefix(String messagePrefix) {
-    this.messagePrefix = messagePrefix;
-  }
-
-  @Override
-  public void setDefaultMessagePrefix() {
-    this.messagePrefix = DEFAULT_MESSAGE_PREFIX;
-  }
-
-  @Override
-  public void setVerbose(boolean verbose) {
-    this.verbose = verbose;
-  }
-
-  @Override
-  public boolean isVerbose() {
-    return verbose;
-  }
-
-  @Override
-  public void newline() {
-    terminal.writer().println("");
   }
 
   @VisibleForTesting
   void setTerminal(Terminal terminal) {
     this.terminal = terminal;
+  }
+
+  private String formatPluginMessage(JRocksPlugin plugin, String message) {
+    return format("*[%s]* %s", plugin.name(), message);
   }
 }

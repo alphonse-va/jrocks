@@ -1,7 +1,6 @@
 package jrocks.shell;
 
 import io.github.classgraph.ClassInfo;
-import jrocks.mock.TerminalLoggerMock;
 import jrocks.shell.config.ConfigService;
 import jrocks.shell.config.ModuleConfig;
 import jrocks.shell.config.ProjectConfig;
@@ -14,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.stream.Stream;
 
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -35,7 +35,7 @@ class ClassPathScannerTest {
     when(configService.getConfig()).thenReturn(projectConfig);
     when(configService.isInitialized()).thenReturn(true);
 
-    classPathScanner = new ClassPathScanner(configService, new TerminalLoggerMock());
+    classPathScanner = new ClassPathScanner(configService, mock(TerminalLogger.class));
     classPathScanner.rebuild();
   }
 

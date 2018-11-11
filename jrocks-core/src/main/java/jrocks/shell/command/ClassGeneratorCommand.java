@@ -71,6 +71,7 @@ public class ClassGeneratorCommand extends BaseCommand {
         .filter(Objects::nonNull)
         .filter(l -> Objects.equals(l.name(), layout))
         .findAny();
+
     PluginLayout pluginLayout;
     if (pluginLayoutOptional.isPresent()) {
       pluginLayout = pluginLayoutOptional.get();
@@ -79,7 +80,7 @@ public class ClassGeneratorCommand extends BaseCommand {
         throw new JRocksShellCommandException("No layout found for plugin: " + plugin);
       }
       pluginLayout = plugin.layouts().get(0);
-      terminalLogger().warning("*[%s]* given layout *'%s'* not found! (fail back to *%s*)",
+      terminalLogger().warning(plugin, "given layout *'%s'* not found! (fail back to *%s*)",
           plugin.name(), layout, pluginLayout.name());
     }
 
@@ -101,10 +102,10 @@ public class ClassGeneratorCommand extends BaseCommand {
     parameter.addResponses(responses);
 
 
-    terminalLogger().verbose("*received text:*");
+    terminalLogger().verbose(plugin,"*received text:*");
     parameter.responses().forEach((key, response) -> terminalLogger().verbose("%s: _%s_", response.question().text(), response.text()));
 
-    terminalLogger().info("*[%s]* receive followed parameters:\n\t" +
+    terminalLogger().info(plugin, "receive followed parameters:\n\t" +
             "layout: _%s_\n\t" +
             "source: _%s_\n\t" +
             "destination: _%s_" +
@@ -115,9 +116,6 @@ public class ClassGeneratorCommand extends BaseCommand {
       if (source.isJava())
         writerService.writeClass(source, parameter, classInfo);
     });
-
-
-
   }
 
   private Map<Object, QuestionResponse> askAdditionalQuestions(JRocksPlugin plugin, ClassApi classInfo) {
@@ -161,7 +159,7 @@ public class ClassGeneratorCommand extends BaseCommand {
           proposals.add(input);
         } catch (UserInterruptException | EndOfFileException e) {
           // ignored
-          terminalLogger().verbose(e.getMessage());
+          terminalLogger().verbose(plugin, e.getMessage());
         }
       }
       result.put(questionEntry.getKey(), new QuestionResponseSupport().setQuestion(question).setResponse(input));
