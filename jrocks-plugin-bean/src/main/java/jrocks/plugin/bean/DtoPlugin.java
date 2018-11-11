@@ -1,7 +1,7 @@
 package jrocks.plugin.bean;
 
 import jrocks.plugin.api.JRocksPlugin;
-import jrocks.plugin.api.PluginLayout;
+import jrocks.plugin.api.PluginGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,10 +18,10 @@ public class DtoPlugin implements JRocksPlugin {
   @Value("${jrocks.version}")
   private String version;
 
-  private final List<PluginLayout> layouts;
+  private final List<PluginGenerator> layouts;
 
   @Autowired
-  public DtoPlugin(@Qualifier(LAYOUT_QUALIFIER) List<PluginLayout> layouts) {
+  public DtoPlugin(@Qualifier(LAYOUT_QUALIFIER) List<PluginGenerator> layouts) {
     this.layouts = layouts;
   }
 
@@ -51,7 +51,7 @@ public class DtoPlugin implements JRocksPlugin {
   }
 
   @Override
-  public List<PluginLayout> layouts() {
+  public List<PluginGenerator> generators() {
     return layouts;
   }
 

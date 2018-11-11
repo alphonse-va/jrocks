@@ -34,5 +34,5 @@ public interface ClassParameterApi {
 
   Map<Object, QuestionResponse> responses();
 
-  PluginLayout getLayout();
+  PluginGenerator getLayout();
 }

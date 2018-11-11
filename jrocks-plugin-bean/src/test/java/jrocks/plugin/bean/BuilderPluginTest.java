@@ -17,7 +17,7 @@ class BuilderPluginTest {
 
   @BeforeEach
   void setUp() {
-    builderPlugin = new BuilderPlugin(Collections.singletonList(new BuilderDefaultLayout()));
+    builderPlugin = new BuilderPlugin(Collections.singletonList(new BuilderDefaultGenerator()));
   }
 
   @Test
@@ -40,7 +40,7 @@ class BuilderPluginTest {
 
     when(classMock.fields()).thenReturn(Collections.singletonList(nameField));
 
-    System.out.println(builderPlugin.layouts().get(0).generate(parameter,  classMock).get(0).content());
+    System.out.println(builderPlugin.generators().get(0).generate(parameter,  classMock).get(0).content());
 
   }
 }

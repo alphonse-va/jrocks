@@ -1,7 +1,7 @@
 package jrocks.shell.parameter;
 
 import jrocks.plugin.api.ClassParameterApi;
-import jrocks.plugin.api.PluginLayout;
+import jrocks.plugin.api.PluginGenerator;
 import jrocks.plugin.api.QuestionResponse;
 
 import java.io.File;
@@ -27,7 +27,7 @@ public class BaseClassInfoParameterApi implements ClassParameterApi {
   private Map<Object, QuestionResponse> responses;
   private List<String> additionalFlags;
 
-  private PluginLayout layout;
+  private PluginGenerator layout;
 
   BaseClassInfoParameterApi(String classCanonicalName,
                             boolean force,
@@ -39,7 +39,7 @@ public class BaseClassInfoParameterApi implements ClassParameterApi {
                             File file,
                             Map<Object, QuestionResponse> responses,
                             List<String> additionalFlags,
-                            PluginLayout layout,
+                            PluginGenerator layout,
                             boolean dryRun) {
     this.classCanonicalName = classCanonicalName;
     this.force = force;
@@ -132,7 +132,7 @@ public class BaseClassInfoParameterApi implements ClassParameterApi {
   }
 
   @Override
-  public PluginLayout getLayout() {
+  public PluginGenerator getLayout() {
     return layout;
   }
 

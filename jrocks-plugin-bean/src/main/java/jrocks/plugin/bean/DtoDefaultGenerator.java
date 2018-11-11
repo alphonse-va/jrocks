@@ -12,7 +12,7 @@ import java.util.List;
 
 @Component
 @Qualifier(DtoPlugin.LAYOUT_QUALIFIER)
-public class DtoDefaultLayout implements PluginLayout {
+public class DtoDefaultGenerator implements PluginGenerator {
 
   @Value("${jrocks.version}")
   private String version;

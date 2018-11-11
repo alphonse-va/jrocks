@@ -19,7 +19,7 @@ class DtoPluginTest {
 
   @BeforeEach
   void setUp() {
-    dtoPlugin = new DtoPlugin(Collections.singletonList(new DtoDefaultLayout()));
+    dtoPlugin = new DtoPlugin(Collections.singletonList(new DtoDefaultGenerator()));
   }
 
   @Test
@@ -52,7 +52,7 @@ class DtoPluginTest {
 
     when(classMock.fields()).thenReturn(ImmutableList.of(nameField, date));
 
-    System.out.println(dtoPlugin.layouts().get(0).generate(parameterMock, classMock).get(0).content());
+    System.out.println(dtoPlugin.generators().get(0).generate(parameterMock, classMock).get(0).content());
 
   }
 }

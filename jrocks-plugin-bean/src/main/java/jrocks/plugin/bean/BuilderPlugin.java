@@ -22,11 +22,11 @@ public class BuilderPlugin implements JRocksPlugin {
   @Value("${jrocks.version}")
   private String version;
 
-  private final List<PluginLayout> layouts;
+  private final List<PluginGenerator> generators;
 
   @Autowired
-  public BuilderPlugin(@Qualifier(LAYOUT_QUALIFIER) List<PluginLayout> layouts) {
-    this.layouts = layouts;
+  public BuilderPlugin(@Qualifier(LAYOUT_QUALIFIER) List<PluginGenerator> generators) {
+    this.generators = generators;
   }
 
   @Override
@@ -55,8 +55,8 @@ public class BuilderPlugin implements JRocksPlugin {
   }
 
   @Override
-  public List<PluginLayout> layouts() {
-    return layouts;
+  public List<PluginGenerator> generators() {
+    return generators;
   }
 
   @Override
@@ -69,7 +69,7 @@ public class BuilderPlugin implements JRocksPlugin {
     HashMap<Object, Question> result = new HashMap<>();
     result.put(Q_PACKAGE, new QuestionSupport()
         .setBuffer(classInfo.packageName())
-        .setQuestion("Do you want ot use _" + classInfo.packageName() + "_ as destination package?"));
+        .setQuestion("destination package: "));
     return result;
   }
 }

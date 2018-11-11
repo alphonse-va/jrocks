@@ -14,7 +14,7 @@ import java.util.Objects;
 
 @Component
 @Qualifier(BuilderPlugin.LAYOUT_QUALIFIER)
-public class BuilderDefaultLayout implements PluginLayout {
+public class BuilderDefaultGenerator implements PluginGenerator {
 
   @Value("${jrocks.version}")
   private String version;

@@ -12,18 +12,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class LayoutValueProvider extends ValueProviderSupport {
+public class GeneratorValueProvider extends ValueProviderSupport {
 
   private PluginsHolder pluginHolder;
 
   @Autowired
-  public LayoutValueProvider(PluginsHolder pluginHolder) {
+  public GeneratorValueProvider(PluginsHolder pluginHolder) {
     this.pluginHolder = pluginHolder;
   }
 
   @Override
   public List<CompletionProposal> complete(MethodParameter methodParameter, CompletionContext completionContext, String[] strings) {
-    return pluginHolder.getCurrentPlugin().layouts().stream()
-        .map(l -> new CompletionProposal(l.name())).collect(Collectors.toList());
+    return pluginHolder.getCurrentPlugin().generators().stream()
+        .map(generator -> new CompletionProposal(generator.name())).collect(Collectors.toList());
   }
 }

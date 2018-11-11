@@ -1,6 +1,6 @@
 package jrocks.shell.parameter;
 
-import jrocks.plugin.api.PluginLayout;
+import jrocks.plugin.api.PluginGenerator;
 import jrocks.plugin.api.QuestionResponse;
 import org.apache.commons.lang3.StringUtils;
 
@@ -22,7 +22,7 @@ public class BaseClassInfoParameterBuilder {
   private File file;
   private List<String> additionalFlags;
   private Map<Object, QuestionResponse> responses;
-  private PluginLayout layout;
+  private PluginGenerator layout;
   private boolean dryRun;
 
   public BaseClassInfoParameterApi build() {
@@ -80,7 +80,7 @@ public class BaseClassInfoParameterBuilder {
     return this;
   }
 
-  public BaseClassInfoParameterBuilder withLayout(PluginLayout layout) {
+  public BaseClassInfoParameterBuilder withLayout(PluginGenerator layout) {
     this.layout = layout;
     return this;
   }

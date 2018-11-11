@@ -7,7 +7,7 @@ import jrocks.shell.JRocksShellMethod;
 import jrocks.shell.autocomplete.AdditionalFlagValueProvider;
 import jrocks.shell.autocomplete.AllClassValueProvider;
 import jrocks.shell.autocomplete.ClassFieldsValueProvider;
-import jrocks.shell.autocomplete.LayoutValueProvider;
+import jrocks.shell.autocomplete.GeneratorValueProvider;
 import jrocks.shell.parameter.BaseClassInfoParameterBuilder;
 import jrocks.shell.writer.ResultWriterService;
 import org.jline.reader.*;
@@ -39,7 +39,7 @@ public class ClassGeneratorCommand extends BaseCommand {
   private static final String PARAM_MANDATORY_FIELDS = "--mandatory-fields";
   private static final String PARAM_ADDITIONAL_FLAGS = "--additional-flags";
   private static final String PARAM_FORCE = "--force";
-  private static final String PARAM_LAYOUT = "--layout";
+  private static final String PARAM_GENERATOR = "--generator";
   private static final String PARAM_DRY = "--dry-run";
 
   private ClassPathScanner classPathScanner;
@@ -61,29 +61,28 @@ public class ClassGeneratorCommand extends BaseCommand {
       @ShellOption(value = PARAM_INCLUDED_FIELDS, help = "Fields to include", defaultValue = "", valueProvider = ClassFieldsValueProvider.class) String[] includedFields,
       @ShellOption(value = PARAM_MANDATORY_FIELDS, help = "Mandatory fields", defaultValue = "", valueProvider = ClassFieldsValueProvider.class) String[] mandatoryFields,
       @ShellOption(value = PARAM_ADDITIONAL_FLAGS, help = "Generator additional flags", defaultValue = "", valueProvider = AdditionalFlagValueProvider.class) String[] additionalFlags,
-      @ShellOption(value = PARAM_LAYOUT, help = "Template layout", defaultValue = "", valueProvider = LayoutValueProvider.class) String layout,
+      @ShellOption(value = PARAM_GENERATOR, help = "Template generator", defaultValue = "", valueProvider = GeneratorValueProvider.class) String generator,
       @ShellOption(value = PARAM_FORCE, help = "Overwrite existing files") boolean isForced,
       @ShellOption(value = PARAM_DRY, help = "Only print result") boolean dryRun) {
 
     JRocksPlugin plugin = pluginsHolder.getCurrentPlugin();
 
-    Optional<PluginLayout> pluginLayoutOptional = plugin.layouts().stream()
+    Optional<PluginGenerator> pluginGeneratorOptional = plugin.generators().stream()
         .filter(Objects::nonNull)
-        .filter(l -> Objects.equals(l.name(), layout))
+        .filter(l -> Objects.equals(l.name(), generator))
         .findAny();
 
-    PluginLayout pluginLayout;
-    if (pluginLayoutOptional.isPresent()) {
-      pluginLayout = pluginLayoutOptional.get();
+    PluginGenerator pluginGenerator;
+    if (pluginGeneratorOptional.isPresent()) {
+      pluginGenerator = pluginGeneratorOptional.get();
     } else {
-      if (isEmpty(plugin.layouts())) {
-        throw new JRocksShellCommandException("No layout found for plugin: " + plugin);
+      if (isEmpty(plugin.generators())) {
+        throw new JRocksShellCommandException("No generator found for plugin: " + plugin);
       }
-      pluginLayout = plugin.layouts().get(0);
-      terminalLogger().warning(plugin, "given layout *'%s'* not found! (fail back to *%s*)",
-          plugin.name(), layout, pluginLayout.name());
+      pluginGenerator = plugin.generators().get(0);
+      terminalLogger().warning(plugin, "given generator *'%s'* not found! (fail back to *%s*)",
+          plugin.name(), generator, pluginGenerator.name());
     }
-
 
     ClassParameterApi parameter = new BaseClassInfoParameterBuilder()
         .withClassCanonicalName(classCanonicalName)
@@ -94,25 +93,24 @@ public class ClassGeneratorCommand extends BaseCommand {
         .withSuffix(isNotBlank(suffix) ? suffix : plugin.defaultSuffix())
         .withSuffixToRemove(suffixToRemove)
         .withAdditionalFlags(additionalFlags)
-        .withLayout(pluginLayout)
+        .withLayout(pluginGenerator)
         .withDriRun(dryRun)
         .build();
     ClassApi classInfo = getClassInfo(parameter);
+
     Map<Object, QuestionResponse> responses = askAdditionalQuestions(plugin, classInfo);
     parameter.addResponses(responses);
-
-
-    terminalLogger().verbose(plugin,"*received text:*");
+    terminalLogger().verbose(plugin, "*responses:*");
     parameter.responses().forEach((key, response) -> terminalLogger().verbose("%s: _%s_", response.question().text(), response.text()));
 
     terminalLogger().info(plugin, "receive followed parameters:\n\t" +
-            "layout: _%s_\n\t" +
+            "generator: _%s_\n\t" +
             "source: _%s_\n\t" +
             "destination: _%s_" +
             "%s",
-        plugin.name(), pluginLayout.name(), classInfo.name(), parameter.classCanonicalName() + parameter.suffix(), parameter);
+        plugin.name(), pluginGenerator.name(), classInfo.name(), parameter.classCanonicalName() + parameter.suffix(), parameter);
 
-    pluginLayout.generate(parameter, classInfo).forEach(source -> {
+    pluginGenerator.generate(parameter, classInfo).forEach(source -> {
       if (source.isJava())
         writerService.writeClass(source, parameter, classInfo);
     });
@@ -136,17 +134,17 @@ public class ClassGeneratorCommand extends BaseCommand {
       AttributedStringBuilder promptBuilder = new AttributedStringBuilder()
           .style(AttributedStyle.DEFAULT.foreground(AttributedStyle.WHITE))
           .append(" ")
-          .append(format(question.text(), AttributedStyle.WHITE))
+          .append(format(question.text()))
           .style(AttributedStyle.DEFAULT);
-      if (proposals.isEmpty()) {
+      if (!proposals.isEmpty()) {
         promptBuilder
             .append(" [")
             .append(String.join("|", proposals))
-            .append("]: ");
+            .append("]:");
       }
       String rightPrompt = new AttributedStringBuilder()
           .style(AttributedStyle.DEFAULT.foreground(AttributedStyle.WHITE))
-          .append(plugin.name())
+          .append(" " + plugin.name())
           .append("(v")
           .append(plugin.version())
           .append(") ")
@@ -168,13 +166,9 @@ public class ClassGeneratorCommand extends BaseCommand {
   }
 
   /**
-   * TODO merge with logger method
-   *
-   * @param message
-   * @param color
-   * @return
+   * TODO merge with {@link jrocks.shell.TerminalLoggerSupport#formatPluginMessage(JRocksPlugin, String)}
    */
-  private static String format(String message, int color) {
+  private static String format(String message) {
 
     Matcher matcher = Pattern.compile("([_|\\\\*]+?(.+?)[_|\\\\*])+?").matcher(message);
 
@@ -189,22 +183,22 @@ public class ClassGeneratorCommand extends BaseCommand {
       lastMatchIdx = lastMatchIdx + unformattedText.length() + withDelimiters.length();
 
       result.append(new AttributedStringBuilder()
-          .style(AttributedStyle.DEFAULT.faint().foreground(color))
+          .style(AttributedStyle.DEFAULT.faint().foreground(AttributedStyle.WHITE))
           .append(unformattedText).toAnsi());
 
       if (withDelimiters.startsWith("*")) {
         result.append(new AttributedStringBuilder()
-            .style(AttributedStyle.DEFAULT.bold().foreground(color))
+            .style(AttributedStyle.DEFAULT.bold().foreground(AttributedStyle.WHITE))
             .append(matcher.group(2)).toAnsi());
       } else if (withDelimiters.startsWith("_")) {
         result.append(new AttributedStringBuilder()
-            .style(AttributedStyle.DEFAULT.italic().foreground(color))
+            .style(AttributedStyle.DEFAULT.italic().foreground(AttributedStyle.WHITE))
             .append(matcher.group(2)).toAnsi());
       }
     }
     result.append(
         new AttributedStringBuilder()
-            .style(AttributedStyle.DEFAULT.faint().foreground(color))
+            .style(AttributedStyle.DEFAULT.faint().foreground(AttributedStyle.WHITE))
             .append(message.substring(lastMatchIdx)).toAnsi());
     return result.toString();
   }

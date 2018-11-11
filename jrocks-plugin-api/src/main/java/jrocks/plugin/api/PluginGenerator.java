@@ -2,7 +2,7 @@ package jrocks.plugin.api;
 
 import java.util.List;
 
-public interface PluginLayout {
+public interface PluginGenerator {
 
   String name();
 
