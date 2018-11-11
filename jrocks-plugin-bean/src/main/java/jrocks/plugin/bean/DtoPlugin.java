@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 public class DtoPlugin implements JRocksPlugin {
 
-  public static final String LAYOUT_QUALIFIER = "DtoLayout";
+  static final String LAYOUT_QUALIFIER = "DtoLayout";
 
   @Value("${jrocks.version}")
   private String version;
