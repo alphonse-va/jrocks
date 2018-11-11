@@ -37,7 +37,14 @@ public class BuilderDefaultLayout implements PluginLayout {
   @Override
   public List<GeneratedSource> generate(ClassParameterApi parameter, ClassApi classApi) {
     ClassName sourceClassName = ClassName.bestGuess(classApi.name());
-    ClassName builderClassName = ClassName.bestGuess(classApi.name() + parameter.suffix());
+
+    String packageName = classApi.packageName();
+    QuestionResponse packageResponse = parameter.responses().get(BuilderPlugin.Q_PACKAGE);
+    if (packageResponse != null) {
+      packageName = packageResponse.text();
+    }
+
+    ClassName builderClassName = ClassName.bestGuess(packageName + "." + classApi.simpleName() + parameter.suffix());
 
     FieldSpec.Builder buildingField = FieldSpec
         .builder(sourceClassName, classApi.propertyName(), Modifier.PRIVATE)
@@ -58,7 +65,10 @@ public class BuilderDefaultLayout implements PluginLayout {
     builderMethod.addStatement("return $L", classApi.propertyName()).returns(sourceClassName);
 
     TypeSpec builderType = builderTypeBuilder.addMethod(builderMethod.build()).build();
-    String content = JavaFile.builder(classApi.packageName(), builderType).build().toString();
-    return Collections.singletonList(new GeneratedSourceSupport().setContent(content).setPath(classApi.getSourceClassPath()));
+    String content = JavaFile.builder(packageName, builderType).build().toString();
+    return Collections.singletonList(new GeneratedSourceSupport()
+        .setContent(content)
+        .setPath(classApi.getSourceClassPath())
+        .setPackageName(packageName));
   }
 }

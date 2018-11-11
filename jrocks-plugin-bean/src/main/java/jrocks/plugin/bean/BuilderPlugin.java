@@ -1,18 +1,26 @@
 package jrocks.plugin.bean;
 
-import jrocks.plugin.api.JRocksPlugin;
-import jrocks.plugin.api.PluginLayout;
+import jrocks.plugin.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static java.util.Collections.singletonList;
 
 @Component
 public class BuilderPlugin implements JRocksPlugin {
 
-  public static final String LAYOUT_QUALIFIER = "BuilderLayout";
+  static final String LAYOUT_QUALIFIER = "BuilderLayout";
+
+  static final String Q_PACKAGE = "PACKAGE";
+
+  @Value("${jrocks.version}")
+  private String version;
 
   private final List<PluginLayout> layouts;
 
@@ -27,13 +35,18 @@ public class BuilderPlugin implements JRocksPlugin {
   }
 
   @Override
+  public String version() {
+    return version;
+  }
+
+  @Override
   public String description() {
     return "Generate a builder for selected class";
   }
 
   @Override
   public List<String> keys() {
-    return Collections.singletonList("builder");
+    return singletonList("builder");
   }
 
   @Override
@@ -49,5 +62,14 @@ public class BuilderPlugin implements JRocksPlugin {
   @Override
   public String layoutQualifier() {
     return LAYOUT_QUALIFIER;
+  }
+
+  @Override
+  public Map<Object, Question> additionalQuestions(ClassApi classInfo) {
+    HashMap<Object, Question> result = new HashMap<>();
+    result.put(Q_PACKAGE, new QuestionSupport()
+        .setBuffer(classInfo.packageName())
+        .setQuestion("Do you want ot use _" + classInfo.packageName() + "_ as destination package?"));
+    return result;
   }
 }

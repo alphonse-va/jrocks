@@ -4,6 +4,7 @@ import jrocks.plugin.api.JRocksPlugin;
 import jrocks.plugin.api.PluginLayout;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
@@ -13,6 +14,9 @@ import java.util.List;
 public class DtoPlugin implements JRocksPlugin {
 
   public static final String LAYOUT_QUALIFIER = "DtoLayout";
+
+  @Value("${jrocks.version}")
+  private String version;
 
   private final List<PluginLayout> layouts;
 
@@ -29,6 +33,11 @@ public class DtoPlugin implements JRocksPlugin {
   @Override
   public String name() {
     return "dto";
+  }
+
+  @Override
+  public String version() {
+    return version;
   }
 
   @Override

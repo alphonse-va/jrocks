@@ -1,13 +1,11 @@
 package jrocks.shell.parameter;
 
 import jrocks.plugin.api.PluginLayout;
+import jrocks.plugin.api.QuestionResponse;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
@@ -22,13 +20,14 @@ public class BaseClassInfoParameterBuilder {
   private String suffix;
   private String suffixToRemove;
   private File file;
-  private List<String> addtionalFlags;
+  private List<String> additionalFlags;
+  private Map<Object, QuestionResponse> responses;
   private PluginLayout layout;
   private boolean dryRun;
 
   public BaseClassInfoParameterApi build() {
     Objects.requireNonNull(classCanonicalName, "classCanonicalName is required");
-    return new BaseClassInfoParameterApi(classCanonicalName, force, excludedFields, includedFields, mandatoryFields, suffix, suffixToRemove, file, addtionalFlags, layout, dryRun);
+    return new BaseClassInfoParameterApi(classCanonicalName, force, excludedFields, includedFields, mandatoryFields, suffix, suffixToRemove, file, responses, additionalFlags, layout, dryRun);
   }
 
   public BaseClassInfoParameterBuilder withClassCanonicalName(String classCanonicalName) {
@@ -77,7 +76,7 @@ public class BaseClassInfoParameterBuilder {
   }
 
   public BaseClassInfoParameterBuilder withAdditionalFlags(String[] addtionalFlags) {
-    this.addtionalFlags = asList(addtionalFlags);
+    this.additionalFlags = asList(addtionalFlags);
     return this;
   }
 
@@ -88,6 +87,11 @@ public class BaseClassInfoParameterBuilder {
 
   public BaseClassInfoParameterBuilder withDriRun(boolean dryRun) {
     this.dryRun = dryRun;
+    return this;
+  }
+
+  public BaseClassInfoParameterBuilder withAdditionalResponses(Map<Object, QuestionResponse> responses) {
+    this.responses = responses;
     return this;
   }
 }

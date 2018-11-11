@@ -2,6 +2,7 @@ package jrocks.plugin.api;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 public interface ClassParameterApi {
 
@@ -28,4 +29,8 @@ public interface ClassParameterApi {
   File getFile();
 
   List<String> getAdditionalFlags();
+
+  void addResponses(Map<Object, QuestionResponse> responses);
+
+  Map<Object, QuestionResponse> responses();
 }

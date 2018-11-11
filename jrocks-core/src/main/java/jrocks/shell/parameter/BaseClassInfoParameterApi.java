@@ -2,10 +2,12 @@ package jrocks.shell.parameter;
 
 import jrocks.model.ClassInfoParameterApi;
 import jrocks.plugin.api.PluginLayout;
+import jrocks.plugin.api.QuestionResponse;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static java.lang.String.format;
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
@@ -14,23 +16,15 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 public class BaseClassInfoParameterApi implements ClassInfoParameterApi {
 
   private boolean dryRun;
-
   private String classCanonicalName;
-
   private List<String> excludedFields;
-
   private List<String> includedFields;
-
   private List<String> mandatoryFields;
-
   private String suffix;
-
   private String suffixToRemove;
-
   private boolean force;
-
   private File file;
-
+  private Map<Object, QuestionResponse> responses;
   private List<String> additionalFlags;
 
   private PluginLayout layout;
@@ -41,7 +35,9 @@ public class BaseClassInfoParameterApi implements ClassInfoParameterApi {
                             List<String> includedFields,
                             List<String> mandatoryFields,
                             String suffix,
-                            String suffixToRemove, File file,
+                            String suffixToRemove,
+                            File file,
+                            Map<Object, QuestionResponse> responses,
                             List<String> additionalFlags,
                             PluginLayout layout,
                             boolean dryRun) {
@@ -53,6 +49,7 @@ public class BaseClassInfoParameterApi implements ClassInfoParameterApi {
     this.suffix = suffix;
     this.suffixToRemove = suffixToRemove;
     this.file = file;
+    this.responses = responses;
     this.additionalFlags = additionalFlags != null ? additionalFlags : new ArrayList<>();
     this.layout = layout;
     this.dryRun = dryRun;
@@ -120,8 +117,18 @@ public class BaseClassInfoParameterApi implements ClassInfoParameterApi {
   }
 
   @Override
+  public Map<Object, QuestionResponse> responses() {
+    return responses;
+  }
+
+  @Override
   public List<String> getAdditionalFlags() {
     return additionalFlags;
+  }
+
+  @Override
+  public void addResponses(Map<Object, QuestionResponse> responses) {
+    this.responses = responses;
   }
 
   @Override

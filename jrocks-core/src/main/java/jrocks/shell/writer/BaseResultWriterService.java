@@ -2,6 +2,7 @@ package jrocks.shell.writer;
 
 import jrocks.plugin.api.ClassApi;
 import jrocks.plugin.api.ClassParameterApi;
+import jrocks.plugin.api.GeneratedSource;
 import jrocks.shell.JRocksShellException;
 import jrocks.shell.TerminalLogger;
 import jrocks.shell.config.ConfigService;
@@ -35,7 +36,7 @@ public class BaseResultWriterService implements ResultWriterService {
   }
 
   @Override
-  public void writeClass(String generatedSource, ClassParameterApi parameter, ClassApi clazz) {
+  public void writeClass(GeneratedSource generatedSource, ClassParameterApi parameter, ClassApi clazz) {
     String outputDirectory = clazz.getSourceClassPath().getAbsolutePath();
 
     Set<ModuleConfig> modules = configService.getConfig().getModules();
@@ -45,8 +46,10 @@ public class BaseResultWriterService implements ResultWriterService {
         .findAny()
         .orElse(modules.iterator().next().getSourceDirectory());
 
+    destDirectory = destDirectory + File.separator + generatedSource.packageName().replace(".", File.separator);
+
     // TODO cleanups file writing
-    Path path = Paths.get(destDirectory + File.separator + clazz.name().replace(".", File.separator) + parameter.suffix() + ".java");
+    Path path = Paths.get(destDirectory + File.separator + clazz.simpleName() + parameter.suffix() + ".java");
     File file = path.toFile();
     if (file.exists() && !parameter.isForce()) {
       terminalLogger.error("*%s* _%s_ file exists, please user _--force_ if you want to overwrite", TERM_NAME, path.toString());
@@ -62,10 +65,13 @@ public class BaseResultWriterService implements ResultWriterService {
           terminalLogger.info("*%s* could not create path: _%s_", TERM_NAME, dir.getPath());
         }
       }
+      String content = generatedSource.content();
       if (terminalLogger.isVerbose() || parameter.isDryRun()) {
         terminalLogger.newline();
         terminalLogger.setMessagePrefix("  |  ");
-        Stream.of(generatedSource.split("\n"))
+
+
+        Stream.of(content.split("\n"))
             .forEach(l -> {
               if (parameter.isDryRun())
                 terminalLogger.info("  %s", l);
@@ -76,7 +82,7 @@ public class BaseResultWriterService implements ResultWriterService {
         terminalLogger.newline();
       }
       if (!parameter.isDryRun()) {
-        Path savedFile = Files.write(path, generatedSource.getBytes());
+        Path savedFile = Files.write(path, content.getBytes());
         terminalLogger.info("*%s* _%s_ class created with success.", TERM_NAME, savedFile.toFile().getAbsolutePath());
       }
     } catch (IOException e) {
