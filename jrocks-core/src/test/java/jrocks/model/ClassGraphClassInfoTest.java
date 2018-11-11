@@ -6,7 +6,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 
-class ClassGraphClassApiTest extends BaseClassApiTest {
+class ClassGraphClassInfoTest extends ClassApiTest {
 
   private static ClassInfoList classes;
 

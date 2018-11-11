@@ -8,9 +8,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Predicate;
-
-import static org.apache.commons.lang3.StringUtils.startsWith;
 
 public class ClassGraphClassInfo implements ClassApi {
 
@@ -60,10 +57,6 @@ public class ClassGraphClassInfo implements ClassApi {
     return properties;
   }
 
-  public void setProperties(List<FieldApi> properties) {
-    this.properties = properties;
-  }
-
   @Override
   public void addField(FieldApi metaData) {
     properties.add(metaData);
@@ -77,9 +70,5 @@ public class ClassGraphClassInfo implements ClassApi {
   @Override
   public File getSourceClassPath() {
     return classInfo.getClasspathElementFile();
-  }
-
-  private static Predicate<FieldApi> javaLangFilter() {
-    return f -> !startsWith(f.name(), "java.lang");
   }
 }

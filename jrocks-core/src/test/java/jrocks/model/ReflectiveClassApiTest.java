@@ -6,7 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 
 import java.util.stream.Stream;
 
-class ReflectiveClassApiTest extends BaseClassApiTest {
+class ReflectiveClassApiTest extends ClassApiTest {
 
   @BeforeEach
   @Override
