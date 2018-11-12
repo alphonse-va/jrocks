@@ -37,7 +37,7 @@ import static org.jline.utils.AttributedStyle.*;
 @Service
 public class BaseTerminalLogger implements TerminalLogger {
 
-  private static final String DEFAULT_MESSAGE_PREFIX = "➜ ";
+  private static final String DEFAULT_MESSAGE_PREFIX = "";
 
   @Autowired
   @Lazy

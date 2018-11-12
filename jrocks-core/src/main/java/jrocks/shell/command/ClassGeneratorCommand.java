@@ -2,6 +2,7 @@ package jrocks.shell.command;
 
 import jrocks.model.ClassInfoBuilder;
 import jrocks.plugin.api.*;
+import jrocks.shell.BaseTerminalLogger;
 import jrocks.shell.ClassPathScanner;
 import jrocks.shell.JRocksShellMethod;
 import jrocks.shell.parameter.BaseClassInfoParameterBuilder;
@@ -79,7 +80,7 @@ public class ClassGeneratorCommand extends BaseCommand {
         throw new JRocksShellCommandException("No generator found for plugin: " + plugin);
       }
       pluginGenerator = plugin.generators().get(0);
-      terminalLogger().info(plugin, "no generator specified, using *%s*", pluginGenerator.name());
+      terminalLogger().info(plugin, "no generator specified, using _%s_", pluginGenerator.name());
     }
 
     ClassParameterApi parameter = new BaseClassInfoParameterBuilder()
@@ -115,14 +116,9 @@ public class ClassGeneratorCommand extends BaseCommand {
   }
 
   private Map<Object, QuestionResponse> askAdditionalQuestions(JRocksPlugin plugin, ClassApi classInfo) {
-
     Map<Object, QuestionResponse> result = new HashMap<>();
-    Set<Map.Entry<Object, Question>> questions = plugin.additionalQuestions(classInfo).entrySet();
-
-    questions.forEach(questionEntry -> {
-
-      Question question = questionEntry.getValue();
-
+    Map<Object, Question> questions = plugin.additionalQuestions(classInfo);
+    questions.forEach((key, question) -> {
       List<String> proposals = question.proposals() != null ? question.proposals() : new ArrayList<>();
       LineReader reader = LineReaderBuilder
           .builder()
@@ -134,12 +130,12 @@ public class ClassGeneratorCommand extends BaseCommand {
           .append(" ")
           .append(termFormat(question.text()))
           .style(AttributedStyle.DEFAULT);
-      if (!proposals.isEmpty()) {
+      if (!proposals.isEmpty())
         promptBuilder
             .append(" [")
             .append(String.join("|", proposals))
             .append("]:");
-      }
+
       String rightPrompt = new AttributedStringBuilder()
           .style(AttributedStyle.DEFAULT.foreground(AttributedStyle.WHITE))
           .append(" ")
@@ -148,24 +144,23 @@ public class ClassGeneratorCommand extends BaseCommand {
           .append(plugin.version())
           .append(") ")
           .toAnsi();
-
       String input = question.buffer();
       while (proposals.isEmpty() || !proposals.contains(input.trim())) {
         try {
-          input = reader.readLine(promptBuilder.toAnsi(), rightPrompt, question.mask(), question.buffer());
+          input = reader.readLine(promptBuilder.append("➜ ").toAnsi(), rightPrompt, question.mask(), question.buffer());
           proposals.add(input);
         } catch (UserInterruptException | EndOfFileException e) {
           // ignored
           terminalLogger().verbose(plugin, e.getMessage());
         }
       }
-      result.put(questionEntry.getKey(), new QuestionResponseSupport().setQuestion(question).setResponse(input));
+      result.put(key, new QuestionResponseSupport().setQuestion(question).setResponse(input));
     });
     return result;
   }
 
   /**
-   * TODO merge with {@link jrocks.shell.BaseTerminalLogger#formatPluginMessage(JRocksPlugin, String)}
+   * TODO merge with {@link jrocks.shell.BaseTerminalLogger#printMessage(String, Object[], BaseTerminalLogger.LogLevel)}
    */
   private static String termFormat(String message) {
 
