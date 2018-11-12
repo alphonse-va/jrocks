@@ -1,7 +1,7 @@
 package jrocks.shell.command;
 
 import jrocks.shell.ClassPathScanner;
-import jrocks.shell.autocomplete.PackageValueProvider;
+import jrocks.shell.valueprovider.PackageValueProvider;
 import jrocks.shell.config.MavenService;
 import jrocks.shell.config.ModuleConfig;
 import org.springframework.beans.factory.annotation.Autowired;

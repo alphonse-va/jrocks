@@ -1,4 +1,4 @@
-package jrocks.shell.autocomplete;
+package jrocks.shell.valueprovider;
 
 import com.google.common.annotations.VisibleForTesting;
 import jrocks.shell.ClassPathScanner;

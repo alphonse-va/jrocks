@@ -1,4 +1,4 @@
-//package jrocks.shell.autocomplete;
+//package jrocks.shell.valueprovider;
 //
 //import jrocks.shell.ClassPathScanner;
 //import jrocks.shell.JLineTerminalLogger;
@@ -21,7 +21,7 @@
 //
 //  private ClassFieldsValueProvider valueProvider = new ClassFieldsValueProvider(scanner);
 //
-//  private static final List<String> VALID_COMMAND_LINE_PARAMETER = new ArrayList<>(Arrays.asList("--class", "jrocks.shell.autocomplete.ClassFieldsValueProviderTest", "--exclude-properties"));
+//  private static final List<String> VALID_COMMAND_LINE_PARAMETER = new ArrayList<>(Arrays.asList("--class", "jrocks.shell.valueprovider.ClassFieldsValueProviderTest", "--exclude-properties"));
 //  private static final CompletionContext VALID_COMPLETION_CONTEXT = new CompletionContext(VALID_COMMAND_LINE_PARAMETER, 1, 1);
 //
 //  private String testField;

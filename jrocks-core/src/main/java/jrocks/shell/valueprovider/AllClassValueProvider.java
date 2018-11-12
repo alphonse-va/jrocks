@@ -1,4 +1,4 @@
-package jrocks.shell.autocomplete;
+package jrocks.shell.valueprovider;
 
 import io.github.classgraph.ClassInfo;
 import jrocks.shell.ClassPathScanner;

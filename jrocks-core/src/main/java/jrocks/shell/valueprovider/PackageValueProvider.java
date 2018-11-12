@@ -1,4 +1,4 @@
-package jrocks.shell.autocomplete;
+package jrocks.shell.valueprovider;
 
 import jrocks.shell.JRocksShellException;
 import jrocks.shell.config.ConfigService;

@@ -1,4 +1,4 @@
-package jrocks.shell.autocomplete;
+package jrocks.shell.valueprovider;
 
 import jrocks.shell.command.PluginsHolder;
 import org.springframework.beans.factory.annotation.Autowired;
