@@ -5,7 +5,6 @@ import jrocks.plugin.api.PluginGenerator;
 import jrocks.plugin.api.QuestionResponse;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -30,31 +29,6 @@ public class BaseClassInfoParameterApi implements ClassParameterApi {
 
   private PluginGenerator layout;
 
-  BaseClassInfoParameterApi(String classCanonicalName,
-                            boolean force,
-                            List<String> excludedFields,
-                            List<String> includedFields,
-                            List<String> mandatoryFields,
-                            String suffix,
-                            String suffixToRemove,
-                            File file,
-                            Map<Object, QuestionResponse> responses,
-                            List<String> additionalFlags,
-                            PluginGenerator layout,
-                            boolean dryRun) {
-    this.classCanonicalName = classCanonicalName;
-    this.force = force;
-    this.excludedFields = excludedFields != null ? excludedFields : new ArrayList<>();
-    this.includedFields = includedFields != null ? includedFields : new ArrayList<>();
-    this.mandatoryFields = mandatoryFields != null ? mandatoryFields : new ArrayList<>();
-    this.suffix = suffix;
-    this.suffixToRemove = suffixToRemove;
-    this.file = file;
-    this.responses = responses;
-    this.additionalFlags = additionalFlags != null ? additionalFlags : new ArrayList<>();
-    this.layout = layout;
-    this.dryRun = dryRun;
-  }
 
   @Override
   public List<String> excludedFields() {
@@ -124,7 +98,7 @@ public class BaseClassInfoParameterApi implements ClassParameterApi {
 
   @Override
   public Optional<QuestionResponse> getUserResponse(Object key) {
-    return  Optional.ofNullable(responses.get(key));
+    return Optional.ofNullable(responses.get(key));
   }
 
   @Override
@@ -134,7 +108,7 @@ public class BaseClassInfoParameterApi implements ClassParameterApi {
 
   @Override
   public boolean hasFlag(String flag) {
-    return additionalFlags.stream().filter(f -> f.equals(flag)).findFirst();
+    return additionalFlags.stream().anyMatch(f -> f.equals(flag));
   }
 
   @Override
@@ -145,6 +119,66 @@ public class BaseClassInfoParameterApi implements ClassParameterApi {
   @Override
   public PluginGenerator getLayout() {
     return layout;
+  }
+
+  BaseClassInfoParameterApi setDryRun(boolean dryRun) {
+    this.dryRun = dryRun;
+    return this;
+  }
+
+  BaseClassInfoParameterApi setClassCanonicalName(String classCanonicalName) {
+    this.classCanonicalName = classCanonicalName;
+    return this;
+  }
+
+  BaseClassInfoParameterApi setExcludedFields(List<String> excludedFields) {
+    this.excludedFields = excludedFields;
+    return this;
+  }
+
+  BaseClassInfoParameterApi setIncludedFields(List<String> includedFields) {
+    this.includedFields = includedFields;
+    return this;
+  }
+
+  BaseClassInfoParameterApi setMandatoryFields(List<String> mandatoryFields) {
+    this.mandatoryFields = mandatoryFields;
+    return this;
+  }
+
+  BaseClassInfoParameterApi setSuffix(String suffix) {
+    this.suffix = suffix;
+    return this;
+  }
+
+  BaseClassInfoParameterApi setSuffixToRemove(String suffixToRemove) {
+    this.suffixToRemove = suffixToRemove;
+    return this;
+  }
+
+  BaseClassInfoParameterApi setForce(boolean force) {
+    this.force = force;
+    return this;
+  }
+
+  public BaseClassInfoParameterApi setFile(File file) {
+    this.file = file;
+    return this;
+  }
+
+  BaseClassInfoParameterApi setResponses(Map<Object, QuestionResponse> responses) {
+    this.responses = responses;
+    return this;
+  }
+
+  BaseClassInfoParameterApi setAdditionalFlags(List<String> additionalFlags) {
+    this.additionalFlags = additionalFlags;
+    return this;
+  }
+
+  BaseClassInfoParameterApi setLayout(PluginGenerator layout) {
+    this.layout = layout;
+    return this;
   }
 
   @Override

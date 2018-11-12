@@ -43,14 +43,11 @@ public class BuilderDefaultGenerator implements PluginGenerator {
         .orElse(classApi.packageName());
 
     ClassName builderClassName = ClassName.bestGuess(packageName + "." + classApi.simpleName() + parameter.suffix());
-
-    FieldSpec.Builder buildingField = FieldSpec
-        .builder(sourceClassName, classApi.propertyName(), Modifier.PRIVATE)
-        .initializer("new $T()", sourceClassName);
-
     TypeSpec.Builder builderTypeBuilder = TypeSpec.classBuilder(builderClassName)
         .addModifiers(Modifier.PUBLIC)
-        .addField(buildingField.build());
+        .addField(FieldSpec
+            .builder(sourceClassName, classApi.propertyName(), Modifier.PRIVATE)
+            .initializer("new $T()", sourceClassName).build());
 
     MethodSpec.Builder builderMethod = MethodSpec.methodBuilder("build").addModifiers(Modifier.PUBLIC);
     classApi.fields().forEach(field -> {

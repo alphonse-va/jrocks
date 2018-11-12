@@ -13,24 +13,25 @@ public class DtoPlugin implements JRocksPlugin {
 
   static final String LAYOUT_QUALIFIER = "DtoLayout";
   static final String WITH_MAPPER_FLAG = "with-mapper";
-
   static final String Q_DTO_PACKAGE = "dto.package";
   static final String Q_MAPPER_PACKAGE = "mapper.package";
-
 
   @Value("${jrocks.version}")
   private String version;
 
-  private final List<PluginGenerator> layouts;
+  @Value("${jrocks.plugin.dto.defaultSuffix:DTO}")
+  private String defaultSuffix;
+
+  private final List<PluginGenerator> generators;
 
   @Autowired
-  public DtoPlugin(@Qualifier(LAYOUT_QUALIFIER) List<PluginGenerator> layouts) {
-    this.layouts = layouts;
+  public DtoPlugin(@Qualifier(LAYOUT_QUALIFIER) List<PluginGenerator> generators) {
+    this.generators = generators;
   }
 
   @Override
   public String defaultSuffix() {
-    return "DTO";
+    return defaultSuffix;
   }
 
   @Override
@@ -55,7 +56,7 @@ public class DtoPlugin implements JRocksPlugin {
 
   @Override
   public List<PluginGenerator> generators() {
-    return layouts;
+    return generators;
   }
 
   @Override
@@ -68,11 +69,11 @@ public class DtoPlugin implements JRocksPlugin {
     HashMap<Object, Question> result = new LinkedHashMap<>();
     result.put(Q_DTO_PACKAGE, new QuestionSupport()
         .setBuffer(classInfo.packageName())
-        .setQuestion("Dto package"));
+        .setQuestion("Enter the Dto _package_ please"));
     if (parameter.hasFlag(WITH_MAPPER_FLAG)) {
       result.put(Q_MAPPER_PACKAGE, new QuestionSupport()
           .setBuffer(classInfo.packageName() + ".mapper")
-          .setQuestion("Mapper package"));
+          .setQuestion("A mapper.. Really? Sure?? :-) Enter the package please"));
     }
     return result;
   }

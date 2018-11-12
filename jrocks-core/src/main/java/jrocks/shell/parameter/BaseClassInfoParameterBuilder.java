@@ -27,7 +27,19 @@ public class BaseClassInfoParameterBuilder {
 
   public BaseClassInfoParameterApi build() {
     Objects.requireNonNull(classCanonicalName, "classCanonicalName is required");
-    return new BaseClassInfoParameterApi(classCanonicalName, force, excludedFields, includedFields, mandatoryFields, suffix, suffixToRemove, file, responses, additionalFlags, layout, dryRun);
+    return new BaseClassInfoParameterApi()
+        .setClassCanonicalName(classCanonicalName)
+        .setExcludedFields(excludedFields)
+        .setIncludedFields(includedFields)
+        .setMandatoryFields(mandatoryFields)
+        .setSuffix(suffix)
+        .setSuffixToRemove(suffixToRemove)
+        .setFile(file)
+        .setResponses(responses)
+        .setAdditionalFlags(additionalFlags)
+        .setLayout(layout)
+        .setForce(force)
+        .setDryRun(dryRun);
   }
 
   public BaseClassInfoParameterBuilder withClassCanonicalName(String classCanonicalName) {

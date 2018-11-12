@@ -69,11 +69,11 @@ public class DtoDefaultGenerator implements PluginGenerator {
         String setter = field.setter().get();
         String getter = field.getter().get();
         fromMethod.addStatement("dto.$L($L.$L())", setter, classApi.propertyName(), getter);
-        toMethod.addStatement(format("result.$L(%s.$L())", resolveToResultName(parameter)), setter, getter);
+        toMethod.addStatement(format("result.$L(%s.$L())", resolveFromFieldName(parameter)), setter, getter);
       }
     });
     fromMethod.addStatement("return dto");
-    toMethod.addStatement(format("return %s", resolveToResultName(parameter)));
+    toMethod.addStatement(format("return %s", resolveFromFieldName(parameter)));
 
     // factory methods
     if (!parameter.hasFlag(DtoPlugin.WITH_MAPPER_FLAG)) {
@@ -103,7 +103,7 @@ public class DtoDefaultGenerator implements PluginGenerator {
           .addMethod(toMethod.build())
           .build();
 
-      String mapperContent = JavaFile.builder(classApi.packageName(), mapperType).build().toString();
+      String mapperContent = JavaFile.builder(mapperPackage, mapperType).build().toString();
       result.add(new GeneratedSourceSupport()
           .setPackageName(mapperPackage)
           .setContent(mapperContent)
@@ -118,7 +118,7 @@ public class DtoDefaultGenerator implements PluginGenerator {
         .orElse(classApi.packageName());
   }
 
-  private static String resolveToResultName(ClassParameterApi parameter) {
+  private static String resolveFromFieldName(ClassParameterApi parameter) {
     return parameter.hasFlag(DtoPlugin.WITH_MAPPER_FLAG) ? "dto" : "this";
   }
 }
