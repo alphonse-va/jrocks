@@ -22,7 +22,7 @@ import java.util.stream.Stream;
 import static java.lang.String.format;
 
 @Component
-public final class MavenServiceImpl implements MavenService {
+public final class BaseMavenService implements MavenService {
 
   private static final String EFFECTIVE_POM = "help:effective-pom";
   private static final boolean IS_WINDOWS = System.getProperty("os.name").toLowerCase().startsWith("windows");

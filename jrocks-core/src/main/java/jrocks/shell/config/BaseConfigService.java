@@ -17,7 +17,7 @@ import java.io.IOException;
 import static java.lang.String.format;
 
 @Component
-public class ConfigServiceImpl implements ConfigService {
+public class BaseConfigService implements ConfigService {
 
   @Value("${jrocks.configFilename}")
   private String configFileName;
@@ -31,7 +31,7 @@ public class ConfigServiceImpl implements ConfigService {
   private final TerminalLogger logger;
 
   @Autowired
-  public ConfigServiceImpl(GlobalConfig globalConfig, TerminalLogger logger) {this.globalConfig = globalConfig;
+  public BaseConfigService(GlobalConfig globalConfig, TerminalLogger logger) {this.globalConfig = globalConfig;
     this.logger = logger;
   }
 
