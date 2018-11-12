@@ -22,6 +22,9 @@ public class BuilderPlugin implements JRocksPlugin {
   @Value("${jrocks.version}")
   private String version;
 
+  @Value("${jrocks.plugin.dto.defaultSuffix:Builder}")
+  private String defaultSuffix;
+
   private final List<PluginGenerator> generators;
 
   @Autowired
@@ -51,7 +54,7 @@ public class BuilderPlugin implements JRocksPlugin {
 
   @Override
   public String defaultSuffix() {
-    return "Builder";
+    return defaultSuffix;
   }
 
   @Override
