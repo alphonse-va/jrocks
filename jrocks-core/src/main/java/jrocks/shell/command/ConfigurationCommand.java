@@ -75,18 +75,18 @@ public class ConfigurationCommand extends BaseCommand {
         .addValue("Description")
         .addValue("Keys")
         .addValue("Group")
-        .addValue("Layouts");
+        .addValue("Generator");
     pluginsHolder.getPlugins()
         .forEach(p -> {
-          String layouts = p.generators().stream()
-              .map(l -> String.format("%s, %s (%s)", l.name(), l.description(), l.version()))
+          String generator = p.generators().stream()
+              .map(l -> String.format("%s (%s)", l.description(), l.version()))
               .collect(Collectors.joining("\n"));
           modelBuilder.addRow()
               .addValue(p.name())
               .addValue(p.description())
               .addValue(p.keys())
               .addValue(p.group())
-              .addValue(layouts);
+              .addValue(generator);
         });
     TableBuilder builder = new TableBuilder(modelBuilder.build());
     terminalLogger().newline();

@@ -11,4 +11,8 @@ public interface Question {
   Character mask();
 
   List<String> proposals();
+
+  default boolean hasDefaultValue() {
+    return buffer() != null;
+  }
 }

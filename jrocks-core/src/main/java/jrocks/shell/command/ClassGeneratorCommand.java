@@ -97,17 +97,16 @@ public class ClassGeneratorCommand extends BaseCommand {
         .build();
     ClassApi classInfo = getClassInfo(parameter);
 
-    Map<Object, QuestionResponse> responses = askAdditionalQuestions(plugin, classInfo);
+    Map<Object, QuestionResponse> responses = askAdditionalQuestions(plugin, classInfo, isForced);
     parameter.addResponses(responses);
     terminalLogger().verbose(plugin, "*responses:*");
     parameter.responses().forEach((key, response) -> terminalLogger().verbose("%s: _%s_", response.question().text(), response.text()));
 
     terminalLogger().info(plugin, "receive followed parameters:\n\t" +
             "generator: _%s_\n\t" +
-            "source: _%s_\n\t" +
-            "destination: _%s_" +
+            "source: _%s_" +
             "%s",
-        pluginGenerator.name(), classInfo.name(), parameter.classCanonicalName() + parameter.suffix(), parameter);
+        pluginGenerator.name(), classInfo.name(), parameter);
 
     pluginGenerator.generate(parameter, classInfo).forEach(source -> {
       if (source.isJava())
@@ -115,10 +114,18 @@ public class ClassGeneratorCommand extends BaseCommand {
     });
   }
 
-  private Map<Object, QuestionResponse> askAdditionalQuestions(JRocksPlugin plugin, ClassApi classInfo) {
+  private Map<Object, QuestionResponse> askAdditionalQuestions(JRocksPlugin plugin, ClassApi classInfo, boolean force) {
     Map<Object, QuestionResponse> result = new HashMap<>();
     Map<Object, Question> questions = plugin.additionalQuestions(classInfo);
-    questions.forEach((key, question) -> {
+    for (Map.Entry<Object, Question> entry : questions.entrySet()) {
+      Object key = entry.getKey();
+      Question question = entry.getValue();
+      if (question.hasDefaultValue() && force) {
+        result.put(key, new QuestionResponseSupport().setQuestion(question).setResponse(question.buffer()));
+        terminalLogger().info(plugin, "use default parameter value *%s* for '_%s_' question.", question.buffer(), question.text());
+        continue;
+      }
+
       List<String> proposals = question.proposals() != null ? question.proposals() : new ArrayList<>();
       LineReader reader = LineReaderBuilder
           .builder()
@@ -127,7 +134,6 @@ public class ClassGeneratorCommand extends BaseCommand {
       reader.unsetOpt(LineReader.Option.INSERT_TAB);
       AttributedStringBuilder promptBuilder = new AttributedStringBuilder()
           .style(AttributedStyle.DEFAULT.foreground(AttributedStyle.WHITE))
-          .append(" ")
           .append(termFormat(question.text()))
           .style(AttributedStyle.DEFAULT);
       if (!proposals.isEmpty())
@@ -155,7 +161,7 @@ public class ClassGeneratorCommand extends BaseCommand {
         }
       }
       result.put(key, new QuestionResponseSupport().setQuestion(question).setResponse(input));
-    });
+    }
     return result;
   }
 

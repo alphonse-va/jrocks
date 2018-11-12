@@ -54,9 +54,4 @@ public class DtoPlugin implements JRocksPlugin {
   public List<PluginGenerator> generators() {
     return layouts;
   }
-
-  @Override
-  public String layoutQualifier() {
-    return LAYOUT_QUALIFIER;
-  }
 }

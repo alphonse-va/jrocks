@@ -26,7 +26,7 @@ public class BuilderDefaultGenerator implements PluginGenerator {
 
   @Override
   public String description() {
-    return "Builder plugin default layout";
+    return "Builder default generator";
   }
 
   @Override

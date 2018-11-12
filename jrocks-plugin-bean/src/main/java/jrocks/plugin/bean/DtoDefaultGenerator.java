@@ -24,7 +24,7 @@ public class DtoDefaultGenerator implements PluginGenerator {
 
   @Override
   public String description() {
-    return "Dto plugin default layout";
+    return "Dto default generator";
   }
 
   @Override

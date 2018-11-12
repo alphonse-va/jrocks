@@ -60,16 +60,11 @@ public class BuilderPlugin implements JRocksPlugin {
   }
 
   @Override
-  public String layoutQualifier() {
-    return LAYOUT_QUALIFIER;
-  }
-
-  @Override
   public Map<Object, Question> additionalQuestions(ClassApi classInfo) {
     HashMap<Object, Question> result = new HashMap<>();
     result.put(Q_PACKAGE, new QuestionSupport()
         .setBuffer(classInfo.packageName())
-        .setQuestion("destination package: "));
+        .setQuestion("Package name"));
     return result;
   }
 }
