@@ -123,13 +123,18 @@ public class BaseClassInfoParameterApi implements ClassParameterApi {
   }
 
   @Override
-  public Optional<QuestionResponse> userResponse(Object key) {
+  public Optional<QuestionResponse> getUserResponse(Object key) {
     return  Optional.ofNullable(responses.get(key));
   }
 
   @Override
-  public List<String> getAdditionalFlags() {
+  public List<String> additionalFlags() {
     return additionalFlags;
+  }
+
+  @Override
+  public boolean hasFlag(String flag) {
+    return additionalFlags.stream().filter(f -> f.equals(flag)).findFirst();
   }
 
   @Override

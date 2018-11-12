@@ -60,7 +60,7 @@ public class BuilderPlugin implements JRocksPlugin {
   }
 
   @Override
-  public Map<Object, Question> additionalQuestions(ClassApi classInfo) {
+  public Map<Object, Question> additionalQuestions(ClassParameterApi parameter, ClassApi classInfo) {
     HashMap<Object, Question> result = new HashMap<>();
     result.put(Q_PACKAGE, new QuestionSupport()
         .setBuffer(classInfo.packageName())

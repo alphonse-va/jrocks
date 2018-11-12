@@ -55,8 +55,8 @@ public class ClassGeneratorCommand extends BaseCommand {
   @JRocksShellMethod
   public void generator(
       @ShellOption(value = PARAM_CLASS, help = "Source class", valueProvider = AllClassValueProvider.class) String classCanonicalName,
-      @ShellOption(value = PARAM_SUFFIX, help = "Suffix to remove", defaultValue = "") String suffixToRemove,
-      @ShellOption(value = PARAM_SUFFIX_TO_REMOVE, help = "Suffix to remove", defaultValue = "") String suffix,
+      @ShellOption(value = PARAM_SUFFIX, help = "Suffix to remove", defaultValue = "") String suffix,
+      @ShellOption(value = PARAM_SUFFIX_TO_REMOVE, help = "Suffix to remove", defaultValue = "") String suffixToRemove,
       @ShellOption(value = PARAM_EXCLUDED_FIELDS, help = "Fields to exclude", defaultValue = "", valueProvider = ClassFieldsValueProvider.class) String[] excludedFields,
       @ShellOption(value = PARAM_INCLUDED_FIELDS, help = "Fields to include", defaultValue = "", valueProvider = ClassFieldsValueProvider.class) String[] includedFields,
       @ShellOption(value = PARAM_MANDATORY_FIELDS, help = "Mandatory fields", defaultValue = "", valueProvider = ClassFieldsValueProvider.class) String[] mandatoryFields,
@@ -97,7 +97,7 @@ public class ClassGeneratorCommand extends BaseCommand {
         .build();
     ClassApi classInfo = getClassInfo(parameter);
 
-    Map<Object, QuestionResponse> responses = askAdditionalQuestions(plugin, classInfo, isForced);
+    Map<Object, QuestionResponse> responses = askAdditionalQuestions(plugin, parameter, classInfo, isForced);
     parameter.addResponses(responses);
     terminalLogger().verbose(plugin, "*responses:*");
     parameter.responses().forEach((key, response) -> terminalLogger().verbose("%s: _%s_", response.question().text(), response.text()));
@@ -114,9 +114,9 @@ public class ClassGeneratorCommand extends BaseCommand {
     });
   }
 
-  private Map<Object, QuestionResponse> askAdditionalQuestions(JRocksPlugin plugin, ClassApi classInfo, boolean force) {
+  private Map<Object, QuestionResponse> askAdditionalQuestions(JRocksPlugin plugin, ClassParameterApi parameter, ClassApi classInfo, boolean force) {
     Map<Object, QuestionResponse> result = new HashMap<>();
-    Map<Object, Question> questions = plugin.additionalQuestions(classInfo);
+    Map<Object, Question> questions = plugin.additionalQuestions(parameter, classInfo);
     for (Map.Entry<Object, Question> entry : questions.entrySet()) {
       Object key = entry.getKey();
       Question question = entry.getValue();

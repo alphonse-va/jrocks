@@ -21,7 +21,7 @@ public interface JRocksPlugin extends JRocksBean {
     return new ArrayList<>();
   }
 
-  default Map<Object, Question> additionalQuestions(ClassApi classInfo) {
+  default Map<Object, Question> additionalQuestions(ClassParameterApi parameter, ClassApi classInfo) {
     return new HashMap<>();
   }
 

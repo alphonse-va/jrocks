@@ -38,7 +38,7 @@ public class BuilderDefaultGenerator implements PluginGenerator {
   public List<GeneratedSource> generate(ClassParameterApi parameter, ClassApi classApi) {
     ClassName sourceClassName = ClassName.bestGuess(classApi.name());
 
-    String packageName = parameter.userResponse(BuilderPlugin.Q_PACKAGE)
+    String packageName = parameter.getUserResponse(BuilderPlugin.Q_PACKAGE)
         .map(QuestionResponse::text)
         .orElse(classApi.packageName());
 

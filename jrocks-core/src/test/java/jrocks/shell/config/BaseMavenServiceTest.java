@@ -23,7 +23,7 @@ class BaseMavenServiceTest {
   void effectivePomToListOfPoms() throws IOException {
     String testFilePath = getClass().getClassLoader().getResource("effective-pom.txt").getPath();
     Path path = Paths.get(testFilePath);
-    List<String> poms = baseMavenService.effectivePomToListOfPoms(String.join("\n", Files.readAllLines(path)));
+    List<String> poms = baseMavenService.splitPoms(String.join("\n", Files.readAllLines(path)));
     Assertions.assertThat(poms).size().isEqualTo(3);
   }
 }

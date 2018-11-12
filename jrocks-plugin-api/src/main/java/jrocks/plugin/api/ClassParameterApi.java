@@ -29,9 +29,11 @@ public interface ClassParameterApi {
 
   File getFile();
 
-  Optional<QuestionResponse> userResponse(Object key);
+  Optional<QuestionResponse> getUserResponse(Object key);
 
-  List<String> getAdditionalFlags();
+  List<String> additionalFlags();
+
+  boolean hasFlag(String flag);
 
   void addResponses(Map<Object, QuestionResponse> responses);
 

@@ -35,23 +35,22 @@ public final class BaseMavenService implements MavenService {
   @Override
   public List<MavenProject> loadProjects() {
     MavenXpp3Reader mavenReader = new MavenXpp3Reader();
-    List<String> effectivePoms = grabMavenEffectivePoms();
+    List<String> effectivePoms = buildMavenEffectivePoms();
     try {
       List<MavenProject> result = new ArrayList<>();
       for (String effectivePom : effectivePoms) {
         Model model = mavenReader.read(new StringReader(effectivePom));
         model.setPomFile(new File("pom.xml"));
         result.add(new MavenProject(model));
-        logger.info(this,"grab %s (%s)", model.getName(), model.getVersion());
-
+        logger.info(this,"configure _%s:%s:%s_", model.getGroupId(), model.getArtifactId(), model.getVersion());
       }
       return result;
     } catch (IOException | XmlPullParserException e) {
-      throw new JRocksShellException("Error while reading followed effective maven pom:\n\n" + effectivePoms, e);
+      throw new JRocksShellException("Error while reading followed effective pom:\n\n" + effectivePoms, e);
     }
   }
 
-  private List<String> grabMavenEffectivePoms() {
+  private List<String> buildMavenEffectivePoms() {
     ProcessBuilder builder = new ProcessBuilder();
     if (IS_WINDOWS) {
       builder.command("mvn.exe", EFFECTIVE_POM);
@@ -65,17 +64,17 @@ public final class BaseMavenService implements MavenService {
       ExecutorService executorService = Executors.newSingleThreadExecutor();
       executorService.submit(streamConsumer);
       int exitCode = process.waitFor();
-      assert exitCode == 0;
+      if (exitCode != 0) throw new AssertionError();
       executorService.shutdown();
-      return effectivePomToListOfPoms(result.toString());
+      return splitPoms(result.toString());
     } catch (IOException | InterruptedException e) {
       throw new JRocksShellException(format("Error while executing 'mvn %s' command", EFFECTIVE_POM), e);
     }
   }
 
   @VisibleForTesting
-  List<String> effectivePomToListOfPoms(String poms) {
-    return Stream.of(poms.split("<!-- ====================================================================== -->"))
+  List<String> splitPoms(String poms) {
+    return Stream.of(poms.split("<!-- =+ -->"))
         .filter(block -> block.contains("<project xmlns"))
         .collect(Collectors.toList());
   }
