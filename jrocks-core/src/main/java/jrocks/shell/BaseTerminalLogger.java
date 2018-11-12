@@ -1,7 +1,6 @@
 package jrocks.shell;
 
-import com.google.common.annotations.VisibleForTesting;
-import jrocks.plugin.api.JRocksPlugin;
+import jrocks.plugin.api.JRocksBean;
 import org.jline.terminal.Terminal;
 import org.jline.utils.AttributedString;
 import org.jline.utils.AttributedStringBuilder;
@@ -36,7 +35,7 @@ import static org.jline.utils.AttributedStyle.*;
  * </code>
  */
 @Service
-public class TerminalLoggerSupport implements TerminalLogger {
+public class BaseTerminalLogger implements TerminalLogger {
 
   private static final String DEFAULT_MESSAGE_PREFIX = "➜ ";
 
@@ -76,23 +75,23 @@ public class TerminalLoggerSupport implements TerminalLogger {
   }
 
   @Override
-  public void info(JRocksPlugin plugin, String message, Object... values) {
-    info(formatPluginMessage(plugin, message), values);
+  public void info(JRocksBean bean, String message, Object... values) {
+    info(formatPluginMessage(bean, message), values);
   }
 
   @Override
-  public void warning(JRocksPlugin plugin, String message, Object... values) {
-    warning(formatPluginMessage(plugin, message), values);
+  public void warning(JRocksBean bean, String message, Object... values) {
+    warning(formatPluginMessage(bean, message), values);
   }
 
   @Override
-  public void error(JRocksPlugin plugin, String message, Object... values) {
-    error(formatPluginMessage(plugin, message), values);
+  public void error(JRocksBean bean, String message, Object... values) {
+    error(formatPluginMessage(bean, message), values);
   }
 
   @Override
-  public void verbose(JRocksPlugin plugin, String message, Object... values) {
-    verbose(formatPluginMessage(plugin, message), values);
+  public void verbose(JRocksBean bean, String message, Object... values) {
+    verbose(formatPluginMessage(bean, message), values);
   }
 
   @Override
@@ -184,12 +183,7 @@ public class TerminalLoggerSupport implements TerminalLogger {
     return messagePrefix;
   }
 
-  @VisibleForTesting
-  void setTerminal(Terminal terminal) {
-    this.terminal = terminal;
-  }
-
-  private String formatPluginMessage(JRocksPlugin plugin, String message) {
-    return format("*[%s]* %s", plugin.name(), message);
+  private String formatPluginMessage(JRocksBean bean, String message) {
+    return format("*[%s]* %s", bean.name(), message);
   }
 }

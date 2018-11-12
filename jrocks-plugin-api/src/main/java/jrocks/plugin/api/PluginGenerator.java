@@ -2,9 +2,7 @@ package jrocks.plugin.api;
 
 import java.util.List;
 
-public interface PluginGenerator {
-
-  String name();
+public interface PluginGenerator extends JRocksBean {
 
   String description();
 

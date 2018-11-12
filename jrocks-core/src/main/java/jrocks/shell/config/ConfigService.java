@@ -1,6 +1,13 @@
 package jrocks.shell.config;
 
-public interface ConfigService {
+import jrocks.plugin.api.JRocksBean;
+
+public interface ConfigService extends JRocksBean {
+
+  default String name() {
+    return "config";
+  }
+
   void addModule(ModuleConfig module);
 
   void load();

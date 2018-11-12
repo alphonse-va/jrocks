@@ -2,10 +2,12 @@ package jrocks.shell.config;
 
 import com.google.common.annotations.VisibleForTesting;
 import jrocks.shell.JRocksShellException;
+import jrocks.shell.TerminalLogger;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -24,6 +26,9 @@ import static java.lang.String.format;
 @Component
 public final class BaseMavenService implements MavenService {
 
+  @Autowired
+  private TerminalLogger logger;
+
   private static final String EFFECTIVE_POM = "help:effective-pom";
   private static final boolean IS_WINDOWS = System.getProperty("os.name").toLowerCase().startsWith("windows");
 
@@ -37,6 +42,8 @@ public final class BaseMavenService implements MavenService {
         Model model = mavenReader.read(new StringReader(effectivePom));
         model.setPomFile(new File("pom.xml"));
         result.add(new MavenProject(model));
+        logger.info(this,"grab %s (%s)", model.getName(), model.getVersion());
+
       }
       return result;
     } catch (IOException | XmlPullParserException e) {

@@ -56,8 +56,8 @@ public class BaseConfigService implements ConfigService {
     try {
       config = mapper.readValue(new File(configFileName), ProjectConfig.class);
     } catch (IOException e) {
-      logger.warning("Config file '%s' not found!", configFileName);
-      logger.warning("Please initialize your project with 'init' command!");
+      logger.warning(this, "Config file '%s' not found!", configFileName);
+      logger.warning(this, "Please initialize your project with 'init' command!");
     }
   }
 

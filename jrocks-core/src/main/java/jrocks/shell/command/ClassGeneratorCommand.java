@@ -4,11 +4,11 @@ import jrocks.model.ClassInfoBuilder;
 import jrocks.plugin.api.*;
 import jrocks.shell.ClassPathScanner;
 import jrocks.shell.JRocksShellMethod;
+import jrocks.shell.parameter.BaseClassInfoParameterBuilder;
 import jrocks.shell.valueprovider.AdditionalFlagValueProvider;
 import jrocks.shell.valueprovider.AllClassValueProvider;
 import jrocks.shell.valueprovider.ClassFieldsValueProvider;
 import jrocks.shell.valueprovider.GeneratorValueProvider;
-import jrocks.shell.parameter.BaseClassInfoParameterBuilder;
 import jrocks.shell.writer.ResultWriterService;
 import org.jline.reader.*;
 import org.jline.utils.AttributedString;
@@ -79,7 +79,7 @@ public class ClassGeneratorCommand extends BaseCommand {
         throw new JRocksShellCommandException("No generator found for plugin: " + plugin);
       }
       pluginGenerator = plugin.generators().get(0);
-      terminalLogger().info(plugin, "No generator specified, fail back to *%s*)", generator, pluginGenerator.name());
+      terminalLogger().info(plugin, "no generator specified, using *%s*", pluginGenerator.name());
     }
 
     ClassParameterApi parameter = new BaseClassInfoParameterBuilder()
@@ -165,7 +165,7 @@ public class ClassGeneratorCommand extends BaseCommand {
   }
 
   /**
-   * TODO merge with {@link jrocks.shell.TerminalLoggerSupport#formatPluginMessage(JRocksPlugin, String)}
+   * TODO merge with {@link jrocks.shell.BaseTerminalLogger#formatPluginMessage(JRocksPlugin, String)}
    */
   private static String termFormat(String message) {
 

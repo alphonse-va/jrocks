@@ -1,5 +1,6 @@
 package jrocks.shell.config;
 
+import jrocks.plugin.api.JRocksBean;
 import org.apache.maven.project.MavenProject;
 
 import java.io.BufferedReader;
@@ -8,7 +9,11 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.function.Consumer;
 
-public interface MavenService {
+public interface MavenService extends JRocksBean {
+
+  default String name() {
+    return "maven";
+  }
 
   List<MavenProject> loadProjects();
 

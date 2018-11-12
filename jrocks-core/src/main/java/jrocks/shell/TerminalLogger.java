@@ -1,6 +1,6 @@
 package jrocks.shell;
 
-import jrocks.plugin.api.JRocksPlugin;
+import jrocks.plugin.api.JRocksBean;
 
 public interface TerminalLogger {
 
@@ -12,13 +12,13 @@ public interface TerminalLogger {
 
   void verbose(String message, Object... values);
 
-  void info(JRocksPlugin plugin, String message, Object... values);
+  void info(JRocksBean jrBean, String message, Object... values);
 
-  void warning(JRocksPlugin plugin, String message, Object... values);
+  void warning(JRocksBean jrBean, String message, Object... values);
 
-  void error(JRocksPlugin plugin, String message, Object... values);
+  void error(JRocksBean jrBean, String message, Object... values);
 
-  void verbose(JRocksPlugin plugin, String message, Object... values);
+  void verbose(JRocksBean jrBean, String message, Object... values);
 
   void setMessagePrefix(String messagePrefix);
 

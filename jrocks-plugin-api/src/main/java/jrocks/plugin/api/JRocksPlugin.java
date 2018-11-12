@@ -5,9 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public interface JRocksPlugin {
-
-  String name();
+public interface JRocksPlugin extends JRocksBean {
 
   String version();
 
@@ -30,8 +28,5 @@ public interface JRocksPlugin {
   String defaultSuffix();
 
   List<PluginGenerator> generators();
-
-  String layoutQualifier();
-
 }
 
