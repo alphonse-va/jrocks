@@ -2,6 +2,7 @@ package jrocks.plugin.bean;
 
 import com.squareup.javapoet.*;
 import jrocks.plugin.api.*;
+import jrocks.plugin.util.PoeticUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -56,14 +57,12 @@ public class DtoDefaultGenerator implements PluginGenerator {
         .addStatement("$T $L = new $T()", sourceClassName, "result", sourceClassName);
 
     if (parameter.hasFlag(DtoPlugin.WITH_MAPPER_FLAG)) {
-      toMethod
-          .addModifiers(Modifier.STATIC)
-          .addParameter(dtoClassName, "dto");
+      toMethod.addModifiers(Modifier.STATIC).addParameter(dtoClassName, "dto");
     }
 
-    TypeSpec.Builder dtoTypeBuilder = TypeSpec.classBuilder(dtoClassName)
-        .addModifiers(Modifier.PUBLIC);
+    TypeSpec.Builder dtoTypeBuilder = TypeSpec.classBuilder(dtoClassName).addModifiers(Modifier.PUBLIC);
 
+    // build methods
     classApi.fields().forEach(field -> {
       dtoTypeBuilder.addField(FieldSpec.builder(ClassName.bestGuess(field.name()), field.fieldName(), Modifier.PRIVATE).build());
       if (field.getter().isPresent() && field.setter().isPresent()) {
@@ -73,64 +72,44 @@ public class DtoDefaultGenerator implements PluginGenerator {
         toMethod.addStatement(format("result.$L(%s.$L())", resolveToResultName(parameter)), setter, getter);
       }
     });
-
     fromMethod.addStatement("return dto");
     toMethod.addStatement(format("return %s", resolveToResultName(parameter)));
-    String mapperContent = "";
-    TypeSpec mapperType;
-    String mapperPackage = getPackage(parameter, classApi, DtoPlugin.Q_MAPPER_PACKAGE);
 
-    if (parameter.hasFlag(DtoPlugin.WITH_MAPPER_FLAG)) {
-      String mapperClass = format("%s.%s%sMapper", mapperPackage, classApi.simpleName(), parameter.suffix());
-      ClassName mapperClassName = ClassName.bestGuess(mapperClass);
-      mapperType = TypeSpec.classBuilder(mapperClassName)
-          .addModifiers(Modifier.PUBLIC)
-          .addMethod(fromMethod.build())
-          .addMethod(toMethod.build())
-          .build();
-      mapperContent = JavaFile.builder(classApi.packageName(), mapperType).build().toString();
-    } else {
-      dtoTypeBuilder
-          .addMethod(fromMethod.build())
-          .addMethod(toMethod.build());
+    // factory methods
+    if (!parameter.hasFlag(DtoPlugin.WITH_MAPPER_FLAG)) {
+      dtoTypeBuilder.addMethod(fromMethod.build()).addMethod(toMethod.build());
     }
 
+    // getters and setters
     classApi.fields().forEach(field -> {
-      field.setter().ifPresent(setter -> dtoTypeBuilder.addMethod(buildSetter(dtoClassName, field)));
-      field.getter().ifPresent(getter -> dtoTypeBuilder.addMethod(buildGetter(field)));
+      field.setter().ifPresent(setter -> dtoTypeBuilder.addMethod(PoeticUtils.buildBuilderSetterMethod(dtoClassName, field)));
+      field.getter().ifPresent(getter -> dtoTypeBuilder.addMethod(PoeticUtils.buildGetterMethod(field)));
     });
-
-    String content = JavaFile.builder(classApi.packageName(), dtoTypeBuilder.build()).build().toString();
 
     List<GeneratedSource> result = new ArrayList<>();
     result.add(new GeneratedSourceSupport()
         .setPackageName(getPackage(parameter, classApi, DtoPlugin.Q_DTO_PACKAGE))
-        .setContent(content)
+        .setContent(JavaFile.builder(classApi.packageName(), dtoTypeBuilder.build()).build().toString())
         .setPath(classApi.getSourceClassPath()));
 
     if (parameter.hasFlag(DtoPlugin.WITH_MAPPER_FLAG)) {
+      // mapper class
+      String mapperPackage = getPackage(parameter, classApi, DtoPlugin.Q_MAPPER_PACKAGE);
+      String mapperClass = format("%s.%s%sMapper", mapperPackage, classApi.simpleName(), parameter.suffix());
+      ClassName mapperClassName = ClassName.bestGuess(mapperClass);
+      TypeSpec mapperType = TypeSpec.classBuilder(mapperClassName)
+          .addModifiers(Modifier.PUBLIC)
+          .addMethod(fromMethod.build())
+          .addMethod(toMethod.build())
+          .build();
+
+      String mapperContent = JavaFile.builder(classApi.packageName(), mapperType).build().toString();
       result.add(new GeneratedSourceSupport()
           .setPackageName(mapperPackage)
           .setContent(mapperContent)
           .setPath(classApi.getSourceClassPath()));
     }
     return result;
-  }
-
-  private MethodSpec buildGetter(FieldApi field) {
-    return MethodSpec.methodBuilder(field.getter().get())
-        .addModifiers(Modifier.PUBLIC)
-        .returns(ClassName.bestGuess(field.name()))
-        .addStatement("return $L", field.fieldName()).build();
-  }
-
-  private MethodSpec buildSetter(ClassName returnType, FieldApi field) {
-    return MethodSpec.methodBuilder(field.setter().get())
-        .addModifiers(Modifier.PUBLIC)
-        .returns(returnType)
-        .addParameter(ClassName.bestGuess(field.name()), field.fieldName())
-        .addStatement("this.$L = $L", field.fieldName(), field.fieldName())
-        .addStatement("return this").build();
   }
 
   private static String getPackage(ClassParameterApi parameter, ClassApi classApi, String aPackage) {

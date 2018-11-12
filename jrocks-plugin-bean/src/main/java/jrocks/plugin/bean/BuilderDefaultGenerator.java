@@ -54,7 +54,7 @@ public class BuilderDefaultGenerator implements PluginGenerator {
 
     MethodSpec.Builder builderMethod = MethodSpec.methodBuilder("build").addModifiers(Modifier.PUBLIC);
     classApi.fields().forEach(field -> {
-      builderTypeBuilder.addMethod(PoeticUtils.withMethodSpecFor(classApi.propertyName(), field, builderClassName));
+      builderTypeBuilder.addMethod(PoeticUtils.buildWith(classApi.propertyName(), field, builderClassName));
       if (field.isRequired() || parameter.mandatoryFields().contains(field.fieldName())) {
         if (field.getter().isPresent())
           builderMethod.addStatement("$T.requireNonNull($L.$L())", Objects.class, classApi.propertyName(), field.getter().get()).build();
