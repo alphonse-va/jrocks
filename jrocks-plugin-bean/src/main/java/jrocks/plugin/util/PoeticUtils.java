@@ -8,7 +8,7 @@ import javax.lang.model.element.Modifier;
 
 public class PoeticUtils {
 
-  public static MethodSpec buildWith(String fieldName, FieldApi field, ClassName returnType) {
+  public static MethodSpec buildWithMethod(String fieldName, FieldApi field, ClassName returnType) {
     ClassName fieldType = ClassName.bestGuess(field.name());
     return MethodSpec.methodBuilder("with" + field.fieldNameCapitalized())
         .addModifiers(Modifier.PUBLIC)
