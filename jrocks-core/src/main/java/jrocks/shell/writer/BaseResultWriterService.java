@@ -66,9 +66,9 @@ public class BaseResultWriterService implements ResultWriterService {
         terminalLogger.newline();
         terminalLogger.setMessagePrefix("  |  ");
         Stream.of(content.split("\n"))
-            .forEach(l -> {
-              if (parameter.isDryRun()) terminalLogger.info("  %s", l);
-              else terminalLogger.verbose("  %s", l);
+            .forEach(line -> {
+              if (parameter.isDryRun()) terminalLogger.info("  %s", line);
+              else terminalLogger.verbose("  %s", line);
             });
         terminalLogger.setDefaultMessagePrefix();
         terminalLogger.newline();
