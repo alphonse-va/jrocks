@@ -44,7 +44,7 @@ public class BuilderPlugin implements JRocksPlugin {
 
   @Override
   public String description() {
-    return "Generate a builder for selected class";
+    return "Builder Generator";
   }
 
   @Override

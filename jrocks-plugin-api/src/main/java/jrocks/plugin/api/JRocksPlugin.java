@@ -14,7 +14,7 @@ public interface JRocksPlugin extends JRocksBean {
   List<String> keys();
 
   default String group() {
-    return "Class";
+    return "> JRocks Plugins";
   }
 
   default List<String> additionalFlags() {

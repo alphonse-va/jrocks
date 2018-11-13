@@ -109,7 +109,7 @@ public class ClassGeneratorCommand extends BaseCommand {
         pluginGenerator.name(), classInfo.name(), parameter);
 
     pluginGenerator.generate(parameter, classInfo).forEach(source -> {
-      if (source.isJava()) writerService.writeClass(source, parameter, classInfo);
+      if (source.isJava() || parameter.isDryRun()) writerService.writeClass(source, parameter, classInfo);
       else throw new IllegalStateException("Not yet implemented");
     });
   }

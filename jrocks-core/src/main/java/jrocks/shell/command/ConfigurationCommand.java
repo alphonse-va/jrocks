@@ -79,7 +79,7 @@ public class ConfigurationCommand extends BaseCommand {
     pluginsHolder.getPlugins()
         .forEach(p -> {
           String generator = p.generators().stream()
-              .map(l -> String.format("%s (%s)", l.description(), l.version()))
+              .map(l -> String.format("%s (%s)", l.name(), l.version()))
               .collect(Collectors.joining("\n"));
           modelBuilder.addRow()
               .addValue(p.name())
@@ -91,7 +91,7 @@ public class ConfigurationCommand extends BaseCommand {
     TableBuilder builder = new TableBuilder(modelBuilder.build());
     terminalLogger().newline();
     terminalLogger().info("*Plugins*");
-    return builder.addFullBorder(BorderStyle.fancy_light).build();
+    return builder.addFullBorder(BorderStyle.air).build();
   }
 
   @ShellMethodAvailability({"show-config"})
