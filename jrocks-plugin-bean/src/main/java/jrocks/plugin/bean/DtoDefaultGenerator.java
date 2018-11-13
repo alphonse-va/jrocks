@@ -42,22 +42,23 @@ public class DtoDefaultGenerator implements PluginGenerator {
     ClassName dtoClassName = ClassName.bestGuess(classApi.name() + parameter.suffix());
 
     // from method
+    String propertyName = classApi.propertyName();
     MethodSpec.Builder fromMethod = MethodSpec
         .methodBuilder("from")
         .returns(dtoClassName)
         .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
-        .addParameter(sourceClassName, classApi.propertyName())
-        .addStatement("$T $L = new $T()", dtoClassName, "dto", dtoClassName);
+        .addParameter(sourceClassName, propertyName)
+        .addStatement("$T $L = new $T()", dtoClassName, propertyName + parameter.suffix(), dtoClassName);
 
     // to method
     MethodSpec.Builder toMethod = MethodSpec
         .methodBuilder("to")
         .returns(sourceClassName)
         .addModifiers(Modifier.PUBLIC)
-        .addStatement("$T $L = new $T()", sourceClassName, "result", sourceClassName);
+        .addStatement("$T $L = new $T()", sourceClassName, propertyName, sourceClassName);
 
     if (parameter.hasFlag(DtoPlugin.WITH_MAPPER_FLAG)) {
-      toMethod.addModifiers(Modifier.STATIC).addParameter(dtoClassName, "dto");
+      toMethod.addModifiers(Modifier.STATIC).addParameter(dtoClassName, propertyName);
     }
 
     TypeSpec.Builder dtoTypeBuilder = TypeSpec.classBuilder(dtoClassName).addModifiers(Modifier.PUBLIC);
@@ -68,12 +69,12 @@ public class DtoDefaultGenerator implements PluginGenerator {
       if (field.getter().isPresent() && field.setter().isPresent()) {
         String setter = field.setter().get();
         String getter = field.getter().get();
-        fromMethod.addStatement("dto.$L($L.$L())", setter, classApi.propertyName(), getter);
-        toMethod.addStatement(format("result.$L(%s.$L())", resolveFromFieldName(parameter)), setter, getter);
+        fromMethod.addStatement("$L$L.$L($L.$L())", propertyName, parameter.suffix(), setter, propertyName, getter);
+        toMethod.addStatement(format("$L.$L(%s.$L())", resolveFromFieldName(parameter, propertyName)), propertyName, setter, getter);
       }
     });
-    fromMethod.addStatement("return dto");
-    toMethod.addStatement(format("return %s", resolveFromFieldName(parameter)));
+    fromMethod.addStatement("return $L$L", propertyName, parameter.suffix());
+    toMethod.addStatement("return $L", propertyName);
 
     // factory methods
     if (!parameter.hasFlag(DtoPlugin.WITH_MAPPER_FLAG)) {
@@ -88,8 +89,9 @@ public class DtoDefaultGenerator implements PluginGenerator {
 
     List<GeneratedSource> result = new ArrayList<>();
     result.add(new GeneratedSourceSupport()
-        .setPackageName(getPackage(parameter, classApi, DtoPlugin.Q_DTO_PACKAGE))
+        .setFilename(classApi.simpleName() + parameter.suffix())
         .setContent(JavaFile.builder(classApi.packageName(), dtoTypeBuilder.build()).build().toString())
+        .setPackageName(getPackage(parameter, classApi, DtoPlugin.Q_DTO_PACKAGE))
         .setPath(classApi.getSourceClassPath()));
 
     if (parameter.hasFlag(DtoPlugin.WITH_MAPPER_FLAG)) {
@@ -105,8 +107,9 @@ public class DtoDefaultGenerator implements PluginGenerator {
 
       String mapperContent = JavaFile.builder(mapperPackage, mapperType).build().toString();
       result.add(new GeneratedSourceSupport()
-          .setPackageName(mapperPackage)
           .setContent(mapperContent)
+          .setFilename(classApi.simpleName() + parameter.suffix() + "Mapper")
+          .setPackageName(mapperPackage)
           .setPath(classApi.getSourceClassPath()));
     }
     return result;
@@ -118,7 +121,7 @@ public class DtoDefaultGenerator implements PluginGenerator {
         .orElse(classApi.packageName());
   }
 
-  private static String resolveFromFieldName(ClassParameterApi parameter) {
-    return parameter.hasFlag(DtoPlugin.WITH_MAPPER_FLAG) ? "dto" : "this";
+  private static String resolveFromFieldName(ClassParameterApi parameter, String propertyName) {
+    return parameter.hasFlag(DtoPlugin.WITH_MAPPER_FLAG) ? propertyName + parameter.suffix() : "this";
   }
 }

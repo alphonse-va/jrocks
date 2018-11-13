@@ -4,6 +4,8 @@ import java.io.File;
 
 public interface GeneratedSource {
 
+  String filename();
+
   String content();
 
   File path();

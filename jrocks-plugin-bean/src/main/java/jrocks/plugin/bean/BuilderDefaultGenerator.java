@@ -63,6 +63,8 @@ public class BuilderDefaultGenerator implements PluginGenerator {
     String content = JavaFile.builder(packageName, builderType).build().toString();
     return Collections.singletonList(new GeneratedSourceSupport()
         .setContent(content)
+        .setFilename(classApi.simpleName() + parameter.suffix())
+        .setFilename(classApi.simpleName() + parameter.suffix())
         .setPath(classApi.getSourceClassPath())
         .setPackageName(packageName));
   }

@@ -8,6 +8,7 @@ public class GeneratedSourceSupport implements GeneratedSource {
   private String content;
   private String packageName;
   private File path;
+  private String filename;
 
   @Override
   public String content() {
@@ -19,6 +20,13 @@ public class GeneratedSourceSupport implements GeneratedSource {
     return path;
   }
 
+
+  @Override
+  public String filename() {
+    return filename;
+  }
+
+  @Override
   public String packageName() {
     return packageName;
   }
@@ -33,16 +41,13 @@ public class GeneratedSourceSupport implements GeneratedSource {
     return this;
   }
 
-  public String getContent() {
-    return content;
-  }
-
-  public File getPath() {
-    return path;
-  }
-
   public GeneratedSourceSupport setPackageName(String packageName) {
     this.packageName = packageName;
+    return this;
+  }
+
+  public GeneratedSourceSupport setFilename(String filename) {
+    this.filename = filename;
     return this;
   }
 
