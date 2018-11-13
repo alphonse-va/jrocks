@@ -15,6 +15,6 @@ public interface GeneratedSource {
   }
 
   default boolean isJava() {
-    return packageName() != null;
+    return packageName() != null && filename() != null && filename().endsWith(".java");
   }
 }

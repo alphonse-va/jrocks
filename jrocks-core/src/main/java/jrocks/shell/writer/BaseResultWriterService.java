@@ -23,8 +23,6 @@ import static java.lang.String.format;
 @Service
 public class BaseResultWriterService implements ResultWriterService {
 
-  private static final String TERM_NAME = "[writer]";
-
   private ConfigService configService;
 
   private TerminalLogger terminalLogger;
@@ -37,22 +35,20 @@ public class BaseResultWriterService implements ResultWriterService {
 
   @Override
   public void writeClass(GeneratedSource generatedSource, ClassParameterApi parameter, ClassApi clazz) {
-    String outputDirectory = clazz.getSourceClassPath().getAbsolutePath();
-
+    String outputDirectory = clazz.sourceClassPath().getAbsolutePath();
     Set<ModuleConfig> modules = configService.getConfig().getModules();
-    String destDirectory = modules.stream()
+    String outDirectory = modules.stream()
         .filter(config -> config.getOutputDirectory().equals(outputDirectory))
         .map(ModuleConfig::getSourceDirectory)
         .findAny()
         .orElse(modules.iterator().next().getSourceDirectory());
 
-    destDirectory = destDirectory + File.separator + generatedSource.packageName().replace(".", File.separator);
+    String destDirectory = outDirectory + File.separator + generatedSource.packageName().replace(".", File.separator);
 
-    // TODO cleanups file writing
-    Path path = Paths.get(destDirectory + File.separator + clazz.simpleName() + parameter.suffix() + ".java");
+    Path path = Paths.get(destDirectory + File.separator + generatedSource.filename());
     File file = path.toFile();
     if (file.exists() && !parameter.isForce()) {
-      terminalLogger.error("*%s* _%s_ file exists, please user _--force_ if you want to overwrite", TERM_NAME, path.toString());
+      terminalLogger.error(this, "_%s_ file exists, please user _--force_ if you want to overwrite", path.toString());
       return;
     }
     try {
@@ -60,33 +56,34 @@ public class BaseResultWriterService implements ResultWriterService {
       if (!dir.isDirectory()) {
         boolean success = dir.mkdirs();
         if (success) {
-          terminalLogger.info("*%s* created path: _%s_", TERM_NAME, dir.getPath());
+          terminalLogger.info(this, "created path: _%s_", dir.getPath());
         } else {
-          terminalLogger.info("*%s* could not create path: _%s_", TERM_NAME, dir.getPath());
+          terminalLogger.error(this, "could not create path: _%s_", dir.getPath());
         }
       }
       String content = generatedSource.content();
       if (terminalLogger.isVerbose() || parameter.isDryRun()) {
         terminalLogger.newline();
         terminalLogger.setMessagePrefix("  |  ");
-
-
         Stream.of(content.split("\n"))
             .forEach(l -> {
-              if (parameter.isDryRun())
-                terminalLogger.info("  %s", l);
-              else
-                terminalLogger.verbose("  %s", l);
+              if (parameter.isDryRun()) terminalLogger.info("  %s", l);
+              else terminalLogger.verbose("  %s", l);
             });
         terminalLogger.setDefaultMessagePrefix();
         terminalLogger.newline();
       }
       if (!parameter.isDryRun()) {
         Path savedFile = Files.write(path, content.getBytes());
-        terminalLogger.info("*%s* _%s_ class created with success.", TERM_NAME, savedFile.toFile().getAbsolutePath());
+        terminalLogger.info(this, "_%s_ class created with success.", savedFile.toFile().getAbsolutePath());
       }
     } catch (IOException e) {
       throw new JRocksShellException(format("Enable to create *%s* file!", destDirectory), e);
     }
+  }
+
+  @Override
+  public String name() {
+    return "writer";
   }
 }

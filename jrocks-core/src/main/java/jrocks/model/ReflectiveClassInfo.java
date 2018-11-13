@@ -66,7 +66,7 @@ public class ReflectiveClassInfo implements ClassApi {
   }
 
   @Override
-  public File getSourceClassPath() {
+  public File sourceClassPath() {
     return null;
   }
 }

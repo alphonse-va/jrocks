@@ -65,7 +65,7 @@ public class BuilderDefaultGenerator implements PluginGenerator {
         .setContent(content)
         .setFilename(classApi.simpleName() + parameter.suffix())
         .setFilename(classApi.simpleName() + parameter.suffix())
-        .setPath(classApi.getSourceClassPath())
+        .setPath(classApi.sourceClassPath())
         .setPackageName(packageName));
   }
 }

@@ -23,5 +23,5 @@ public interface ClassApi {
 
   boolean hasRequiredFields();
 
-  File getSourceClassPath();
+  File sourceClassPath();
 }

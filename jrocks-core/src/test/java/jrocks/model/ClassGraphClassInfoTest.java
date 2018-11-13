@@ -37,6 +37,6 @@ class ClassGraphClassInfoTest extends ClassApiTest {
 
   @Override
   void getSourceClassPath() {
-    Assertions.assertThat(classApi.getSourceClassPath()).exists();
+    Assertions.assertThat(classApi.sourceClassPath()).exists();
   }
 }

@@ -68,7 +68,7 @@ public class ClassGraphClassInfo implements ClassApi {
   }
 
   @Override
-  public File getSourceClassPath() {
+  public File sourceClassPath() {
     return classInfo.getClasspathElementFile();
   }
 }

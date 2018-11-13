@@ -43,22 +43,24 @@ public class DtoDefaultGenerator implements PluginGenerator {
 
     // from method
     String propertyName = classApi.propertyName();
-    MethodSpec.Builder fromMethod = MethodSpec
-        .methodBuilder("from")
+    MethodSpec.Builder fromMethod = MethodSpec.methodBuilder("from")
         .returns(dtoClassName)
         .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
         .addParameter(sourceClassName, propertyName)
         .addStatement("$T $L = new $T()", dtoClassName, propertyName + parameter.suffix(), dtoClassName);
 
     // to method
-    MethodSpec.Builder toMethod = MethodSpec
-        .methodBuilder("to")
+    MethodSpec.Builder toMethod = MethodSpec.methodBuilder("to")
         .returns(sourceClassName)
         .addModifiers(Modifier.PUBLIC)
         .addStatement("$T $L = new $T()", sourceClassName, propertyName, sourceClassName);
 
     if (parameter.hasFlag(DtoPlugin.WITH_MAPPER_FLAG)) {
-      toMethod.addModifiers(Modifier.STATIC).addParameter(dtoClassName, propertyName);
+      toMethod
+          .addModifiers(Modifier.STATIC)
+          .addParameter(dtoClassName, propertyName + parameter.suffix());
+    } else {
+      toMethod.addParameter(dtoClassName, propertyName);
     }
 
     TypeSpec.Builder dtoTypeBuilder = TypeSpec.classBuilder(dtoClassName).addModifiers(Modifier.PUBLIC);
@@ -89,10 +91,10 @@ public class DtoDefaultGenerator implements PluginGenerator {
 
     List<GeneratedSource> result = new ArrayList<>();
     result.add(new GeneratedSourceSupport()
-        .setFilename(classApi.simpleName() + parameter.suffix())
+        .setFilename(format("%s%s.java", classApi.simpleName(), parameter.suffix()))
         .setContent(JavaFile.builder(classApi.packageName(), dtoTypeBuilder.build()).build().toString())
         .setPackageName(getPackage(parameter, classApi, DtoPlugin.Q_DTO_PACKAGE))
-        .setPath(classApi.getSourceClassPath()));
+        .setPath(classApi.sourceClassPath()));
 
     if (parameter.hasFlag(DtoPlugin.WITH_MAPPER_FLAG)) {
       // mapper class
@@ -108,9 +110,9 @@ public class DtoDefaultGenerator implements PluginGenerator {
       String mapperContent = JavaFile.builder(mapperPackage, mapperType).build().toString();
       result.add(new GeneratedSourceSupport()
           .setContent(mapperContent)
-          .setFilename(classApi.simpleName() + parameter.suffix() + "Mapper")
+          .setFilename(format("%s%sMapper.java", classApi.simpleName(), parameter.suffix()))
           .setPackageName(mapperPackage)
-          .setPath(classApi.getSourceClassPath()));
+          .setPath(classApi.sourceClassPath()));
     }
     return result;
   }
