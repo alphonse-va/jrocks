@@ -59,7 +59,7 @@ export class SignupComponent implements OnInit, OnDestroy {
     this.form = this.formBuilder.group({
       username: ['', Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(64)])],
       password: ['', Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(32)])],
-      firstname:[''],
+      firstname: [''],
       lastname: ['']
     });
   }
@@ -85,14 +85,14 @@ export class SignupComponent implements OnInit, OnDestroy {
     .delay(1000)
     .subscribe(data => {
       console.log(data);
-      this.authService.login(this.form.value).subscribe(data =>{
+      this.authService.login(this.form.value).subscribe(data => {
         this.userService.getMyInfo().subscribe();
       })
       this.router.navigate([this.returnUrl]);
     },
     error => {
       this.submitted = false;
-      console.log("Sign up error" + JSON.stringify(error));
+      console.log('Sign up error' + JSON.stringify(error));
       this.notification = { msgType: 'error', msgBody: error['error'].errorMessage };
     });
 
