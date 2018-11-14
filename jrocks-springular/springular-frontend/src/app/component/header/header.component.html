@@ -3,10 +3,32 @@
     <img alt="Angular-Spring-Starter" class="app-angular-logo" src="assets/image/angular-white-transparent.svg">
     <span>Angular-Spring-Starter</span>
   </button>
-  
-
 
   <div class="right">
+    <div fxFlex="1 1 auto" fxLayout="row" fxLayoutAlign="flex-end center">
+      <button
+        class="greeting-button"
+        *ngIf="hasSignedIn()"
+        mat-button mat-ripple
+        [matMenuTriggerFor]="entityMenu">
+        <span>Entities</span>
+      </button>
+      <button
+        class="greeting-hamburger"
+        *ngIf="hasSignedIn()"
+        mat-icon-button mat-ripple
+        [matMenuTriggerFor]="entityMenu">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <mat-menu #entityMenu
+                class="app-header-entityMenu"
+                yposition="below"
+                [overlapTrigger]="false">
+        <app-entity-menu ></app-entity-menu>
+      </mat-menu>
+    </div>
+
+
     <div fxFlex="1 1 auto" fxLayout="row" fxLayoutAlign="flex-end center">
       <button *ngIf="!hasSignedIn()" routerLink="/signup" mat-button mat-ripple>
         <span>Sign up</span>

@@ -30,7 +30,7 @@ import {
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-describe('AppComponent', () => {
+describe('ExampleComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [

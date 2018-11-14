@@ -1,51 +1,49 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, APP_INITIALIZER} from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
-import { HttpClientModule } from '@angular/common/http';
+import {BrowserModule} from '@angular/platform-browser';
+import {APP_INITIALIZER, NgModule} from '@angular/core';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {HttpModule} from '@angular/http';
+import {HttpClientModule} from '@angular/common/http';
 // material
 import {
   MatButtonModule,
-  MatMenuModule,
-  MatIconModule,
-  MatToolbarModule,
-  MatTooltipModule,
   MatCardModule,
-  MatInputModule,
+  MatDialogModule,
+  MatIconModule,
   MatIconRegistry,
-  MatProgressSpinnerModule
+  MatInputModule,
+  MatMenuModule,
+  MatPaginatorModule,
+  MatProgressSpinnerModule,
+  MatSortModule,
+  MatTableModule,
+  MatToolbarModule,
+  MatTooltipModule
 } from '@angular/material';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app-routing.module';
-import { HomeComponent } from './home';
-import { LoginComponent } from './login';
-import { LoginGuard, GuestGuard, AdminGuard } from './guard';
-import { NotFoundComponent } from './not-found';
-import { AccountMenuComponent } from './component/header/account-menu/account-menu.component';
-import {
-  HeaderComponent,
-  ApiCardComponent,
-  FooterComponent,
-  GithubComponent
-} from './component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {FlexLayoutModule} from '@angular/flex-layout';
+import {AppComponent} from './app.component';
+import {AppRoutingModule} from './app-routing.module';
+import {HomeComponent} from './home';
+import {LoginComponent} from './login';
+import {AdminGuard, GuestGuard, LoginGuard} from './guard';
+import {NotFoundComponent} from './not-found';
+import {AccountMenuComponent} from './component/header/account-menu/account-menu.component';
+import {ApiCardComponent, FooterComponent, GithubComponent, HeaderComponent} from './component';
 
-import {
-  ApiService,
-  AuthService,
-  UserService,
-  FooService,
-  ConfigService
-} from './service';
-import { ChangePasswordComponent } from './change-password/change-password.component';
-import { ForbiddenComponent } from './forbidden/forbidden.component';
-import { AdminComponent } from './admin/admin.component';
-import { SignupComponent } from './signup/signup.component';
-import { EntityMenuComponent } from './component/header/entity-menu/entity-menu.component';
+import {ApiService, AuthService, ConfigService, FooService, UserService} from './service';
+import {ChangePasswordComponent} from './change-password/change-password.component';
+import {ForbiddenComponent} from './forbidden/forbidden.component';
+import {AdminComponent} from './admin/admin.component';
+import {SignupComponent} from './signup/signup.component';
+import {EntityMenuComponent} from './component/header/entity-menu/entity-menu.component';
+import {ExampleComponent} from "./example/example.component";
+import {AddDialogComponent} from "./example/dialogs/add/add.dialog.component";
+import {EditDialogComponent} from "./example/dialogs/edit/edit.dialog.component";
+import {DeleteDialogComponent} from "./example/dialogs/delete/delete.dialog.component";
+import {DataService} from "./example/services/data.service";
 
 export function initUserFactory(userService: UserService) {
-    return () => userService.initUser();
+  return () => userService.initUser();
 }
 
 @NgModule({
@@ -63,7 +61,16 @@ export function initUserFactory(userService: UserService) {
     ForbiddenComponent,
     AdminComponent,
     SignupComponent,
-    EntityMenuComponent
+    EntityMenuComponent,
+    ExampleComponent,
+    AddDialogComponent,
+    EditDialogComponent,
+    DeleteDialogComponent
+  ],
+  entryComponents: [
+    AddDialogComponent,
+    EditDialogComponent,
+    DeleteDialogComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -79,6 +86,10 @@ export function initUserFactory(userService: UserService) {
     MatIconModule,
     MatInputModule,
     MatToolbarModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatDialogModule,
     MatCardModule,
     MatProgressSpinnerModule,
     FlexLayoutModule
@@ -93,6 +104,7 @@ export function initUserFactory(userService: UserService) {
     UserService,
     ConfigService,
     MatIconRegistry,
+    DataService,
     {
       'provide': APP_INITIALIZER,
       'useFactory': initUserFactory,
@@ -102,4 +114,5 @@ export function initUserFactory(userService: UserService) {
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
