@@ -20,11 +20,6 @@ public class BuilderDefaultGenerator implements PluginGenerator {
   private String version;
 
   @Override
-  public String name() {
-    return "default";
-  }
-
-  @Override
   public String description() {
     return "Builder default generator";
   }

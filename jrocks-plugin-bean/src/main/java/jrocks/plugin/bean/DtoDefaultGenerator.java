@@ -21,11 +21,6 @@ public class DtoDefaultGenerator implements PluginGenerator {
   private String version;
 
   @Override
-  public String name() {
-    return "default";
-  }
-
-  @Override
   public String description() {
     return "Dto default generator";
   }

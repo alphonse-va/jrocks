@@ -13,6 +13,10 @@ public interface JRocksPlugin extends JRocksBean {
 
   List<String> keys();
 
+  String defaultSuffix();
+
+  List<PluginGenerator> generators();
+
   default String group() {
     return "> JRocks Plugins";
   }
@@ -24,9 +28,5 @@ public interface JRocksPlugin extends JRocksBean {
   default Map<Object, Question> additionalQuestions(ClassParameterApi parameter, ClassApi classInfo) {
     return new HashMap<>();
   }
-
-  String defaultSuffix();
-
-  List<PluginGenerator> generators();
 }
 
