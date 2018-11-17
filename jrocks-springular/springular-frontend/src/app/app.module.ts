@@ -36,11 +36,8 @@ import {ForbiddenComponent} from './forbidden/forbidden.component';
 import {AdminComponent} from './admin/admin.component';
 import {SignupComponent} from './signup/signup.component';
 import {EntityMenuComponent} from './component/header/entity-menu/entity-menu.component';
-import {ExampleComponent} from "./example/example.component";
-import {AddDialogComponent} from "./example/dialogs/add/add.dialog.component";
-import {EditDialogComponent} from "./example/dialogs/edit/edit.dialog.component";
-import {DeleteDialogComponent} from "./example/dialogs/delete/delete.dialog.component";
-import {DataService} from "./example/services/data.service";
+import { ExampleComponent } from './entity/example/example.component';
+import {ExampleService} from "./service/example.service";
 
 export function initUserFactory(userService: UserService) {
   return () => userService.initUser();
@@ -63,14 +60,6 @@ export function initUserFactory(userService: UserService) {
     SignupComponent,
     EntityMenuComponent,
     ExampleComponent,
-    AddDialogComponent,
-    EditDialogComponent,
-    DeleteDialogComponent
-  ],
-  entryComponents: [
-    AddDialogComponent,
-    EditDialogComponent,
-    DeleteDialogComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -102,9 +91,9 @@ export function initUserFactory(userService: UserService) {
     AuthService,
     ApiService,
     UserService,
+    ExampleService,
     ConfigService,
     MatIconRegistry,
-    DataService,
     {
       'provide': APP_INITIALIZER,
       'useFactory': initUserFactory,

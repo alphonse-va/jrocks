@@ -1,0 +1,43 @@
+<div class="example">
+
+  <h2>Example</h2>
+
+  <mat-form-field>
+    <input matInput placeholder="Search examples" #input>
+  </mat-form-field>
+
+  <div class="spinner-container" *ngIf="dataSource.loading$ | async">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <mat-table class="lessons-table mat-elevation-z8" [dataSource]="dataSource"
+             matSort matSortActive="username" matSortDirection="asc" matSortDisableClear>
+
+    <ng-container matColumnDef="username">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Username</mat-header-cell>
+      <mat-cell *matCellDef="let example">{{example.username}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="firstname">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Firstname</mat-header-cell>
+      <mat-cell class="description-cell" *matCellDef="let example">{{example.firstname}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="lastname">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Lastname</mat-header-cell>
+      <mat-cell class="duration-cell" *matCellDef="let example">{{example.lastname}}</mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </mat-table>
+
+  <mat-paginator [length]="dataSource.numberOfElements$ | async" [pageSize]="3"
+                 [pageSizeOptions]="[3, 5, 10]"></mat-paginator>
+</div>
+
+
+
+
+
+

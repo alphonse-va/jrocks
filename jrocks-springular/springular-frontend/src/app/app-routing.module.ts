@@ -10,7 +10,7 @@ import { NotFoundComponent } from './not-found';
 import { ChangePasswordComponent } from './change-password';
 import { ForbiddenComponent } from './forbidden';
 import { SignupComponent } from './signup';
-import {ExampleComponent} from "./example/example.component";
+import {ExampleComponent} from "./entity/example/example.component";
 
 export const routes: Routes = [
   {
