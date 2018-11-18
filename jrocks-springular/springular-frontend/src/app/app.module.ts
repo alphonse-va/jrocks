@@ -38,6 +38,7 @@ import {SignupComponent} from './signup/signup.component';
 import {EntityMenuComponent} from './component/header/entity-menu/entity-menu.component';
 import { ExampleComponent } from './entity/example/example.component';
 import {ExampleService} from "./service/example.service";
+import { EditComponent } from './entity/example/edit/edit.component';
 
 export function initUserFactory(userService: UserService) {
   return () => userService.initUser();
@@ -60,6 +61,7 @@ export function initUserFactory(userService: UserService) {
     SignupComponent,
     EntityMenuComponent,
     ExampleComponent,
+    EditComponent,
   ],
   imports: [
     BrowserAnimationsModule,
@@ -101,7 +103,9 @@ export function initUserFactory(userService: UserService) {
       'multi': true
     }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [EditComponent]
+
 })
 export class AppModule {
 }

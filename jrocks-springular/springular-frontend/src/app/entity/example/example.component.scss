@@ -1,3 +1,5 @@
+@import "src/variables.scss";
+
 .spinner-container mat-spinner {
   margin: 130px auto 0 auto;
 }
@@ -5,4 +7,7 @@
   height: 60px;
   width: 60px;
   position: fixed;
+}
+.table-action {
+  overflow: initial;
 }

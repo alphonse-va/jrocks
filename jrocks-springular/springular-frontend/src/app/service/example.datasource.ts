@@ -14,9 +14,9 @@ export class ExampleDataSource implements DataSource<Example> {
 
   private numberOfElementsSubject = new BehaviorSubject<number>(0);
 
-  public loading$ = this.loadingSubject.asObservable();
+  private _loading$ = this.loadingSubject.asObservable();
 
-  public numberOfElements$ = this.numberOfElementsSubject.asObservable();
+  private _numberOfElements$ = this.numberOfElementsSubject.asObservable();
 
   constructor(private exampleService: ExampleService) {
   }
@@ -34,8 +34,8 @@ export class ExampleDataSource implements DataSource<Example> {
       finalize(() => this.loadingSubject.next(false))
     )
       .subscribe(result => {
-        this.examplesSubject.next(result['examples'])
-        this.numberOfElementsSubject.next(result['count'])
+        this.examplesSubject.next(result['examples']);
+        this.numberOfElementsSubject.next(result['count']);
       });
 
   }
@@ -49,6 +49,14 @@ export class ExampleDataSource implements DataSource<Example> {
     this.examplesSubject.complete();
     this.loadingSubject.complete();
     this.numberOfElementsSubject.complete();
+  }
+
+  get loading$(): Observable<boolean> {
+    return this._loading$;
+  }
+
+  get numberOfElements$(): Observable<number> {
+    return this._numberOfElements$;
   }
 }
 
