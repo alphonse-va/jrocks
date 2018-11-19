@@ -39,7 +39,7 @@ export class ExampleComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.dataSource = new ExampleDataSource(this.coursesService);
-    this.dataSource.loadExampples('', 'username', 'asc', 0, 5);
+    this.dataSource.loadExampples('', 'asc', 'username', 0, 5);
   }
 
   ngAfterViewInit() {
