@@ -9,6 +9,7 @@ import {ExampleDataSource} from "../../service/example.datasource";
 import {Example} from "../../model/example";
 import {EditComponent} from "./edit/edit.component";
 import {DeleteComponent} from "./delete/delete.component";
+import {NewComponent} from "./new/new.component";
 
 
 @Component({
@@ -20,7 +21,7 @@ export class ExampleComponent implements OnInit, AfterViewInit {
 
   dataSource: ExampleDataSource;
 
-  displayedColumns = ["username", "firstname", "lastname", "actions"];
+  displayedColumns = ["id", "username", "firstname", "lastname", "actions"];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -72,6 +73,15 @@ export class ExampleComponent implements OnInit, AfterViewInit {
       this.sort.active,
       this.paginator.pageIndex,
       this.paginator.pageSize);
+  }
+
+  newExample() {
+    const dialogConfig = new MatDialogConfig();
+    const dialogRef = this.dialog.open(NewComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(val => {
+      this.paginator._changePageSize(this.paginator.pageSize);
+      this.snackBar.open('Example ' + val.username + ' added with success!');
+    });
   }
 
   editExample({id, firstname, lastname, username}: Example) {

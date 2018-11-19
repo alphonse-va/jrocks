@@ -39,6 +39,18 @@ export class ExampleService {
     }
   }
 
+  saveNewExample(example: Example) {
+    const header = new HttpHeaders({
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    });
+    this.apiService.post("/api/example", example, header)
+      .subscribe(saved => {
+        example = saved;
+      });
+  }
+
+
   saveExample(example: Example) {
     const header = new HttpHeaders({
       'Accept': 'application/json',

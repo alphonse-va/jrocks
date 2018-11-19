@@ -1,57 +1,65 @@
-<mat-card class="example-card mat-elevation-z8">
+<mat-card class="example-card mat-elevation-z4">
 
-  <mat-card-header>
-    <mat-card-title>Examples
-    </mat-card-title>
+  <mat-card-header class="mat-elevation-z2">
+    <mat-card-title>Examples</mat-card-title>
     <mat-card-subtitle>Managing examples</mat-card-subtitle>
   </mat-card-header>
-  <div class="example">
 
-    <mat-form-field>
-      <input matInput placeholder="Search examples" autocomplete="off" #input>
-      <div class="spinner-container" *ngIf="dataSource.loading$ | async">
-        <mat-spinner [diameter]="20"></mat-spinner>
-      </div>
-    </mat-form-field>
-    <div class="mat-elevation-z8">
+  <mat-form-field>
+    <input matInput placeholder="Search examples" autocomplete="off" #input>
+  </mat-form-field>
 
-      <mat-table class="example-table" [dataSource]="dataSource"
-                 matSort matSortActive="username" matSortDirection="asc" matSortDisableClear>
+  <div class="spinner-container" *ngIf="dataSource.loading$ | async">
+    <mat-spinner [diameter]="20"></mat-spinner>
+  </div>
 
-        <ng-container matColumnDef="username">
-          <mat-header-cell *matHeaderCellDef mat-sort-header>Username</mat-header-cell>
-          <mat-cell *matCellDef="let example">{{example.username}}</mat-cell>
-        </ng-container>
+  <button class="add-button" mat-fab (click)="newExample(row)">
+    <mat-icon>add</mat-icon>
+  </button>
 
-        <ng-container matColumnDef="firstname">
-          <mat-header-cell *matHeaderCellDef mat-sort-header>Firstname</mat-header-cell>
-          <mat-cell *matCellDef="let example">{{example.firstname}}</mat-cell>
-        </ng-container>
+  <div class="mat-elevation-z4">
 
-        <ng-container matColumnDef="lastname">
-          <mat-header-cell *matHeaderCellDef mat-sort-header>Lastname</mat-header-cell>
-          <mat-cell *matCellDef="let example">{{example.lastname}}</mat-cell>
-        </ng-container>
+    <mat-table class="example-table" [dataSource]="dataSource"
+               matSort matSortActive="username" matSortDirection="asc" matSortDisableClear>
 
-        <ng-container matColumnDef="actions">
-          <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
-          <mat-cell *matCellDef="let row">
-            <button (click)="editExample(row)" class="action-button" mat-icon-button mat-list-icon>
-              <mat-icon class="mat-accent">edit</mat-icon>
-            </button>
-            <button (click)="deleteExample(row)" class="action-button" mat-icon-button mat-list-icon>
-              <mat-icon class="mat-accent">delete</mat-icon>
-            </button>
-          </mat-cell>
-        </ng-container>
-        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+        <mat-cell *matCellDef="let example">{{example.id}}</mat-cell>
+      </ng-container>
 
-        <mat-row *matRowDef="let row; columns: displayedColumns"
-                 (mouseover)="highlightedRow = row"
-                 ></mat-row>
-      </mat-table>
+      <ng-container matColumnDef="username">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Username</mat-header-cell>
+        <mat-cell *matCellDef="let example">{{example.username}}</mat-cell>
+      </ng-container>
 
-      <mat-paginator [length]="dataSource.numberOfElements$ | async"  [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
-    </div>
+      <ng-container matColumnDef="firstname">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Firstname</mat-header-cell>
+        <mat-cell *matCellDef="let example">{{example.firstname}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="lastname">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Lastname</mat-header-cell>
+        <mat-cell *matCellDef="let example">{{example.lastname}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <button (click)="editExample(row)" class="action-button" mat-icon-button mat-list-icon>
+            <mat-icon class="mat-accent">edit</mat-icon>
+          </button>
+          <button (click)="deleteExample(row)" class="action-button" mat-icon-button mat-list-icon>
+            <mat-icon class="mat-accent">delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+      <mat-row *matRowDef="let row; columns: displayedColumns"
+               (mouseover)="highlightedRow = row"
+      ></mat-row>
+    </mat-table>
+    <mat-paginator [length]="dataSource.numberOfElements$ | async" [pageSize]="5"
+                   [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
   </div>
 </mat-card>

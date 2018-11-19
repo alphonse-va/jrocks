@@ -66,6 +66,7 @@ export function initUserFactory(userService: UserService) {
     SignupComponent,
     EntityMenuComponent,
     ExampleComponent,
+    NewComponent,
     EditComponent,
     DeleteComponent
   ],
@@ -114,7 +115,7 @@ export function initUserFactory(userService: UserService) {
     {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}}
   ],
   bootstrap: [AppComponent],
-  entryComponents: [EditComponent, DeleteComponent]
+  entryComponents: [NewComponent, EditComponent, DeleteComponent]
 
 })
 export class AppModule {
