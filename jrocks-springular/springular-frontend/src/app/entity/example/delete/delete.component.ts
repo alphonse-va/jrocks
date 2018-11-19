@@ -2,42 +2,34 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Example} from "../../../model/example";
+import {UserService} from "../../../service";
 import {ExampleService} from "../../../service/example.service";
 
 
 @Component({
   selector: 'app-edit',
-  templateUrl: './edit.component.html',
-  styleUrls: ['./edit.component.scss']
+  templateUrl: './delete.component.html',
+  styleUrls: ['./delete.component.scss']
 })
-export class EditComponent implements OnInit {
+export class DeleteComponent implements OnInit {
 
-  form: FormGroup;
-  username: string;
+  id: number;
 
   constructor(
     private exampleService: ExampleService,
     private fb: FormBuilder,
-    private dialogRef: MatDialogRef<EditComponent>,
+    private dialogRef: MatDialogRef<DeleteComponent>,
     @Inject(MAT_DIALOG_DATA) {id, firstname, lastname, username}: Example) {
 
-    this.username = username;
-
-    this.form = fb.group({
-      id: [id, Validators.required],
-      firstname: [firstname, Validators.required],
-      lastname: [lastname, Validators.required],
-      username: [username, Validators.required],
-    });
-
+    this.id = id;
   }
 
   ngOnInit() {
   }
 
-  save() {
-    this.exampleService.saveExample(this.form.value);
-    this.dialogRef.close(this.form.value);
+  delete() {
+    this.exampleService.deleteExample(this.id);
+    this.dialogRef.close("Delete example with id " + this.id);
   }
 
   close() {

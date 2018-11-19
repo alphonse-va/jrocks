@@ -3,6 +3,8 @@ import {Observable} from "rxjs/Observable";
 import {Example} from "../model/example";
 import {ApiService} from "./api.service";
 import {map} from "rxjs/operators";
+import {HttpHeaders} from "@angular/common/http";
+import {logger} from "codelyzer/util/logger";
 
 
 @Injectable()
@@ -24,7 +26,7 @@ export class ExampleService {
         "page": pageNumber.toString(),
         "sort": sortField + "," + sortOrder
       }).pipe(
-        map(res => new ExampleRestResult(res['_embedded']['examples'], res['page'].totalElements))
+        map(res => new ExampleRestResult(res['_embedded']['examples'], res['page']['totalElements']))
       );
     } else {
       return this.apiService.get("/api/example", {
@@ -32,13 +34,30 @@ export class ExampleService {
         "page": pageNumber.toString(),
         "sort": sortField + "," + sortOrder
       }).pipe(
-        map(res => new ExampleRestResult(res['_embedded']['examples'], res['page'].totalElements))
+        map(res => new ExampleRestResult(res['_embedded']['examples'], res['page']['totalElements']))
       );
     }
-
   }
 
+  saveExample(example: Example) {
+    const header = new HttpHeaders({
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    });
+    this.apiService.put("/api/example/" + example.id, example, header)
+      .subscribe(saved => {
+        example = saved;
+        
+      
+      });
+  }
 
+  deleteExample(id: number) {
+    this.apiService.delete("/api/example/" + id)
+      .subscribe(saved => {
+        console.log("Example with id " + id  + " deleted with success");
+      });
+  }
 }
 
 export class ExampleRestResult {

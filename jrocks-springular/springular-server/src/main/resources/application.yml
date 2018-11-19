@@ -9,5 +9,7 @@ jwt:
 
 logging:
   level:
-    org.springframework.web: ERROR
+    org.springframework.web: INFO
+    org.hibernate: INFO
+    org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
     com.bfwg: DEBUG

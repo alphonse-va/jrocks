@@ -34,12 +34,12 @@
         </ng-container>
 
         <ng-container matColumnDef="actions">
-          <mat-header-cell *matHeaderCellDef> Actions</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
           <mat-cell *matCellDef="let row">
-            <button class="action-button" mat-icon-button mat-list-icon>
+            <button (click)="editExample(row)" class="action-button" mat-icon-button mat-list-icon>
               <mat-icon class="mat-accent">edit</mat-icon>
             </button>
-            <button class="action-button" mat-icon-button mat-list-icon>
+            <button (click)="deleteExample(row)" class="action-button" mat-icon-button mat-list-icon>
               <mat-icon class="mat-accent">delete</mat-icon>
             </button>
           </mat-cell>
@@ -48,10 +48,10 @@
 
         <mat-row *matRowDef="let row; columns: displayedColumns"
                  (mouseover)="highlightedRow = row"
-                 (click)="editExample(row)"></mat-row>
+                 ></mat-row>
       </mat-table>
 
-      <mat-paginator [length]="dataSource.numberOfElements$ | async"  [pageSize]="3" [pageSizeOptions]="[3, 5, 10]"></mat-paginator>
+      <mat-paginator [length]="dataSource.numberOfElements$ | async"  [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
     </div>
   </div>
 </mat-card>

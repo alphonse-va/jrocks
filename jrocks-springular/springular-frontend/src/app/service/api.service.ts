@@ -43,8 +43,8 @@ export class ApiService {
     return this.request(path, body, RequestMethod.Post, customHeaders);
   }
 
-  put(path: string, body: any): Observable<any> {
-    return this.request(path, body, RequestMethod.Put);
+  put(path: string, body: any, customHeaders?: HttpHeaders): Observable<any> {
+    return this.request(path, body, RequestMethod.Put,customHeaders);
   }
 
   delete(path: string, body?: any): Observable<any> {

@@ -8,6 +8,7 @@ import {fromEvent} from 'rxjs/observable/fromEvent';
 import {ExampleDataSource} from "../../service/example.datasource";
 import {Example} from "../../model/example";
 import {EditComponent} from "./edit/edit.component";
+import {DeleteComponent} from "./delete/delete.component";
 
 
 @Component({
@@ -36,7 +37,7 @@ export class ExampleComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.dataSource = new ExampleDataSource(this.coursesService);
-    this.dataSource.loadExampples('', 'username', 'asc', 0, 3);
+    this.dataSource.loadExampples('', 'username', 'asc', 0, 5);
   }
 
   ngAfterViewInit() {
@@ -72,17 +73,24 @@ export class ExampleComponent implements OnInit, AfterViewInit {
       this.paginator.pageSize);
   }
 
-  editExample({firstname, lastname, username}: Example) {
-
+  editExample({id, firstname, lastname, username}: Example) {
     const dialogConfig = new MatDialogConfig();
-
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-
-    dialogConfig.data = {firstname, lastname, username};
-
+    dialogConfig.data = {id, firstname, lastname, username};
     const dialogRef = this.dialog.open(EditComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(val => {
+      this.paginator._changePageSize(this.paginator.pageSize);
+      console.log("Edit example dialog output:", val)
+    });
+  }
 
-    dialogRef.afterClosed().subscribe(val => console.log("Edit example dialog output:", val));
+  deleteExample({id, firstname, lastname, username}: Example) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {id, firstname, lastname, username};
+
+    const dialogRef = this.dialog.open(DeleteComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(val => {
+      this.paginator._changePageSize(this.paginator.pageSize);
+      console.log("Edit example dialog output:", val)
+    });
   }
 }

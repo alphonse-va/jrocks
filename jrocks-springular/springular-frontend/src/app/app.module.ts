@@ -40,6 +40,7 @@ import { ExampleComponent } from './entity/example/example.component';
 import {ExampleService} from "./service/example.service";
 import { EditComponent } from './entity/example/edit/edit.component';
 import { LayoutModule } from '@angular/cdk/layout';
+import {DeleteComponent} from "./entity/example/delete/delete.component";
 
 export function initUserFactory(userService: UserService) {
   return () => userService.initUser();
@@ -62,7 +63,8 @@ export function initUserFactory(userService: UserService) {
     SignupComponent,
     EntityMenuComponent,
     ExampleComponent,
-    EditComponent
+    EditComponent,
+    DeleteComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -107,7 +109,7 @@ export function initUserFactory(userService: UserService) {
     }
   ],
   bootstrap: [AppComponent],
-  entryComponents: [EditComponent]
+  entryComponents: [EditComponent, DeleteComponent]
 
 })
 export class AppModule {
