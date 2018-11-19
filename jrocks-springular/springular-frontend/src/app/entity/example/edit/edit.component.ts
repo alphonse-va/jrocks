@@ -36,8 +36,11 @@ export class EditComponent implements OnInit {
   }
 
   save() {
-    this.exampleService.saveExample(this.form.value);
-    this.dialogRef.close(this.form.value);
+    if (this.form.valid) {
+      this.exampleService.saveExample(this.form.value);
+      this.dialogRef.close(this.form.value);
+    }
+
   }
 
   close() {

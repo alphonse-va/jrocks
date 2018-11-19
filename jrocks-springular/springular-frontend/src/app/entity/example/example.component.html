@@ -10,7 +10,7 @@
   </mat-form-field>
 
   <div class="spinner-container" *ngIf="dataSource.loading$ | async">
-    <mat-spinner [diameter]="20"></mat-spinner>
+    <mat-spinner [diameter]="20" [color]="white"></mat-spinner>
   </div>
 
   <button class="add-button" mat-fab (click)="newExample(row)">

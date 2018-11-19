@@ -55,8 +55,7 @@ export class ExampleComponent implements OnInit, AfterViewInit {
 
           this.loadExamplesPage();
         })
-      )
-      .subscribe();
+      ).subscribe();
 
     merge(this.sort.sortChange, this.paginator.page)
       .pipe(
@@ -100,6 +99,9 @@ export class ExampleComponent implements OnInit, AfterViewInit {
 
     const dialogRef = this.dialog.open(DeleteComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(val => {
+
+      // workaround for new added entry
+      this.input.nativeElement.value = username;
       this.paginator._changePageSize(this.paginator.pageSize);
       this.snackBar.open('Example ' + firstname + " " + lastname + ' deleted with success!', 'Close',
         {

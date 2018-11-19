@@ -44,6 +44,8 @@ import {ExampleService} from "./service/example.service";
 import {EditComponent} from './entity/example/edit/edit.component';
 import {LayoutModule} from '@angular/cdk/layout';
 import {DeleteComponent} from "./entity/example/delete/delete.component";
+import {NewCommand} from "@angular/cli/commands/new-impl";
+import {NewComponent} from "./entity/example/new/new.component";
 
 export function initUserFactory(userService: UserService) {
   return () => userService.initUser();
