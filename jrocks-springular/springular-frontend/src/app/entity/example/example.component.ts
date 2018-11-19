@@ -78,7 +78,9 @@ export class ExampleComponent implements OnInit, AfterViewInit {
     this.dialog.open(NewComponent).afterClosed()
       .subscribe(val => {
         this.paginator._changePageSize(this.paginator.pageSize);
-        this.snackBar.open('Example ' + val.username + ' added with success!');
+        if (val) {
+          this.snackBar.open('Example ' + val.username + ' added with success!');
+        }
       });
   }
 
@@ -88,8 +90,10 @@ export class ExampleComponent implements OnInit, AfterViewInit {
 
     this.dialog.open(EditComponent, dialogConfig).afterClosed()
       .subscribe(val => {
-        this.paginator._changePageSize(this.paginator.pageSize);
-        this.snackBar.open('Example ' + firstname + " " + lastname + ' saved with success!');
+        if (val) {
+          this.paginator._changePageSize(this.paginator.pageSize);
+          this.snackBar.open('Example ' + firstname + " " + lastname + ' saved with success!');
+        }
       });
   }
 
@@ -99,12 +103,10 @@ export class ExampleComponent implements OnInit, AfterViewInit {
 
     this.dialog.open(DeleteExampleDialogComponent, dialogConfig).afterClosed()
       .subscribe(val => {
-        this.paginator._changePageSize(this.paginator.pageSize);
-        this.snackBar.open('Example ' + firstname + " " + lastname + ' deleted with success!', 'Close',
-          {
-            duration: 2000,
-            panelClass: ['accent-snackbar']
-          });
+        if (val) {
+          this.paginator._changePageSize(this.paginator.pageSize);
+          this.snackBar.open('Example ' + firstname + " " + lastname + ' deleted with success!', 'Close');
+        }
       });
   }
 
