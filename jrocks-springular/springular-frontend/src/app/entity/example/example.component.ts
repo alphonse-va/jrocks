@@ -83,10 +83,6 @@ export class ExampleComponent implements OnInit, AfterViewInit {
 
     const dialogRef = this.dialog.open(EditComponent, dialogConfig);
 
-
-    dialogRef.afterClosed().subscribe(
-      val => console.log("Dialog output:", val)
-    );
-
+    dialogRef.afterClosed().subscribe(val => console.log("Edit example dialog output:", val));
   }
 }

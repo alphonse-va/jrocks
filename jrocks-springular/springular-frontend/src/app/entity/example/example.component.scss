@@ -1,13 +1,19 @@
 @import "src/variables.scss";
 
+// spinner
 .spinner-container mat-spinner {
-  margin: 130px auto 0 auto;
+  position: absolute;
+  top: 7px;
+  right: 10px;
 }
-.spinner-container {
-  height: 60px;
-  width: 60px;
-  position: fixed;
+
+// actions
+.mat-column-actions {
+  flex: 0 0 100px;
 }
-.table-action {
-  overflow: initial;
+.mat-column-actions > button {
+  padding: 0;
+  width: 30px;
 }
+
+

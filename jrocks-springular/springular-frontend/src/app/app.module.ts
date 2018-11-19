@@ -17,7 +17,7 @@ import {
   MatSortModule,
   MatTableModule,
   MatToolbarModule,
-  MatTooltipModule
+  MatTooltipModule, MatGridListModule
 } from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FlexLayoutModule} from '@angular/flex-layout';
@@ -62,6 +62,7 @@ export function initUserFactory(userService: UserService) {
     EntityMenuComponent,
     ExampleComponent,
     EditComponent,
+    ExampleDashboardComponent,
   ],
   imports: [
     BrowserAnimationsModule,
@@ -83,7 +84,9 @@ export function initUserFactory(userService: UserService) {
     MatDialogModule,
     MatCardModule,
     MatProgressSpinnerModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MatGridListModule,
+    LayoutModule
   ],
   providers: [
     LoginGuard,
