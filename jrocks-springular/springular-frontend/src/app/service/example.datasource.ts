@@ -29,8 +29,8 @@ export class ExampleDataSource implements DataSource<Example> {
 
     this.loadingSubject.next(true);
 
-    this.exampleService.findExamples(filter, sortDirection, sortField, pageIndex, pageSize).pipe(
-      catchError(() => of([])),
+    this.exampleService.findExamples(filter, sortDirection, sortField, pageIndex, pageSize)
+      .pipe(catchError(() => of([])),
       finalize(() => this.loadingSubject.next(false))
     )
       .subscribe(result => {

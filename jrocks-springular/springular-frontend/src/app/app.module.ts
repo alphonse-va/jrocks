@@ -5,19 +5,22 @@ import {HttpModule} from '@angular/http';
 import {HttpClientModule} from '@angular/common/http';
 // material
 import {
+  MAT_SNACK_BAR_DEFAULT_OPTIONS,
   MatButtonModule,
   MatCardModule,
   MatDialogModule,
+  MatGridListModule,
   MatIconModule,
   MatIconRegistry,
   MatInputModule,
   MatMenuModule,
   MatPaginatorModule,
   MatProgressSpinnerModule,
+  MatSnackBarModule,
   MatSortModule,
   MatTableModule,
   MatToolbarModule,
-  MatTooltipModule, MatGridListModule
+  MatTooltipModule
 } from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FlexLayoutModule} from '@angular/flex-layout';
@@ -36,10 +39,10 @@ import {ForbiddenComponent} from './forbidden/forbidden.component';
 import {AdminComponent} from './admin/admin.component';
 import {SignupComponent} from './signup/signup.component';
 import {EntityMenuComponent} from './component/header/entity-menu/entity-menu.component';
-import { ExampleComponent } from './entity/example/example.component';
+import {ExampleComponent} from './entity/example/example.component';
 import {ExampleService} from "./service/example.service";
-import { EditComponent } from './entity/example/edit/edit.component';
-import { LayoutModule } from '@angular/cdk/layout';
+import {EditComponent} from './entity/example/edit/edit.component';
+import {LayoutModule} from '@angular/cdk/layout';
 import {DeleteComponent} from "./entity/example/delete/delete.component";
 
 export function initUserFactory(userService: UserService) {
@@ -86,6 +89,7 @@ export function initUserFactory(userService: UserService) {
     MatDialogModule,
     MatCardModule,
     MatProgressSpinnerModule,
+    MatSnackBarModule,
     FlexLayoutModule,
     MatGridListModule,
     LayoutModule
@@ -106,7 +110,8 @@ export function initUserFactory(userService: UserService) {
       'useFactory': initUserFactory,
       'deps': [UserService],
       'multi': true
-    }
+    },
+    {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}}
   ],
   bootstrap: [AppComponent],
   entryComponents: [EditComponent, DeleteComponent]

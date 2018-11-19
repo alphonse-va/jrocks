@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-import {MatDialog, MatDialogConfig, MatPaginator, MatSort} from "@angular/material";
+import {MatDialog, MatDialogConfig, MatPaginator, MatSnackBar, MatSnackBarConfig, MatSort} from "@angular/material";
 import {ExampleService} from "../../service/example.service";
 import {debounceTime, distinctUntilChanged, tap} from 'rxjs/operators';
 import {merge} from "rxjs/observable/merge";
@@ -30,7 +30,8 @@ export class ExampleComponent implements OnInit, AfterViewInit {
 
   constructor(private route: ActivatedRoute,
               private coursesService: ExampleService,
-              private dialog: MatDialog
+              private dialog: MatDialog,
+              private snackBar: MatSnackBar,
   ) {
 
   }
@@ -79,7 +80,7 @@ export class ExampleComponent implements OnInit, AfterViewInit {
     const dialogRef = this.dialog.open(EditComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(val => {
       this.paginator._changePageSize(this.paginator.pageSize);
-      console.log("Edit example dialog output:", val)
+      this.snackBar.open('Example ' + firstname + " " + lastname + ' saved with success!');
     });
   }
 
@@ -90,7 +91,11 @@ export class ExampleComponent implements OnInit, AfterViewInit {
     const dialogRef = this.dialog.open(DeleteComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(val => {
       this.paginator._changePageSize(this.paginator.pageSize);
-      console.log("Edit example dialog output:", val)
+      this.snackBar.open('Example ' + firstname + " " + lastname + ' deleted with success!', 'Close',
+        {
+          duration: 2000,
+          panelClass: ['accent-snackbar']
+        });
     });
   }
 }
