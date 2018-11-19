@@ -39,6 +39,7 @@ import {EntityMenuComponent} from './component/header/entity-menu/entity-menu.co
 import { ExampleComponent } from './entity/example/example.component';
 import {ExampleService} from "./service/example.service";
 import { EditComponent } from './entity/example/edit/edit.component';
+import { LayoutModule } from '@angular/cdk/layout';
 
 export function initUserFactory(userService: UserService) {
   return () => userService.initUser();
@@ -61,8 +62,7 @@ export function initUserFactory(userService: UserService) {
     SignupComponent,
     EntityMenuComponent,
     ExampleComponent,
-    EditComponent,
-    ExampleDashboardComponent,
+    EditComponent
   ],
   imports: [
     BrowserAnimationsModule,
