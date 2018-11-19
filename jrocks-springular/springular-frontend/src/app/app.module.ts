@@ -43,7 +43,7 @@ import {ExampleComponent} from './entity/example/example.component';
 import {ExampleService} from "./service/example.service";
 import {EditComponent} from './entity/example/edit/edit.component';
 import {LayoutModule} from '@angular/cdk/layout';
-import {DeleteComponent} from "./entity/example/delete/delete.component";
+import {DeleteExampleDialogComponent} from "./entity/example/delete/delete-example-dialog.component";
 import {NewCommand} from "@angular/cli/commands/new-impl";
 import {NewComponent} from "./entity/example/new/new.component";
 
@@ -70,7 +70,7 @@ export function initUserFactory(userService: UserService) {
     ExampleComponent,
     NewComponent,
     EditComponent,
-    DeleteComponent
+    DeleteExampleDialogComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -117,7 +117,7 @@ export function initUserFactory(userService: UserService) {
     {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}}
   ],
   bootstrap: [AppComponent],
-  entryComponents: [NewComponent, EditComponent, DeleteComponent]
+  entryComponents: [NewComponent, EditComponent, DeleteExampleDialogComponent]
 
 })
 export class AppModule {

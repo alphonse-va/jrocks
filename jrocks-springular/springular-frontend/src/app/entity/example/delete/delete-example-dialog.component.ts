@@ -8,17 +8,17 @@ import {ExampleService} from "../../../service/example.service";
 
 @Component({
   selector: 'app-edit',
-  templateUrl: './delete.component.html',
-  styleUrls: ['./delete.component.scss']
+  templateUrl: './delete-example-dialog.component.html',
+  styleUrls: ['./delete-example-dialog.component.scss']
 })
-export class DeleteComponent implements OnInit {
+export class DeleteExampleDialogComponent implements OnInit {
 
   id: number;
 
   constructor(
     private exampleService: ExampleService,
     private fb: FormBuilder,
-    private dialogRef: MatDialogRef<DeleteComponent>,
+    private dialogRef: MatDialogRef<DeleteExampleDialogComponent>,
     @Inject(MAT_DIALOG_DATA) {id, firstname, lastname, username}: Example) {
 
     this.id = id;

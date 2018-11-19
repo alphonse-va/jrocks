@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-import {MatDialog, MatDialogConfig, MatPaginator, MatSnackBar, MatSnackBarConfig, MatSort} from "@angular/material";
+import {MatDialog, MatDialogConfig, MatPaginator, MatSnackBar, MatSort} from "@angular/material";
 import {ExampleService} from "../../service/example.service";
 import {debounceTime, distinctUntilChanged, tap} from 'rxjs/operators';
 import {merge} from "rxjs/observable/merge";
@@ -8,7 +8,7 @@ import {fromEvent} from 'rxjs/observable/fromEvent';
 import {ExampleDataSource} from "../../service/example.datasource";
 import {Example} from "../../model/example";
 import {EditComponent} from "./edit/edit.component";
-import {DeleteComponent} from "./delete/delete.component";
+import {DeleteExampleDialogComponent} from "./delete/delete-example-dialog.component";
 import {NewComponent} from "./new/new.component";
 
 
@@ -75,39 +75,38 @@ export class ExampleComponent implements OnInit, AfterViewInit {
   }
 
   newExample() {
-    const dialogConfig = new MatDialogConfig();
-    const dialogRef = this.dialog.open(NewComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(val => {
-      this.paginator._changePageSize(this.paginator.pageSize);
-      this.snackBar.open('Example ' + val.username + ' added with success!');
-    });
+    this.dialog.open(NewComponent).afterClosed()
+      .subscribe(val => {
+        this.paginator._changePageSize(this.paginator.pageSize);
+        this.snackBar.open('Example ' + val.username + ' added with success!');
+      });
   }
 
   editExample({id, firstname, lastname, username}: Example) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {id, firstname, lastname, username};
-    const dialogRef = this.dialog.open(EditComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(val => {
-      this.paginator._changePageSize(this.paginator.pageSize);
-      this.snackBar.open('Example ' + firstname + " " + lastname + ' saved with success!');
-    });
+
+    this.dialog.open(EditComponent, dialogConfig).afterClosed()
+      .subscribe(val => {
+        this.paginator._changePageSize(this.paginator.pageSize);
+        this.snackBar.open('Example ' + firstname + " " + lastname + ' saved with success!');
+      });
   }
 
   deleteExample({id, firstname, lastname, username}: Example) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {id, firstname, lastname, username};
 
-    const dialogRef = this.dialog.open(DeleteComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(val => {
-
-      // workaround for new added entry
-      this.input.nativeElement.value = username;
-      this.paginator._changePageSize(this.paginator.pageSize);
-      this.snackBar.open('Example ' + firstname + " " + lastname + ' deleted with success!', 'Close',
-        {
-          duration: 2000,
-          panelClass: ['accent-snackbar']
-        });
-    });
+    this.dialog.open(DeleteExampleDialogComponent, dialogConfig).afterClosed()
+      .subscribe(val => {
+        this.paginator._changePageSize(this.paginator.pageSize);
+        this.snackBar.open('Example ' + firstname + " " + lastname + ' deleted with success!', 'Close',
+          {
+            duration: 2000,
+            panelClass: ['accent-snackbar']
+          });
+      });
   }
+
+  // workaround for new added entry
 }

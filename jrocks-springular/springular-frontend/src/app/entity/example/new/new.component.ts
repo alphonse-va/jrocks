@@ -1,5 +1,5 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
+import {Component, OnInit} from '@angular/core';
+import {MatDialogRef} from "@angular/material";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Example} from "../../../model/example";
 import {ExampleService} from "../../../service/example.service";
@@ -22,6 +22,7 @@ export class NewComponent implements OnInit {
 
 
     this.form = fb.group({
+      id: ["", Validators.required],
       firstname: ["", Validators.required],
       lastname: ["", Validators.required],
       username: ["", Validators.required],
