@@ -21,18 +21,22 @@ export class ExampleDataSource implements DataSource<Example> {
   constructor(private exampleService: ExampleService) {
   }
 
-  loadExampples(filter: string,
-                sortDirection: string,
-                sortField: string,
-                pageIndex: number,
-                pageSize: number) {
+  loadExamples(
+    usernameFilter: string,
+    firstnameFilter: string,
+    lastnameFilter: string,
+    sortDirection: string,
+    sortField: string,
+    pageIndex: number,
+    pageSize: number) {
 
     this.loadingSubject.next(true);
 
-    this.exampleService.findExamples(filter, sortDirection, sortField, pageIndex, pageSize)
+    this.exampleService.findExamples(usernameFilter, firstnameFilter, lastnameFilter,
+      sortDirection, sortField, pageIndex, pageSize)
       .pipe(catchError(() => of([])),
-      finalize(() => this.loadingSubject.next(false))
-    )
+        finalize(() => this.loadingSubject.next(false))
+      )
       .subscribe(result => {
         this.examplesSubject.next(result['examples']);
         this.numberOfElementsSubject.next(result['count']);

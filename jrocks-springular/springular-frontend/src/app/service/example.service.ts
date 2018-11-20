@@ -4,24 +4,33 @@ import {Example} from "../model/example";
 import {ApiService} from "./api.service";
 import {map} from "rxjs/operators";
 import {HttpHeaders} from "@angular/common/http";
-import {logger} from "codelyzer/util/logger";
 
 
 @Injectable()
 export class ExampleService {
 
+  header = new HttpHeaders({
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+  });
+
   constructor(
     private apiService: ApiService) {
   }
 
-  findExamples(filter = '', sortOrder = 'asc',
-               sortField = 'username', pageNumber = 0, pageSize = 3): Observable<ExampleRestResult> {
-    if (filter != '') {
-      filter = filter + '%';
+  findExamples(usernameFilter, firstnameFilter, lastnameFilter,
+               sortOrder = 'asc', sortField = 'username',
+               pageNumber = 0, pageSize = 3): Observable<ExampleRestResult> {
+    if (usernameFilter || firstnameFilter || lastnameFilter) {
+
+      usernameFilter = usernameFilter ? usernameFilter + '%' : null;
+      firstnameFilter = firstnameFilter + '%';
+      lastnameFilter = lastnameFilter + '%' ;
+
       return this.apiService.get("/api/example/search/filter", {
-        "firstname": filter,
-        "lastname": filter,
-        "username": filter,
+        "firstname": firstnameFilter,
+        "lastname": lastnameFilter,
+        "username": usernameFilter,
         "size": pageSize.toString(),
         "page": pageNumber.toString(),
         "sort": sortField + "," + sortOrder
@@ -40,11 +49,7 @@ export class ExampleService {
   }
 
   saveNewExample(example: Example) {
-    const header = new HttpHeaders({
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    });
-    this.apiService.post("/api/example", example, header)
+    this.apiService.post("/api/example", example, this.header)
       .subscribe(saved => {
         example = saved;
       });
@@ -52,22 +57,16 @@ export class ExampleService {
 
 
   saveExample(example: Example) {
-    const header = new HttpHeaders({
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    });
-    this.apiService.put("/api/example/" + example.id, example, header)
+    this.apiService.put("/api/example/" + example.id, example, this.header)
       .subscribe(saved => {
         example = saved;
-        
-      
       });
   }
 
   deleteExample(id: number) {
     this.apiService.delete("/api/example/" + id)
       .subscribe(saved => {
-        console.log("Example with id " + id  + " deleted with success");
+        console.log("Example with id " + id + " deleted with success");
       });
   }
 }

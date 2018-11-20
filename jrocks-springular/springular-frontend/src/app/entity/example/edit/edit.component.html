@@ -1,21 +1,14 @@
-<h2 mat-dialog-title>Edit Example</h2>
-
+<h2 mat-dialog-title>Edit</h2>
 
 <mat-dialog-content [formGroup]="form" (keydown.enter)="save()">
   <mat-form-field>
-    <input matInput
-           placeholder="User name"
-           formControlName="username">
+    <input matInput placeholder="User name" formControlName="username">
   </mat-form-field>
   <mat-form-field>
-    <input matInput
-           placeholder="Fistname"
-           formControlName="firstname">
+    <input matInput placeholder="Fistname" formControlName="firstname">
   </mat-form-field>
   <mat-form-field>
-    <input matInput
-           placeholder="Lastname"
-           formControlName="lastname">
+    <input matInput placeholder="Lastname" formControlName="lastname">
   </mat-form-field>
 </mat-dialog-content>
 

@@ -3,12 +3,14 @@ import {MatDialogRef} from "@angular/material";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Example} from "../../../model/example";
 import {ExampleService} from "../../../service/example.service";
+import {animate, state, style, transition, trigger} from '@angular/animations';
 
 
 @Component({
   selector: 'app-edit',
   templateUrl: './new.component.html',
-  styleUrls: ['./new.component.scss']
+  styleUrls: ['./new.component.scss'],
+
 })
 export class NewComponent implements OnInit {
 
@@ -22,7 +24,6 @@ export class NewComponent implements OnInit {
 
 
     this.form = fb.group({
-      id: ["", Validators.required],
       firstname: ["", Validators.required],
       lastname: ["", Validators.required],
       username: ["", Validators.required],

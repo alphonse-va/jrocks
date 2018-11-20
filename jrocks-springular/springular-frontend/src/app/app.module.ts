@@ -34,18 +34,18 @@ import {AccountMenuComponent} from './component/header/account-menu/account-menu
 import {ApiCardComponent, FooterComponent, GithubComponent, HeaderComponent} from './component';
 
 import {ApiService, AuthService, ConfigService, FooService, UserService} from './service';
-import {ChangePasswordComponent} from './change-password/change-password.component';
-import {ForbiddenComponent} from './forbidden/forbidden.component';
-import {AdminComponent} from './admin/admin.component';
-import {SignupComponent} from './signup/signup.component';
+import {ChangePasswordComponent} from './change-password';
+import {ForbiddenComponent} from './forbidden';
+import {AdminComponent} from './admin';
+import {SignupComponent} from './signup';
 import {EntityMenuComponent} from './component/header/entity-menu/entity-menu.component';
 import {ExampleComponent} from './entity/example/example.component';
 import {ExampleService} from "./service/example.service";
 import {EditComponent} from './entity/example/edit/edit.component';
 import {LayoutModule} from '@angular/cdk/layout';
 import {DeleteExampleDialogComponent} from "./entity/example/delete/delete-example-dialog.component";
-import {NewCommand} from "@angular/cli/commands/new-impl";
 import {NewComponent} from "./entity/example/new/new.component";
+import { TestDashboardComponent } from './test-dashboard/test-dashboard.component';
 
 export function initUserFactory(userService: UserService) {
   return () => userService.initUser();
@@ -70,7 +70,8 @@ export function initUserFactory(userService: UserService) {
     ExampleComponent,
     NewComponent,
     EditComponent,
-    DeleteExampleDialogComponent
+    DeleteExampleDialogComponent,
+    TestDashboardComponent
   ],
   imports: [
     BrowserAnimationsModule,

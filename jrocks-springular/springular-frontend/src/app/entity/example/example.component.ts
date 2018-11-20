@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {MatDialog, MatDialogConfig, MatPaginator, MatSnackBar, MatSort} from "@angular/material";
 import {ExampleService} from "../../service/example.service";
@@ -10,24 +10,45 @@ import {Example} from "../../model/example";
 import {EditComponent} from "./edit/edit.component";
 import {DeleteExampleDialogComponent} from "./delete/delete-example-dialog.component";
 import {NewComponent} from "./new/new.component";
+import {animate, state, style, transition, trigger} from "@angular/animations";
 
 
 @Component({
   selector: 'example',
   templateUrl: './example.component.html',
-  styleUrls: ['./example.component.scss']
+  styleUrls: ['./example.component.scss'],
+  animations: [
+    trigger('listUpdate', [
+      state('initial', style({
+        backgroundColor: 'green',
+        width: '100px',
+        height: '100px'
+      })),
+      state('final', style({
+        backgroundColor: 'red',
+        width: '200px',
+        height: '200px'
+      })),
+      transition('initial=>final', animate('1500ms')),
+      transition('final=>initial', animate('1000ms'))
+    ])
+  ]
 })
 export class ExampleComponent implements OnInit, AfterViewInit {
 
   dataSource: ExampleDataSource;
 
-  displayedColumns = ["id", "username", "firstname", "lastname", "actions"];
+  @Input() title: string = 'examples';
+  @Input() subTitle: string = 'Search, add, edit or modify examples';
+  @Input() pageSize: number = 10;
+  @Input() minHeight: string = '300px';
+  @Input() maxHeight: string = '560px';
+  @Input() readonly: boolean = false;
+  @Input() displayedColumns: string[] = ["id", "username", "firstname", "lastname", "actions"];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
-
   @ViewChild(MatSort) sort: MatSort;
-
-  @ViewChild('input') input: ElementRef;
+  @ViewChild('usernameCriteria') usernameCriteria: ElementRef;
 
   constructor(private route: ActivatedRoute,
               private coursesService: ExampleService,
@@ -38,36 +59,43 @@ export class ExampleComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    if (this.readonly) {
+      this.displayedColumns = this.displayedColumns.filter(obj => obj !== "actions");
+    }
+
     this.dataSource = new ExampleDataSource(this.coursesService);
-    this.dataSource.loadExampples('', 'asc', 'username', 0, 5);
+    this.dataSource.loadExamples('', '', '', 'asc', 'username', 0, this.pageSize);
   }
 
   ngAfterViewInit() {
-
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
 
-    fromEvent(this.input.nativeElement, 'keyup')
+    if (!this.readonly) {
+      this.subscribeOnKeyUp(this.usernameCriteria.nativeElement);
+    }
+
+    merge(this.sort.sortChange, this.paginator.page)
+      .pipe(tap(() => this.loadExamplesPage()))
+      .subscribe();
+
+  }
+
+  private subscribeOnKeyUp(element) {
+    fromEvent(element, 'keyup')
       .pipe(
         debounceTime(200),
         distinctUntilChanged(),
         tap(() => {
           this.paginator.pageIndex = 0;
-
           this.loadExamplesPage();
         })
       ).subscribe();
-
-    merge(this.sort.sortChange, this.paginator.page)
-      .pipe(
-        tap(() => this.loadExamplesPage())
-      )
-      .subscribe();
-
   }
 
   loadExamplesPage() {
-    this.dataSource.loadExampples(
-      this.input.nativeElement.value,
+    this.dataSource.loadExamples(
+      this.readonly ? '' : this.usernameCriteria.nativeElement.value,
+      '', '',
       this.sort.direction,
       this.sort.active,
       this.paginator.pageIndex,
@@ -77,8 +105,10 @@ export class ExampleComponent implements OnInit, AfterViewInit {
   newExample() {
     this.dialog.open(NewComponent).afterClosed()
       .subscribe(val => {
-        this.paginator._changePageSize(this.paginator.pageSize);
         if (val) {
+          this.sort.direction = 'desc';
+          this.sort.active = 'id';
+          this.paginator._changePageSize(this.paginator.pageSize);
           this.snackBar.open('Example ' + val.username + ' added with success!');
         }
       });
@@ -109,6 +139,4 @@ export class ExampleComponent implements OnInit, AfterViewInit {
         }
       });
   }
-
-  // workaround for new added entry
 }

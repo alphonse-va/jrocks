@@ -1,21 +1,7 @@
-@import "src/variables.scss";
+//@import "src/variables.scss";
 
-// card
 .mat-card-header {
-  background: $primary;
-  margin: -16px;
-  color: white;
-}
-.mat-card-subtitle {
-  color: white;
-}
-.mat-card > :first-child {
-  margin-bottom: 10px;
-  margin-top: -16px;
-  padding: 16px 0 1px 16px;
-  display: block;
-  position: relative;
-  border-radius: 4px 4px 0 0;
+  padding-bottom: 16px;
 }
 
 // spinner
@@ -24,22 +10,41 @@
   top: 7px;
   right: 10px;
 }
-.mat-spinner::ng-deep circle {
-  stroke: #fff;
-}
 
-// actions
+// columns 
 .mat-column-actions {
   flex: 0 0 60px;
 }
+.mat-column-id {
+  flex: 0 0 70px;
+}
+
 .mat-column-actions > button {
   width: 30px;
   height: 30px;
   line-height: 30px;
 }
 
-.add-button {
+.more-button {
   position: absolute;
-  top: 46px;
+  top: 5px;
   right: 10px;
+}
+
+.add-button {
+  z-index:1000;
+  position: absolute;
+  top: 60px;
+  right: 4px;
+}
+
+.search-input {
+  padding: 20px 80px 0 80px;
+  display:block;
+}
+
+.table-container {
+  padding-left: 10px;
+  padding-right: 10px;
+  overflow: auto;
 }

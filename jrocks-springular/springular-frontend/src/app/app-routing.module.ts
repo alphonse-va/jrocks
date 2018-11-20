@@ -11,6 +11,7 @@ import { ChangePasswordComponent } from './change-password';
 import { ForbiddenComponent } from './forbidden';
 import { SignupComponent } from './signup';
 import {ExampleComponent} from "./entity/example/example.component";
+import {TestDashboardComponent} from "./test-dashboard/test-dashboard.component";
 
 export const routes: Routes = [
   {
@@ -44,6 +45,11 @@ export const routes: Routes = [
     path: 'admin',
     component: AdminComponent,
     canActivate: [AdminGuard]
+  },
+  {
+    path: 'dashboard',
+    component: TestDashboardComponent,
+    canActivate: [LoginGuard]
   },
   {
     path: '404',
