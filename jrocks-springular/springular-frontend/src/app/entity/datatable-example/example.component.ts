@@ -122,7 +122,7 @@ export class ExampleComponent implements OnInit, AfterViewInit {
       .subscribe(val => {
         if (val) {
           this.paginator._changePageSize(this.paginator.pageSize);
-          this.snackBar.open('Example ' + firstname + " " + lastname + ' saved with success!');
+          this.snackBar.open('Example ' + firstname + " " + lastname + ' saved with success!', 'Close');
         }
       });
   }

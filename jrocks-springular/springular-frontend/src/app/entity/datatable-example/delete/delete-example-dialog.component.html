@@ -1,11 +1,9 @@
-<h2 mat-dialog-title>Delete Example</h2>
-
 <mat-dialog-content>
   Are you sure to remove {{firstName}} {{lastname}} example with id '{{id}}'?
 </mat-dialog-content>
 
 <mat-dialog-actions>
-  <button class="mat-raised-button" (click)="delete()">Delete</button>
+  <button class="mat-raised-button mat-warn" (click)="delete()">Delete</button>
   <button class="mat-raised-button" (click)="close()">Close</button>
 </mat-dialog-actions>
 
