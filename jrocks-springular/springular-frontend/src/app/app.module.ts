@@ -39,12 +39,12 @@ import {ForbiddenComponent} from './forbidden';
 import {AdminComponent} from './admin';
 import {SignupComponent} from './signup';
 import {EntityMenuComponent} from './component/header/entity-menu/entity-menu.component';
-import {ExampleComponent} from './entity/example/example.component';
+import {ExampleComponent} from './entity/datatable-example/example.component';
 import {ExampleService} from "./service/example.service";
-import {EditComponent} from './entity/example/edit/edit.component';
+import {EditComponent} from './entity/datatable-example/edit/edit.component';
 import {LayoutModule} from '@angular/cdk/layout';
-import {DeleteExampleDialogComponent} from "./entity/example/delete/delete-example-dialog.component";
-import {NewComponent} from "./entity/example/new/new.component";
+import {DeleteExampleDialogComponent} from "./entity/datatable-example/delete/delete-example-dialog.component";
+import {NewComponent} from "./entity/datatable-example/new/new.component";
 import { TestDashboardComponent } from './test-dashboard/test-dashboard.component';
 
 export function initUserFactory(userService: UserService) {

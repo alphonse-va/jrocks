@@ -41,6 +41,8 @@ export class ExampleComponent implements OnInit, AfterViewInit {
   @Input() title: string = 'examples';
   @Input() subTitle: string = 'Search, add, edit or modify examples';
   @Input() pageSize: number = 10;
+  @Input() sortField: string = 'username';
+  @Input() sortDirection: string = 'asc';
   @Input() minHeight: string = '300px';
   @Input() maxHeight: string = '560px';
   @Input() readonly: boolean = false;
@@ -53,9 +55,7 @@ export class ExampleComponent implements OnInit, AfterViewInit {
   constructor(private route: ActivatedRoute,
               private coursesService: ExampleService,
               private dialog: MatDialog,
-              private snackBar: MatSnackBar,
-  ) {
-
+              private snackBar: MatSnackBar) {
   }
 
   ngOnInit() {
@@ -64,7 +64,7 @@ export class ExampleComponent implements OnInit, AfterViewInit {
     }
 
     this.dataSource = new ExampleDataSource(this.coursesService);
-    this.dataSource.loadExamples('', '', '', 'asc', 'username', 0, this.pageSize);
+    this.dataSource.loadExamples('', '', '', this.sortDirection, this.sortField, 0, this.pageSize);
   }
 
   ngAfterViewInit() {
