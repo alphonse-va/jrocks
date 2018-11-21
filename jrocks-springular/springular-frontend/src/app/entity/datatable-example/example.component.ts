@@ -50,7 +50,7 @@ export class ExampleComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild('usernameCriteria') usernameCriteria: ElementRef;
+  @ViewChild('filter') filter: ElementRef;
 
   constructor(private route: ActivatedRoute,
               private coursesService: ExampleService,
@@ -64,20 +64,19 @@ export class ExampleComponent implements OnInit, AfterViewInit {
     }
 
     this.dataSource = new ExampleDataSource(this.coursesService);
-    this.dataSource.loadExamples('', '', '', this.sortDirection, this.sortField, 0, this.pageSize);
+    this.dataSource.loadExamples('', this.sortDirection, this.sortField, 0, this.pageSize);
   }
 
   ngAfterViewInit() {
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
 
     if (!this.readonly) {
-      this.subscribeOnKeyUp(this.usernameCriteria.nativeElement);
+      this.subscribeOnKeyUp(this.filter.nativeElement);
     }
 
     merge(this.sort.sortChange, this.paginator.page)
       .pipe(tap(() => this.loadExamplesPage()))
       .subscribe();
-
   }
 
   private subscribeOnKeyUp(element) {
@@ -94,8 +93,7 @@ export class ExampleComponent implements OnInit, AfterViewInit {
 
   loadExamplesPage() {
     this.dataSource.loadExamples(
-      this.readonly ? '' : this.usernameCriteria.nativeElement.value,
-      '', '',
+      this.readonly ? '' : this.filter.nativeElement.value,
       this.sort.direction,
       this.sort.active,
       this.paginator.pageIndex,

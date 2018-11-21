@@ -1,8 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder} from "@angular/forms";
 import {Example} from "../../../model/example";
-import {UserService} from "../../../service";
 import {ExampleService} from "../../../service/example.service";
 
 
@@ -14,6 +13,7 @@ import {ExampleService} from "../../../service/example.service";
 export class DeleteExampleDialogComponent implements OnInit {
 
   id: number;
+  private username: string;
 
   constructor(
     private exampleService: ExampleService,
@@ -29,7 +29,7 @@ export class DeleteExampleDialogComponent implements OnInit {
 
   delete() {
     this.exampleService.deleteExample(this.id);
-    this.dialogRef.close("Delete example with id " + this.id);
+    this.dialogRef.close("Delete " + this.username  + " with id " + this.id);
   }
 
   close() {
