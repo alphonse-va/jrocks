@@ -1,0 +1,43 @@
+<div class="container">
+  <h1>{{title | uppercase}}
+  </h1>
+  <div class="row">
+    <div class="col-md-12">
+      <button *ngIf="!editMode && selected" class="form-action mat-elevation-z10" mat-fab (click)="edit()">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button type="submit" *ngIf="editMode" class="form-action mat-elevation-z10" mat-fab (click)="save()">
+        <mat-icon>done</mat-icon>
+      </button>
+    </div>
+    <div class="col-md-5">
+      <mat-form-field *ngIf="!readonly" class="search-input">
+        <input matInput placeholder="Search examples" autocomplete="off" #filter>
+      </mat-form-field>
+      <mat-card class="list-card" *ngFor="let ex of examples"
+                [class.mat-elevation-z6]="ex.id == selected?.id"
+                (click)=select(ex)>
+        <h4 mat-line>
+          <mat-icon mat-list-icon>person</mat-icon>
+          {{ex.username}}
+        </h4>
+        <p mat-line> {{ex.firstname}} {{ex.lastname}}</p>
+      </mat-card>
+    </div>
+    <div class="col-md-7">
+      <div *ngIf="selected">
+        <mat-card [formGroup]="form" class="form-container mat-elevation-z4"
+            [class.mat-elevation-z16]="editMode">
+          <mat-form-field>
+            <input matInput [disabled]="!editMode" placeholder="Username" formControlName="username">
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput [disabled]="!editMode" placeholder="First name" formControlName="firstname">
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput [disabled]="!editMode" placeholder="Last name" formControlName="lastname">
+          </mat-form-field>
+        </mat-card>
+      </div>
+    </div>
+  </div>

@@ -40,7 +40,6 @@ export class EditComponent implements OnInit {
       this.exampleService.saveExample(this.form.value);
       this.dialogRef.close(this.form.value);
     }
-
   }
 
   close() {

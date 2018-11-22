@@ -12,6 +12,7 @@ import { ForbiddenComponent } from './forbidden';
 import { SignupComponent } from './signup';
 import {ExampleComponent} from "./entity/datatable-example/example.component";
 import {TestDashboardComponent} from "./test-dashboard/test-dashboard.component";
+import {ListExampleComponent} from "./entity/list-example/list-example.component";
 
 export const routes: Routes = [
   {
@@ -28,6 +29,12 @@ export const routes: Routes = [
   {
     path: 'example',
     component: ExampleComponent,
+    canActivate: [LoginGuard],
+    pathMatch: 'full'
+  },
+  {
+    path: 'list-example',
+    component: ListExampleComponent,
     canActivate: [LoginGuard],
     pathMatch: 'full'
   },

@@ -22,9 +22,7 @@ export class ExampleDataSource implements DataSource<Example> {
   }
 
   loadExamples(
-    usernameFilter: string,
-    firstnameFilter: string,
-    lastnameFilter: string,
+    filter: string,
     sortDirection: string,
     sortField: string,
     pageIndex: number,
@@ -32,7 +30,7 @@ export class ExampleDataSource implements DataSource<Example> {
 
     this.loadingSubject.next(true);
 
-    this.exampleService.findExamples(usernameFilter, firstnameFilter, lastnameFilter,
+    this.exampleService.findExamples(filter,
       sortDirection, sortField, pageIndex, pageSize)
       .pipe(catchError(() => of([])),
         finalize(() => this.loadingSubject.next(false))

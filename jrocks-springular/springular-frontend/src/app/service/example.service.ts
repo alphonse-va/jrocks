@@ -18,19 +18,14 @@ export class ExampleService {
     private apiService: ApiService) {
   }
 
-  findExamples(usernameFilter, firstnameFilter, lastnameFilter,
-               sortOrder = 'asc', sortField = 'username',
+  findExamples(filter, sortOrder = 'asc', sortField = 'username',
                pageNumber = 0, pageSize = 3): Observable<ExampleRestResult> {
-    if (usernameFilter || firstnameFilter || lastnameFilter) {
-
-      usernameFilter = usernameFilter ? usernameFilter + '%' : null;
-      firstnameFilter = firstnameFilter + '%';
-      lastnameFilter = lastnameFilter + '%' ;
-
+    if (filter) {
+      filter = filter ? filter + '%' : '%';
       return this.apiService.get("/api/example/search/filter", {
-        "firstname": firstnameFilter,
-        "lastname": lastnameFilter,
-        "username": usernameFilter,
+        "firstname": filter,
+        "lastname": filter,
+        "username": filter,
         "size": pageSize.toString(),
         "page": pageNumber.toString(),
         "sort": sortField + "," + sortOrder

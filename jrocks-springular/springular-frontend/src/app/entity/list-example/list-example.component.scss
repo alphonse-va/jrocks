@@ -1,0 +1,31 @@
+@import "src/variables.scss";
+
+.list-card {
+  margin: 0 0 10px 0;
+  cursor: pointer;
+}
+
+.list-card:hover:not(.card-selected) {
+  background-color: $primary-light;
+}
+
+.card-selected {
+  background-color: $primary-light;
+}
+
+.form-container {
+  padding-top: 40px;
+  flex-direction: column;
+}
+
+.form-container > * {
+  width: 100%;
+}
+
+.form-action {
+  z-index: 100;
+  position: absolute;
+  right: 4px;
+  top: -30px;
+}
+

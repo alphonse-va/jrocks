@@ -12,7 +12,7 @@ import {
   MatGridListModule,
   MatIconModule,
   MatIconRegistry,
-  MatInputModule,
+  MatInputModule, MatListModule,
   MatMenuModule,
   MatPaginatorModule,
   MatProgressSpinnerModule,
@@ -39,13 +39,14 @@ import {ForbiddenComponent} from './forbidden';
 import {AdminComponent} from './admin';
 import {SignupComponent} from './signup';
 import {EntityMenuComponent} from './component/header/entity-menu/entity-menu.component';
-import {ExampleComponent} from './entity/datatable-example/example.component';
 import {ExampleService} from "./service/example.service";
 import {EditComponent} from './entity/datatable-example/edit/edit.component';
 import {LayoutModule} from '@angular/cdk/layout';
 import {DeleteExampleDialogComponent} from "./entity/datatable-example/delete/delete-example-dialog.component";
 import {NewComponent} from "./entity/datatable-example/new/new.component";
 import { TestDashboardComponent } from './test-dashboard/test-dashboard.component';
+import  {ExampleComponent} from './entity/datatable-example/example.component';
+import {ListExampleComponent} from "./entity/list-example/list-example.component";
 
 export function initUserFactory(userService: UserService) {
   return () => userService.initUser();
@@ -71,7 +72,8 @@ export function initUserFactory(userService: UserService) {
     NewComponent,
     EditComponent,
     DeleteExampleDialogComponent,
-    TestDashboardComponent
+    TestDashboardComponent,
+    ListExampleComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -96,6 +98,7 @@ export function initUserFactory(userService: UserService) {
     MatSnackBarModule,
     FlexLayoutModule,
     MatGridListModule,
+    MatListModule,
     LayoutModule
   ],
   providers: [
