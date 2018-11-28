@@ -7,10 +7,10 @@ import {ExampleService} from "../../../service/example.service";
 
 @Component({
   selector: 'app-edit',
-  templateUrl: './edit.component.html',
-  styleUrls: ['./edit.component.scss']
+  templateUrl: './edit-example-dialog.component.html',
+  styleUrls: ['./edit-example-dialog.component.scss']
 })
-export class EditComponent implements OnInit {
+export class EditExampleDialogComponent implements OnInit {
 
   form: FormGroup;
   username: string;
@@ -18,7 +18,7 @@ export class EditComponent implements OnInit {
   constructor(
     private exampleService: ExampleService,
     private fb: FormBuilder,
-    private dialogRef: MatDialogRef<EditComponent>,
+    private dialogRef: MatDialogRef<EditExampleDialogComponent>,
     @Inject(MAT_DIALOG_DATA) {id, firstname, lastname, username}: Example) {
 
     this.username = username;

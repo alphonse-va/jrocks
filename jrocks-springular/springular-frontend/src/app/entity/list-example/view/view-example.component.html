@@ -1,0 +1,12 @@
+<div class="col-md-12">
+  <button class="form-action mat-elevation-z10" mat-fab (click)="edit()">
+    <mat-icon>edit</mat-icon>
+  </button>
+</div>
+
+<mat-card class="form-container mat-elevation-z4">
+<mat-card-title>{{model.username}}</mat-card-title>
+  <mat-card-content>
+    <p>{{model.firstname}} {{model.lastname}}</p>
+  </mat-card-content>
+</mat-card>

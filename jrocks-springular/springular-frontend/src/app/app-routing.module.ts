@@ -1,18 +1,17 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { AppComponent } from './app.component';
-import { HomeComponent } from './home';
-import { LoginComponent } from './login';
-import { AdminComponent } from './admin';
-import { LoginGuard } from './guard';
-import { GuestGuard, AdminGuard } from './guard';
-import { NotFoundComponent } from './not-found';
-import { ChangePasswordComponent } from './change-password';
-import { ForbiddenComponent } from './forbidden';
-import { SignupComponent } from './signup';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {HomeComponent} from './home';
+import {LoginComponent} from './login';
+import {AdminComponent} from './admin';
+import {AdminGuard, GuestGuard, LoginGuard} from './guard';
+import {NotFoundComponent} from './not-found';
+import {ChangePasswordComponent} from './change-password';
+import {ForbiddenComponent} from './forbidden';
+import {SignupComponent} from './signup';
 import {ExampleComponent} from "./entity/datatable-example/example.component";
-import {TestDashboardComponent} from "./test-dashboard/test-dashboard.component";
-import {ListExampleComponent} from "./entity/list-example/list-example.component";
+import {ExampleListComponent} from "./entity/list-example/example-list.component";
+import {EditExampleComponent} from "./entity/list-example/edit/edit-example.component";
+import {ViewExampleComponent} from "./entity/list-example/view/view-example.component";
 
 export const routes: Routes = [
   {
@@ -33,10 +32,19 @@ export const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'list-example',
-    component: ListExampleComponent,
+    path: 'list-examples',
+    component: ExampleListComponent,
     canActivate: [LoginGuard],
-    pathMatch: 'full'
+    children: [
+      {
+        path: ':id',
+        component: ViewExampleComponent,
+      },
+      {
+        path: 'edit/:id',
+        component: EditExampleComponent,
+      },
+    ]
   },
   {
     path: 'login',
@@ -52,11 +60,6 @@ export const routes: Routes = [
     path: 'admin',
     component: AdminComponent,
     canActivate: [AdminGuard]
-  },
-  {
-    path: 'dashboard',
-    component: TestDashboardComponent,
-    canActivate: [LoginGuard]
   },
   {
     path: '404',
@@ -77,4 +80,5 @@ export const routes: Routes = [
   exports: [RouterModule],
   providers: []
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}

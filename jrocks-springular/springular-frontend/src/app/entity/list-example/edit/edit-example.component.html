@@ -1,0 +1,25 @@
+<div class="col-md-12">
+  <div class="form-action">
+    <button (click)="save()" class="mat-elevation-z10" mat-fab>
+      <mat-icon>done</mat-icon>
+    </button>
+
+    <button (click)="cancel()" class="mat-elevation-z10" mat-fab color="primary">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</div>
+
+<div>
+  <mat-card [formGroup]="form" class="form-container mat-elevation-z6">
+    <mat-form-field>
+      <input matInput placeholder="Username" formControlName="username">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="First name" formControlName="firstname">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Last name" formControlName="lastname">
+    </mat-form-field>
+  </mat-card>
+</div>

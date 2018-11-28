@@ -13,13 +13,9 @@
   background-color: $primary-light;
 }
 
-.form-container {
-  padding-top: 40px;
-  flex-direction: column;
-}
-
-.form-container > * {
-  width: 100%;
+.search-input {
+  //padding: 16px;
+  display:block;
 }
 
 .form-action {
@@ -27,5 +23,9 @@
   position: absolute;
   right: 4px;
   top: -30px;
+}
+
+.form-action > button {
+  margin-left: 3px;
 }
 

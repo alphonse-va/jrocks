@@ -4,10 +4,13 @@ import {Example} from "../model/example";
 import {ApiService} from "./api.service";
 import {map} from "rxjs/operators";
 import {HttpHeaders} from "@angular/common/http";
+import {Subject} from "rxjs";
 
 
 @Injectable()
 export class ExampleService {
+
+  private changeSubject = new Subject<Example>();
 
   header = new HttpHeaders({
     'Accept': 'application/json',
@@ -43,19 +46,28 @@ export class ExampleService {
     }
   }
 
+  findById(id): Observable<Example> {
+    return this.apiService.get("/api/example/" + id);
+  }
+
   saveNewExample(example: Example) {
-    this.apiService.post("/api/example", example, this.header)
+    return this.apiService.post("/api/example", example, this.header)
       .subscribe(saved => {
         example = saved;
       });
   }
 
+  afterSave() {
+    return this.changeSubject.asObservable();
+  }
+
 
   saveExample(example: Example) {
-    this.apiService.put("/api/example/" + example.id, example, this.header)
-      .subscribe(saved => {
-        example = saved;
-      });
+    return this.apiService.put("/api/example/" + example.id, example, this.header)
+      .map(saved => {
+        this.changeSubject.next(saved);
+        return saved;
+      }).first();
   }
 
   deleteExample(id: number) {

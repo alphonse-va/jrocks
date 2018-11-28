@@ -12,7 +12,8 @@ import {
   MatGridListModule,
   MatIconModule,
   MatIconRegistry,
-  MatInputModule, MatListModule,
+  MatInputModule,
+  MatListModule,
   MatMenuModule,
   MatPaginatorModule,
   MatProgressSpinnerModule,
@@ -40,13 +41,14 @@ import {AdminComponent} from './admin';
 import {SignupComponent} from './signup';
 import {EntityMenuComponent} from './component/header/entity-menu/entity-menu.component';
 import {ExampleService} from "./service/example.service";
-import {EditComponent} from './entity/datatable-example/edit/edit.component';
 import {LayoutModule} from '@angular/cdk/layout';
 import {DeleteExampleDialogComponent} from "./entity/datatable-example/delete/delete-example-dialog.component";
-import {NewComponent} from "./entity/datatable-example/new/new.component";
-import { TestDashboardComponent } from './test-dashboard/test-dashboard.component';
-import  {ExampleComponent} from './entity/datatable-example/example.component';
-import {ListExampleComponent} from "./entity/list-example/list-example.component";
+import {ExampleComponent} from './entity/datatable-example/example.component';
+import {NewExampleDialogComponent} from "./entity/datatable-example/new/new-example-dialog.component";
+import {EditExampleDialogComponent} from "./entity/datatable-example/edit/edit-example-dialog.component";
+import {ExampleListComponent} from "./entity/list-example/example-list.component";
+import {EditExampleComponent} from "./entity/list-example/edit/edit-example.component";
+import {ViewExampleComponent} from "./entity/list-example/view/view-example.component";
 
 export function initUserFactory(userService: UserService) {
   return () => userService.initUser();
@@ -69,11 +71,12 @@ export function initUserFactory(userService: UserService) {
     SignupComponent,
     EntityMenuComponent,
     ExampleComponent,
-    NewComponent,
-    EditComponent,
+    NewExampleDialogComponent,
+    EditExampleDialogComponent,
     DeleteExampleDialogComponent,
-    TestDashboardComponent,
-    ListExampleComponent
+    ExampleListComponent,
+    EditExampleComponent,
+    ViewExampleComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -121,7 +124,7 @@ export function initUserFactory(userService: UserService) {
     {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}}
   ],
   bootstrap: [AppComponent],
-  entryComponents: [NewComponent, EditComponent, DeleteExampleDialogComponent]
+  entryComponents: [NewExampleDialogComponent, EditExampleDialogComponent, DeleteExampleDialogComponent]
 
 })
 export class AppModule {

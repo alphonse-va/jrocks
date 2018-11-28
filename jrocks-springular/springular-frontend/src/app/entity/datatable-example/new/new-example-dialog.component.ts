@@ -3,16 +3,15 @@ import {MatDialogRef} from "@angular/material";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Example} from "../../../model/example";
 import {ExampleService} from "../../../service/example.service";
-import {animate, state, style, transition, trigger} from '@angular/animations';
 
 
 @Component({
   selector: 'app-edit',
-  templateUrl: './new.component.html',
-  styleUrls: ['./new.component.scss'],
+  templateUrl: './new-example-dialog.component.html',
+  styleUrls: ['./new-example-dialog.component.scss'],
 
 })
-export class NewComponent implements OnInit {
+export class NewExampleDialogComponent implements OnInit {
 
   form: FormGroup;
   example: Example;
@@ -20,7 +19,7 @@ export class NewComponent implements OnInit {
   constructor(
     private exampleService: ExampleService,
     private fb: FormBuilder,
-    private dialogRef: MatDialogRef<NewComponent>) {
+    private dialogRef: MatDialogRef<NewExampleDialogComponent>) {
 
 
     this.form = fb.group({

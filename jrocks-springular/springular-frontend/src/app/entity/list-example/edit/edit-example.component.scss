@@ -1,0 +1,19 @@
+.form-action {
+  z-index: 100;
+  position: absolute;
+  right: 4px;
+  top: -30px;
+}
+
+.form-action > button {
+  margin-left: 3px;
+}
+
+.form-container {
+  padding-top: 40px;
+  flex-direction: column;
+}
+
+.form-container > * {
+  width: 100%;
+}

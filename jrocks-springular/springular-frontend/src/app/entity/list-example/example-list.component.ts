@@ -1,18 +1,17 @@
 import {AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import {MatSnackBar} from "@angular/material";
+import {ActivatedRoute, Router} from "@angular/router";
 import {ExampleService} from "../../service/example.service";
 import {debounceTime, distinctUntilChanged, tap} from 'rxjs/operators';
 import {fromEvent} from 'rxjs/observable/fromEvent';
 import {Example} from "../../model/example";
-import {FormBuilder} from "@angular/forms";
+import {MatSnackBar} from "@angular/material";
 
 @Component({
   selector: 'list-example',
-  templateUrl: './list-example.component.html',
-  styleUrls: ['./list-example.component.scss']
+  templateUrl: './example-list.component.html',
+  styleUrls: ['./example-list.component.scss']
 })
-export class ListExampleComponent implements OnInit, AfterViewInit {
+export class ExampleListComponent implements OnInit, AfterViewInit {
 
   @Input() title: string = 'examples';
   @Input() subTitle: string = 'Search, add, edit or modify examples';
@@ -23,13 +22,20 @@ export class ListExampleComponent implements OnInit, AfterViewInit {
   @ViewChild('filter') filter: ElementRef;
 
   examples: Example[];
-
-  editMode: boolean = false;
+  pageNumber: number = 0;
+  private totalNumberOfElement: number;
 
   constructor(private route: ActivatedRoute,
-              private formBuider: FormBuilder,
+              private router: Router,
               private exampleService: ExampleService,
               private snackBar: MatSnackBar) {
+
+    this.exampleService.afterSave().subscribe(example => {
+
+      this.snackBar.open('Example ' + example.firstname + " " + example.lastname + ' saved with success!', 'Cancel');
+
+      this.loadExamplesPage();
+    });
   }
 
   ngOnInit() {
@@ -37,15 +43,6 @@ export class ListExampleComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.subscribeOnKeyUp(this.filter.nativeElement);
-    this.loadExamplesPage();
-  }
-
-  edit() {
-    this.editMode = true;
-  }
-
-  save() {
-    this.editMode = false;
     this.loadExamplesPage();
   }
 
@@ -61,11 +58,32 @@ export class ListExampleComponent implements OnInit, AfterViewInit {
   }
 
   select(example: Example) {
-    this.editMode = false;
+    this.router.navigate(["/list-examples/" + example.id]);
   }
 
   loadExamplesPage() {
-    this.exampleService.findExamples(this.filter.nativeElement.value, this.sortDirection, this.sortField, 0, this.pageSize)
-      .subscribe(result => this.examples = result['examples']);
+    this.exampleService.findExamples(this.filter.nativeElement.value, this.sortDirection, this.sortField, this.pageNumber, this.pageSize)
+      .subscribe(result => {
+        this.examples = result['examples'];
+        this.totalNumberOfElement = result['count'];
+      });
+  }
+
+  next() {
+    this.pageNumber++;
+    this.loadExamplesPage();
+  }
+
+  canNext() {
+    return this.pageSize + this.pageNumber * this.pageSize <= this.totalNumberOfElement;
+  }
+
+  preview() {
+    this.pageNumber--;
+    this.loadExamplesPage();
+  }
+
+  canPreview() {
+    return this.pageNumber > 0;
   }
 }

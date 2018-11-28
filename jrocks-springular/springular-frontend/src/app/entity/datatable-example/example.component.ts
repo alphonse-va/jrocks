@@ -7,10 +7,9 @@ import {merge} from "rxjs/observable/merge";
 import {fromEvent} from 'rxjs/observable/fromEvent';
 import {ExampleDataSource} from "../../service/example.datasource";
 import {Example} from "../../model/example";
-import {EditComponent} from "./edit/edit.component";
+import {EditExampleDialogComponent} from "./edit/edit-example-dialog.component";
 import {DeleteExampleDialogComponent} from "./delete/delete-example-dialog.component";
-import {NewComponent} from "./new/new.component";
-import {animate, state, style, transition, trigger} from "@angular/animations";
+import {NewExampleDialogComponent} from "./new/new-example-dialog.component";
 
 
 @Component({
@@ -85,7 +84,7 @@ export class ExampleComponent implements OnInit, AfterViewInit {
   }
 
   newExample() {
-    this.dialog.open(NewComponent).afterClosed()
+    this.dialog.open(NewExampleDialogComponent).afterClosed()
       .subscribe(val => {
         if (val) {
           this.sort.direction = 'desc';
@@ -100,7 +99,7 @@ export class ExampleComponent implements OnInit, AfterViewInit {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {id, firstname, lastname, username};
 
-    this.dialog.open(EditComponent, dialogConfig).afterClosed()
+    this.dialog.open(EditExampleDialogComponent, dialogConfig).afterClosed()
       .subscribe(val => {
         if (val) {
           this.paginator._changePageSize(this.paginator.pageSize);

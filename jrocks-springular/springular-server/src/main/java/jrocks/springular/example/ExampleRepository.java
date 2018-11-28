@@ -15,8 +15,8 @@ public interface ExampleRepository extends JpaRepository<Example, Long> {
 
   @Query("SELECT e from Example e " +
       "WHERE UPPER(e.username) like UPPER(:username) " +
-      "AND UPPER(e.firstname) like UPPER(:firstname) " +
-      "AND UPPER(e.lastname) like UPPER(:lastname)")
+      "OR UPPER(e.firstname) like UPPER(:firstname) " +
+      "OR UPPER(e.lastname) like UPPER(:lastname)")
   Page<Example> filter(
       @Param("username") String username,
       @Param("lastname") String lastname,

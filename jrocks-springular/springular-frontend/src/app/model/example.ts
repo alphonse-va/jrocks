@@ -1,6 +1,3 @@
-export interface Example {
-    id: number;
-    firstname: string;
-    lastname: string;
-    username: string;
+export class Example {
+  constructor(public id = 0, public username = '', public firstname = '', public lastname = '') { }
 }
