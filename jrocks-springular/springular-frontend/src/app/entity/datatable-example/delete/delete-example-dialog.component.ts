@@ -28,7 +28,10 @@ export class DeleteExampleDialogComponent implements OnInit {
   }
 
   delete() {
-    this.exampleService.deleteExample(this.id);
+    this.exampleService.deleteExample(this.id)
+      .subscribe(saved => {
+        console.log("Example with id " + this.id + " deleted with success");
+      });
     this.dialogRef.close("Delete " + this.username  + " with id " + this.id);
   }
 

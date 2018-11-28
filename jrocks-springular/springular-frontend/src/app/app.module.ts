@@ -7,7 +7,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {
   MAT_SNACK_BAR_DEFAULT_OPTIONS,
   MatButtonModule,
-  MatCardModule,
+  MatCardModule, MatCheckboxModule,
   MatDialogModule,
   MatGridListModule,
   MatIconModule,
@@ -99,6 +99,7 @@ export function initUserFactory(userService: UserService) {
     MatCardModule,
     MatProgressSpinnerModule,
     MatSnackBarModule,
+    MatCheckboxModule,
     FlexLayoutModule,
     MatGridListModule,
     MatListModule,

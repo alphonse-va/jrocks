@@ -13,15 +13,12 @@ import {ExampleService} from "../../../service/example.service";
 export class EditExampleDialogComponent implements OnInit {
 
   form: FormGroup;
-  username: string;
 
   constructor(
     private exampleService: ExampleService,
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<EditExampleDialogComponent>,
     @Inject(MAT_DIALOG_DATA) {id, firstname, lastname, username}: Example) {
-
-    this.username = username;
 
     this.form = fb.group({
       id: [id, Validators.required],
@@ -37,7 +34,8 @@ export class EditExampleDialogComponent implements OnInit {
 
   save() {
     if (this.form.valid) {
-      this.exampleService.saveExample(this.form.value);
+      this.exampleService.saveExample(this.form.value)
+        .subscribe(saved => console.log(saved));
       this.dialogRef.close(this.form.value);
     }
   }

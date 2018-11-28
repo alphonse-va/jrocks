@@ -36,7 +36,7 @@ export class ExampleComponent implements OnInit, AfterViewInit {
   @ViewChild('filter') filter: ElementRef;
 
   constructor(private route: ActivatedRoute,
-              private coursesService: ExampleService,
+              private exampleService: ExampleService,
               private dialog: MatDialog,
               private snackBar: MatSnackBar) {
   }
@@ -46,7 +46,7 @@ export class ExampleComponent implements OnInit, AfterViewInit {
       this.displayedColumns = this.displayedColumns.filter(obj => obj !== "actions");
     }
 
-    this.dataSource = new ExampleDataSource(this.coursesService);
+    this.dataSource = new ExampleDataSource(this.exampleService);
     this.dataSource.loadExamples('', this.sortDirection, this.sortField, 0, this.pageSize);
   }
 
@@ -89,8 +89,12 @@ export class ExampleComponent implements OnInit, AfterViewInit {
         if (val) {
           this.sort.direction = 'desc';
           this.sort.active = 'id';
-          this.paginator._changePageSize(this.paginator.pageSize);
-          this.snackBar.open('Example ' + val.username + ' added with success!');
+          this.updateDataTable();
+          this.snackBar.open('Example ' + val.username + ' added with success!', 'Undo')
+            .onAction().subscribe(() => {
+              this.exampleService.deleteExample(val.id)
+                .subscribe(() => this.updateDataTable());
+          })
         }
       });
   }
@@ -98,26 +102,40 @@ export class ExampleComponent implements OnInit, AfterViewInit {
   editExample({id, firstname, lastname, username}: Example) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {id, firstname, lastname, username};
+    const backup = new Example(id, username, firstname, lastname);
 
     this.dialog.open(EditExampleDialogComponent, dialogConfig).afterClosed()
       .subscribe(val => {
         if (val) {
-          this.paginator._changePageSize(this.paginator.pageSize);
-          this.snackBar.open('Example ' + firstname + " " + lastname + ' saved with success!', 'Close');
+          this.updateDataTable();
+          this.notifyAction('Example ' + firstname + " " + lastname + ' saved with success!', backup);
         }
       });
+  }
+
+  private notifyAction(message: string, backup: Example) {
+    this.snackBar.open(message, 'Undo')
+      .onAction().subscribe(() => {
+      this.exampleService.saveExample(backup)
+        .subscribe(() => this.updateDataTable());
+    })
   }
 
   deleteExample({id, firstname, lastname, username}: Example) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {id, firstname, lastname, username};
+    const backup = new Example(id, username, firstname, lastname);
 
     this.dialog.open(DeleteExampleDialogComponent, dialogConfig).afterClosed()
       .subscribe(val => {
         if (val) {
-          this.paginator._changePageSize(this.paginator.pageSize);
-          this.snackBar.open('Example ' + firstname + " " + lastname + ' deleted with success!', 'Close');
+          this.notifyAction('Example ' + firstname + " " + lastname + ' saved with success!', backup);
+          this.updateDataTable();
         }
       });
+  }
+
+  private updateDataTable() {
+    this.paginator._changePageSize(this.paginator.pageSize);
   }
 }

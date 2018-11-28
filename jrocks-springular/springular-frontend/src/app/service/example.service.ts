@@ -51,10 +51,7 @@ export class ExampleService {
   }
 
   saveNewExample(example: Example) {
-    return this.apiService.post("/api/example", example, this.header)
-      .subscribe(saved => {
-        example = saved;
-      });
+    return this.apiService.post("/api/example", example, this.header);
   }
 
   afterSave() {
@@ -70,10 +67,7 @@ export class ExampleService {
   }
 
   deleteExample(id: number) {
-    this.apiService.delete("/api/example/" + id)
-      .subscribe(saved => {
-        console.log("Example with id " + id + " deleted with success");
-      });
+    return this.apiService.delete("/api/example/" + id);
   }
 }
 

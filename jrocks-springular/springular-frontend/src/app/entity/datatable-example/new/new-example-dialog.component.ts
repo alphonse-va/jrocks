@@ -34,8 +34,8 @@ export class NewExampleDialogComponent implements OnInit {
   }
 
   save() {
-    this.exampleService.saveNewExample(this.form.value);
-    this.dialogRef.close(this.form.value);
+    this.exampleService.saveNewExample(this.form.value)
+      .subscribe(saved => this.dialogRef.close(saved));
   }
 
   close() {
