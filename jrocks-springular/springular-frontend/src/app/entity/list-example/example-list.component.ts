@@ -31,9 +31,7 @@ export class ExampleListComponent implements OnInit, AfterViewInit {
               private snackBar: MatSnackBar) {
 
     this.exampleService.afterSave().subscribe(example => {
-
-      this.snackBar.open('Example ' + example.firstname + " " + example.lastname + ' saved with success!', 'Cancel');
-
+      this.snackBar.open('Example ' + example.firstname + " " + example.lastname + ' saved with success!', 'Close');
       this.loadExamplesPage();
     });
   }

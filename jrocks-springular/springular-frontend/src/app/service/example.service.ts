@@ -61,7 +61,6 @@ export class ExampleService {
     return this.changeSubject.asObservable();
   }
 
-
   saveExample(example: Example) {
     return this.apiService.put("/api/example/" + example.id, example, this.header)
       .map(saved => {

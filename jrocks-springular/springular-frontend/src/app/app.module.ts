@@ -121,7 +121,7 @@ export function initUserFactory(userService: UserService) {
       'deps': [UserService],
       'multi': true
     },
-    {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}}
+    {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 6000}}
   ],
   bootstrap: [AppComponent],
   entryComponents: [NewExampleDialogComponent, EditExampleDialogComponent, DeleteExampleDialogComponent]
