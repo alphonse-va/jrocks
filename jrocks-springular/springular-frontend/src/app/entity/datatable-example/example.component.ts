@@ -15,7 +15,7 @@ import {NewExampleDialogComponent} from "./new/new-example-dialog.component";
 @Component({
   selector: 'example',
   templateUrl: './example.component.html',
-  styleUrls: ['./example.component.scss'],
+  styleUrls: ['./example.component.scss']
 })
 export class ExampleComponent implements OnInit, AfterViewInit {
 
@@ -62,18 +62,6 @@ export class ExampleComponent implements OnInit, AfterViewInit {
       .subscribe();
   }
 
-  private subscribeOnKeyUp(element) {
-    fromEvent(element, 'keyup')
-      .pipe(
-        debounceTime(200),
-        distinctUntilChanged(),
-        tap(() => {
-          this.paginator.pageIndex = 0;
-          this.loadExamplesPage();
-        })
-      ).subscribe();
-  }
-
   loadExamplesPage() {
     this.dataSource.loadExamples(
       this.readonly ? '' : this.filter.nativeElement.value,
@@ -85,15 +73,16 @@ export class ExampleComponent implements OnInit, AfterViewInit {
 
   newExample() {
     this.dialog.open(NewExampleDialogComponent).afterClosed()
-      .subscribe(val => {
-        if (val) {
+      .subscribe(newExample => {
+        if (newExample) {
+          this.filter.nativeElement.value = '';
           this.sort.direction = 'desc';
           this.sort.active = 'id';
           this.updateDataTable();
-          this.snackBar.open('Example ' + val.username + ' added with success!', 'Undo')
+          this.snackBar.open('Example ' + newExample.username + ' added with success!', 'Undo')
             .onAction().subscribe(() => {
-              this.exampleService.deleteExample(val.id)
-                .subscribe(() => this.updateDataTable());
+            this.exampleService.deleteExample(newExample.id)
+              .subscribe(() => this.updateDataTable());
           })
         }
       });
@@ -108,17 +97,9 @@ export class ExampleComponent implements OnInit, AfterViewInit {
       .subscribe(val => {
         if (val) {
           this.updateDataTable();
-          this.notifyAction('Example ' + firstname + " " + lastname + ' saved with success!', backup);
+          this.notifyWithBackupUndo('Example ' + firstname + " " + lastname + ' saved with success!', backup);
         }
       });
-  }
-
-  private notifyAction(message: string, backup: Example) {
-    this.snackBar.open(message, 'Undo')
-      .onAction().subscribe(() => {
-      this.exampleService.saveExample(backup)
-        .subscribe(() => this.updateDataTable());
-    })
   }
 
   deleteExample({id, firstname, lastname, username}: Example) {
@@ -127,12 +108,35 @@ export class ExampleComponent implements OnInit, AfterViewInit {
     const backup = new Example(id, username, firstname, lastname);
 
     this.dialog.open(DeleteExampleDialogComponent, dialogConfig).afterClosed()
-      .subscribe(val => {
-        if (val) {
-          this.notifyAction('Example ' + firstname + " " + lastname + ' saved with success!', backup);
+      .subscribe(deletedExample => {
+        if (deletedExample) {
           this.updateDataTable();
+          this.notifyWithBackupUndo('Example ' + firstname + " " + lastname + ' deleted with success!', backup);
         }
       });
+  }
+
+  private subscribeOnKeyUp(element) {
+    fromEvent(element, 'keyup')
+      .pipe(
+        debounceTime(200),
+        distinctUntilChanged(),
+        tap(() => {
+          this.paginator.pageIndex = 0;
+          this.loadExamplesPage();
+        })
+      ).subscribe();
+  }
+
+  private notifyWithBackupUndo(message: string, backup: Example) {
+    this.snackBar.open(message, 'Undo')
+      .onAction().subscribe(() => {
+      this.exampleService.saveExample(backup)
+        .subscribe(saved => {
+          console.log("Undo example with id : " + saved.id);
+          this.updateDataTable();
+        });
+    })
   }
 
   private updateDataTable() {
