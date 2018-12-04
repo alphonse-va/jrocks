@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Entity
@@ -13,14 +14,17 @@ public class Example implements Serializable {
   @GeneratedValue
   private Long id;
 
+  @Size(min = 2, max = 50)
+  @Column(name = "USERNAME")
+  private String username;
+
+  @Size(min = 2, max = 50)
   @Column(name = "FIRSTNAME")
   private String firstname;
 
+  @Size(min = 2, max = 50)
   @Column(name = "LASTNAME")
   private String lastname;
-
-  @Column(name = "USERNAME")
-  private String username;
 
   public Long getId() {
     return id;

@@ -1,11 +1,11 @@
 package jrocks.springular;
 
-import jrocks.springular.model.Authority;
-import jrocks.springular.model.User;
-import jrocks.springular.model.UserRoleName;
-import jrocks.springular.repository.UserRepository;
-import jrocks.springular.security.auth.AnonAuthentication;
-import jrocks.springular.security.auth.TokenBasedAuthentication;
+import jrocks.springular.core.model.Authority;
+import jrocks.springular.core.model.User;
+import jrocks.springular.core.model.UserRoleName;
+import jrocks.springular.core.repository.UserRepository;
+import jrocks.springular.core.security.auth.AnonAuthentication;
+import jrocks.springular.core.security.auth.TokenBasedAuthentication;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;

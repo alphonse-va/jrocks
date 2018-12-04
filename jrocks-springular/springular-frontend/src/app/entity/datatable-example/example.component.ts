@@ -10,6 +10,7 @@ import {Example} from "../../model/example";
 import {EditExampleDialogComponent} from "./edit/edit-example-dialog.component";
 import {DeleteExampleDialogComponent} from "./delete/delete-example-dialog.component";
 import {NewExampleDialogComponent} from "./new/new-example-dialog.component";
+import {Observable} from "rxjs";
 
 
 @Component({
@@ -20,6 +21,8 @@ import {NewExampleDialogComponent} from "./new/new-example-dialog.component";
 export class ExampleComponent implements OnInit, AfterViewInit {
 
   dataSource: ExampleDataSource;
+  filteredExamples: Observable<any[]>;
+
 
   @Input() title: string = 'examples';
   @Input() subTitle: string = 'Search, add, edit or modify examples';
@@ -82,7 +85,10 @@ export class ExampleComponent implements OnInit, AfterViewInit {
           this.snackBar.open('Example ' + newExample.username + ' added with success!', 'Undo')
             .onAction().subscribe(() => {
             this.exampleService.deleteExample(newExample.id)
-              .subscribe(() => this.updateDataTable());
+              .subscribe(() => {
+                console.log("Undo new example with id : " + newExample.id);
+                this.updateDataTable();
+              });
           })
         }
       });
@@ -115,6 +121,18 @@ export class ExampleComponent implements OnInit, AfterViewInit {
         }
       });
   }
+
+  filterStates(val: string) {
+    return this.displayedColumns.filter(name =>
+      name.toLowerCase().indexOf(val.toLowerCase()) === 0);
+  }
+
+  onEnter(evt: any){
+    if (evt.source.selected) {
+      alert("hello " + evt.source.toString());
+    }
+  }
+
 
   private subscribeOnKeyUp(element) {
     fromEvent(element, 'keyup')

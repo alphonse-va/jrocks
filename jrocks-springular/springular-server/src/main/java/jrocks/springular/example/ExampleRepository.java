@@ -12,7 +12,6 @@ import org.springframework.data.rest.core.annotation.RestResource;
 public interface ExampleRepository extends JpaRepository<Example, Long> {
 
   @RestResource(path = "filter")
-
   @Query("SELECT e from Example e " +
       "WHERE UPPER(e.username) like UPPER(:username) " +
       "OR UPPER(e.firstname) like UPPER(:firstname) " +

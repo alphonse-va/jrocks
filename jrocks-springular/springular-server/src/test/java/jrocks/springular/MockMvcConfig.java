@@ -3,7 +3,7 @@ package jrocks.springular;
 /**
  * Created by fan.jin on 2017-01-14.
  */
-import jrocks.springular.security.auth.TokenAuthenticationFilter;
+import jrocks.springular.core.security.auth.TokenAuthenticationFilter;
 import io.restassured.RestAssured;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.springframework.beans.factory.annotation.Autowired;

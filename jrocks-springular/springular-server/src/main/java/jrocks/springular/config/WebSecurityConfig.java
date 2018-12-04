@@ -1,6 +1,6 @@
 package jrocks.springular.config;
 
-import jrocks.springular.service.impl.CustomUserDetailsService;
+import jrocks.springular.core.service.impl.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -16,11 +16,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import jrocks.springular.security.auth.AuthenticationFailureHandler;
-import jrocks.springular.security.auth.AuthenticationSuccessHandler;
-import jrocks.springular.security.auth.LogoutSuccess;
-import jrocks.springular.security.auth.RestAuthenticationEntryPoint;
-import jrocks.springular.security.auth.TokenAuthenticationFilter;
+import jrocks.springular.core.security.auth.AuthenticationFailureHandler;
+import jrocks.springular.core.security.auth.AuthenticationSuccessHandler;
+import jrocks.springular.core.security.auth.LogoutSuccess;
+import jrocks.springular.core.security.auth.RestAuthenticationEntryPoint;
+import jrocks.springular.core.security.auth.TokenAuthenticationFilter;
 
 /**
  * Created by fan.jin on 2016-10-19.
