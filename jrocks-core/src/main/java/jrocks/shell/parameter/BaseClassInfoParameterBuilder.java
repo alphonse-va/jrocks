@@ -22,7 +22,7 @@ public class BaseClassInfoParameterBuilder {
   private File file;
   private List<String> additionalFlags;
   private Map<Object, QuestionResponse> responses;
-  private PluginGenerator layout;
+  private PluginGenerator pluginGenerator;
   private boolean dryRun;
 
   public BaseClassInfoParameterApi build() {
@@ -37,7 +37,7 @@ public class BaseClassInfoParameterBuilder {
         .setFile(file)
         .setResponses(responses)
         .setAdditionalFlags(additionalFlags)
-        .setLayout(layout)
+        .setLayout(pluginGenerator)
         .setForce(force)
         .setDryRun(dryRun);
   }
@@ -93,7 +93,7 @@ public class BaseClassInfoParameterBuilder {
   }
 
   public BaseClassInfoParameterBuilder withLayout(PluginGenerator layout) {
-    this.layout = layout;
+    this.pluginGenerator = layout;
     return this;
   }
 
