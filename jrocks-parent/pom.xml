@@ -21,6 +21,7 @@
         <module>../jrocks-plugin-api</module>
         <module>../jrocks-plugin-test</module>
         <module>../jrocks-plugin-bean</module>
+        <module>../jrocks-plugin-bean2</module>
         <module>../jrocks-core</module>
         <module>../jrocks</module>
     </modules>

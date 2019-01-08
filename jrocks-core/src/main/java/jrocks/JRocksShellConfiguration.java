@@ -62,7 +62,7 @@ public class JRocksShellConfiguration {
     try {
       return TerminalBuilder.builder().build();
     } catch (IOException e) {
-      throw new BeanCreationException("Could not create Terminal: " + e.getMessage());
+      throw new BeanCreationException("Could not create Terminal: " + e.getMessage(), e);
     }
   }
 

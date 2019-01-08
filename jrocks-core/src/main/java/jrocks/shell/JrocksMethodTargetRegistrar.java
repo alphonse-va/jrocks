@@ -47,8 +47,8 @@ public class JrocksMethodTargetRegistrar implements MethodTargetRegistrar {
   private static Method findJRocksShellMethod(Class<?> clazz) {
     for (Method method : clazz.getMethods())
       if (method.isAnnotationPresent(JRocksShellMethod.class))
-        return (method);
-    return (null);
+        return method;
+    return null;
   }
 
   /**

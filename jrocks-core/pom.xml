@@ -33,11 +33,16 @@
             <version>${project.version}</version>
         </dependency>
 
+        <!--<dependency>-->
+            <!--<groupId>be.unlock</groupId>-->
+            <!--<artifactId>jrocks-plugin-bean</artifactId>-->
+            <!--<version>${project.version}</version>-->
+            <!--<optional>true</optional>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>be.unlock</groupId>
-            <artifactId>jrocks-plugin-bean</artifactId>
+            <artifactId>jrocks-plugin-bean2</artifactId>
             <version>${project.version}</version>
-            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>be.unlock</groupId>

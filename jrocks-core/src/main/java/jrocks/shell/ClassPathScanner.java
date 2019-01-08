@@ -73,12 +73,12 @@ public class ClassPathScanner {
   }
 
   public Stream<ClassInfo> getAllClassInfo() {
-    rebuildIfNeeded();
+    rebuildIfRequired();
     return classes.stream();
   }
 
   public List<String> getAllFieldsWithGetterAndSetters(String className) {
-    rebuildIfNeeded();
+    rebuildIfRequired();
     return getFieldNames(className)
         .filter(fieldName ->
             doesMethodExist(className, "set", fieldName)
@@ -99,11 +99,7 @@ public class ClassPathScanner {
     return prefix + capitalize(fieldName);
   }
 
-
-  /**
-   * TODO: We could use an aspect to call this method
-   */
-  private void rebuildIfNeeded() {
+  private void rebuildIfRequired() {
     if (configService.getConfig().isAutoRebuild()) {
       rebuild();
     } else if (scanResult.classpathContentsModifiedSinceScan()) {

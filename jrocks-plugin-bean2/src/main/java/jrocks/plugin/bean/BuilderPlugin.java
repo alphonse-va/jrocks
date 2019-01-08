@@ -10,19 +10,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static java.util.Collections.singletonList;
-
 @Component
 public class BuilderPlugin implements JRocksPlugin {
 
-  static final String LAYOUT_QUALIFIER = "BuilderLayout";
+  static final String LAYOUT_QUALIFIER = "BuilderLayout2";
 
   static final String Q_PACKAGE = "PACKAGE";
 
   @Value("${jrocks.version}")
   private String version;
 
-  @Value("${jrocks.plugin.dto.defaultSuffix:Builder}")
+  @Value("${jrocks.plugin.builder.defaultSuffix:Builder}")
   private String defaultSuffix;
 
   private final List<PluginGenerator> generators;
@@ -34,7 +32,7 @@ public class BuilderPlugin implements JRocksPlugin {
 
   @Override
   public String name() {
-    return "builderzzz";
+    return "builder2";
   }
 
   @Override
@@ -44,12 +42,7 @@ public class BuilderPlugin implements JRocksPlugin {
 
   @Override
   public String description() {
-    return "Builder Generatorzzz";
-  }
-
-  @Override
-  public List<String> keys() {
-    return singletonList("builderzzz");
+    return "Builder Generator";
   }
 
   @Override

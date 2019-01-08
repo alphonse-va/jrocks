@@ -22,16 +22,8 @@ import static org.jline.utils.AttributedStyle.*;
  * <code>
  * Character styles<br>
  * *Italic characters*<br>
- * **bold characters**<br>
- * __bold characters__<br>
- * ~~strikethrough text~~<br>
- * Unordered list<br>
- * *  Item 1<br>
- * *  Item 2<br>
- * *    Item 3<br>
- * *    Item 3a<br>
- * *    Item 3b<br>
- * *    Item 3c<br>
+ * _bold characters_<br>
+ * ~strikethrough text~<br>
  * </code>
  */
 @Service

@@ -1,17 +1,14 @@
 package jrocks.plugin.api;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import static java.util.Collections.singletonList;
 
 public interface JRocksPlugin extends JRocksBean {
 
   String version();
 
   String description();
-
-  List<String> keys();
 
   String defaultSuffix();
 
@@ -27,6 +24,10 @@ public interface JRocksPlugin extends JRocksBean {
 
   default Map<Object, Question> additionalQuestions(ClassParameterApi parameter, ClassApi classInfo) {
     return new HashMap<>();
+  }
+
+  default List<String> keys() {
+    return singletonList(name());
   }
 }
 
