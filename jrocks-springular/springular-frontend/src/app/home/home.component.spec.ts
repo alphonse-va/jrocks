@@ -1,13 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HomeComponent } from './home.component';
 import { ApiCardComponent, GithubComponent } from '../component';
-import { MockApiService } from '../service/mocks/api.service.mock';
+import { MockApiService } from '../service/mocks';
 
 import {
   MatButtonModule,
   MatCardModule
 } from '@angular/material';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import {
   ApiService,
