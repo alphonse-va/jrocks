@@ -8,7 +8,7 @@
     <parent>
         <groupId>be.unlock</groupId>
         <artifactId>jrocks-parent</artifactId>
-        <version>0.3.0-SNAPSHOT</version>
+        <version>0.3.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>jrocks</artifactId>
@@ -23,13 +23,13 @@
         <dependency>
             <groupId>be.unlock</groupId>
             <artifactId>jrocks-core</artifactId>
-            <version>0.3.0-SNAPSHOT</version>
+            <version>0.3.1-SNAPSHOT</version>
             <classifier>run</classifier>
         </dependency>
         <dependency>
             <groupId>be.unlock</groupId>
             <artifactId>jrocks-plugin-bean</artifactId>
-            <version>0.3.0-SNAPSHOT</version>
+            <version>0.3.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

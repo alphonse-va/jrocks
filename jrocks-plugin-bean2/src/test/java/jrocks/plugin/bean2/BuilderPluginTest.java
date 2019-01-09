@@ -1,4 +1,4 @@
-package jrocks.plugin.bean;
+package jrocks.plugin.bean2;
 
 import jrocks.plugin.api.ClassApi;
 import jrocks.plugin.api.ClassParameterApi;
@@ -17,7 +17,7 @@ class BuilderPluginTest {
 
   @BeforeEach
   void setUp() {
-    builderPlugin = new BuilderPlugin(Collections.singletonList(new BuilderDefaultGenerator()));
+    builderPlugin = new BuilderPlugin(Collections.singletonList(new jrocks.plugin.bean2.BuilderDefaultGenerator()));
   }
 
   @Test

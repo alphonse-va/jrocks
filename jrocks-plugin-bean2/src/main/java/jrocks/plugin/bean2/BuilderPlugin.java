@@ -1,4 +1,4 @@
-package jrocks.plugin.bean;
+package jrocks.plugin.bean2;
 
 import jrocks.plugin.api.*;
 import org.springframework.beans.factory.annotation.Autowired;

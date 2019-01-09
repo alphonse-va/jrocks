@@ -16,12 +16,8 @@ import @name;
 }
 import java.util.Objects;
 
-
-HAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHAHA
-
-
 /**
- * Builder for the @bean.simpleName() bean.
+ * Builder for @bean.simpleName() class
  */
 @@Generated(value = "jrocks", date = "@LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME)")
 public class @bean.simpleName()Builder {
@@ -29,21 +25,20 @@ public class @bean.simpleName()Builder {
   private @bean.simpleName() @bean.propertyName() = new @bean.simpleName()();
 
   public @bean.simpleName() build() {
-@for (FieldApi p : bean.fields()) {
-  @if(p.isRequired() || param.mandatoryFields().contains(p.fieldName())) {
-    Objects.requireNonNull(@String.format("%s.%s()", bean.propertyName(), p.getter()), "@String.format("%s is required!", p.fieldNameCapitalized())");
+@for (FieldApi f : bean.fields()) {
+  @if(f.setter().isPresent() && (f.isRequired() || param.mandatoryFields().contains(f.fieldName()))) {
+    Objects.requireNonNull(@String.format("%s.%s()", bean.propertyName(), f.getter().get()), "@String.format("%s is required!", f.fieldName())");
   }
 }
     return @bean.propertyName();
   }
-
 @for (FieldApi fieldInfo : bean.fields()) {
-  @if(fieldInfo.isRequired() || param.toInclude(fieldInfo.fieldName())) {
-  public @bean.simpleName()Builder @fieldInfo.setter()(@fieldInfo.simpleName() @fieldInfo.fieldName()) {
+  @if(fieldInfo.setter().isPresent() && (fieldInfo.isRequired() || param.toInclude(fieldInfo.fieldName()))) {
+
+  public @bean.simpleName()Builder @fieldInfo.setter().get()(@fieldInfo.simpleName() @fieldInfo.fieldName()) {
     @String.format("%s.set%s(%s)", bean.propertyName(), fieldInfo.fieldNameCapitalized(), fieldInfo.fieldName());
     return this;
   }
-
   }
 }
 }

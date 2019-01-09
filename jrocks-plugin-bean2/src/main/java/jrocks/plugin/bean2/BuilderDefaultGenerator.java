@@ -1,7 +1,6 @@
-package jrocks.plugin.bean;
+package jrocks.plugin.bean2;
 
 import com.fizzed.rocker.Rocker;
-import com.fizzed.rocker.runtime.RockerRuntime;
 import jrocks.plugin.api.*;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,7 +19,6 @@ public class BuilderDefaultGenerator implements PluginGenerator {
 
   @PostConstruct
   public void postConstruct() {
-    RockerRuntime.getInstance().setReloading(true);
   }
 
   @Override
@@ -39,9 +37,9 @@ public class BuilderDefaultGenerator implements PluginGenerator {
         .map(QuestionResponse::text)
         .orElse(classApi.packageName());
 
-//    String content = builder.template(classApi, parameter).render().toString();
+//-    String content = builder.template(classApi, parameter).render().toString();
 
-    String content = Rocker.template("templates/builder.rocker.raw", classApi, parameter).render().toString();
+    String content = Rocker.template("jrocks/templates/builder.rocker.raw", classApi, parameter).render().toString();
 
     return Collections.singletonList(new GeneratedSourceSupport()
         .setContent(content)
