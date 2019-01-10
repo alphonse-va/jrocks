@@ -11,14 +11,14 @@
         <dependencySet>
             <outputDirectory>/jrocks/plugins</outputDirectory>
             <includes>
-                <include>*:jrocks-plugin-bean-rocker:*</include>
-                <include>*:jrocks-plugin-bean-javapoet:*</include>
+                <include>be.unlock:jrocks-plugin-bean-rocker:*</include>
+                <include>be.unlock:jrocks-plugin-bean-javapoet:*</include>
             </includes>
         </dependencySet>
         <dependencySet>
             <outputDirectory>/jrocks</outputDirectory>
             <includes>
-                <include>*:jrocks-core:*:run</include>
+                <include>be.unlock:jrocks-core:*:run</include>
             </includes>
             <useProjectArtifact>true</useProjectArtifact>
             <unpack>false</unpack>
