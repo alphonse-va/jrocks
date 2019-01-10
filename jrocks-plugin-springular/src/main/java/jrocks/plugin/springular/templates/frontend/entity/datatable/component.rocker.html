@@ -6,7 +6,7 @@
 @option discardLogicWhitespace=true
 @args(ClassApi bean, ClassParameterApi param)
 
-<mat-card class="@bean.propertyName()-card">
+<mat-card>
 
   <mat-card-header>
     <mat-card-title>{{title | uppercase}}
@@ -44,29 +44,15 @@
 
       <div class="table-container" [style.min-height]="minHeight" [style.max-height]="maxHeight">
 
-        <mat-table class="@bean.propertyName()-table" [dataSource]="dataSource"
-                   matSort matSortActive="username" matSortDirection="asc" matSortDisableClear>
+        <mat-table class="@bean.propertyName()-table" [dataSource]="dataSource" matSort matSortDisableClear>
 
-          <ng-container matColumnDef="id">
+          @for (FieldApi f : bean.fields()) {
+          <ng-container matColumnDef="@f.fieldName()">
             <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
-            <mat-cell *matCellDef="let @bean.propertyName()">{{@String.format("%s.id", bean.propertyName())}}</mat-cell>
+            <mat-cell *matCellDef="let @bean.propertyName()">{{@String.format("%s.%s", bean.propertyName(), f.fieldName())}}</mat-cell>
           </ng-container>
 
-          <ng-container matColumnDef="username">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>Username</mat-header-cell>
-            <mat-cell *matCellDef="let @bean.propertyName()">{{@String.format("%s.username", bean.propertyName())}}</mat-cell>
-          </ng-container>
-
-          <ng-container matColumnDef="firstname">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>Firstname</mat-header-cell>
-            <mat-cell *matCellDef="let @bean.propertyName()">{{@String.format("%s.firstname", bean.propertyName())}}</mat-cell>
-          </ng-container>
-
-          <ng-container matColumnDef="lastname">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>Lastname</mat-header-cell>
-            <mat-cell *matCellDef="let @bean.propertyName()">{{@String.format("%s.lastname", bean.propertyName())}}</mat-cell>
-          </ng-container>
-
+          }
           <ng-container *ngIf="!readonly" matColumnDef="actions">
             <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
             <mat-cell *matCellDef="let row">
