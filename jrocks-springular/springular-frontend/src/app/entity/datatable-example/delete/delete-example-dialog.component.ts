@@ -13,7 +13,9 @@ import {ExampleService} from "../../../service/example.service";
 export class DeleteExampleDialogComponent implements OnInit {
 
   id: number;
-  private username: string;
+  username: string;
+  firstname: string;
+  lastname: string;
 
   constructor(
     private exampleService: ExampleService,
@@ -22,6 +24,9 @@ export class DeleteExampleDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) {id, firstname, lastname, username}: Example) {
 
     this.id = id;
+    this.firstname = firstname;
+    this.lastname = lastname;
+    this.username = username;
   }
 
   ngOnInit() {
