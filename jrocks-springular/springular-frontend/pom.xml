@@ -12,9 +12,6 @@
   <artifactId>springular-frontend</artifactId>
   <packaging>war</packaging>
 
-  <name>Springular Frontend</name>
-  <description>The frontend archive of Springular Starter</description>
-
   <build>
     <plugins>
       <plugin>

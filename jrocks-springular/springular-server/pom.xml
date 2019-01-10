@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <name>Springular Server</name>
-    <description>The backend server for Angular2 Spring Boot JWT Starter</description>
+    <description>The backend server of Springular Starter</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -89,6 +89,4 @@
             </plugin>
         </plugins>
     </build>
-
-
 </project>
