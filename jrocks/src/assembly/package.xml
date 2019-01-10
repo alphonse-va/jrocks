@@ -11,11 +11,9 @@
         <dependencySet>
             <outputDirectory>/jrocks/plugins</outputDirectory>
             <includes>
-                <include>*:jrocks-plugin-bean:*:*</include>
+                <include>*:jrocks-plugin-bean-rocker:*</include>
+                <include>*:jrocks-plugin-bean-javapoet:*</include>
             </includes>
-            <useProjectArtifact>true</useProjectArtifact>
-            <unpack>false</unpack>
-            <scope>runtime</scope>
         </dependencySet>
         <dependencySet>
             <outputDirectory>/jrocks</outputDirectory>

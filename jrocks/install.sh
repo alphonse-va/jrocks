@@ -4,7 +4,7 @@ PACKAGE_DIR=`pwd`
 
 cd ../jrocks-parent
 
-mvn clean package
+mvn clean install package
 
 cd ~
 
