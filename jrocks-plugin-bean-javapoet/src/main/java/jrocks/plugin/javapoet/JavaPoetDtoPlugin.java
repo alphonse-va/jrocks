@@ -1,4 +1,4 @@
-package jrocks.plugin.bean;
+package jrocks.plugin.javapoet;
 
 import jrocks.plugin.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 
 @Component
-public class DtoPlugin implements JRocksPlugin {
+public class JavaPoetDtoPlugin implements JRocksPlugin {
 
-  static final String LAYOUT_QUALIFIER = "DtoLayout";
+  static final String LAYOUT_QUALIFIER = "JavaPoetDtoPlugin";
   static final String WITH_MAPPER_FLAG = "with-mapper";
   static final String Q_DTO_PACKAGE = "dto.package";
   static final String Q_MAPPER_PACKAGE = "mapper.package";
@@ -25,7 +25,7 @@ public class DtoPlugin implements JRocksPlugin {
   private final List<PluginGenerator> generators;
 
   @Autowired
-  public DtoPlugin(@Qualifier(LAYOUT_QUALIFIER) List<PluginGenerator> generators) {
+  public JavaPoetDtoPlugin(@Qualifier(LAYOUT_QUALIFIER) List<PluginGenerator> generators) {
     this.generators = generators;
   }
 
@@ -36,7 +36,7 @@ public class DtoPlugin implements JRocksPlugin {
 
   @Override
   public String name() {
-    return "dto";
+    return "dto-javapoet";
   }
 
   @Override
@@ -46,12 +46,7 @@ public class DtoPlugin implements JRocksPlugin {
 
   @Override
   public String description() {
-    return "DTO Generator";
-  }
-
-  @Override
-  public List<String> keys() {
-    return Collections.singletonList("dto");
+    return "JavaPoet DTO Example";
   }
 
   @Override
@@ -73,7 +68,7 @@ public class DtoPlugin implements JRocksPlugin {
     if (parameter.hasFlag(WITH_MAPPER_FLAG)) {
       result.put(Q_MAPPER_PACKAGE, new QuestionSupport()
           .setBuffer(classInfo.packageName() + ".mapper")
-          .setQuestion("A mapper.. Really? Sure?? :-) Enter the package please"));
+          .setQuestion("A mapper.. Really? Sure?? :-) Enter the package name please"));
     }
     return result;
   }

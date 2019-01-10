@@ -29,7 +29,6 @@ public class BaseClassInfoParameterApi implements ClassParameterApi {
 
   private PluginGenerator layout;
 
-
   @Override
   public List<String> excludedFields() {
     return excludedFields;

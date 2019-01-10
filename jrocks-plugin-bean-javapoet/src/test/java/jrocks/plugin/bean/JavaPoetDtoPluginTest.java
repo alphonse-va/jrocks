@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableList;
 import jrocks.plugin.api.ClassApi;
 import jrocks.plugin.api.ClassParameterApi;
 import jrocks.plugin.api.FieldApi;
+import jrocks.plugin.javapoet.JavaPoetDtoGenerator;
+import jrocks.plugin.javapoet.JavaPoetDtoPlugin;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,13 +15,13 @@ import java.util.Optional;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class DtoPluginTest {
+class JavaPoetDtoPluginTest {
 
-  private DtoPlugin dtoPlugin;
+  private JavaPoetDtoPlugin javaPoetDtoPlugin;
 
   @BeforeEach
   void setUp() {
-    dtoPlugin = new DtoPlugin(Collections.singletonList(new DtoDefaultGenerator()));
+    javaPoetDtoPlugin = new JavaPoetDtoPlugin(Collections.singletonList(new JavaPoetDtoGenerator()));
   }
 
   @Test
@@ -52,7 +54,7 @@ class DtoPluginTest {
 
     when(classMock.fields()).thenReturn(ImmutableList.of(nameField, date));
 
-    System.out.println(dtoPlugin.generators().get(0).generate(parameterMock, classMock).get(0).content());
+    System.out.println(javaPoetDtoPlugin.generators().get(0).generate(parameterMock, classMock).get(0).content());
 
   }
 }

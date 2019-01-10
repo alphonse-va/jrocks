@@ -1,8 +1,8 @@
-package jrocks.plugin.bean;
+package jrocks.plugin.javapoet;
 
 import com.squareup.javapoet.*;
 import jrocks.plugin.api.*;
-import jrocks.plugin.util.PoeticUtils;
+import jrocks.plugin.javapoet.util.PoeticUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -14,15 +14,15 @@ import java.util.List;
 import static java.lang.String.format;
 
 @Component
-@Qualifier(DtoPlugin.LAYOUT_QUALIFIER)
-public class DtoDefaultGenerator implements PluginGenerator {
+@Qualifier(JavaPoetDtoPlugin.LAYOUT_QUALIFIER)
+public class JavaPoetDtoGenerator implements PluginGenerator {
 
   @Value("${jrocks.version}")
   private String version;
 
   @Override
   public String description() {
-    return "Dto default generator";
+    return "JavaPoet Dto Generator Example";
   }
 
   @Override
@@ -50,7 +50,7 @@ public class DtoDefaultGenerator implements PluginGenerator {
         .addModifiers(Modifier.PUBLIC)
         .addStatement("$T $L = new $T()", sourceClassName, propertyName, sourceClassName);
 
-    if (parameter.hasFlag(DtoPlugin.WITH_MAPPER_FLAG)) {
+    if (parameter.hasFlag(JavaPoetDtoPlugin.WITH_MAPPER_FLAG)) {
       toMethod
           .addModifiers(Modifier.STATIC)
           .addParameter(dtoClassName, propertyName + parameter.suffix());
@@ -74,7 +74,7 @@ public class DtoDefaultGenerator implements PluginGenerator {
     toMethod.addStatement("return $L", propertyName);
 
     // factory methods
-    if (!parameter.hasFlag(DtoPlugin.WITH_MAPPER_FLAG)) {
+    if (!parameter.hasFlag(JavaPoetDtoPlugin.WITH_MAPPER_FLAG)) {
       dtoTypeBuilder.addMethod(fromMethod.build()).addMethod(toMethod.build());
     }
 
@@ -88,12 +88,12 @@ public class DtoDefaultGenerator implements PluginGenerator {
     result.add(new GeneratedSourceSupport()
         .setFilename(format("%s%s.java", classApi.simpleName(), parameter.suffix()))
         .setContent(JavaFile.builder(classApi.packageName(), dtoTypeBuilder.build()).build().toString())
-        .setPackageName(getPackage(parameter, classApi, DtoPlugin.Q_DTO_PACKAGE))
+        .setPackageName(getPackage(parameter, classApi, JavaPoetDtoPlugin.Q_DTO_PACKAGE))
         .setPath(classApi.sourceClassPath()));
 
-    if (parameter.hasFlag(DtoPlugin.WITH_MAPPER_FLAG)) {
+    if (parameter.hasFlag(JavaPoetDtoPlugin.WITH_MAPPER_FLAG)) {
       // mapper class
-      String mapperPackage = getPackage(parameter, classApi, DtoPlugin.Q_MAPPER_PACKAGE);
+      String mapperPackage = getPackage(parameter, classApi, JavaPoetDtoPlugin.Q_MAPPER_PACKAGE);
       String mapperClass = format("%s.%s%sMapper", mapperPackage, classApi.simpleName(), parameter.suffix());
       ClassName mapperClassName = ClassName.bestGuess(mapperClass);
       TypeSpec mapperType = TypeSpec.classBuilder(mapperClassName)
@@ -119,6 +119,6 @@ public class DtoDefaultGenerator implements PluginGenerator {
   }
 
   private static String resolveFromFieldName(ClassParameterApi parameter, String propertyName) {
-    return parameter.hasFlag(DtoPlugin.WITH_MAPPER_FLAG) ? propertyName + parameter.suffix() : "this";
+    return parameter.hasFlag(JavaPoetDtoPlugin.WITH_MAPPER_FLAG) ? propertyName + parameter.suffix() : "this";
   }
 }

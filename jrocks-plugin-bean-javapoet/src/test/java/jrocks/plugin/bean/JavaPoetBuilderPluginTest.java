@@ -3,6 +3,8 @@ package jrocks.plugin.bean;
 import jrocks.plugin.api.ClassApi;
 import jrocks.plugin.api.ClassParameterApi;
 import jrocks.plugin.api.FieldApi;
+import jrocks.plugin.javapoet.JavaPoetBuilderGenerator;
+import jrocks.plugin.javapoet.JavaPoetBuilderPlugin;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,13 +13,13 @@ import java.util.Collections;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class BuilderPluginTest {
+class JavaPoetBuilderPluginTest {
 
-  private BuilderPlugin builderPlugin;
+  private JavaPoetBuilderPlugin javaPoetBuilderPlugin;
 
   @BeforeEach
   void setUp() {
-    builderPlugin = new BuilderPlugin(Collections.singletonList(new BuilderDefaultGenerator()));
+    javaPoetBuilderPlugin = new JavaPoetBuilderPlugin(Collections.singletonList(new JavaPoetBuilderGenerator()));
   }
 
   @Test
@@ -40,7 +42,7 @@ class BuilderPluginTest {
 
     when(classMock.fields()).thenReturn(Collections.singletonList(nameField));
 
-    System.out.println(builderPlugin.generators().get(0).generate(parameter,  classMock).get(0).content());
+    System.out.println(javaPoetBuilderPlugin.generators().get(0).generate(parameter,  classMock).get(0).content());
 
   }
 }

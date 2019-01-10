@@ -26,38 +26,42 @@ public class PackageValueProvider extends ValueProviderSupport {
   private final ConfigService projectConfig;
 
   @Autowired
-  public PackageValueProvider(ConfigService configService) {this.projectConfig = configService;}
+  public PackageValueProvider(ConfigService configService) {
+    this.projectConfig = configService;
+  }
 
   @Override
   public List<CompletionProposal> complete(MethodParameter parameter, CompletionContext completionContext, String[] hints) {
     List<CompletionProposal> proposals = new ArrayList<>();
     projectConfig.getConfig().getModules().stream()
         .map(ModuleConfig::getOutputDirectory)
-        .forEach(outputDirectory -> {
-          try {
-            Path outputDirectoryPath = Paths.get(outputDirectory);
-            Files.walk(outputDirectoryPath).forEach(path -> {
-              if (path.toFile().isDirectory()) {
-                String relativePath = path.toFile().getAbsolutePath().replace(outputDirectory, "");
-                relativePath = relativePath.isEmpty() ? "" : relativePath.substring(1);
-                try {
-                  String proposal = relativePath.replaceAll(File.separator, ".");
-                  if (!proposal.isEmpty()) {
-                    boolean containClasses = Files.walk(path).anyMatch(p -> p.toFile().getName().endsWith(".class"));
-                    boolean hasNoFiles = Files.walk(path).noneMatch(p -> p.toFile().isFile());
-                    if (containClasses || hasNoFiles) {
-                      proposals.add(new CompletionProposal(proposal));
-                    }
-                  }
-                } catch (IOException e) {
-                  throw new JRocksShellException(e.getMessage(), e);
-                }
-              }
-            });
-          } catch (IOException e) {
-            throw new JRocksShellException(format("Error while walking '%s' file.", outputDirectory), e);
-          }
-        });
+        .forEach(outputDirectory -> addPackageProposals(proposals, outputDirectory));
     return proposals;
+  }
+
+  private void addPackageProposals(List<CompletionProposal> proposals, String outputDirectory) {
+    try {
+      Path outputDirectoryPath = Paths.get(outputDirectory);
+      Files.walk(outputDirectoryPath).forEach(path -> {
+        if (path.toFile().isDirectory()) {
+          String relativePath = path.toFile().getAbsolutePath().replace(outputDirectory, "");
+          relativePath = relativePath.isEmpty() ? "" : relativePath.substring(1);
+          try {
+            String proposal = relativePath.replaceAll(File.separator, ".");
+            if (!proposal.isEmpty()) {
+              boolean containClasses = Files.walk(path).anyMatch(p -> p.toFile().getName().endsWith(".class"));
+              boolean hasNoFiles = Files.walk(path).noneMatch(p -> p.toFile().isFile());
+              if (containClasses || hasNoFiles) {
+                proposals.add(new CompletionProposal(proposal));
+              }
+            }
+          } catch (IOException e) {
+            throw new JRocksShellException(e.getMessage(), e);
+          }
+        }
+      });
+    } catch (IOException e) {
+      throw new JRocksShellException(format("Error while walking '%s' file.", outputDirectory), e);
+    }
   }
 }

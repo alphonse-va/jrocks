@@ -1,4 +1,4 @@
-package jrocks.plugin.util;
+package jrocks.plugin.javapoet.util;
 
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;

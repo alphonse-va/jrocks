@@ -1,8 +1,8 @@
-package jrocks.plugin.bean;
+package jrocks.plugin.javapoet;
 
 import com.squareup.javapoet.*;
 import jrocks.plugin.api.*;
-import jrocks.plugin.util.PoeticUtils;
+import jrocks.plugin.javapoet.util.PoeticUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -13,15 +13,15 @@ import java.util.List;
 import java.util.Objects;
 
 @Component
-@Qualifier(BuilderPlugin.LAYOUT_QUALIFIER)
-public class BuilderDefaultGenerator implements PluginGenerator {
+@Qualifier(JavaPoetBuilderPlugin.LAYOUT_QUALIFIER)
+public class JavaPoetBuilderGenerator implements PluginGenerator {
 
   @Value("${jrocks.version}")
   private String version;
 
   @Override
   public String description() {
-    return "Builder default generator";
+    return "JavaPoet Builder Generator Example";
   }
 
   @Override
@@ -33,7 +33,7 @@ public class BuilderDefaultGenerator implements PluginGenerator {
   public List<GeneratedSource> generate(ClassParameterApi parameter, ClassApi classApi) {
     ClassName sourceClassName = ClassName.bestGuess(classApi.name());
 
-    String packageName = parameter.getUserResponse(BuilderPlugin.Q_PACKAGE)
+    String packageName = parameter.getUserResponse(JavaPoetBuilderPlugin.Q_PACKAGE)
         .map(QuestionResponse::text)
         .orElse(classApi.packageName());
 

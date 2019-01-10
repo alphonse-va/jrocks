@@ -1,0 +1,44 @@
+@import jrocks.plugin.api.ClassApi
+@import jrocks.plugin.api.FieldApi
+@import jrocks.plugin.api.ClassParameterApi
+@import java.time.LocalDateTime
+@import java.time.format.DateTimeFormatter
+
+@option discardLogicWhitespace=true
+
+@args(ClassApi bean, ClassParameterApi param)
+
+package @bean.packageName();
+
+import javax.annotation.Generated;
+@for (String name : bean.requiredFieldNames()) {
+import @name;
+}
+import java.util.Objects;
+
+/**
+ * Builder for @bean.simpleName() class
+ */
+@@Generated(value = "jrocks", date = "@LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME)")
+public class @bean.simpleName()Builder {
+
+  private @bean.simpleName() @bean.propertyName() = new @bean.simpleName()();
+
+  public @bean.simpleName() build() {
+@for (FieldApi f : bean.fields()) {
+  @if(f.setter().isPresent() && (f.isRequired() || param.mandatoryFields().contains(f.fieldName()))) {
+    Objects.requireNonNull(@String.format("%s.%s()", bean.propertyName(), f.getter().get()), "@String.format("%s is required!", f.fieldName())");
+  }
+}
+    return @bean.propertyName();
+  }
+@for (FieldApi fieldInfo : bean.fields()) {
+  @if(fieldInfo.setter().isPresent() && (fieldInfo.isRequired() || param.toInclude(fieldInfo.fieldName()))) {
+
+  public @bean.simpleName()Builder @fieldInfo.setter().get()(@fieldInfo.simpleName() @fieldInfo.fieldName()) {
+    @String.format("%s.set%s(%s)", bean.propertyName(), fieldInfo.fieldNameCapitalized(), fieldInfo.fieldName());
+    return this;
+  }
+  }
+}
+}

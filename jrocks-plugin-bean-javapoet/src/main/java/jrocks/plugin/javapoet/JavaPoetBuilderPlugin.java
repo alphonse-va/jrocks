@@ -1,4 +1,4 @@
-package jrocks.plugin.bean;
+package jrocks.plugin.javapoet;
 
 import jrocks.plugin.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +10,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static java.util.Collections.singletonList;
-
 @Component
-public class BuilderPlugin implements JRocksPlugin {
+public class JavaPoetBuilderPlugin implements JRocksPlugin {
 
-  static final String LAYOUT_QUALIFIER = "BuilderLayout";
+  static final String LAYOUT_QUALIFIER = "JavaPoetBuilderPlugin";
 
   static final String Q_PACKAGE = "PACKAGE";
 
@@ -28,13 +26,13 @@ public class BuilderPlugin implements JRocksPlugin {
   private final List<PluginGenerator> generators;
 
   @Autowired
-  public BuilderPlugin(@Qualifier(LAYOUT_QUALIFIER) List<PluginGenerator> generators) {
+  public JavaPoetBuilderPlugin(@Qualifier(LAYOUT_QUALIFIER) List<PluginGenerator> generators) {
     this.generators = generators;
   }
 
   @Override
   public String name() {
-    return "builder";
+    return "builder-javapoet";
   }
 
   @Override
@@ -44,12 +42,7 @@ public class BuilderPlugin implements JRocksPlugin {
 
   @Override
   public String description() {
-    return "Builder Generator";
-  }
-
-  @Override
-  public List<String> keys() {
-    return singletonList("builder");
+    return "JavaPoet Builder Example";
   }
 
   @Override

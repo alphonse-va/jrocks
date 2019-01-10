@@ -20,7 +20,8 @@
     <modules>
         <module>../jrocks-plugin-api</module>
         <module>../jrocks-plugin-test</module>
-        <module>../jrocks-plugin-bean</module>
+        <module>../jrocks-plugin-bean-rocker</module>
+        <module>../jrocks-plugin-bean-javapoet</module>
         <module>../jrocks-core</module>
         <module>../jrocks</module>
     </modules>
