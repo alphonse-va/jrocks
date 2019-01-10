@@ -22,8 +22,10 @@
         <module>../jrocks-plugin-test</module>
         <module>../jrocks-plugin-bean-rocker</module>
         <module>../jrocks-plugin-bean-javapoet</module>
+        <module>../jrocks-plugin-springular</module>
         <module>../jrocks-core</module>
-        <module>../jrocks-springular/springular-frontend</module>
+        <!--<module>../jrocks-springular/springular-frontend</module>-->
+        <module>../jrocks-springular/springular-server</module>
         <module>../jrocks</module>
     </modules>
 

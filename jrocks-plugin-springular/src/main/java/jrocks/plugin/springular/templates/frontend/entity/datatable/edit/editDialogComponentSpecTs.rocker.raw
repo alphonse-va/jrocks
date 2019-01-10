@@ -1,0 +1,33 @@
+@import jrocks.plugin.api.ClassApi
+@import jrocks.plugin.api.FieldApi
+@import jrocks.plugin.api.ClassParameterApi
+@import java.time.LocalDateTime
+@import java.time.format.DateTimeFormatter
+@option discardLogicWhitespace=true
+@args(ClassApi bean, ClassParameterApi param)
+
+import { async, ComponentFixture, TestBed } from '@@angular/core/testing';
+
+import { Edit@bean.simpleName()DialogComponent } from './edit-@bean.resourceName()-dialog.component';
+
+describe('Delete@bean.simpleName()DialogComponent', () => {
+  let component: Edit@bean.simpleName()DialogComponent;
+  let fixture: ComponentFixture<Edit@bean.simpleName()DialogComponent>;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ Edit@bean.simpleName()DialogComponent ]
+    })
+    .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(Edit@bean.simpleName()DialogComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

@@ -1,0 +1,50 @@
+//@@import "src/variables.scss";
+
+.mat-card-header {
+  padding-bottom: 16px;
+}
+
+// spinner
+.spinner-container mat-spinner {
+  position: absolute;
+  top: 7px;
+  right: 10px;
+}
+
+// columns 
+.mat-column-actions {
+  flex: 0 0 60px;
+}
+.mat-column-id {
+  flex: 0 0 70px;
+}
+
+.mat-column-actions > button {
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+}
+
+.more-button {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+}
+
+.add-button {
+  z-index:1000;
+  position: absolute;
+  top: 60px;
+  right: 4px;
+}
+
+.search-input {
+  padding: 20px 80px 0 80px;
+  display:block;
+}
+
+.table-container {
+  padding-left: 10px;
+  padding-right: 10px;
+  overflow: auto;
+}

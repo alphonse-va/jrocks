@@ -2,7 +2,6 @@ package jrocks.model;
 
 import jrocks.plugin.api.ClassApi;
 import jrocks.plugin.api.FieldApi;
-import jrocks.plugin.util.Inflector;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -10,7 +9,6 @@ import java.util.List;
 
 public class ReflectiveClassInfo implements ClassApi {
 
-  private static final Inflector INFLECTOR = new Inflector();
 
   private Class<?> beanClass;
 
@@ -33,21 +31,6 @@ public class ReflectiveClassInfo implements ClassApi {
   @Override
   public String simpleName() {
     return beanClass.getSimpleName();
-  }
-
-  @Override
-  public String pluralSimpleName() {
-    return INFLECTOR.pluralize(simpleName());
-  }
-
-  @Override
-  public String propertyName() {
-    return Character.toLowerCase(simpleName().charAt(0)) + simpleName().substring(1);
-  }
-
-  @Override
-  public String pluralPropertyName() {
-    return INFLECTOR.pluralize(propertyName());
   }
 
   @Override

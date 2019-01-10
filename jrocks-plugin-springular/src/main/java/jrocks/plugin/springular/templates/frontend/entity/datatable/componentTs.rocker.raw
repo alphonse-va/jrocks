@@ -1,0 +1,160 @@
+@import jrocks.plugin.api.ClassApi
+@import jrocks.plugin.api.FieldApi
+@import jrocks.plugin.api.ClassParameterApi
+@import java.time.LocalDateTime
+@import java.time.format.DateTimeFormatter
+@option discardLogicWhitespace=true
+@args(ClassApi bean, ClassParameterApi param)
+
+import {AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild} from '@@angular/core';
+import {ActivatedRoute} from "@@angular/router";
+import {MatDialog, MatDialogConfig, MatPaginator, MatSnackBar, MatSort} from "@@angular/material";
+import {@bean.simpleName()Service} from "../../service/@String.format("%s.service", bean.resourceName())";
+import {debounceTime, distinctUntilChanged, tap} from 'rxjs/operators';
+import {merge} from "rxjs/observable/merge";
+import {fromEvent} from 'rxjs/observable/fromEvent';
+import {@bean.simpleName()DataSource} from "../../service/@String.format("%s.datasource", bean.resourceName())";
+import {@bean.simpleName()} from "../../model/@bean.propertyName()";
+import {Edit@bean.simpleName()DialogComponent} from "./edit/edit-@bean.resourceName()-dialog.component";
+import {Delete@bean.simpleName()DialogComponent} from "./delete/delete-@bean.resourceName()-dialog.component";
+import {New@bean.simpleName()DialogComponent} from "./new/new-@bean.resourceName()-dialog.component";
+import {Observable} from "rxjs";
+
+@@Component({
+  selector: '@bean.propertyName()',
+  templateUrl: './@String.format("%s.component.html", bean.propertyName())',
+  styleUrls: ['./@String.format("%s.component.scss", bean.propertyName())']
+})
+export class @bean.simpleName()Component implements OnInit, AfterViewInit {
+
+  dataSource: @bean.simpleName()DataSource;
+
+  @@Input() title: string = '@bean.pluralPropertyName()';
+  @@Input() subTitle: string = 'Search, add, edit or modify @bean.pluralPropertyName()';
+  @@Input() pageSize: number = 10;
+  @@Input() sortField: string = 'username';
+  @@Input() sortDirection: string = 'asc';
+  @@Input() minHeight: string = '300px';
+  @@Input() maxHeight: string = '560px';
+  @@Input() readonly: boolean = false;
+  @@Input() displayedColumns: string[] = ["id", "username", "firstname", "lastname", "actions"];
+
+  @@ViewChild(MatPaginator) paginator: MatPaginator;
+  @@ViewChild(MatSort) sort: MatSort;
+  @@ViewChild('filter') filter: ElementRef;
+
+  constructor(private route: ActivatedRoute,
+              private @bean.propertyName()Service: @bean.simpleName()Service,
+              private dialog: MatDialog,
+              private snackBar: MatSnackBar) {
+  }
+
+  ngOnInit() {
+    if (this.readonly) {
+      this.displayedColumns = this.displayedColumns.filter(obj => obj !== "actions");
+    }
+
+    this.dataSource = new @bean.simpleName()DataSource(this.@bean.propertyName()Service);
+    this.dataSource.load@bean.pluralSimpleName()('', this.sortDirection, this.sortField, 0, this.pageSize);
+  }
+
+  ngAfterViewInit() {
+    this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
+
+    if (!this.readonly) {
+      this.subscribeOnKeyUp(this.filter.nativeElement);
+    }
+
+    merge(this.sort.sortChange, this.paginator.page)
+      .pipe(tap(() => this.load@bean.pluralSimpleName()Page()))
+      .subscribe();
+  }
+
+  load@bean.pluralSimpleName()Page() {
+    this.dataSource.load@bean.pluralSimpleName()(
+      this.readonly ? '' : this.filter.nativeElement.value,
+      this.sort.direction,
+      this.sort.active,
+      this.paginator.pageIndex,
+      this.paginator.pageSize);
+  }
+
+  new@bean.simpleName()() {
+    this.dialog.open(New@bean.simpleName()DialogComponent).afterClosed()
+      .subscribe(new@bean.simpleName() => {
+        if (new@bean.simpleName()) {
+          this.filter.nativeElement.value = '';
+          this.sort.direction = 'desc';
+          this.sort.active = 'id';
+          this.updateDataTable();
+          this.snackBar.open('@bean.simpleName() ' + @String.format("new%s.username", bean.simpleName()) + ' added with success!', 'Undo')
+            .onAction().subscribe(() => {
+            this.@bean.propertyName()Service.delete@bean.simpleName()(@String.format("new%s.id", bean.simpleName()))
+              .subscribe(() => {
+                console.log("Undo new @bean.propertyName() with id : " + @String.format("new%s.id", bean.simpleName()));
+                this.updateDataTable();
+              });
+          })
+        }
+      });
+  }
+
+  edit@bean.simpleName()({id, firstname, lastname, username}: @bean.simpleName()) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {id, firstname, lastname, username};
+    const backup = new @bean.simpleName()(id, username, firstname, lastname);
+
+    this.dialog.open(Edit@bean.simpleName()DialogComponent, dialogConfig).afterClosed()
+      .subscribe(val => {
+        if (val) {
+          this.updateDataTable();
+          this.notifyWithBackupUndo('@bean.simpleName() saved with success!', backup);
+        }
+      });
+  }
+
+  delete@bean.simpleName()({id, firstname, lastname, username}: @bean.simpleName()) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {id, firstname, lastname, username};
+    const backup = new @bean.simpleName()(id, username, firstname, lastname);
+
+    this.dialog.open(Delete@bean.simpleName()DialogComponent, dialogConfig).afterClosed()
+      .subscribe(deleted@bean.simpleName() => {
+        if (deleted@bean.simpleName()) {
+          this.updateDataTable();
+          this.notifyWithBackupUndo('@bean.simpleName() deleted with success!', backup);
+        }
+      });
+  }
+
+  filterStates(val: string) {
+    return this.displayedColumns.filter(name =>
+      name.toLowerCase().indexOf(val.toLowerCase()) === 0);
+  }
+
+  private subscribeOnKeyUp(element) {
+    fromEvent(element, 'keyup')
+      .pipe(
+        debounceTime(200),
+        distinctUntilChanged(),
+        tap(() => {
+          this.paginator.pageIndex = 0;
+          this.load@bean.pluralSimpleName()Page();
+        })
+      ).subscribe();
+  }
+
+  private notifyWithBackupUndo(message: string, backup: @bean.simpleName()) {
+    this.snackBar.open(message, 'Undo')
+      .onAction().subscribe(() => {
+      this.@bean.propertyName()Service.save@bean.simpleName()(backup)
+        .subscribe(saved => {
+          this.updateDataTable();
+        });
+    })
+  }
+
+  private updateDataTable() {
+    this.paginator._changePageSize(this.paginator.pageSize);
+  }
+}

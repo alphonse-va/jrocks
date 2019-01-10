@@ -1,0 +1,63 @@
+package jrocks.plugin.springular;
+
+import jrocks.plugin.api.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@Component
+public class SpringularPlugin implements JRocksPlugin {
+
+  static final String LAYOUT_QUALIFIER = "SpringularPlugin";
+
+  static final String Q_PACKAGE = "PACKAGE";
+
+  @Value("${jrocks.version}")
+  private String version;
+
+  private final List<PluginGenerator> generators;
+
+  @Autowired
+  public SpringularPlugin(@Qualifier(LAYOUT_QUALIFIER) List<PluginGenerator> generators) {
+    this.generators = generators;
+  }
+
+  @Override
+  public String name() {
+    return "springular";
+  }
+
+  @Override
+  public String version() {
+    return version;
+  }
+
+  @Override
+  public String description() {
+    return "Springular Generator";
+  }
+
+  @Override
+  public String defaultSuffix() {
+    return "FIXME: we don't always need to specify a suffix";
+  }
+
+  @Override
+  public List<PluginGenerator> generators() {
+    return generators;
+  }
+
+  @Override
+  public Map<Object, Question> additionalQuestions(ClassParameterApi parameter, ClassApi classInfo) {
+    HashMap<Object, Question> result = new HashMap<>();
+    result.put(Q_PACKAGE, new QuestionSupport()
+        .setBuffer(classInfo.packageName())
+        .setQuestion("Package name"));
+    return result;
+  }
+}

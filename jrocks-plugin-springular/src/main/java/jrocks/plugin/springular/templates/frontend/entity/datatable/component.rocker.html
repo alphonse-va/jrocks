@@ -1,0 +1,92 @@
+@import jrocks.plugin.api.ClassApi
+@import jrocks.plugin.api.FieldApi
+@import jrocks.plugin.api.ClassParameterApi
+@import java.time.LocalDateTime
+@import java.time.format.DateTimeFormatter
+@option discardLogicWhitespace=true
+@args(ClassApi bean, ClassParameterApi param)
+
+<mat-card class="@bean.propertyName()-card">
+
+  <mat-card-header>
+    <mat-card-title>{{title | uppercase}}
+      <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu" xPosition="before">
+        <button mat-menu-item>Expand</button>
+        <button mat-menu-item>Remove</button>
+      </mat-menu>
+    </mat-card-title>
+    <mat-card-subtitle>{{subTitle}}</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <div class="spinner-container" *ngIf="dataSource.loading$ | async">
+      <mat-spinner [diameter]="20" [color]="white"></mat-spinner>
+    </div>
+
+    <button *ngIf="!readonly" class="add-button mat-elevation-z10" mat-fab (click)="new@bean.simpleName()(row)">
+      <mat-icon>add</mat-icon>
+    </button>
+
+    <div class="mat-elevation-z4">
+      <form class="@bean.propertyName()-form">
+        <mat-form-field class="search-input">
+          <input type="text" *ngIf="!readonly" placeholder="Search @bean.pluralSimpleName()" aria-label="Number" matInput #filter [matAutocomplete]="auto">
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let field of filterStates | async" [value]="val">
+              {{field}}:{{filter}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </form>
+
+      <div class="table-container" [style.min-height]="minHeight" [style.max-height]="maxHeight">
+
+        <mat-table class="@bean.propertyName()-table" [dataSource]="dataSource"
+                   matSort matSortActive="username" matSortDirection="asc" matSortDisableClear>
+
+          <ng-container matColumnDef="id">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+            <mat-cell *matCellDef="let @bean.propertyName()">{{@String.format("%s.id", bean.propertyName())}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="username">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Username</mat-header-cell>
+            <mat-cell *matCellDef="let @bean.propertyName()">{{@String.format("%s.username", bean.propertyName())}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="firstname">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Firstname</mat-header-cell>
+            <mat-cell *matCellDef="let @bean.propertyName()">{{@String.format("%s.firstname", bean.propertyName())}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="lastname">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Lastname</mat-header-cell>
+            <mat-cell *matCellDef="let @bean.propertyName()">{{@String.format("%s.lastname", bean.propertyName())}}</mat-cell>
+          </ng-container>
+
+          <ng-container *ngIf="!readonly" matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              <button (click)="edit@bean.simpleName()(row)" class="action-button" mat-icon-button mat-list-icon>
+                <mat-icon class="mat-accent">edit</mat-icon>
+              </button>
+              <button (click)="delete@bean.simpleName()(row)" class="action-button" mat-icon-button mat-list-icon>
+                <mat-icon class="mat-accent">delete</mat-icon>
+              </button>
+            </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+
+          <mat-row *matRowDef="let row; columns: displayedColumns"
+                   (mouseover)="highlightedRow = row"
+          ></mat-row>
+        </mat-table>
+      </div>
+      <mat-paginator [length]="dataSource.numberOfElements$ | async" [pageSize]="pageSize"
+                     [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
+    </div>
+  </mat-card-content>
+</mat-card>

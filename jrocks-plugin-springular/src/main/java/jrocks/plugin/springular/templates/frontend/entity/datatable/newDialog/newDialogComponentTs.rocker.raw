@@ -1,0 +1,53 @@
+@import jrocks.plugin.api.ClassApi
+@import jrocks.plugin.api.FieldApi
+@import jrocks.plugin.api.ClassParameterApi
+@import java.time.LocalDateTime
+@import java.time.format.DateTimeFormatter
+@option discardLogicWhitespace=true
+@args(ClassApi bean, ClassParameterApi param)
+
+import {Component, OnInit} from '@@angular/core';
+import {MatDialogRef} from "@@angular/material";
+import {FormBuilder, FormGroup, Validators} from "@@angular/forms";
+import {@bean.simpleName()} from "../../../model/@bean.resourceName()";
+import {@bean.simpleName()Service} from "../../../service/@String.format("%s.service", bean.resourceName())";
+
+
+@@Component({
+  selector: 'app-edit',
+  templateUrl: './new-@bean.resourceName()-dialog.component.html',
+  styleUrls: ['./new-@bean.resourceName()-dialog.component.scss'],
+
+})
+export class New@bean.simpleName()DialogComponent implements OnInit {
+
+  form: FormGroup;
+  @bean.propertyName(): @bean.simpleName();
+
+  constructor(
+    private @bean.propertyName()Service: @bean.simpleName()Service,
+    private fb: FormBuilder,
+    private dialogRef: MatDialogRef<New@bean.simpleName()DialogComponent>) {
+
+
+    this.form = fb.group({
+      firstname: ["", Validators.required],
+      lastname: ["", Validators.required],
+      username: ["", Validators.required],
+    });
+
+  }
+
+  ngOnInit() {
+  }
+
+  save() {
+    this.@bean.propertyName()Service.saveNew@bean.simpleName()(this.form.value)
+      .subscribe(saved => this.dialogRef.close(saved));
+  }
+
+  close() {
+    this.dialogRef.close();
+  }
+
+}

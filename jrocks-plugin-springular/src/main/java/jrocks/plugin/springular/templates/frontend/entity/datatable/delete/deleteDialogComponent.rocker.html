@@ -1,0 +1,18 @@
+@import jrocks.plugin.api.ClassApi
+@import jrocks.plugin.api.FieldApi
+@import jrocks.plugin.api.ClassParameterApi
+@import java.time.LocalDateTime
+@import java.time.format.DateTimeFormatter
+@option discardLogicWhitespace=true
+@args(ClassApi bean, ClassParameterApi param)
+
+<mat-dialog-content>
+  Are you sure to remove @bean.propertyName() with id '{{id}}'?
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button class="mat-raised-button mat-warn" (click)="delete()">Delete</button>
+  <button class="mat-raised-button" (click)="close()">Close</button>
+</mat-dialog-actions>
+
+

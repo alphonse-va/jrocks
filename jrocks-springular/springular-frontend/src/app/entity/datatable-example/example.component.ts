@@ -12,7 +12,6 @@ import {DeleteExampleDialogComponent} from "./delete/delete-example-dialog.compo
 import {NewExampleDialogComponent} from "./new/new-example-dialog.component";
 import {Observable} from "rxjs";
 
-
 @Component({
   selector: 'example',
   templateUrl: './example.component.html',
@@ -21,8 +20,6 @@ import {Observable} from "rxjs";
 export class ExampleComponent implements OnInit, AfterViewInit {
 
   dataSource: ExampleDataSource;
-  filteredExamples: Observable<any[]>;
-
 
   @Input() title: string = 'examples';
   @Input() subTitle: string = 'Search, add, edit or modify examples';
@@ -86,7 +83,7 @@ export class ExampleComponent implements OnInit, AfterViewInit {
             .onAction().subscribe(() => {
             this.exampleService.deleteExample(newExample.id)
               .subscribe(() => {
-                console.log("Undo new example with id : " + newExample.id);
+                console.log("Undo newDialog example with id : " + newExample.id);
                 this.updateDataTable();
               });
           })
@@ -126,13 +123,6 @@ export class ExampleComponent implements OnInit, AfterViewInit {
     return this.displayedColumns.filter(name =>
       name.toLowerCase().indexOf(val.toLowerCase()) === 0);
   }
-
-  onEnter(evt: any){
-    if (evt.source.selected) {
-      alert("hello " + evt.source.toString());
-    }
-  }
-
 
   private subscribeOnKeyUp(element) {
     fromEvent(element, 'keyup')

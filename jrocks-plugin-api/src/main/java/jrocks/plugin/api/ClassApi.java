@@ -8,21 +8,29 @@ import java.util.stream.Collectors;
 
 public interface ClassApi {
 
+  Inflector INFLECTOR = new Inflector();
+
   String packageName();
 
   String simpleName();
 
-  String pluralSimpleName();
-
   String name();
-
-  String propertyName();
-
-  String pluralPropertyName();
 
   void addField(FieldApi field);
 
   boolean hasRequiredFields();
+
+  default String pluralSimpleName() {
+    return INFLECTOR.pluralize(simpleName());
+  }
+
+  default String propertyName() {
+    return Character.toLowerCase(simpleName().charAt(0)) + simpleName().substring(1);
+  }
+
+  default String pluralPropertyName() {
+    return INFLECTOR.pluralize(propertyName());
+  }
 
   default List<FieldApi> fields() {
     return new ArrayList<>();
@@ -34,6 +42,10 @@ public interface ClassApi {
         .filter(FieldApi::isRequired)
         .map(ClassApi::name)
         .collect(Collectors.toList());
+  }
+
+  default String resourceName() {
+    return simpleName().replaceAll("(.)(\\p{Upper})", "$1-$2").toLowerCase();
   }
 
   File sourceClassPath();

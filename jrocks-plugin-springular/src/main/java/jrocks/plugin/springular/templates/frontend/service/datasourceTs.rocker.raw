@@ -1,0 +1,71 @@
+@import jrocks.plugin.api.ClassApi
+@import jrocks.plugin.api.FieldApi
+@import jrocks.plugin.api.ClassParameterApi
+@import java.time.LocalDateTime
+@import java.time.format.DateTimeFormatter
+@option discardLogicWhitespace=true
+@args(ClassApi bean, ClassParameterApi param)
+
+import {CollectionViewer, DataSource} from "@@angular/cdk/collections";
+import {Observable} from "rxjs/Observable";
+import {@bean.simpleName()} from "../model/@bean.resourceName()";
+import {@bean.simpleName()Service} from "./@String.format("%s.service", bean.resourceName())";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {catchError, finalize} from "rxjs/operators";
+import {of} from "rxjs/observable/of";
+
+export class @bean.simpleName()DataSource implements DataSource<@bean.simpleName()> {
+
+  private @bean.pluralPropertyName()Subject = new BehaviorSubject<@String.format("%s[]", bean.simpleName())>([]);
+
+  private loadingSubject = new BehaviorSubject<boolean>(false);
+
+  private numberOfElementsSubject = new BehaviorSubject<number>(0);
+
+  private _loading$ = this.loadingSubject.asObservable();
+
+  private _numberOfElements$ = this.numberOfElementsSubject.asObservable();
+
+  constructor(private @bean.propertyName()Service: @bean.simpleName()Service) {
+  }
+
+  load@bean.pluralSimpleName()(
+    filter: string,
+    sortDirection: string,
+    sortField: string,
+    pageIndex: number,
+    pageSize: number) {
+
+    this.loadingSubject.next(true);
+
+    this.@bean.propertyName()Service.find@bean.pluralSimpleName()(filter, sortDirection, sortField, pageIndex, pageSize)
+      .pipe(catchError(() => of([])),
+        finalize(() => this.loadingSubject.next(false))
+      )
+      .subscribe(result => {
+        this.@bean.pluralPropertyName()Subject.next(result['@bean.pluralPropertyName()']);
+        this.numberOfElementsSubject.next(result['count']);
+      });
+
+  }
+
+  connect(collectionViewer: CollectionViewer): Observable<@String.format("%s[]", bean.simpleName())> {
+    console.log("Connecting data source");
+    return this.@bean.pluralPropertyName()Subject.asObservable();
+  }
+
+  disconnect(collectionViewer: CollectionViewer): void {
+    this.@bean.pluralPropertyName()Subject.complete();
+    this.loadingSubject.complete();
+    this.numberOfElementsSubject.complete();
+  }
+
+  get loading$(): Observable<boolean> {
+    return this._loading$;
+  }
+
+  get numberOfElements$(): Observable<number> {
+    return this._numberOfElements$;
+  }
+}
+

@@ -1,0 +1,33 @@
+@import jrocks.plugin.api.ClassApi
+@import jrocks.plugin.api.FieldApi
+@import jrocks.plugin.api.ClassParameterApi
+@import java.time.LocalDateTime
+@import java.time.format.DateTimeFormatter
+@option discardLogicWhitespace=true
+@args(ClassApi bean, ClassParameterApi param)
+
+import { async, ComponentFixture, TestBed } from '@@angular/core/testing';
+
+import { @bean.simpleName()Component } from './@String.format("%s.component", bean.resourceName())';
+
+describe('@bean.simpleName()ListComponent', () => {
+  let component: @bean.simpleName()Component;
+  let fixture: ComponentFixture<@bean.simpleName()Component>;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ @bean.simpleName()Component ]
+    })
+    .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(@bean.simpleName()Component);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

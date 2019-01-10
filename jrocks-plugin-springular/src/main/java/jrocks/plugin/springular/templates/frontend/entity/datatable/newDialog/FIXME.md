@@ -1,0 +1,1 @@
+__change rocker naming strategy stuff to not use the first part of the camelcase name as package name__

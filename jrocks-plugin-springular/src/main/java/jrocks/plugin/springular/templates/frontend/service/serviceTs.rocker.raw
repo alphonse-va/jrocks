@@ -1,0 +1,90 @@
+@import jrocks.plugin.api.ClassApi
+@import jrocks.plugin.api.FieldApi
+@import jrocks.plugin.api.ClassParameterApi
+@import java.time.LocalDateTime
+@import java.time.format.DateTimeFormatter
+@option discardLogicWhitespace=true
+@args(ClassApi bean, ClassParameterApi param)
+
+import {Injectable} from "@@angular/core";
+import {Observable} from "rxjs/Observable";
+import {@bean.simpleName()} from "../model/@bean.propertyName()";
+import {ApiService} from "./api.service";
+import {map} from "rxjs/operators";
+import {HttpHeaders} from "@@angular/common/http";
+import {Subject} from "rxjs";
+
+
+@@Injectable()
+export class @bean.simpleName()Service {
+
+  private changeSubject = new Subject<@bean.simpleName()>();
+
+  header = new HttpHeaders({
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+  });
+
+  constructor(
+    private apiService: ApiService) {
+  }
+
+  find@bean.pluralSimpleName()(filter, sortOrder = 'asc', sortField = 'id',
+               pageNumber = 0, pageSize = 3): Observable<@bean.simpleName()RestResult> {
+    if (filter) {
+      filter = filter ? filter + '%' : '%';
+      return this.apiService.get("/api/@bean.resourceName()/search/filter", {
+@for (FieldApi f : bean.fields()) {
+  @if(f.name().equals("java.lang.String")) {
+        "@f.fieldName()": filter,
+  }
+}
+        "size": pageSize.toString(),
+        "page": pageNumber.toString(),
+        "sort": sortField + "," + sortOrder
+      }).pipe(
+        map(res => new @bean.simpleName()RestResult(res['_embedded']['@bean.pluralPropertyName()'], res['page']['totalElements']))
+      );
+    } else {
+      return this.apiService.get("/api/@bean.resourceName()", {
+        "size": pageSize.toString(),
+        "page": pageNumber.toString(),
+        "sort": sortField + "," + sortOrder
+      }).pipe(
+        map(res => new @bean.simpleName()RestResult(res['_embedded']['@bean.pluralPropertyName()'], res['page']['totalElements']))
+      );
+    }
+  }
+
+  findById(id): Observable<@bean.simpleName()> {
+    return this.apiService.get("/api/@bean.resourceName()/" + id);
+  }
+
+  saveNew@bean.simpleName()(@bean.propertyName(): @bean.simpleName()) {
+    return this.apiService.post("/api/@bean.resourceName()", @bean.propertyName(), this.header);
+  }
+
+  afterSave() {
+    return this.changeSubject.asObservable();
+  }
+
+  save@bean.simpleName()(@bean.propertyName(): @bean.simpleName()) {
+    return this.apiService.put("/api/@bean.resourceName()/" + @String.format("%s.id", bean.propertyName()), @bean.propertyName(), this.header)
+      .map(saved => {
+        this.changeSubject.next(saved);
+        return saved;
+      }).first();
+  }
+
+  delete@bean.simpleName()(id: number) {
+    return this.apiService.delete("/api/@bean.resourceName()/" + id);
+  }
+}
+
+export class @bean.simpleName()RestResult {
+  constructor(
+    private @bean.pluralPropertyName(): @String.format("%s[]", bean.simpleName()),
+    private count: number
+  ) {
+  }
+}

@@ -46,6 +46,12 @@
         </dependency>
         <dependency>
             <groupId>be.unlock</groupId>
+            <artifactId>jrocks-plugin-springular</artifactId>
+            <version>${project.version}</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>be.unlock</groupId>
             <artifactId>jrocks-plugin-test</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
