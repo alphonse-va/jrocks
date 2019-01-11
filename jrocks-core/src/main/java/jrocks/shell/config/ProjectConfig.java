@@ -54,7 +54,6 @@ public class ProjectConfig {
     return this;
   }
 
-
   @Override
   public String toString() {
     return new StringJoiner("\n", "Project Configuration:\n", "")
