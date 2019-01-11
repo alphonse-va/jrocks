@@ -2,11 +2,17 @@ package jrocks.plugin.springular;
 
 import com.fizzed.rocker.Rocker;
 import jrocks.plugin.api.*;
+import jrocks.plugin.api.config.ConfigService;
+import jrocks.plugin.api.config.ModuleConfig;
+import jrocks.plugin.api.config.ModuleType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
@@ -39,6 +45,9 @@ public class SpringularGenerator implements PluginGenerator {
   @Value("${jrocks.version}")
   private String version;
 
+  @Autowired
+  ConfigService configService;
+
   @PostConstruct
   public void postConstruct() {
   }
@@ -58,7 +67,6 @@ public class SpringularGenerator implements PluginGenerator {
 
     String repositoryContent = Rocker.template(REPOSITORY_ROCKER_TEMPLATE, classApi, parameter).render().toString();
 
-
     String serviceTsContent = Rocker.template(SERVICE_TS_ROCKER_TEMPLATE, classApi, parameter).render().toString();
     String datasourceTsContent = Rocker.template(DATASOURCE_TS_ROCKER_TEMPLATE, classApi, parameter).render().toString();
 
@@ -66,9 +74,9 @@ public class SpringularGenerator implements PluginGenerator {
     String componentTsContent = Rocker.template(COMPONENT_TS_ROCKER_TEMPLATE, classApi, parameter).render().toString();
     String componentSpecTsContent = Rocker.template(COMPONENT_SPEC_TS_ROCKER_TEMPLATE, classApi, parameter).render().toString();
 
-    String newDialogComponentHtmlContent = Rocker.template(NEW_DIALOG_COMPONENT_HTML_ROCKER_TEMPLATE, classApi, parameter).render().toString();
-    String newDialogComponentTsContent = Rocker.template(NEW_DIALOG_COMPONENT_TS_ROCKER_TEMPLATE, classApi, parameter).render().toString();
-    String newDialogComponentSpecTsContent = Rocker.template(NEW_DIALOG_COMPONENT_SPEC_TS_ROCKER_TEMPLATE, classApi, parameter).render().toString();
+    String newComponentHtmlContent = Rocker.template(NEW_DIALOG_COMPONENT_HTML_ROCKER_TEMPLATE, classApi, parameter).render().toString();
+    String newComponentTsContent = Rocker.template(NEW_DIALOG_COMPONENT_TS_ROCKER_TEMPLATE, classApi, parameter).render().toString();
+    String newComponentSpecTsContent = Rocker.template(NEW_DIALOG_COMPONENT_SPEC_TS_ROCKER_TEMPLATE, classApi, parameter).render().toString();
 
     String editComponentHtmlContent = Rocker.template(EDIT_DIALOG_COMPONENT_HTML_ROCKER_TEMPLATE, classApi, parameter).render().toString();
     String editComponentTsContent = Rocker.template(EDIT_DIALOG_COMPONENT_TS_ROCKER_TEMPLATE, classApi, parameter).render().toString();
@@ -83,35 +91,92 @@ public class SpringularGenerator implements PluginGenerator {
         .map(QuestionResponse::text)
         .orElse(classApi.packageName());
 
-    return Arrays.asList(newSource(classApi, repositoryContent, packageName),
-        newSource(classApi, serviceTsContent, packageName),
-        newSource(classApi, datasourceTsContent, packageName),
 
-        newSource(classApi, componentHtmlContent, packageName),
-        newSource(classApi, componentTsContent, packageName),
-        newSource(classApi, componentSpecTsContent, packageName),
+    Path angularAppDir = Paths.get(getAngularModule().getBaseDirectory(), "src", "app");
 
-        newSource(classApi, newDialogComponentHtmlContent, packageName),
-        newSource(classApi, newDialogComponentTsContent, packageName),
-        newSource(classApi, newDialogComponentSpecTsContent, packageName),
+    return Arrays.asList(
+
+        new GeneratedSourceSupport()
+            .setContent(repositoryContent)
+            .setFilename(classApi.simpleName() + "Repository.java")
+            .setPath(classApi.sourceClassPath())
+            .setPackageName(packageName),
+
+        new GeneratedSourceSupport()
+            .setContent(serviceTsContent)
+            .setFilename(classApi.resourceName() + ".service.ts")
+            .setPath(Paths.get(angularAppDir.toFile().getAbsolutePath(), "service").toFile()),
+        new GeneratedSourceSupport()
+            .setContent(datasourceTsContent)
+            .setFilename(classApi.resourceName() + ".datasource.ts")
+            .setPath(Paths.get(angularAppDir.toFile().getAbsolutePath(), "service").toFile()),
+
+        new GeneratedSourceSupport()
+            .setContent(componentHtmlContent)
+            .setFilename(classApi.resourceName() + ".datatable-component.html")
+            .setPath(Paths.get(angularAppDir.toFile().getAbsolutePath(), "entity", classApi.resourceName() + "-datatable").toFile()),
+        new GeneratedSourceSupport()
+            .setContent(componentTsContent)
+            .setFilename(classApi.resourceName() + ".datatable-component.ts")
+            .setPath(Paths.get(angularAppDir.toFile().getAbsolutePath(), "entity", classApi.resourceName() + "-datatable").toFile()),
+        new GeneratedSourceSupport()
+            .setContent(componentSpecTsContent)
+            .setFilename(classApi.resourceName() + ".datatable-component.spec.ts")
+            .setPath(Paths.get(angularAppDir.toFile().getAbsolutePath(), "entity", classApi.resourceName() + "-datatable").toFile()),
 
 
-        newSource(classApi, editComponentHtmlContent, packageName),
-        newSource(classApi, editComponentTsContent, packageName),
-        newSource(classApi, editComponentSpecTsContent, packageName),
+        new GeneratedSourceSupport()
+            .setContent(newComponentHtmlContent)
+            .setFilename("new-" + classApi.resourceName() + "-dialog.component.html")
+            .setPath(Paths.get(angularAppDir.toFile().getAbsolutePath(), "entity", classApi.resourceName() + "-datatable", "new").toFile()),
+        new GeneratedSourceSupport()
+            .setContent(newComponentTsContent)
+            .setFilename("new-" + classApi.resourceName() + "-dialog.component.ts")
+            .setPath(Paths.get(angularAppDir.toFile().getAbsolutePath(), "entity", classApi.resourceName() + "-datatable", "new").toFile()),
+        new GeneratedSourceSupport()
+            .setContent(newComponentSpecTsContent)
+            .setFilename("new-" + classApi.resourceName() + "-dialog.component.spec.ts")
+            .setPath(Paths.get(angularAppDir.toFile().getAbsolutePath(), "entity", classApi.resourceName() + "-datatable", "new").toFile()),
 
-        newSource(classApi, deleteComponentHtmlContent, packageName),
-        newSource(classApi, deleteComponentTsContent, packageName),
-        newSource(classApi, deleteComponentSpecTsContent, packageName)
+        new GeneratedSourceSupport()
+            .setContent(editComponentHtmlContent)
+            .setFilename("edit-" + classApi.resourceName() + "-dialog.component.html")
+            .setPath(Paths.get(angularAppDir.toFile().getAbsolutePath(), "entity", classApi.resourceName() + "-datatable", "edit").toFile()),
+        new GeneratedSourceSupport()
+            .setContent(editComponentTsContent)
+            .setFilename("edit-" + classApi.resourceName() + "-dialog.component.ts")
+            .setPath(Paths.get(angularAppDir.toFile().getAbsolutePath(), "entity", classApi.resourceName() + "-datatable", "edit").toFile()),
+        new GeneratedSourceSupport()
+            .setContent(editComponentSpecTsContent)
+            .setFilename("edit-" + classApi.resourceName() + "-dialog.component.spec.ts")
+            .setPath(Paths.get(angularAppDir.toFile().getAbsolutePath(), "entity", classApi.resourceName() + "-datatable", "edit").toFile()),
 
+        new GeneratedSourceSupport()
+            .setContent(deleteComponentHtmlContent)
+            .setFilename("delete-" + classApi.resourceName() + "-dialog.component.html")
+            .setPath(Paths.get(angularAppDir.toFile().getAbsolutePath(), "entity", classApi.resourceName() + "-datatable", "delete").toFile()),
+        new GeneratedSourceSupport()
+            .setContent(deleteComponentTsContent)
+            .setFilename("delete-" + classApi.resourceName() + "-dialog.component.ts")
+            .setPath(Paths.get(angularAppDir.toFile().getAbsolutePath(), "entity", classApi.resourceName() + "-datatable", "delete").toFile()),
+        new GeneratedSourceSupport()
+            .setContent(deleteComponentSpecTsContent)
+            .setFilename("delete-" + classApi.resourceName() + "-dialog.component.spec.ts")
+            .setPath(Paths.get(angularAppDir.toFile().getAbsolutePath(), "entity", classApi.resourceName() + "-datatable", "delete").toFile())
     );
   }
 
-  private GeneratedSourceSupport newSource(ClassApi classApi, String datasourceTsContent, String packageName) {
-    return new GeneratedSourceSupport()
-        .setContent(datasourceTsContent)
-        .setFilename(classApi.simpleName())
-        .setPath(classApi.sourceClassPath())
-        .setPackageName(packageName);
+  private GeneratedSourceSupport newSource(ClassApi classApi, String content, String packageName) {
+    return null;
+  }
+
+  private ModuleConfig getAngularModule() {
+    return configService.getConfig().getModuleByType(ModuleType.ANGULAR)
+        .orElseThrow(() -> new IllegalStateException("A module of type ANGULAR is required by this generator, please check your config."));
+  }
+
+  private ModuleConfig getSpringDataRestModule() {
+    return configService.getConfig().getModuleByType(ModuleType.SPRING_DATA_REST)
+        .orElseThrow(() -> new IllegalStateException("A module of type ANGULAR is required by this generator, please check your config."));
   }
 }

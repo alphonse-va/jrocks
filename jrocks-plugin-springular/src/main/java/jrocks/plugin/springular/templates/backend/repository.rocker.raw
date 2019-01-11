@@ -25,7 +25,7 @@ public interface @bean.simpleName()Repository extends JpaRepository<@bean.simple
   @@Query("SELECT e from @bean.simpleName() e WHERE 1 = 0 " +
 @for (FieldApi f : bean.fields()) {
   @if(f.name().equals("java.lang.String")) {
-      "OR UPPER(@String.format("e.%s", f.fieldName()) like UPPER(:@f.fieldName()) " +
+      "OR UPPER(@String.format("e.%s", f.fieldName())) like UPPER(:@f.fieldName()) " +
   }
 }
   "")
