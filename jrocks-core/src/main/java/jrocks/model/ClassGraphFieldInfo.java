@@ -34,7 +34,8 @@ public class ClassGraphFieldInfo extends ClassGraphClassInfo implements FieldApi
 
   @Override
   public boolean isAnnotatedWith(String... annotationClasses) {
-    return Stream.of(annotationClasses).anyMatch(className -> fieldInfo.getAnnotationInfo().containsName(className));
+    return Stream.of(annotationClasses)
+        .anyMatch(className -> fieldInfo.getAnnotationInfo().containsName(className));
   }
 
   @Override

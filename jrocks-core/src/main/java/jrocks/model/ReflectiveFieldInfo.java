@@ -1,6 +1,5 @@
 package jrocks.model;
 
-import io.github.classgraph.utils.ReflectionUtils;
 import jrocks.plugin.api.FieldApi;
 import org.apache.commons.lang3.StringUtils;
 
@@ -11,6 +10,8 @@ import java.beans.Introspector;
 import java.lang.reflect.Field;
 import java.util.Optional;
 import java.util.stream.Stream;
+
+import static java.util.Arrays.asList;
 
 public class ReflectiveFieldInfo extends ReflectiveClassInfo implements FieldApi {
 
@@ -33,7 +34,9 @@ public class ReflectiveFieldInfo extends ReflectiveClassInfo implements FieldApi
 
   @Override
   public boolean isAnnotatedWith(String... annotationClasses) {
-    return Stream.of(annotationClasses).anyMatch(className -> ReflectionUtils.classForNameOrNull(className) != null);
+    return Stream.of(field.getAnnotations())
+        .map(a -> a.annotationType().getCanonicalName())
+        .anyMatch(name -> asList(annotationClasses).contains(name));
   }
 
   @Override
