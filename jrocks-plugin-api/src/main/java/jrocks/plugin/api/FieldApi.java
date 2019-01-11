@@ -1,5 +1,6 @@
 package jrocks.plugin.api;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 public interface FieldApi extends ClassApi {
@@ -55,4 +56,21 @@ public interface FieldApi extends ClassApi {
   Optional<String> getter();
 
   Optional<String> setter();
+
+  default boolean isString() {
+    return name().equals(String.class.getCanonicalName());
+  }
+
+  default boolean isNumber() {
+    return name().equals(Integer.class.getCanonicalName())
+        || name().equals(BigDecimal.class.getCanonicalName())
+        || name().equals(Double.class.getCanonicalName())
+        || name().equals(Integer.class.getCanonicalName())
+        || name().equals("double")
+        || name().equals("int");
+  }
+
+  default String placeholder() {
+    return fieldNameCapitalized().replaceAll("(.)(\\p{Upper})", "$1 $2");
+  }
 }

@@ -22,7 +22,7 @@ export class EditExampleDialogComponent implements OnInit {
 
     this.form = fb.group({
       id: [id, Validators.required],
-      firstname: [firstname, Validators.required],
+      firstname: [firstname, ],
       lastname: [lastname, Validators.required],
       username: [username, Validators.required],
     });

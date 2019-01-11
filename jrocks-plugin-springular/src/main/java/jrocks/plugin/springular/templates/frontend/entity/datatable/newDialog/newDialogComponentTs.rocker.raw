@@ -31,9 +31,13 @@ export class New@bean.simpleName()DialogComponent implements OnInit {
 
 
     this.form = fb.group({
-      firstname: ["", Validators.required],
-      lastname: ["", Validators.required],
-      username: ["", Validators.required],
+@for (FieldApi f : bean.fields()) {
+    @if(f.isRequired()) {
+      @f.fieldName(): [@f.fieldName(), Validators.required],
+    } else {
+      @f.fieldName(): [@f.fieldName(), ],
+    }
+}
     });
 
   }

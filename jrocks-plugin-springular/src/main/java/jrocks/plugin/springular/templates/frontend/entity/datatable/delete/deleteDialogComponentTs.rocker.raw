@@ -15,26 +15,28 @@ import {@bean.simpleName()Service} from "../../../service/@String.format("%s.ser
 
 @@Component({
   selector: 'app-edit',
-  templateUrl: './deleteDialogComponent.rocker.html',
-  styleUrls: ['./delete-dialog.component.scss']
+  templateUrl: './delete-@bean.resourceName()-dialog-component.rocker.html',
+  styleUrls: ['./delete-@bean.resourceName()-dialog.component.scss']
 })
 export class Delete@bean.simpleName()DialogComponent implements OnInit {
-
-  id: number;
-  username: string;
-  firstname: string;
-  lastname: string;
+@for (FieldApi f : bean.fields()) {
+@if(f.isString()) {
+  @f.fieldName(): string;
+}
+@if(f.isNumber()) {
+  @f.fieldName(): number;
+}
+}
 
   constructor(
     private @bean.propertyName()Service: @bean.simpleName()Service,
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<Delete@bean.simpleName()DialogComponent>,
-    @@Inject(MAT_DIALOG_DATA) {id, firstname, lastname, username}: @bean.simpleName()) {
+    @@Inject(MAT_DIALOG_DATA) { @bean.fieldNamesAsCsv() }: @bean.simpleName()) {
 
-    this.id = id;
-    this.firstname = firstname;
-    this.lastname = lastname;
-    this.username = username;
+@for (FieldApi f : bean.fields()) {
+    @String.format("this.%s = %s", f.fieldName(), f.fieldName());
+}
   }
 
   ngOnInit() {
@@ -43,9 +45,9 @@ export class Delete@bean.simpleName()DialogComponent implements OnInit {
   delete() {
     this.@bean.propertyName()Service.delete@bean.simpleName()(this.id)
       .subscribe(saved => {
-        console.log("@bean.simpleName() with id " + this.id + " deleted with success");
+        console.log("@bean.simpleName() with id " + this.@bean.idField().fieldName() + " deleted with success");
       });
-    this.dialogRef.close("Delete " + this.username  + " with id " + this.id);
+    this.dialogRef.close("Delete " + this.username  + " with id " + this.@bean.idField().fieldName());
   }
 
   close() {

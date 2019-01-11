@@ -8,15 +8,13 @@
 
 <form [formGroup]="form" (ngSubmit)="save()">
   <mat-dialog-content class="dialog-container">
+
+    @for (FieldApi f : bean.fields()) {
     <mat-form-field>
-      <input matInput placeholder="User name" formControlName="username">
+      <input matInput placeholder="@f.placeholder()" formControlName="@f.fieldName()">
     </mat-form-field>
-    <mat-form-field>
-      <input matInput placeholder="Fistname" formControlName="firstname">
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput placeholder="Lastname" formControlName="lastname">
-    </mat-form-field>
+
+    }
   </mat-dialog-content>
 
   <mat-dialog-actions>

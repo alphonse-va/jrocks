@@ -37,7 +37,7 @@ export class @bean.simpleName()Component implements OnInit, AfterViewInit {
   @@Input() minHeight: string = '300px';
   @@Input() maxHeight: string = '560px';
   @@Input() readonly: boolean = false;
-  @@Input() displayedColumns: string[] = ["id", "username", "firstname", "lastname", "actions"];
+  @@Input() displayedColumns: string[] = [@bean.fieldNamesAsCsvDoubleCote()];
 
   @@ViewChild(MatPaginator) paginator: MatPaginator;
   @@ViewChild(MatSort) sort: MatSort;
@@ -85,13 +85,13 @@ export class @bean.simpleName()Component implements OnInit, AfterViewInit {
         if (new@bean.simpleName()) {
           this.filter.nativeElement.value = '';
           this.sort.direction = 'desc';
-          this.sort.active = 'id';
+          this.sort.active = '@bean.idField().fieldName()';
           this.updateDataTable();
           this.snackBar.open('@bean.simpleName() ' + @String.format("new%s.username", bean.simpleName()) + ' added with success!', 'Undo')
             .onAction().subscribe(() => {
-            this.@bean.propertyName()Service.delete@bean.simpleName()(@String.format("new%s.id", bean.simpleName()))
+            this.@bean.propertyName()Service.delete@bean.simpleName()(@String.format("new%s.@bean.idField().fieldName()", bean.simpleName()))
               .subscribe(() => {
-                console.log("Undo new @bean.propertyName() with id : " + @String.format("new%s.id", bean.simpleName()));
+                console.log("Undo new @bean.propertyName() with id : " + @String.format("new%s.@bean.idField().fieldName()", bean.simpleName()));
                 this.updateDataTable();
               });
           })
@@ -99,10 +99,10 @@ export class @bean.simpleName()Component implements OnInit, AfterViewInit {
       });
   }
 
-  edit@bean.simpleName()({id, firstname, lastname, username}: @bean.simpleName()) {
+  edit@bean.simpleName()({@bean.fieldNamesAsCsv()}: @bean.simpleName()) {
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = {id, firstname, lastname, username};
-    const backup = new @bean.simpleName()(id, username, firstname, lastname);
+    dialogConfig.data = {@bean.fieldNamesAsCsv()};
+    const backup = new @bean.simpleName()(@bean.fieldNamesAsCsv());
 
     this.dialog.open(Edit@bean.simpleName()DialogComponent, dialogConfig).afterClosed()
       .subscribe(val => {
@@ -113,10 +113,10 @@ export class @bean.simpleName()Component implements OnInit, AfterViewInit {
       });
   }
 
-  delete@bean.simpleName()({id, firstname, lastname, username}: @bean.simpleName()) {
+  delete@bean.simpleName()({@bean.fieldNamesAsCsv()}: @bean.simpleName()) {
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = {id, firstname, lastname, username};
-    const backup = new @bean.simpleName()(id, username, firstname, lastname);
+    dialogConfig.data = {@bean.fieldNamesAsCsv()};
+    const backup = new @bean.simpleName()(@bean.fieldNamesAsCsv());
 
     this.dialog.open(Delete@bean.simpleName()DialogComponent, dialogConfig).afterClosed()
       .subscribe(deleted@bean.simpleName() => {

@@ -25,13 +25,16 @@ export class Edit@bean.simpleName()DialogComponent implements OnInit {
     private @bean.propertyName()Service: @bean.simpleName()Service,
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<Edit@bean.simpleName()DialogComponent>,
-    @@Inject(MAT_DIALOG_DATA) {id, firstname, lastname, username}: @bean.simpleName()) {
+    @@Inject(MAT_DIALOG_DATA) { @bean.fieldNamesAsCsv() }: @bean.simpleName()) {
 
     this.form = fb.group({
-      id: [id, Validators.required],
-      firstname: [firstname, Validators.required],
-      lastname: [lastname, Validators.required],
-      username: [username, Validators.required],
+@for (FieldApi f : bean.fields()) {
+    @if(f.isRequired()) {
+      @f.fieldName(): [@f.fieldName(), Validators.required],
+    } else {
+      @f.fieldName(): [@f.fieldName(), ],
+    }
+}
     });
 
   }
