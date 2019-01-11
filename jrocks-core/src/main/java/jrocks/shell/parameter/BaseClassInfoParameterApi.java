@@ -115,11 +115,6 @@ public class BaseClassInfoParameterApi implements ClassParameterApi {
     this.responses = responses;
   }
 
-  @Override
-  public PluginGenerator getLayout() {
-    return layout;
-  }
-
   BaseClassInfoParameterApi setDryRun(boolean dryRun) {
     this.dryRun = dryRun;
     return this;

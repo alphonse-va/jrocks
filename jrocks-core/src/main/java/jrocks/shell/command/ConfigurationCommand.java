@@ -1,9 +1,10 @@
 package jrocks.shell.command;
 
+import jrocks.plugin.api.config.ModuleConfig;
 import jrocks.shell.ClassPathScanner;
-import jrocks.shell.valueprovider.PackageValueProvider;
+import jrocks.shell.config.GlobalConfig;
 import jrocks.shell.config.MavenService;
-import jrocks.shell.config.ModuleConfig;
+import jrocks.shell.valueprovider.PackageValueProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.Availability;
 import org.springframework.shell.standard.*;
@@ -26,6 +27,9 @@ public class ConfigurationCommand extends BaseCommand {
 
   @Autowired
   private PluginsHolder pluginsHolder;
+
+  @Autowired
+  private GlobalConfig globalConfig;
 
   @Autowired
   public ConfigurationCommand(MavenService mavenService) {
@@ -56,7 +60,7 @@ public class ConfigurationCommand extends BaseCommand {
   @ShellMethod(key = "show-config", value = "Show JRocks configuration")
   void showConfig() {
     terminalLogger().info(configService().getConfig().toString());
-    terminalLogger().info(configService().globalConfig().toString());
+    terminalLogger().info(globalConfig.toString());
   }
 
   @ShellMethod(value = "Show debug information")

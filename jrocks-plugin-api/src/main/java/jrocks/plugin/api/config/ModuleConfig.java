@@ -1,21 +1,23 @@
-package jrocks.shell.config;
+package jrocks.plugin.api.config;
 
-import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
 
 public class ModuleConfig {
 
-  @NotBlank
   private String name;
-
   private String version;
-
-  @NotBlank
   private String sourceDirectory;
-
-  @NotBlank
   private String outputDirectory;
+  private String baseDirectory;
+  private List<ModuleType> types;
+
+  public void addType(ModuleType type) {
+    if (types == null) types = new ArrayList<>();
+    this.types.add(type);
+  }
 
   public String getName() {
     return name;
@@ -53,6 +55,14 @@ public class ModuleConfig {
     return this;
   }
 
+  public List<ModuleType> getTypes() {
+    return types;
+  }
+
+  public void setTypes(List<ModuleType> types) {
+    this.types = types;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -61,7 +71,8 @@ public class ModuleConfig {
     return Objects.equals(name, that.name) &&
         Objects.equals(version, that.version) &&
         Objects.equals(sourceDirectory, that.sourceDirectory) &&
-        Objects.equals(outputDirectory, that.outputDirectory);
+        Objects.equals(outputDirectory, that.outputDirectory) &&
+        Objects.equals(types, that.types);
   }
 
   @Override
@@ -76,6 +87,15 @@ public class ModuleConfig {
         .add("\t\tVersion: _" + version + "_")
         .add("\t\tSource Directory: _" + sourceDirectory + "_")
         .add("\t\tOutput Directory: _" + outputDirectory + "_")
+        .add("\t\tType: _" + types + "_")
         .toString();
+  }
+
+  public String getBaseDirectory() {
+    return baseDirectory;
+  }
+
+  public void setBaseDirectory(String baseDirectory) {
+    this.baseDirectory = baseDirectory;
   }
 }

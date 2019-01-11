@@ -7,5 +7,5 @@ import jrocks.plugin.api.JRocksBean;
 
 public interface ResultWriterService extends JRocksBean {
 
-  void writeClass(GeneratedSource generatedSource, ClassParameterApi parameter, ClassApi clazz);
+  void writeFile(GeneratedSource generatedSource, ClassParameterApi parameter, ClassApi clazz);
 }

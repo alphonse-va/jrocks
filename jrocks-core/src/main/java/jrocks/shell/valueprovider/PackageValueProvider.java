@@ -1,8 +1,8 @@
 package jrocks.shell.valueprovider;
 
+import jrocks.plugin.api.config.ConfigService;
+import jrocks.plugin.api.config.ModuleConfig;
 import jrocks.shell.JRocksShellException;
-import jrocks.shell.config.ConfigService;
-import jrocks.shell.config.ModuleConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.shell.CompletionContext;

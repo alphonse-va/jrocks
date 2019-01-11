@@ -1,9 +1,9 @@
 package jrocks.shell;
 
 import io.github.classgraph.ClassInfo;
-import jrocks.shell.config.ConfigService;
-import jrocks.shell.config.ModuleConfig;
-import jrocks.shell.config.ProjectConfig;
+import jrocks.plugin.api.config.ConfigService;
+import jrocks.plugin.api.config.ModuleConfig;
+import jrocks.plugin.api.config.ProjectConfig;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

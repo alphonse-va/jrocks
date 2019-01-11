@@ -1,11 +1,12 @@
-package jrocks.shell.config;
+package jrocks.plugin.api.config;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jrocks.shell.JRocksShellException;
+import jrocks.plugin.api.JRocksApiException;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
@@ -27,13 +28,17 @@ public class ProjectConfig {
       try {
         return new URL("file://" + m.getOutputDirectory());
       } catch (MalformedURLException e) {
-        throw new JRocksShellException("Not valid URL " + m.getOutputDirectory());
+        throw new JRocksApiException("Not valid URL " + m.getOutputDirectory());
       }
     }).toArray(URL[]::new);
   }
 
   public Set<ModuleConfig> getModules() {
     return modules == null ? modules = new HashSet<>() : modules;
+  }
+
+  public Optional<ModuleConfig> getModuleByType(ModuleType type) {
+    return modules.stream().filter(m -> m.getTypes().contains(type)).findAny();
   }
 
   public String getBasePackage() {

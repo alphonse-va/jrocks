@@ -1,6 +1,8 @@
 package jrocks;
 
-public class JRocksBaseException extends RuntimeException {
+import jrocks.plugin.api.JRocksApiException;
+
+public class JRocksBaseException extends JRocksApiException {
 
   public JRocksBaseException(String message) {
     super(message);

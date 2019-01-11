@@ -1,6 +1,8 @@
-package jrocks.shell.config;
+package jrocks.plugin.api.config;
 
 import jrocks.plugin.api.JRocksBean;
+
+import java.util.Optional;
 
 public interface ConfigService extends JRocksBean {
 
@@ -10,6 +12,8 @@ public interface ConfigService extends JRocksBean {
 
   void addModule(ModuleConfig module);
 
+  Optional<ModuleConfig> getModule(String type);
+
   void load();
 
   void save();
@@ -17,8 +21,6 @@ public interface ConfigService extends JRocksBean {
   ProjectConfig getConfig();
 
   void setConfig(ProjectConfig config);
-
-  GlobalConfig globalConfig();
 
   boolean isInitialized();
 }

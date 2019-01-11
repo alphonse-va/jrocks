@@ -47,15 +47,6 @@ public class GlobalConfig {
     return this;
   }
 
-  @Override
-  public String toString() {
-    return new StringJoiner("\n", "JRocks Configuration:\n", "")
-        .add("\tName:'" + name + "'")
-        .add("\tVersion: '" + version + "'")
-        .add("\tConfig Filename: '" + configFileName + "'")
-        .toString();
-  }
-
   public File getPluginDirectory() {
     return pluginDirectory;
   }
@@ -63,5 +54,14 @@ public class GlobalConfig {
   public GlobalConfig setPluginDirectory(File pluginDirectory) {
     this.pluginDirectory = pluginDirectory;
     return this;
+  }
+
+  @Override
+  public String toString() {
+    return new StringJoiner("\n", "JRocks Configuration:\n", "")
+        .add("\tName:'" + name + "'")
+        .add("\tVersion: '" + version + "'")
+        .add("\tConfig Filename: '" + configFileName + "'")
+        .toString();
   }
 }
