@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public interface ClassApi {
@@ -75,12 +74,6 @@ public interface ClassApi {
         .collect(Collectors.joining(", "));
   }
 
-  default Optional<FieldApi> idFieldOptional() {
-    return fields().stream()
-        .filter(f -> f.isAnnotatedWith("javax.persistence.Id"))
-        .findAny();
-  }
-
   /**
    * Returns the entity field annotated with <code>@Id</code>
    * <p>
@@ -89,7 +82,9 @@ public interface ClassApi {
    * @return
    */
   default FieldApi idField() {
-    return idFieldOptional()
+    return fields().stream()
+        .filter(f -> f.isAnnotatedWith("javax.persistence.Id"))
+        .findAny()
         .orElseThrow(() -> new IllegalArgumentException("Class '" + name() + "' doesn't contain any field annotated with JPA @Id"));
   }
 }
