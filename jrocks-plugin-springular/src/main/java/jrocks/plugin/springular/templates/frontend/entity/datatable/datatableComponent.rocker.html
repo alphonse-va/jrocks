@@ -33,7 +33,7 @@
     <div class="mat-elevation-z4">
       <form class="@bean.propertyName()-form">
         <mat-form-field class="search-input">
-          <input type="text" *ngIf="!readonly" placeholder="Search @bean.pluralSimpleName()" aria-label="Number" matInput #filter [matAutocomplete]="auto">
+          <input type="text" *ngIf="!readonly" placeholder="Search @bean.pluralSimpleName()" matInput #filter [matAutocomplete]="auto">
           <mat-autocomplete #auto="matAutocomplete">
             <mat-option *ngFor="let field of filterStates | async" [value]="val">
               {{field}}:{{filter}}
@@ -48,7 +48,7 @@
 
           @for (FieldApi f : bean.fields()) {
           <ng-container matColumnDef="@f.fieldName()">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header>@f.fieldNameCapitalized()</mat-header-cell>
             <mat-cell *matCellDef="let @bean.propertyName()">{{@String.format("%s.%s", bean.propertyName(), f.fieldName())}}</mat-cell>
           </ng-container>
 

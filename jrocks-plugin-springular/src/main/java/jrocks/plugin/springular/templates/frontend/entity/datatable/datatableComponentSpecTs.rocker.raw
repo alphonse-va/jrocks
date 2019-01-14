@@ -8,7 +8,7 @@
 
 import { async, ComponentFixture, TestBed } from '@@angular/core/testing';
 
-import { @bean.simpleName()Component } from './@String.format("%s.component", bean.resourceName())';
+import { @bean.simpleName()Component } from './@String.format("%s-datatable.component", bean.resourceName())';
 
 describe('@bean.simpleName()ListComponent', () => {
   let component: @bean.simpleName()Component;

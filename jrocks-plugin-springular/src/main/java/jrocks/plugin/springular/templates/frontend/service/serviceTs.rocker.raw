@@ -8,7 +8,7 @@
 
 import {Injectable} from "@@angular/core";
 import {Observable} from "rxjs/Observable";
-import {@bean.simpleName()} from "../model/@bean.propertyName()";
+import {@bean.simpleName()} from "../model/@bean.resourceName()";
 import {ApiService} from "./api.service";
 import {map} from "rxjs/operators";
 import {HttpHeaders} from "@@angular/common/http";
@@ -69,7 +69,7 @@ export class @bean.simpleName()Service {
   }
 
   save@bean.simpleName()(@bean.propertyName(): @bean.simpleName()) {
-    return this.apiService.put("/api/@bean.resourceName()/" + @String.format("%s.id", bean.propertyName()), @bean.propertyName(), this.header)
+    return this.apiService.put("/api/@bean.resourceName()/" + @String.format("%s.%s", bean.propertyName(), bean.idField().fieldName()), @bean.propertyName(), this.header)
       .map(saved => {
         this.changeSubject.next(saved);
         return saved;

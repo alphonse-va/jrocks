@@ -14,17 +14,18 @@ import {@bean.simpleName()Service} from "../../../service/@String.format("%s.ser
 
 
 @@Component({
-  selector: 'app-edit',
-  templateUrl: './delete-@bean.resourceName()-dialog-component.rocker.html',
+  selector: 'app-delete',
+  templateUrl: './delete-@bean.resourceName()-dialog.component.html',
   styleUrls: ['./delete-@bean.resourceName()-dialog.component.scss']
 })
 export class Delete@bean.simpleName()DialogComponent implements OnInit {
 @for (FieldApi f : bean.fields()) {
 @if(f.isString()) {
   @f.fieldName(): string;
-}
-@if(f.isNumber()) {
+} else if(f.isNumber()) {
   @f.fieldName(): number;
+} else {
+  @f.fieldName(): any;
 }
 }
 
@@ -47,7 +48,7 @@ export class Delete@bean.simpleName()DialogComponent implements OnInit {
       .subscribe(saved => {
         console.log("@bean.simpleName() with id " + this.@bean.idField().fieldName() + " deleted with success");
       });
-    this.dialogRef.close("Delete " + this.username  + " with id " + this.@bean.idField().fieldName());
+    this.dialogRef.close("Delete @bean.title() with id " + this.@bean.idField().fieldName());
   }
 
   close() {

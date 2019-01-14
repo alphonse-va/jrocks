@@ -18,7 +18,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RestResource;
 
-@@RestResource(path = "@bean.propertyName()")
+@@RestResource(path = "@bean.resourceName()")
 public interface @bean.simpleName()Repository extends JpaRepository<@bean.simpleName(), Long> {
 
   @@RestResource(path = "filter")

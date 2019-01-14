@@ -14,18 +14,17 @@ import {debounceTime, distinctUntilChanged, tap} from 'rxjs/operators';
 import {merge} from "rxjs/observable/merge";
 import {fromEvent} from 'rxjs/observable/fromEvent';
 import {@bean.simpleName()DataSource} from "../../service/@String.format("%s.datasource", bean.resourceName())";
-import {@bean.simpleName()} from "../../model/@bean.propertyName()";
+import {@bean.simpleName()} from "../../model/@bean.resourceName()";
 import {Edit@bean.simpleName()DialogComponent} from "./edit/edit-@bean.resourceName()-dialog.component";
 import {Delete@bean.simpleName()DialogComponent} from "./delete/delete-@bean.resourceName()-dialog.component";
 import {New@bean.simpleName()DialogComponent} from "./new/new-@bean.resourceName()-dialog.component";
-import {Observable} from "rxjs";
 
 @@Component({
   selector: '@bean.propertyName()',
-  templateUrl: './@String.format("%s.component.html", bean.propertyName())',
-  styleUrls: ['./@String.format("%s.component.scss", bean.propertyName())']
+  templateUrl: './@String.format("%s-datatable.component.html", bean.resourceName())',
+  styleUrls: ['./@String.format("%s-datatable.component.scss", bean.resourceName())']
 })
-export class @bean.simpleName()Component implements OnInit, AfterViewInit {
+export class @bean.simpleName()DatatableComponent implements OnInit, AfterViewInit {
 
   dataSource: @bean.simpleName()DataSource;
 
@@ -37,7 +36,7 @@ export class @bean.simpleName()Component implements OnInit, AfterViewInit {
   @@Input() minHeight: string = '300px';
   @@Input() maxHeight: string = '560px';
   @@Input() readonly: boolean = false;
-  @@Input() displayedColumns: string[] = [@bean.fieldNamesAsCsvDoubleCote()];
+  @@Input() displayedColumns: string[] = [@bean.fieldNamesAsCsvDoubleCote(), "actions"];
 
   @@ViewChild(MatPaginator) paginator: MatPaginator;
   @@ViewChild(MatSort) sort: MatSort;
@@ -89,9 +88,9 @@ export class @bean.simpleName()Component implements OnInit, AfterViewInit {
           this.updateDataTable();
           this.snackBar.open('@bean.simpleName() ' + @String.format("new%s.username", bean.simpleName()) + ' added with success!', 'Undo')
             .onAction().subscribe(() => {
-            this.@bean.propertyName()Service.delete@bean.simpleName()(@String.format("new%s.@bean.idField().fieldName()", bean.simpleName()))
+            this.@bean.propertyName()Service.delete@bean.simpleName()(@String.format("new%s.%s", bean.simpleName(), bean.idField().fieldName()))
               .subscribe(() => {
-                console.log("Undo new @bean.propertyName() with id : " + @String.format("new%s.@bean.idField().fieldName()", bean.simpleName()));
+                console.log("Undo new @bean.propertyName() with id : " + @String.format("new%s.%s", bean.simpleName(), bean.idField().fieldName()));
                 this.updateDataTable();
               });
           })
