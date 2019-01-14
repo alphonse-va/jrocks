@@ -1,4 +1,4 @@
-package jrocks.shell;
+package jrocks.plugin.api.shell;
 
 import jrocks.plugin.api.JRocksBean;
 

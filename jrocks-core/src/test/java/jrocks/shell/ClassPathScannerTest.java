@@ -4,6 +4,7 @@ import io.github.classgraph.ClassInfo;
 import jrocks.plugin.api.config.ConfigService;
 import jrocks.plugin.api.config.ModuleConfig;
 import jrocks.plugin.api.config.ProjectConfig;
+import jrocks.plugin.api.shell.TerminalLogger;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

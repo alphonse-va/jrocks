@@ -1,6 +1,6 @@
 package jrocks.shell.command;
 
-import jrocks.shell.TerminalLogger;
+import jrocks.plugin.api.shell.TerminalLogger;
 import org.jline.builtins.Less;
 import org.jline.builtins.Nano;
 import org.jline.builtins.Source;

@@ -1,6 +1,7 @@
 package jrocks.shell;
 
 import jrocks.plugin.api.JRocksBean;
+import jrocks.plugin.api.shell.TerminalLogger;
 import org.jline.terminal.Terminal;
 import org.jline.utils.AttributedString;
 import org.jline.utils.AttributedStringBuilder;

@@ -65,9 +65,10 @@ public interface FieldApi extends ClassApi {
     return name().equals(Integer.class.getCanonicalName())
         || name().equals(BigDecimal.class.getCanonicalName())
         || name().equals(Double.class.getCanonicalName())
-        || name().equals(Integer.class.getCanonicalName())
-        || name().equals("double")
-        || name().equals("int");
+        || name().equals(Long.class.getCanonicalName())
+        || name().equals("int")
+        || name().equals("long")
+        || name().equals("double");
   }
 
   default String placeholder() {

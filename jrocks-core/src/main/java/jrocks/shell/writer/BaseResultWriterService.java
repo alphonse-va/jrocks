@@ -6,7 +6,7 @@ import jrocks.plugin.api.GeneratedSource;
 import jrocks.plugin.api.config.ConfigService;
 import jrocks.plugin.api.config.ModuleConfig;
 import jrocks.shell.JRocksShellException;
-import jrocks.shell.TerminalLogger;
+import jrocks.plugin.api.shell.TerminalLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +35,6 @@ public class BaseResultWriterService implements ResultWriterService {
 
   @Override
   public void writeFile(GeneratedSource generatedSource, ClassParameterApi parameter, ClassApi clazz) {
-
     String destDirectory;
     if (generatedSource.isJava()) {
       String outDirectory = getJavaOutputDirectory(clazz);

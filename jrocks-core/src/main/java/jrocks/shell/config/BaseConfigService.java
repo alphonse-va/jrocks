@@ -6,7 +6,7 @@ import jrocks.plugin.api.config.ConfigService;
 import jrocks.plugin.api.config.ModuleConfig;
 import jrocks.plugin.api.config.ProjectConfig;
 import jrocks.shell.JRocksShellException;
-import jrocks.shell.TerminalLogger;
+import jrocks.plugin.api.shell.TerminalLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

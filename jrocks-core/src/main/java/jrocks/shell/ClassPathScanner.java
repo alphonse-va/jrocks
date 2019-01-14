@@ -5,6 +5,7 @@ import io.github.classgraph.ClassInfo;
 import io.github.classgraph.ClassInfoList;
 import io.github.classgraph.ScanResult;
 import jrocks.plugin.api.config.ConfigService;
+import jrocks.plugin.api.shell.TerminalLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -2,7 +2,7 @@ package jrocks.shell.config;
 
 import com.google.common.annotations.VisibleForTesting;
 import jrocks.shell.JRocksShellException;
-import jrocks.shell.TerminalLogger;
+import jrocks.plugin.api.shell.TerminalLogger;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.project.MavenProject;

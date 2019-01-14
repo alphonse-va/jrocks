@@ -75,6 +75,15 @@ public interface ClassApi {
   }
 
   /**
+   * Returns e.g id, name, desc
+   *
+   * @return
+   */
+  default String title() {
+    return simpleName().replaceAll("(.)(\\p{Upper})", "$1 $2");
+  }
+
+  /**
    * Returns the entity field annotated with <code>@Id</code>
    * <p>
    * orElseThrow IllegalArgumentException

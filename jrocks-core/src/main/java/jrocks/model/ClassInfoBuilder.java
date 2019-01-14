@@ -5,12 +5,10 @@ import jrocks.plugin.api.ClassApi;
 
 
 /**
- *
  * Class info builder class
- *
+ * <p>
  * NOTE:   We fall back to reflection based ClassInfo when GlassGraph doesn't fill {@code io.github.classgraph.ClassInfo}
  * for internal classes e.g {@code java.lang.Long}
- *
  */
 public class ClassInfoBuilder {
 
@@ -24,14 +22,16 @@ public class ClassInfoBuilder {
   }
 
   public ClassApi build() {
-    beanClass.getDeclaredFieldInfo().forEach(fieldInfo -> {
-      io.github.classgraph.ClassInfo fieldClassInfo = ((ClassRefTypeSignature) fieldInfo.getTypeDescriptor()).getClassInfo();
-      if (fieldClassInfo == null) {
-        classInfo.addField(new ReflectiveFieldInfo(fieldInfo.loadClassAndGetField()));
-      } else {
-        classInfo.addField(new ClassGraphFieldInfo(fieldInfo));
-      }
-    });
+    beanClass.getDeclaredFieldInfo().stream()
+        .filter(fieldInfo -> fieldInfo.getTypeDescriptor() instanceof ClassRefTypeSignature)
+        .forEach(fieldInfo -> {
+          io.github.classgraph.ClassInfo fieldClassInfo = ((ClassRefTypeSignature) fieldInfo.getTypeDescriptor()).getClassInfo();
+          if (fieldClassInfo == null) {
+            classInfo.addField(new ReflectiveFieldInfo(fieldInfo.loadClassAndGetField()));
+          } else {
+            classInfo.addField(new ClassGraphFieldInfo(fieldInfo));
+          }
+        });
     return classInfo;
   }
 }

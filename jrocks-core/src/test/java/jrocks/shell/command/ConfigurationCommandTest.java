@@ -3,7 +3,7 @@
 //import jrocks.model.CommandInfo;
 //import jrocks.model.PluginInfo;
 //import jrocks.shell.ClassPathScanner;
-//import jrocks.shell.TerminalLogger;
+//import jrocks.plugin.api.shell.TerminalLogger;
 //import jrocks.shell.config.ConfigServiceImpl;
 //import jrocks.shell.config.GlobalConfig;
 //import org.junit.jupiter.api.BeforeEach;

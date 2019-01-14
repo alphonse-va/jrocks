@@ -1,7 +1,7 @@
 package jrocks.shell.command;
 
 import jrocks.plugin.api.config.ConfigService;
-import jrocks.shell.TerminalLogger;
+import jrocks.plugin.api.shell.TerminalLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 

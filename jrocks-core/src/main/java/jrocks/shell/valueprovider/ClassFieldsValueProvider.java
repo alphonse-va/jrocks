@@ -2,7 +2,7 @@ package jrocks.shell.valueprovider;
 
 import com.google.common.annotations.VisibleForTesting;
 import jrocks.shell.ClassPathScanner;
-import jrocks.shell.TerminalLogger;
+import jrocks.plugin.api.shell.TerminalLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.shell.CompletionContext;
