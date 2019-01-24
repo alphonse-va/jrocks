@@ -119,4 +119,9 @@ Desktop.ini
 !.mvn/wrapper/maven-wrapper.jar
 
 
+# ####################
+# Projects
+# ###################
 
+jrocks-springular/springular-frontend/target
+jrocks-springular/springular-backend/target
