@@ -29,13 +29,13 @@ public interface ClassParameterApi {
 
   File getFile();
 
-  Optional<QuestionResponse> getUserResponse(Object key);
+  Optional<UserResponse> getUserResponse(Object key);
 
   List<String> additionalFlags();
 
   boolean hasFlag(String flag);
 
-  void addResponses(Map<Object, QuestionResponse> responses);
+  void addResponses(Map<Object, UserResponse> responses);
 
-  Map<Object, QuestionResponse> responses();
+  Map<Object, UserResponse> responses();
 }

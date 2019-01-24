@@ -2,7 +2,7 @@ package jrocks.plugin.api;
 
 import java.util.StringJoiner;
 
-public class QuestionResponseSupport implements QuestionResponse {
+public class UserResponseSupport implements UserResponse {
 
   private Question question;
   private String response;
@@ -17,12 +17,12 @@ public class QuestionResponseSupport implements QuestionResponse {
     return response;
   }
 
-  public QuestionResponseSupport setQuestion(Question question) {
+  public UserResponseSupport setQuestion(Question question) {
     this.question = question;
     return this;
   }
 
-  public QuestionResponseSupport setResponse(String response) {
+  public UserResponseSupport setResponse(String response) {
     this.response = response;
     return this;
   }

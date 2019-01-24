@@ -1,5 +1,6 @@
 package jrocks.plugin.api;
 
+import java.nio.file.Path;
 import java.util.*;
 
 import static java.util.Collections.singletonList;
@@ -13,6 +14,8 @@ public interface JRocksPlugin extends JRocksBean {
   String defaultSuffix();
 
   List<PluginGenerator> generators();
+
+  Path configFile();
 
   default String group() {
     return "> JRocks Plugins";
@@ -28,6 +31,10 @@ public interface JRocksPlugin extends JRocksBean {
 
   default List<String> keys() {
     return singletonList(name());
+  }
+
+  default Map<String, Object> getContext() {
+    return new HashMap<>();
   }
 }
 

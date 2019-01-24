@@ -1,6 +1,6 @@
 package jrocks.plugin.api;
 
-public interface QuestionResponse {
+public interface UserResponse {
 
   Question question();
 

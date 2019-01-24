@@ -17,6 +17,10 @@ public class ProjectConfig {
   private boolean autoRebuild = true;
   private Set<ModuleConfig> modules;
 
+  public Optional<ModuleConfig> findModuleByType(ModuleType type) {
+    return modules.stream().filter(m -> m.getTypes().contains(type)).findAny();
+  }
+
   public void addModule(ModuleConfig module) {
     if (modules == null) modules = new HashSet<>();
     modules.add(module);
@@ -28,17 +32,13 @@ public class ProjectConfig {
       try {
         return new URL("file://" + m.getOutputDirectory());
       } catch (MalformedURLException e) {
-        throw new JRocksApiException("Not valid URL " + m.getOutputDirectory());
+        throw new JRocksApiException("Not valid URL " + m.getOutputDirectory(), e);
       }
     }).toArray(URL[]::new);
   }
 
   public Set<ModuleConfig> getModules() {
     return modules == null ? modules = new HashSet<>() : modules;
-  }
-
-  public Optional<ModuleConfig> getModuleByType(ModuleType type) {
-    return modules.stream().filter(m -> m.getTypes().contains(type)).findAny();
   }
 
   public String getBasePackage() {
