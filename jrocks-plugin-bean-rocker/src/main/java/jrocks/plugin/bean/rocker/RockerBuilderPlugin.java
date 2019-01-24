@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,6 +54,11 @@ public class RockerBuilderPlugin implements JRocksPlugin {
   @Override
   public List<PluginGenerator> generators() {
     return generators;
+  }
+
+  @Override
+  public Path configFile() {
+    return null;
   }
 
   @Override

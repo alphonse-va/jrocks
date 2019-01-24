@@ -36,7 +36,7 @@ public class RockerBuilderGenerator implements PluginGenerator {
 
     String content = Rocker.template("jrocks/templates/builder.rocker.raw", classApi, parameter).render().toString();
     String packageName = parameter.getUserResponse(RockerBuilderPlugin.Q_PACKAGE)
-        .map(QuestionResponse::text)
+        .map(UserResponse::text)
         .orElse(classApi.packageName());
 
     return Collections.singletonList(new GeneratedSourceSupport()
