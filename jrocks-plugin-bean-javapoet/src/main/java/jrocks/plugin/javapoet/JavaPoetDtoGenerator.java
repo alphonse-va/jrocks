@@ -114,7 +114,7 @@ public class JavaPoetDtoGenerator implements PluginGenerator {
 
   private static String getPackage(ClassParameterApi parameter, ClassApi classApi, String aPackage) {
     return parameter.getUserResponse(aPackage)
-        .map(QuestionResponse::text)
+        .map(UserResponse::text)
         .orElse(classApi.packageName());
   }
 

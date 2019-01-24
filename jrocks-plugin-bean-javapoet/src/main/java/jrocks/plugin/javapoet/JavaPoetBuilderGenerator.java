@@ -34,7 +34,7 @@ public class JavaPoetBuilderGenerator implements PluginGenerator {
     ClassName sourceClassName = ClassName.bestGuess(classApi.name());
 
     String packageName = parameter.getUserResponse(JavaPoetBuilderPlugin.Q_PACKAGE)
-        .map(QuestionResponse::text)
+        .map(UserResponse::text)
         .orElse(classApi.packageName());
 
     ClassName builderClassName = ClassName.bestGuess(packageName + "." + classApi.simpleName() + parameter.suffix());
