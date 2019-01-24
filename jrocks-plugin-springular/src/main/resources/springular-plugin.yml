@@ -1,0 +1,90 @@
+templates:
+
+  #### Backend ####
+  - sourcePath: 'jrocks/plugin/springular/templates/backend/repository.rocker.raw'
+    targetPathExpression: 'javaUtil.targetPathFromBean(bean)'
+    targetFilenameExpression: 'bean.simpleName() + "Repository.java"'
+
+  #### Frontend ####
+
+  # Service
+  - sourcePath: 'jrocks/plugin/springular/templates/frontend/service/serviceTs.rocker.raw'
+    targetPathExpression: 'angularUtil.appDir() + "/service/"'
+    targetFilenameExpression: 'bean.resourceName() + ".service.ts"'
+  - sourcePath: 'jrocks/plugin/springular/templates/frontend/service/datasourceTs.rocker.raw'
+    targetPathExpression: 'angularUtil.appDir() + "/service/"'
+    targetFilenameExpression: 'bean.resourceName() + ".datasource.ts"'
+
+  # Datatable
+  - sourcePath: 'jrocks/plugin/springular/templates/frontend/entity/datatable/datatableComponent.rocker.html'
+    targetPathExpression: 'angularUtil.appDir() + "/entity/" + bean.resourceName() + "-datatable"'
+    targetFilenameExpression: 'bean.resourceName() + "-datatable.component.html"'
+  - sourcePath: 'jrocks/plugin/springular/templates/frontend/entity/datatable/datatableComponentTs.rocker.raw'
+    targetPathExpression: 'angularUtil.appDir() + "/entity/" + bean.resourceName() + "-datatable"'
+    targetFilenameExpression: 'bean.resourceName() + "-datatable.component.ts"'
+    postWriteExpression: '
+      angularUtil.importType(targetFile, angularUtil.appDir() + "/app.module.ts");
+      fileUtil.addContentAfterMarker(angularUtil.appDir() + "/app.module.ts", "    " + bean.simpleName() + "DatatableComponent,", "@@springular.module.declarations@@");
+    '
+  - sourcePath: 'jrocks/plugin/springular/templates/frontend/entity/datatable/datatableComponentSpecTs.rocker.raw'
+    targetPathExpression: 'angularUtil.appDir() + "/entity/" + bean.resourceName() + "-datatable"'
+    targetFilenameExpression: 'bean.resourceName() + "-datatable.component.spec.ts"'
+  - sourcePath: 'jrocks/plugin/springular/templates/frontend/entity/datatable/datatable.component.scss'
+    targetPathExpression: 'angularUtil.appDir() + "/entity/" + bean.resourceName() + "-datatable"'
+    targetFilenameExpression: 'bean.resourceName() + "-datatable.component.scss"'
+
+  # New dialog
+  - sourcePath: 'jrocks/plugin/springular/templates/frontend/entity/datatable/newDialog/newDialogComponent.rocker.html'
+    targetPathExpression: 'angularUtil.appDir() + "/entity/" + bean.resourceName() + "-datatable/new"'
+    targetFilenameExpression: '"new-" + bean.resourceName() + "-dialog.component.html"'
+  - sourcePath: 'jrocks/plugin/springular/templates/frontend/entity/datatable/newDialog/newDialogComponentTs.rocker.raw'
+    targetPathExpression: 'angularUtil.appDir() + "/entity/" + bean.resourceName() + "-datatable/new"'
+    targetFilenameExpression: '"new-" + bean.resourceName() + "-dialog.component.ts"'
+    postWriteExpression: '
+      angularUtil.importType(targetFile, angularUtil.appDir() + "/app.module.ts");
+      fileUtil.addContentAfterMarker(angularUtil.appDir() + "/app.module.ts", "    New"  + bean.simpleName() + "DialogComponent,", "@@springular.module.declarations@@");
+      fileUtil.addContentAfterMarker(angularUtil.appDir() + "/app.module.ts", "    New" + bean.simpleName() + "DialogComponent,", "@@springular.module.entryComponents@@");
+    '
+  - sourcePath: 'jrocks/plugin/springular/templates/frontend/entity/datatable/newDialog/newDialogComponentSpecTs.rocker.raw'
+    targetPathExpression: 'angularUtil.appDir() + "/entity/" + bean.resourceName() + "-datatable/new"'
+    targetFilenameExpression: '"new-" + bean.resourceName() + "-dialog.component.spec.ts"'
+  - sourcePath: 'jrocks/plugin/springular/templates/frontend/entity/datatable/newDialog/new-dialog.component.scss'
+    targetPathExpression: 'angularUtil.appDir() + "/entity/" + bean.resourceName() + "-datatable/new"'
+    targetFilenameExpression: '"new-" + bean.resourceName() + "-dialog.component.scss"'
+
+    # Edit dialog
+  - sourcePath: 'jrocks/plugin/springular/templates/frontend/entity/datatable/edit/editDialogComponent.rocker.html'
+    targetPathExpression: 'angularUtil.appDir() + "/entity/" + bean.resourceName() + "-datatable/edit"'
+    targetFilenameExpression: '"edit-" + bean.resourceName() + "-dialog.component.html"'
+  - sourcePath: 'jrocks/plugin/springular/templates/frontend/entity/datatable/edit/editDialogComponentTs.rocker.raw'
+    targetPathExpression: 'angularUtil.appDir() + "/entity/" + bean.resourceName() + "-datatable/edit"'
+    targetFilenameExpression: '"edit-" + bean.resourceName() + "-dialog.component.ts"'
+    postWriteExpression: '
+      angularUtil.importType(targetFile, angularUtil.appDir() + "/app.module.ts");
+      fileUtil.addContentAfterMarker(angularUtil.appDir() + "/app.module.ts", "    Edit" + bean.simpleName() + "DialogComponent,", "@@springular.module.declarations@@");
+      fileUtil.addContentAfterMarker(angularUtil.appDir() + "/app.module.ts", "    Edit" + bean.simpleName() + "DialogComponent,", "@@springular.module.entryComponents@@");
+    '
+  - sourcePath: 'jrocks/plugin/springular/templates/frontend/entity/datatable/edit/editDialogComponentSpecTs.rocker.raw'
+    targetPathExpression: 'angularUtil.appDir() + "/entity/" + bean.resourceName() + "-datatable/edit"'
+    targetFilenameExpression: '"edit-" + bean.resourceName() + "-dialog.component.spec.ts"'
+  - sourcePath: 'jrocks/plugin/springular/templates/frontend/entity/datatable/edit/edit-dialog.component.scss'
+    targetPathExpression: 'angularUtil.appDir() + "/entity/" + bean.resourceName() + "-datatable/edit"'
+    targetFilenameExpression: '"edit-" + bean.resourceName() + "-dialog.component.scss"'
+    # Delete dialog
+  - sourcePath: 'jrocks/plugin/springular/templates/frontend/entity/datatable/delete/deleteDialogComponent.rocker.html'
+    targetPathExpression: 'angularUtil.appDir() + "/entity/" + bean.resourceName() + "-datatable/delete"'
+    targetFilenameExpression: '"delete-" + bean.resourceName() + "-dialog.component.html"'
+  - sourcePath: 'jrocks/plugin/springular/templates/frontend/entity/datatable/delete/deleteDialogComponentTs.rocker.raw'
+    targetPathExpression: 'angularUtil.appDir() + "/entity/" + bean.resourceName() + "-datatable/delete"'
+    targetFilenameExpression: '"delete-" + bean.resourceName() + "-dialog.component.ts"'
+    postWriteExpression: '
+      angularUtil.importType(targetFile, angularUtil.appDir() + "/app.module.ts");
+      fileUtil.addContentAfterMarker(angularUtil.appDir() + "/app.module.ts", "    Delete" + bean.simpleName() + "DialogComponent,", "@@springular.module.declarations@@");
+      fileUtil.addContentAfterMarker(angularUtil.appDir() + "/app.module.ts", "    Delete" + bean.simpleName() + "DialogComponent,", "@@springular.module.entryComponents@@");
+    '
+  - sourcePath: 'jrocks/plugin/springular/templates/frontend/entity/datatable/delete/deleteDialogComponentSpecTs.rocker.raw'
+    targetPathExpression: 'angularUtil.appDir() + "/entity/" + bean.resourceName() + "-datatable/delete"'
+    targetFilenameExpression: '"delete-" + bean.resourceName() + "-dialog.component.spec.ts"'
+  - sourcePath: 'jrocks/plugin/springular/templates/frontend/entity/datatable/delete/delete-dialog.component.scss'
+    targetPathExpression: 'angularUtil.appDir() + "/entity/" + bean.resourceName() + "-datatable/delete"'
+    targetFilenameExpression: '"delete-" + bean.resourceName() + "-dialog.component.scss"'

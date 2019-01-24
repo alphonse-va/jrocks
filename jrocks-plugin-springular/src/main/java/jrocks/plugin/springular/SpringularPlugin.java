@@ -4,8 +4,13 @@ import jrocks.plugin.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +24,9 @@ public class SpringularPlugin implements JRocksPlugin {
 
   @Value("${jrocks.version}")
   private String version;
+
+  @Value("${classpath*:/springular-plugin.yml}")
+  private Resource pluginConfigFile;
 
   private final List<PluginGenerator> generators;
 
@@ -50,6 +58,17 @@ public class SpringularPlugin implements JRocksPlugin {
   @Override
   public List<PluginGenerator> generators() {
     return generators;
+  }
+
+  @Override
+  public Path configFile() {
+    try {
+      Path path = Files.createTempFile("springular-plugin-", ".yml");
+      Files.copy(pluginConfigFile.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+      return path;
+    } catch (IOException e) {
+      throw new JRocksApiException(e);
+    }
   }
 
   @Override

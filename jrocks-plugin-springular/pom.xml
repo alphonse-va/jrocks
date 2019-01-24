@@ -78,6 +78,7 @@
                 <configuration>
                     <javaVersion>${java.version}</javaVersion>
                     <discardLogicWhitespace>true</discardLogicWhitespace>
+                    <outputDirectory>${project.build.directory}/generated-sources/templates</outputDirectory>
                     <skipTouch>true</skipTouch>
                 </configuration>
             </plugin>
@@ -101,6 +102,49 @@
                         <configuration>
                             <sourceFile>target/classes/rocker-compiler-dev.conf</sourceFile>
                             <destinationFile>target/classes/rocker-compiler.conf</destinationFile>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- build a zip distribution -->
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/assembly/package.xml</descriptor>
+                    </descriptors>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>jrocks-plugin-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.12</version>
+                <executions>
+                    <execution>
+                        <id>attach-artifacts</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>attach-artifact</goal>
+                        </goals>
+                        <configuration>
+                            <artifacts>
+                                <artifact>
+                                    <file>${project.build.directory}/${project.name}-${project.version}-resources.zip</file>
+                                    <type>zip</type>
+                                    <classifier>resources</classifier>
+                                </artifact>
+                            </artifacts>
                         </configuration>
                     </execution>
                 </executions>
