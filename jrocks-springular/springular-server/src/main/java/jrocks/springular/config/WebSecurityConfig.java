@@ -63,7 +63,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
       throws Exception {
     authenticationManagerBuilder.userDetailsService(jwtUserDetailsService)
         .passwordEncoder(passwordEncoder());
-
   }
 
   @Autowired
