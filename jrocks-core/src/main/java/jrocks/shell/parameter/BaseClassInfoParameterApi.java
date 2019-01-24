@@ -2,7 +2,7 @@ package jrocks.shell.parameter;
 
 import jrocks.plugin.api.ClassParameterApi;
 import jrocks.plugin.api.PluginGenerator;
-import jrocks.plugin.api.QuestionResponse;
+import jrocks.plugin.api.UserResponse;
 
 import java.io.File;
 import java.util.List;
@@ -24,7 +24,7 @@ public class BaseClassInfoParameterApi implements ClassParameterApi {
   private String suffixToRemove;
   private boolean force;
   private File file;
-  private Map<Object, QuestionResponse> responses;
+  private Map<Object, UserResponse> responses;
   private List<String> additionalFlags;
 
   private PluginGenerator layout;
@@ -91,12 +91,12 @@ public class BaseClassInfoParameterApi implements ClassParameterApi {
   }
 
   @Override
-  public Map<Object, QuestionResponse> responses() {
+  public Map<Object, UserResponse> responses() {
     return responses;
   }
 
   @Override
-  public Optional<QuestionResponse> getUserResponse(Object key) {
+  public Optional<UserResponse> getUserResponse(Object key) {
     return Optional.ofNullable(responses.get(key));
   }
 
@@ -111,7 +111,7 @@ public class BaseClassInfoParameterApi implements ClassParameterApi {
   }
 
   @Override
-  public void addResponses(Map<Object, QuestionResponse> responses) {
+  public void addResponses(Map<Object, UserResponse> responses) {
     this.responses = responses;
   }
 
@@ -160,7 +160,7 @@ public class BaseClassInfoParameterApi implements ClassParameterApi {
     return this;
   }
 
-  BaseClassInfoParameterApi setResponses(Map<Object, QuestionResponse> responses) {
+  BaseClassInfoParameterApi setResponses(Map<Object, UserResponse> responses) {
     this.responses = responses;
     return this;
   }

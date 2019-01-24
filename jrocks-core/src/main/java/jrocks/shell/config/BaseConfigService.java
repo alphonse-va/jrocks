@@ -30,24 +30,17 @@ public class BaseConfigService implements ConfigService {
 
   private ProjectConfig config;
 
-  private final GlobalConfig globalConfig;
-
-  private final TerminalLogger logger;
+  private TerminalLogger terminalLogger;
 
   @Autowired
-  public BaseConfigService(GlobalConfig globalConfig, TerminalLogger logger) {
-    this.globalConfig = globalConfig;
-    this.logger = logger;
+  public BaseConfigService(TerminalLogger terminalLogger) {
+    this.terminalLogger = terminalLogger;
   }
 
   @PostConstruct
   void postConstruct() {
     mapper = new ObjectMapper(new YAMLFactory());
-    try {
-      load();
-    } catch (RuntimeException e) {
-      throw e;
-    }
+    load();
   }
 
   @Override
@@ -59,7 +52,7 @@ public class BaseConfigService implements ConfigService {
   @Override
   public Optional<ModuleConfig> getModule(String type) {
     return config.getModules().stream()
-        .filter(m -> m.getTypes().equals(type))
+        .filter(m -> m.getTypes().stream().anyMatch( t -> t.name().equals(type)))
         .findAny();
   }
 
@@ -70,8 +63,8 @@ public class BaseConfigService implements ConfigService {
       config = mapper.readValue(new File(configFileName), ProjectConfig.class);
     } catch (IOException e) {
       e.printStackTrace();
-      logger.error(this, "Error while reading '%s' file. Error: %s", configFileName, e.getMessage());
-      logger.warning(this, "Please fix your project config!");
+      terminalLogger.error(this, "Error while reading '%s' file. Error: %s", configFileName, e.getMessage());
+      terminalLogger.warning(this, "Please fix your project config!");
     }
   }
 

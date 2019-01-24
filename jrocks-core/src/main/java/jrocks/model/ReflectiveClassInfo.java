@@ -14,7 +14,7 @@ public class ReflectiveClassInfo implements ClassApi {
 
   private List<FieldApi> properties = new ArrayList<>();
 
-  ReflectiveClassInfo(Class<?> beanClass) {
+  public ReflectiveClassInfo(Class<?> beanClass) {
     this.beanClass = beanClass;
   }
 

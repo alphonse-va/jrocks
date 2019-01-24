@@ -117,7 +117,7 @@ public class BaseTerminalLogger implements TerminalLogger {
     terminal.writer().print(new AttributedString(getMessagePrefix(), AttributedStyle.DEFAULT).toAnsi());
 
     String formattedMessage = format(message, values);
-    Matcher matcher = Pattern.compile("([_|\\\\*]+?(.+?)[_|\\\\*])+?").matcher(formattedMessage);
+    Matcher matcher = Pattern.compile("^import[ ]+class[ ]+([a-z|A-Z])").matcher(formattedMessage);
 
     int lastMatchIdx = 0;
     while (matcher.find()) {

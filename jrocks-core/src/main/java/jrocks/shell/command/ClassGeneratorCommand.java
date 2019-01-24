@@ -1,7 +1,10 @@
 package jrocks.shell.command;
 
+import jrocks.JRocksBaseException;
 import jrocks.model.ClassInfoBuilder;
 import jrocks.plugin.api.*;
+import jrocks.plugin.api.template.TemplateContext;
+import jrocks.plugin.api.template.TemplateProcessor;
 import jrocks.shell.BaseTerminalLogger;
 import jrocks.shell.ClassPathScanner;
 import jrocks.shell.JRocksShellMethod;
@@ -51,6 +54,9 @@ public class ClassGeneratorCommand extends BaseCommand {
   @Autowired
   private PluginsHolder pluginsHolder;
 
+  @Autowired
+  public TemplateProcessor processor;
+
   @ShellMethod
   @JRocksShellMethod
   public void generator(
@@ -95,9 +101,9 @@ public class ClassGeneratorCommand extends BaseCommand {
         .withLayout(pluginGenerator)
         .withDriRun(dryRun)
         .build();
-    ClassApi classInfo = getClassInfo(parameter);
+    ClassApi bean = getClassInfo(parameter);
 
-    Map<Object, QuestionResponse> responses = askAdditionalQuestions(plugin, parameter, classInfo, isForced);
+    Map<Object, UserResponse> responses = askAdditionalQuestions(plugin, parameter, bean, isForced);
     parameter.addResponses(responses);
     terminalLogger().verbose(plugin, "*responses:*");
     parameter.responses().forEach((key, response) -> terminalLogger().verbose("%s: _%s_", response.question().text(), response.text()));
@@ -106,21 +112,35 @@ public class ClassGeneratorCommand extends BaseCommand {
             "generator: _%s_\n\t" +
             "source: _%s_" +
             "%s",
-        pluginGenerator.name(), classInfo.name(), parameter);
+        pluginGenerator.name(), bean.name(), parameter);
 
-    pluginGenerator.generate(parameter, classInfo).forEach(source -> {
-      writerService.writeFile(source, parameter, classInfo);
-    });
+    if (plugin.configFile() != null && plugin.configFile().toFile().exists()) {
+      TemplateContext context = new TemplateContext()
+          .setParameter(parameter)
+          .setBean(bean)
+          .setPluginContext(plugin.getContext());
+      processor.process(context, plugin.configFile().toFile());
+//
+//      pluginGenerator.generate(parameter, bean).forEach(source -> {
+//        TemplateContext context = new TemplateContext()
+//            .setParameter(parameter)
+//            .setBean(bean)
+//            .setPluginContext(plugin.getContext());
+//        processor.process(context, plugin.configFile().toFile());
+//      });
+    } else {
+      throw new JRocksBaseException("Plugin _" + plugin.name() + "_ do not provide a config file!");
+    }
   }
 
-  private Map<Object, QuestionResponse> askAdditionalQuestions(JRocksPlugin plugin, ClassParameterApi parameter, ClassApi classInfo, boolean force) {
-    Map<Object, QuestionResponse> result = new HashMap<>();
+  private Map<Object, UserResponse> askAdditionalQuestions(JRocksPlugin plugin, ClassParameterApi parameter, ClassApi classInfo, boolean force) {
+    Map<Object, UserResponse> result = new HashMap<>();
     Map<Object, Question> questions = plugin.additionalQuestions(parameter, classInfo);
     for (Map.Entry<Object, Question> entry : questions.entrySet()) {
       Object key = entry.getKey();
       Question question = entry.getValue();
       if (question.hasDefaultValue() && force) {
-        result.put(key, new QuestionResponseSupport().setQuestion(question).setResponse(question.buffer()));
+        result.put(key, new UserResponseSupport().setQuestion(question).setResponse(question.buffer()));
         terminalLogger().info(plugin, "use default parameter value *%s* for '_%s_' question.", question.buffer(), question.text());
         continue;
       }
@@ -159,7 +179,7 @@ public class ClassGeneratorCommand extends BaseCommand {
           terminalLogger().verbose(plugin, e.getMessage());
         }
       }
-      result.put(key, new QuestionResponseSupport().setQuestion(question).setResponse(input));
+      result.put(key, new UserResponseSupport().setQuestion(question).setResponse(input));
     }
     return result;
   }

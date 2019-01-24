@@ -1,7 +1,7 @@
 package jrocks.shell.parameter;
 
 import jrocks.plugin.api.PluginGenerator;
-import jrocks.plugin.api.QuestionResponse;
+import jrocks.plugin.api.UserResponse;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
@@ -21,7 +21,7 @@ public class BaseClassInfoParameterBuilder {
   private String suffixToRemove;
   private File file;
   private List<String> additionalFlags;
-  private Map<Object, QuestionResponse> responses;
+  private Map<Object, UserResponse> responses;
   private PluginGenerator pluginGenerator;
   private boolean dryRun;
 
@@ -102,7 +102,7 @@ public class BaseClassInfoParameterBuilder {
     return this;
   }
 
-  public BaseClassInfoParameterBuilder withAdditionalResponses(Map<Object, QuestionResponse> responses) {
+  public BaseClassInfoParameterBuilder withAdditionalResponses(Map<Object, UserResponse> responses) {
     this.responses = responses;
     return this;
   }
