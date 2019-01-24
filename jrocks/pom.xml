@@ -12,7 +12,7 @@
     </parent>
 
     <artifactId>jrocks</artifactId>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -35,6 +35,18 @@
             <groupId>be.unlock</groupId>
             <artifactId>jrocks-plugin-bean-javapoet</artifactId>
             <version>0.3.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>be.unlock</groupId>
+            <artifactId>jrocks-plugin-springular</artifactId>
+            <version>0.3.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>be.unlock</groupId>
+            <artifactId>jrocks-plugin-springular</artifactId>
+            <version>0.3.1-SNAPSHOT</version>
+            <classifier>resources</classifier>
+            <type>zip</type>
         </dependency>
     </dependencies>
 
@@ -61,7 +73,6 @@
                         <goals>
                             <goal>single</goal>
                         </goals>
-
                     </execution>
                 </executions>
             </plugin>

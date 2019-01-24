@@ -18,6 +18,24 @@
         <dependencySet>
             <outputDirectory>/jrocks</outputDirectory>
             <includes>
+                <include>be.unlock:jrocks-plugin-springular:*:resources</include>
+            </includes>
+            <useProjectArtifact>true</useProjectArtifact>
+            <unpack>true</unpack>
+            <scope>runtime</scope>
+        </dependencySet>
+        <dependencySet>
+            <outputDirectory>/jrocks</outputDirectory>
+            <includes>
+                <include>be.unlock:jrocks-core:*:run</include>
+            </includes>
+            <useProjectArtifact>true</useProjectArtifact>
+            <unpack>false</unpack>
+            <scope>runtime</scope>
+        </dependencySet>
+        <dependencySet>
+            <outputDirectory>/jrocks</outputDirectory>
+            <includes>
                 <include>be.unlock:jrocks-core:*:run</include>
             </includes>
             <useProjectArtifact>true</useProjectArtifact>

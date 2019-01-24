@@ -8,7 +8,9 @@ if [ ! -d ~/bin ]; then
   mkdir ~/bin
 fi
 
-echo "java -Dloader.path='`pwd`/plugins' -jar `pwd`/jrocks-core-${project.version}-run.jar" > ${SCRIPT_PATH}
+echo "java -Dloader.path='`pwd`/plugins:`pwd`/templates:`pwd`/config'
+           -Drocker.reloading=true
+           -jar `pwd`/jrocks-core-${project.version}-run.jar" > ${SCRIPT_PATH}
 
 chmod a+x ${SCRIPT_PATH}
 
