@@ -21,14 +21,14 @@ export class ExampleService {
     private apiService: ApiService) {
   }
 
-  findExamples(filter, sortOrder = 'asc', sortField = 'username',
+  findExamples(filter, sortOrder = 'asc', sortField = 'id',
                pageNumber = 0, pageSize = 3): Observable<ExampleRestResult> {
     if (filter) {
       filter = filter ? filter + '%' : '%';
       return this.apiService.get("/api/example/search/filter", {
+        "username": filter,
         "firstname": filter,
         "lastname": filter,
-        "username": filter,
         "size": pageSize.toString(),
         "page": pageNumber.toString(),
         "sort": sortField + "," + sortOrder

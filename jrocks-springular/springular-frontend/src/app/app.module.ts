@@ -5,9 +5,11 @@ import {HttpModule} from '@angular/http';
 import {HttpClientModule} from '@angular/common/http';
 // material
 import {
-  MAT_SNACK_BAR_DEFAULT_OPTIONS, MatAutocompleteModule,
+  MAT_SNACK_BAR_DEFAULT_OPTIONS,
+  MatAutocompleteModule,
   MatButtonModule,
-  MatCardModule, MatCheckboxModule,
+  MatCardModule,
+  MatCheckboxModule,
   MatDialogModule,
   MatGridListModule,
   MatIconModule,
@@ -42,13 +44,13 @@ import {SignupComponent} from './signup';
 import {EntityMenuComponent} from './component/header/entity-menu/entity-menu.component';
 import {ExampleService} from "./service/example.service";
 import {LayoutModule} from '@angular/cdk/layout';
-import {DeleteExampleDialogComponent} from "./entity/datatable-example/delete/delete-example-dialog.component";
-import {ExampleComponent} from './entity/datatable-example/example.component';
-import {NewExampleDialogComponent} from "./entity/datatable-example/new/new-example-dialog.component";
-import {EditExampleDialogComponent} from "./entity/datatable-example/edit/edit-example-dialog.component";
 import {ExampleListComponent} from "./entity/list-example/example-list.component";
 import {EditExampleComponent} from "./entity/list-example/edit/edit-example.component";
 import {ViewExampleComponent} from "./entity/list-example/view/view-example.component";
+import {ExampleDatatableComponent} from "./entity/example-datatable/example-datatable.component";
+import {NewExampleDialogComponent} from "./entity/example-datatable/new/new-example-dialog.component";
+import {EditExampleDialogComponent} from "./entity/example-datatable/edit/edit-example-dialog.component";
+import {DeleteExampleDialogComponent} from "./entity/example-datatable/delete/delete-example-dialog.component";
 
 export function initUserFactory(userService: UserService) {
   return () => userService.initUser();
@@ -70,13 +72,14 @@ export function initUserFactory(userService: UserService) {
     AdminComponent,
     SignupComponent,
     EntityMenuComponent,
-    ExampleComponent,
-    NewExampleDialogComponent,
-    EditExampleDialogComponent,
-    DeleteExampleDialogComponent,
     ExampleListComponent,
     EditExampleComponent,
-    ViewExampleComponent
+    ViewExampleComponent,
+    // @@springular.module.declarations@@
+    DeleteExampleDialogComponent,
+    EditExampleDialogComponent,
+    NewExampleDialogComponent,
+    ExampleDatatableComponent,
   ],
   imports: [
     BrowserAnimationsModule,
@@ -104,7 +107,8 @@ export function initUserFactory(userService: UserService) {
     FlexLayoutModule,
     MatGridListModule,
     MatListModule,
-    LayoutModule
+    LayoutModule,
+    // @@springular.module.imports@@
   ],
   providers: [
     LoginGuard,
@@ -126,7 +130,12 @@ export function initUserFactory(userService: UserService) {
     {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 6000}}
   ],
   bootstrap: [AppComponent],
-  entryComponents: [NewExampleDialogComponent, EditExampleDialogComponent, DeleteExampleDialogComponent]
+  entryComponents: [
+    // @@springular.module.entryComponents@@
+    DeleteExampleDialogComponent,
+    EditExampleDialogComponent,
+    NewExampleDialogComponent,
+  ]
 
 })
 export class AppModule {

@@ -1,16 +1,14 @@
 import {AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
 import {MatDialog, MatDialogConfig, MatPaginator, MatSnackBar, MatSort} from "@angular/material";
-import {ExampleService} from "../../service/example.service";
+import {ExampleService} from "../../../service/example.service";
 import {debounceTime, distinctUntilChanged, tap} from 'rxjs/operators';
 import {merge} from "rxjs/observable/merge";
 import {fromEvent} from 'rxjs/observable/fromEvent';
-import {ExampleDataSource} from "../../service/example.datasource";
-import {Example} from "../../model/example";
+import {ExampleDataSource} from "../../../service/example.datasource";
+import {Example} from "../../../model/example";
 import {EditExampleDialogComponent} from "./edit/edit-example-dialog.component";
 import {DeleteExampleDialogComponent} from "./delete/delete-example-dialog.component";
 import {NewExampleDialogComponent} from "./new/new-example-dialog.component";
-import {Observable} from "rxjs";
 
 @Component({
   selector: 'example',
@@ -35,8 +33,7 @@ export class ExampleComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('filter') filter: ElementRef;
 
-  constructor(private route: ActivatedRoute,
-              private exampleService: ExampleService,
+  constructor(private exampleService: ExampleService,
               private dialog: MatDialog,
               private snackBar: MatSnackBar) {
   }
@@ -52,11 +49,9 @@ export class ExampleComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-
     if (!this.readonly) {
       this.subscribeOnKeyUp(this.filter.nativeElement);
     }
-
     merge(this.sort.sortChange, this.paginator.page)
       .pipe(tap(() => this.loadExamplesPage()))
       .subscribe();

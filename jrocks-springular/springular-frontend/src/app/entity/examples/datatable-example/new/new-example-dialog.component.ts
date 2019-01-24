@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {MatDialogRef} from "@angular/material";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Example} from "../../../model/example";
-import {ExampleService} from "../../../service/example.service";
+import {Example} from "../../../../model/example";
+import {ExampleService} from "../../../../service/example.service";
 
 
 @Component({
@@ -20,7 +20,6 @@ export class NewExampleDialogComponent implements OnInit {
     private exampleService: ExampleService,
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<NewExampleDialogComponent>) {
-
 
     this.form = fb.group({
       firstname: ["", Validators.required],

@@ -8,7 +8,6 @@ import {NotFoundComponent} from './not-found';
 import {ChangePasswordComponent} from './change-password';
 import {ForbiddenComponent} from './forbidden';
 import {SignupComponent} from './signup';
-import {ExampleComponent} from "./entity/datatable-example/example.component";
 import {ExampleListComponent} from "./entity/list-example/example-list.component";
 import {EditExampleComponent} from "./entity/list-example/edit/edit-example.component";
 import {ViewExampleComponent} from "./entity/list-example/view/view-example.component";
@@ -19,6 +18,14 @@ export const routes: Routes = [
     component: HomeComponent,
     pathMatch: 'full'
   },
+
+  {
+    path: 'customers',
+    loadChildren: './customers/customers.module#CustomersModule',
+    canActivate: [GuestGuard],
+    pathMatch: 'full'
+  },
+
   {
     path: 'signup',
     component: SignupComponent,
@@ -26,8 +33,8 @@ export const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'example',
-    component: ExampleComponent,
+    path: 'examples',
+    loadChildren: './entity/examples/examples.module#ExamplesModule',
     canActivate: [LoginGuard],
     pathMatch: 'full'
   },
@@ -72,7 +79,7 @@ export const routes: Routes = [
   {
     path: '**',
     redirectTo: '/404'
-  }
+  },
 ];
 
 @NgModule({
